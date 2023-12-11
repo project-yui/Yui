@@ -1,0 +1,33 @@
+{
+  "name": "ntqq-bot",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/node": "^20.8.7",
+    "@types/uuid": "^9.0.6",
+    "@types/ws": "^8.5.8",
+    "electron": "25.8.1",
+    "rollup": "^4.1.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "nodejs-websocket": "^1.7.2",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES6",
+    "allowJs": false,
+    "lib": [
+        "ES6",
+        "DOM",
+    ],
+    "module": "ES2020",
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+      "src/**/*.ts"
+  ],
+}

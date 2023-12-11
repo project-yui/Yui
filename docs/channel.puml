@@ -1,0 +1,35 @@
+@startuml event
+
+participant 渲染进程 as GUI
+participant 主进程 as Main
+
+== 第一种 ==
+GUI -> Main: IPC_UP[request] 向主进程请求数据
+activate Main
+activate GUI
+Main -> GUI: IPC_DOWN[response] 向渲染进程返回数据
+deactivate Main
+deactivate GUI
+
+== 第二种 ==
+GUI -> Main: IPC_UP[request] 向主进程订阅数据更新事件
+activate Main
+activate GUI
+Main -> GUI: IPC_DOWN[response] 向渲染进程返回订阅结果
+Main -> GUI: IPC_DOWN[request]  向渲染进程发送订阅更新的数据
+deactivate Main
+GUI -> GUI: 处理数据
+GUI -> Main: IPC_UP[request] 向主进程取消订阅数据更新事件
+activate Main
+Main -> GUI: IPC_DOWN[response] 向渲染进程返回取消订阅结果
+deactivate Main
+deactivate GUI
+
+== 第三种（较少） ==
+Main -> GUI: IPC_DOWN[request] 主进程向渲染进程请求数据
+activate Main
+activate GUI
+GUI -> Main: IPC_UP[response] 渲染进程向主进程返回结果
+deactivate Main
+deactivate GUI
+@enduml

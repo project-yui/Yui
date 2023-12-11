@@ -1,0 +1,18 @@
+services:
+  yukihana:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    tty: true
+    container_name: yukihana
+    restart: always
+    ports:
+      # - "5500:5500"       #satori默认端口
+      # - "5900:5900"       #vnc默认端口
+      # - "6081:6081"       #noVNC默认端口
+      - "8080:8080"     #red默认端口
+    environment:
+      - TZ=Asia/Shanghai
+      - VNC_PASSWD=vncpasswd
+    volumes:
+      - ./data/QQ:/root/.config/QQ
