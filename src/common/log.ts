@@ -67,7 +67,10 @@ class Logger {
     // 优先级小的不显示
     if (level < CurrentLogLevel) return
     this.beforeFuncs.forEach(e => e(this.config))
-    _console[Methods[level]](`%c${this.config.namespace}`, Styles[level], ...args)
+    const now = new Date()
+    const fix = (d: number) => (d + '').padStart(2, '0')
+    const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}`
+    _console[Methods[level]](`%c[${time}]${this.config.namespace}`, Styles[level], ...args)
     this.afterFuncs.forEach(e => e(this.config))
   }
 
