@@ -10,8 +10,8 @@
  */
 
 const getSourceCode = () => {
-  const applicationDir = path.resolve(__dirname, '../versions/9.9.3-17412/application')
-  const targetPath = path.resolve(__dirname, '../versions/9.9.3-17412/application.out')
+  const applicationDir = path.resolve(__dirname, '../versions/9.9.6-20201/application')
+  const targetPath = path.resolve(__dirname, '../versions/9.9.6-20201/application.out')
   const queue = [
     {
       path: '.',

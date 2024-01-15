@@ -84,7 +84,7 @@ export const hookModule = () => {
   (Module as any)._load = (...args: any) => {
     const loaded_module = original_load(...args);
 
-    // console.log('load', args[0])
+    // log.info('module load:', args[0])
     if (ModuleLoadHook[args[0]]) {
       return ModuleLoadHook[args[0]](loaded_module)
     }

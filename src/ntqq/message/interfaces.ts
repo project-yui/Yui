@@ -23,6 +23,7 @@ export declare namespace NTSendMessageType {
    * NTQQ -> 框架
    */
   export interface SendResponse {
+    msgId: `${number}`
   }
 
   export interface MsgElement {
@@ -240,6 +241,61 @@ export declare namespace NTReceiveMessageType {
   }
 
   /**
+   * 消息元素类型
+   * 
+   * 1 - 纯文本&@ textElement
+   * 
+   * 2 - 图片 picElement
+   * 
+   * 5 - 视频 videoElement
+   * 
+   * 6 - 表情 faceElement
+   * 
+   * 7 - 引用回复 replyElement
+   * 
+   * 10 - ArkElement
+   * 
+   * 11 - 商城表情 marketFaceElement
+   * 
+   * 16 - 转发消息 multiForwardMsgElement
+   * 
+   */
+  enum NTMessageElementEnumType {
+    /**
+     * 纯文本
+     */
+    TextElement = 1,
+    /**
+     * 图片
+     */
+    PicElement = 2,
+    /**
+     * 视频
+     */
+    VideoElement = 5,
+    /**
+     * 表情
+     */
+    FaceElement = 6,
+    /**
+     * 引用回复
+     */
+    ReplyElement = 7,
+    /**
+     * Ark消息
+     */
+    ArkElement = 10,
+    /**
+     * 商城表情
+     */
+    MarketFaceElement = 11,
+    /**
+     * 转发消息
+     */
+    MultiForwardMsgElement = 16,
+  }
+
+  /**
    * 消息元素数据
    */
   export interface NTMessageElementType {
@@ -256,10 +312,14 @@ export declare namespace NTReceiveMessageType {
      * 
      * 7 - 引用回复 replyElement
      * 
+     * 10 - ArkElement
+     * 
      * 11 - 商城表情 marketFaceElement
      * 
+     * 16 - 转发消息 multiForwardMsgElement
+     * 
      */
-    elementType: 1 | 2 | 5 | 6 | 7 | 11
+    elementType: 1 | 2 | 5 | 6 | 7 | 10 | 11 | 16
     elementId: `${number}`
     extBufForUI: "0x"
     textElement: NTReceiveMessageType.TextElementType
@@ -279,7 +339,7 @@ export declare namespace NTReceiveMessageType {
     liveGiftElement: null
     markdownElement: null
     structLongMsgElement: null
-    multiForwardMsgElement: null
+    multiForwardMsgElement: NTReceiveMessageType.MultiForwardMsgElement
     giphyElement: null
     walletElement: null
     inlineKeyboardElement: null
@@ -399,6 +459,35 @@ export declare namespace NTReceiveMessageType {
     isFlashPic: boolean
   }
 
+  /**
+   * type: 6
+   * 
+   */
+  export interface FaceElement {
+    faceIndex: number
+    faceText: string
+    faceType: number
+    imageType: number
+  }
+
+  /**
+   * type: 10
+   * 
+   */
+  export interface ArkElement {
+    bytesData: ""
+    linkInfo: null
+    subElementType: null
+  }
+
+  /**
+   * type: 16
+   */
+  export interface MultiForwardMsgElement {
+    xmlContent: string
+    resId: string
+    fileName: string
+  }
   /**
    * 商城表情消息元素
    */
