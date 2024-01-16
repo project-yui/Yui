@@ -64,6 +64,14 @@ export declare namespace NTFriend {
   export interface LikeReqType {
     doLikeUserInfo: {
       friendUid: `u_${string}`,
+      /**
+       * 70 - 好友列表
+       * 
+       * 71 - 群
+       * 
+       * 72 - 谁给我点赞
+       * 
+       */
       sourceId: number,
       doLikeCount: number,
       doLikeTollCount: number
@@ -82,7 +90,7 @@ export declare namespace NTFriend {
      */
     result: number
     errMsg: string
-    
+
     /**
      * 点赞成功数量
      */

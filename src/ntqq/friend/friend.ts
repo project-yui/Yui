@@ -65,7 +65,7 @@ export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Pr
     {
       doLikeUserInfo: {
         friendUid: userId,
-        sourceId: 72,
+        sourceId: 71,
         doLikeCount: count,
         doLikeTollCount: 0
       }
