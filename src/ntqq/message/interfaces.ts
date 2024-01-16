@@ -26,6 +26,11 @@ export declare namespace NTSendMessageType {
     msgId: `${number}`
   }
 
+  /**
+   * 消息类型
+   * 
+   * 框架 -> NTQQ
+   */
   export interface MsgElement {
     /**
      * 消息元素类型
@@ -241,61 +246,6 @@ export declare namespace NTReceiveMessageType {
   }
 
   /**
-   * 消息元素类型
-   * 
-   * 1 - 纯文本&@ textElement
-   * 
-   * 2 - 图片 picElement
-   * 
-   * 5 - 视频 videoElement
-   * 
-   * 6 - 表情 faceElement
-   * 
-   * 7 - 引用回复 replyElement
-   * 
-   * 10 - ArkElement
-   * 
-   * 11 - 商城表情 marketFaceElement
-   * 
-   * 16 - 转发消息 multiForwardMsgElement
-   * 
-   */
-  enum NTMessageElementEnumType {
-    /**
-     * 纯文本
-     */
-    TextElement = 1,
-    /**
-     * 图片
-     */
-    PicElement = 2,
-    /**
-     * 视频
-     */
-    VideoElement = 5,
-    /**
-     * 表情
-     */
-    FaceElement = 6,
-    /**
-     * 引用回复
-     */
-    ReplyElement = 7,
-    /**
-     * Ark消息
-     */
-    ArkElement = 10,
-    /**
-     * 商城表情
-     */
-    MarketFaceElement = 11,
-    /**
-     * 转发消息
-     */
-    MultiForwardMsgElement = 16,
-  }
-
-  /**
    * 消息元素数据
    */
   export interface NTMessageElementType {
@@ -481,6 +431,8 @@ export declare namespace NTReceiveMessageType {
   }
 
   /**
+   * 转发消息
+   * 
    * type: 16
    */
   export interface MultiForwardMsgElement {
