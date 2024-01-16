@@ -9,7 +9,7 @@ export declare namespace BotMessage {
    */
   export interface SendMsg extends BotActionParams {
     detail_type: 'private' | 'group'
-    group_id?: string
+    group_id?: `${number}`
     user_id?: string
     message: BotMsgBase[]
   }
@@ -70,7 +70,7 @@ export declare namespace BotMessage {
       /**
        * 转发消息的内容
        */
-      forwardList?: BotMsgBase[]
+      forwardList?: BotMsgBase[][]
     }
   }
 

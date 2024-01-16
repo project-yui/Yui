@@ -18,12 +18,51 @@ export declare namespace NTSendMessageType {
   }
 
   /**
+   * 发送转发消息
+   * 
+   * 框架 -> NTQQ
+   */
+  export interface SendForwardRequest {
+    msgInfos: ForwardMsgItem[]
+    srcContact: MsgPeer
+    dstContact: MsgPeer
+    commentElements: [],
+    msgAttributeInfos: Map<string, any>
+  }
+
+  /**
+   * 转发消息的内容
+   */
+  export interface ForwardMsgItem {
+    /**
+     * 转发内容中特定消息的msgId
+     */
+    msgId: `${number}`
+    /**
+     * 展示名
+     * 
+     * 群昵称 / {QQ昵称}
+     */
+    senderShowName: string
+  }
+
+  /**
    * 发送消息的结果
    * 
    * NTQQ -> 框架
    */
   export interface SendResponse {
     msgId: `${number}`
+  }
+
+  /**
+   * 发送消息的结果
+   * 
+   * NTQQ -> 框架
+   */
+  export interface SendNTResponse {
+    result: number
+    errMsg: string
   }
 
   /**
@@ -54,13 +93,19 @@ export declare namespace NTSendMessageType {
 
   interface MsgPeer {
     /**
-     * 1 - ?
+     * 1 - 好友
      * 
-     * 2 - 发送给群
+     * 2 - 群
      * 
      */
     chatType: number
-    peerUid: string
+
+    /**
+     * 群 - 群号
+     * 好友 - 好友的UID
+     * 频道 - ？
+     */
+    peerUid: `${number}` | `u_${string}`
     guildId: string
   }
 
@@ -509,5 +554,16 @@ export declare namespace NTReceiveMessageType {
     replyAbsElemType: 1
     textElemContent: string
     faceElem: null
+  }
+}
+
+/**
+ * 消息添加
+ * 
+ * 消息发送之后，NTBacken会向NTUI层下发新发送的消息
+ */
+export interface AddMsgType {
+  msgRecord: {
+    msgId: `${number}`
   }
 }

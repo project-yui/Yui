@@ -2,7 +2,7 @@ import { BotMessage } from "../../onebot/common/interfaces";
 import { NTSendMessage } from "../../ntqq/message/message";
 import { NTReceiveMessageType, NTSendMessageType } from "../../ntqq/message/interfaces";
 
-export const sendMessageToFriend = async (targetId: string, msg: BotMessage.BotMsgBase[]) => {
+export const sendMessageToFriend = async (targetId: `u_${string}`, msg: BotMessage.BotMsgBase[]) => {
 
   const elements: NTSendMessageType.MsgElement[] = []
   for (const m of msg) {
