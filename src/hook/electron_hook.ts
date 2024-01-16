@@ -1,4 +1,4 @@
-import { ipcMain, BrowserWindow, app } from 'electron'
+import { ipcMain, BrowserWindow, protocol, app } from 'electron'
 import { useLogger } from '../common/log';
 import { useStore } from '../store/store';
 import { readFileSync, writeFileSync } from 'fs';
@@ -54,11 +54,17 @@ const hookLoadUrl = () => {
   const _loadURL = BrowserWindow.prototype.loadURL;
   BrowserWindow.prototype.loadURL = function(...args){
     // this.setMinimumSize(300, 300);
-    // log.info('=====loadURL', ...args)
-    // setTimeout(() => {
-    //   this.webContents.openDevTools()
-    //   this.webContents.toggleDevTools();
-    // }, 3000)
+    log.info('=====loadURL', ...args)
+
+    this.webContents.session.webRequest
+    .onBeforeRequest({
+      urls: ['*://*/*']
+    }, (details, callback) => {
+      log.info('request to -> ', details.url)
+      // details.requestHeaders['User-Agent'] = 'MyAgent'
+      callback({ })
+    })
+
     this.webContents.openDevTools()
     // const path = require('path');
     // const extPath = path.join(path.dirname(app.getAppPath()), "extensions");

@@ -57,4 +57,35 @@ export declare namespace NTFriend {
     svipFlag: boolean
     vipLevel: number
   }
+
+  /**
+   * 点赞请求类型
+   */
+  export interface LikeReqType {
+    doLikeUserInfo: {
+      friendUid: `u_${string}`,
+      sourceId: number,
+      doLikeCount: number,
+      doLikeTollCount: number
+    }
+  }
+
+  /**
+   * 点赞结果类型
+   */
+  export interface LikeRespType {
+    /**
+     * 结果
+     * 
+     * 0 - 成功
+     * 
+     */
+    result: number
+    errMsg: string
+    
+    /**
+     * 点赞成功数量
+     */
+    succCounts: number
+  }
 }

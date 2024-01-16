@@ -1,3 +1,4 @@
+import { BotActionParams } from "../interfaces"
 
 /**
  * 获取用户信息动作的数据
@@ -14,4 +15,9 @@ export interface UserInfoResp {
   user_name: string
   user_displayname: string
   user_remark: string
+}
+
+export interface LikeUserReq extends BotActionParams {
+  user_id: `u_${string}`
+  count: number
 }

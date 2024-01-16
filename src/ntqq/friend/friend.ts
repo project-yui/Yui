@@ -2,9 +2,13 @@ import { randomUUID } from "crypto"
 import { useStore } from "../../store/store"
 import { sendEvent } from "../event/base"
 import { NTFriend } from "./interfaces"
+import { useLogger } from "../../common/log"
+import { IpcUpInfo } from "../../store/interfaces"
 
 
 const { registerEventListener } = useStore()
+const log = useLogger('Friend')
+
 /**
  * 获取好友列表
  * 
@@ -38,4 +42,37 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
     }, ['getBuddyList', null, null])
     
   })
+}
+
+/**
+ * 为好友点赞
+ * 
+ * @param userId 好友Id
+ * @param count 点赞次数
+ * @returns 好友列表
+ */
+export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Promise<NTFriend.LikeRespType> => {
+  log.info('send like:', userId, count)
+  const channel = 'IPC_UP_2'
+  const uuid = randomUUID()
+  const reqInfo: IpcUpInfo = {
+    type: 'request',
+    callbackId: uuid,
+    eventName: 'ns-ntApi-2'
+  }
+  const reqData: [string, NTFriend.LikeReqType, any] = [
+    "nodeIKernelMsgService/sendMsg",
+    {
+      doLikeUserInfo: {
+        friendUid: userId,
+        sourceId: 72,
+        doLikeCount: count,
+        doLikeTollCount: 0
+      }
+    },
+    null
+  ]
+  const likeResult = await sendEvent<NTFriend.LikeReqType, NTFriend.LikeRespType>(channel, reqInfo, reqData)
+  
+  return likeResult.data
 }
