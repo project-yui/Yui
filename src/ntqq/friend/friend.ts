@@ -7,7 +7,7 @@ import { IpcUpInfo } from "../../store/interfaces"
 
 
 const { registerEventListener } = useStore()
-const log = useLogger('Friend')
+const log = useLogger('NTQQ/Friend')
 
 /**
  * 获取好友列表
@@ -61,7 +61,7 @@ export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Pr
     eventName: 'ns-ntApi-2'
   }
   const reqData: [string, NTFriend.LikeReqType, any] = [
-    "nodeIKernelMsgService/sendMsg",
+    "nodeIKernelProfileLikeService/setBuddyProfileLike",
     {
       doLikeUserInfo: {
         friendUid: userId,
@@ -74,5 +74,6 @@ export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Pr
   ]
   const likeResult = await sendEvent<NTFriend.LikeReqType, NTFriend.LikeRespType>(channel, reqInfo, reqData)
   
+  log.info('send like result:', likeResult)
   return likeResult.data
 }

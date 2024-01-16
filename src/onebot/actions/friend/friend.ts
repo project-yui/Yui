@@ -2,8 +2,10 @@ import { useStore } from "../../../store/store"
 import { BotActionResponse } from "../interfaces"
 import { NTGetFriendList, NTSendLikeFriend } from "../../../ntqq/friend/friend"
 import { LikeUserReq } from "./interfaces"
+import { useLogger } from "../../../common/log"
 
 const { registerActionHandle } = useStore()
+const log = useLogger('Action/Friend')
 
 /**
  * 获取好友列表
@@ -31,6 +33,7 @@ const getFriendList = async (p: {}): Promise<BotActionResponse<any>> => {
  * @returns 点赞结果
  */
 const sendLikeFriend = async (p: LikeUserReq): Promise<BotActionResponse<any>> => {
+  log.info('sendLikeFriend')
   const ret: BotActionResponse = {
     id: "",
     status: "ok",
@@ -39,6 +42,7 @@ const sendLikeFriend = async (p: LikeUserReq): Promise<BotActionResponse<any>> =
     message: ""
   }
   const r = await NTSendLikeFriend(p.user_id, p.count)
+  log.info('sendLikeFriend end')
   // TODO: 错误码处理
   ret.data = r
   return ret

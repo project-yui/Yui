@@ -57,7 +57,9 @@ export const startWebsocketServer = () => {
       if (handle != undefined) {
         let resp: BotActionResponse
         try {
+          log.info('start handle for ', msg.action)
           resp = await handle(msg.params)
+          log.info('end handle for ', msg.action)
           resp.id = msg.id
         }
         catch (e) {
@@ -70,6 +72,7 @@ export const startWebsocketServer = () => {
             message: 'Internal Handler Error'
           }
         }
+        log.info(`reply ${resp.id}:`, JSON.stringify(resp))
         ws.send(JSON.stringify(resp));
       }
       else {
