@@ -162,17 +162,73 @@ const removeEventListener = (eventFullName: EventFullNameType, listener: NTEvent
 
 export const useStore = () => {
   return {
+    /**
+     * GUI通过通道发送消息给electron
+     * Electron收到消息触发listener
+     * 
+     * 因此，可以跳过GUI直接触发特定channel的listener
+     * 
+     * @param channel 通道
+     * @param listener 监听器
+     */
     addIpcMainSend,
+    /**
+     * 获取指定通道的触发方法
+     * 
+     * @param channel 通道
+     * @returns 触发方法
+     */
     getIpcMainSend,
     
+    /**
+     * 注册通道监听器（唯一）
+     * 
+     * 主进程 -> 渲染进程
+     * 
+     * @param channel 通道
+     * @param listener 监听器
+     */
     registerIpcDownHandle,
+    /**
+     * 获取通道的监听器
+     * @param channel 通道
+     * @returns 监听器
+     */
     getIpcDownHandle,
     
+    /**
+     * 注册动作处理函数
+     * @param name 动作名称
+     * @param handle 动作处理函数
+     */
     registerActionHandle,
+    /**
+     * 获取动作处理函数
+     * @param action 动作名称
+     * @returns 处理函数
+     */
     getActionHandle,
 
+    /**
+     * 获取事件的监听器
+     * @param eventFullName 事件名称 格式: `${channel}_${eventName}_${cmdName}`
+     * @returns 监听函数列表
+     */
     getEventListenerList,
+    /**
+     * 添加事件的监听器
+     * @param eventFullName 事件名称
+     * @param type 事件类型 always长期 | once一次性
+     * @param listener 事件监听器
+     */
     registerEventListener,
+    /**
+     * 移除事件的监听器
+     * 
+     * @param eventFullName 事件名称
+     * @param type 事件类型 always长期 | once一次性
+     * @param listener 事件监听器
+     */
     removeEventListener,
   }
 }
