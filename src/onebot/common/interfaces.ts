@@ -29,15 +29,25 @@ export declare namespace BotMessage {
   export interface BotMsgBase {
     /**
      * text - 纯文本的内容
+     * 
      * mention - At消息
+     * 
      * mention_all - At所有成员
+     * 
      * image - 图片（未实现）
+     * 
      * vioce - 语音消息（未实现）
+     * 
      * viedo - 视频消息（未实现）
+     * 
      * file - 文件消息（未实现）
+     * 
      * location - 位置消息（未实现）
+     * 
      * reply - 引用回复
+     * 
      * multiforward - 转发消息（未实现）
+     * 
      */
     type: 'text' | 'mention' | 'mention_all' | 'image' | 'vioce' | 'audio' | 'video' | 'file' | 'location' | 'reply' | 'multiforward'
     data: {
@@ -70,7 +80,7 @@ export declare namespace BotMessage {
       /**
        * 转发消息的内容
        */
-      forwardList?: BotMsgBase[][]
+      forwardList?: BotMsgBase[][] | `${number}`[]
     }
   }
 

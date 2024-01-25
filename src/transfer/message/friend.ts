@@ -6,12 +6,12 @@ export const sendMessageToFriend = async (targetId: `u_${string}`, msg: BotMessa
 
   const elements: NTSendMessageType.MsgElement[] = []
   for (const m of msg) {
-    if (m.type === 'text') {
+    if (m.type === 'text' && m.data.text) {
       elements.push({
         elementType: 1,
         elementId: "",
         textElement: {
-          content: '',
+          content: m.data.text,
           atType: 0,
           atUid: "",
           atTinyId: "",
@@ -21,13 +21,13 @@ export const sendMessageToFriend = async (targetId: `u_${string}`, msg: BotMessa
     }
   }
   return await NTSendMessage({
-    "msgId": "0",
-    "peer": {
-      "chatType": 2,
-      "peerUid": `${targetId}`,
-      "guildId": ""
+    msgId: "0",
+    peer: {
+      chatType: 1,
+      peerUid: targetId,
+      guildId: ""
     },
-    "msgElements": elements,
-    "msgAttributeInfos": new Map()
+    msgElements: elements,
+    msgAttributeInfos: new Map()
   })
 }

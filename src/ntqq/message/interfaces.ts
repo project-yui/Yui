@@ -203,12 +203,22 @@ export declare namespace NTReceiveMessageType {
     cntSeq: `${number}`
     /**
      * 1 - 好友消息
+     * 
      * 2 - 群聊消息
      * 
      */
     chatType: 1 | 2
-    msgType: 2
-    subMsgType: 1
+    /**
+     * 2 - 普通消息 ?
+     * 5 - 撤回消息 ?
+     */
+    msgType: 2 | 5
+    /**
+     * 1 - ?
+     * 
+     * 4 - ?
+     */
+    subMsgType: 1 | 4
     sendType: 0
     senderUid: `u_${string}`
     /**
@@ -306,6 +316,8 @@ export declare namespace NTReceiveMessageType {
      * 6 - 表情 faceElement
      * 
      * 7 - 引用回复 replyElement
+     * 
+     * 8 - 提示消息
      * 
      * 10 - ArkElement
      * 

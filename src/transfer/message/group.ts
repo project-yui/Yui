@@ -21,21 +21,21 @@ export const sendMessageToGroup = async (targetId: `${number}`, msg: BotMessage.
   })
 }
 
-export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: NTSendMessageType.ForwardMsgItem[]) => {
-  log.info(`sendMessage to ${targetId} with:`, JSON.stringify(msg))
+export const sendForwardMessageToGroup = async (srcId: `u_${string}`,targetId: `${number}`, msg: NTSendMessageType.ForwardMsgItem[]) => {
+  log.info(`sendForwardMessage to ${targetId} with:`, JSON.stringify(msg))
   return await NTSendForwardMessage({
     msgInfos: msg,
     srcContact: {
-      "chatType": 2,
-      "peerUid": `${targetId}`,
-      "guildId": ""
+      chatType: 1,
+      peerUid: srcId,
+      guildId: ""
     },
     dstContact: {
-      "chatType": 2,
-      "peerUid": `${targetId}`,
-      "guildId": ""
+      chatType: 2,
+      peerUid: `${targetId}`,
+      guildId: ""
     },
     commentElements: [],
-    "msgAttributeInfos": new Map()
+    msgAttributeInfos: new Map()
   })
 }
