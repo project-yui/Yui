@@ -88,7 +88,7 @@ export const startWebsocketServer = () => {
       }
     });
     ws.on('close', (code, reason) => {
-      log.info('connection close.', code, reason)
+      log.info('connection close.', code, reason.toString())
       removeSendHandle(eventHandle)
     })
   });

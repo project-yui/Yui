@@ -250,7 +250,7 @@ export declare namespace NTReceiveMessageType {
     /**
      * 引用回复会用到
      */
-    records: []
+    records: NTMessageItemType[]
     emojiLikesList: []
     commentCnt: `${number}`
     directMsgFlag: 0
@@ -423,7 +423,12 @@ export declare namespace NTReceiveMessageType {
    * 图片消息元素
    */
   export interface PicElementType {
-    picSubType: 0
+    /**
+     * 0 - 普通图片
+     * 
+     * 1 - 表情图片
+     */
+    picSubType: 0 | 1
     fileName: `{${string}}.${string}`
     fileSize: `${number}`
     picWidth: number
@@ -460,8 +465,16 @@ export declare namespace NTReceiveMessageType {
       peerUid: `${number}`
       bytesReserveInfo: string
     },
-    originImageMd5: string,
-    originImageUrl: string,
+    originImageMd5: string
+
+    /**
+     * 图片网络地址
+     * 
+     * 没有host, https://gchat.qpic.cn/
+     * 
+     * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
+     */
+    originImageUrl: string
     import_rich_media_context: null,
     isFlashPic: boolean
   }

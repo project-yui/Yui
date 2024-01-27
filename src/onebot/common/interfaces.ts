@@ -57,6 +57,11 @@ export declare namespace BotMessage {
       text?: string
 
       /**
+       * 图片
+       */
+      pic?: PicElement
+
+      /**
        * 图像等的文件ID
        * 
        * 待定
@@ -126,6 +131,56 @@ export declare namespace BotMessage {
     uid: string
     name?: string
   }
+
+  /**
+   * 图片
+   * 
+   * bot -> framework
+   */
+  interface PicElement {
+    /**
+     * simple - 普通图片
+     * 
+     * emoji - 表情图片
+     * 
+     */
+    type: 'simple' | 'emoji'
+
+    /**
+     * 图片宽度
+     */
+    width: number
+
+    /**
+     * 图片高度
+     */
+    height: number
+
+    /**
+     * 图片大小
+     */
+    size: number
+
+    /**
+     * 图片MD5
+     */
+    md5: string
+
+    /**
+     * 文件uuid
+     */
+    uuid: `${number}`
+
+    /**
+     * 图片网络地址
+     * 
+     * 没有host, https://gchat.qpic.cn/
+     * 
+     * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
+     */
+    url: string
+  }
+
 
   /**
    * 位置消息

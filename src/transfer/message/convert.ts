@@ -28,10 +28,19 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
       case 2:
         // 图片
         {
+          const p = ele.picElement
           const pic: BotMessage.BotMsgBase = {
             type: 'image',
             data: {
-              file_id: ele.picElement.fileUuid
+              pic: {
+                type: p.picSubType === 0 ? 'simple' : 'emoji',
+                width: p.picWidth,
+                height: p.picHeight,
+                size: parseInt(p.fileSize),
+                md5: p.md5HexStr,
+                uuid: p.fileUuid,
+                url: p.originImageUrl,
+              }
             }
           }
           result.push(pic)

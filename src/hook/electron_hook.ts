@@ -27,7 +27,6 @@ export const getHookedBrowserWindow = () => {
         // log.info('options before:', options)
         if (options && options.webPreferences) {
           options.webPreferences.devTools = true
-          // options.webPreferences.preload = "D:/Work/QQ/QQ9.9.3.17412_x64/Files/resources/app/versions/9.9.3-17412/plugin-preloads.js"
         }
         // log.info('options after:', options)
       }catch(e) {
@@ -54,24 +53,25 @@ const hookLoadUrl = () => {
   const _loadURL = BrowserWindow.prototype.loadURL;
   BrowserWindow.prototype.loadURL = function(...args){
     // this.setMinimumSize(300, 300);
-    log.info('=====loadURL', ...args)
+    // log.info('=====loadURL', ...args)
 
-    this.webContents.session.webRequest
-    .onBeforeRequest({
-      urls: ['*://*/*']
-    }, (details, callback) => {
-      log.info('request to -> ', details.url)
-      // details.requestHeaders['User-Agent'] = 'MyAgent'
-      callback({ })
-    })
+    // this.webContents.session.webRequest
+    // .onBeforeRequest({
+    //   urls: ['*://*/*']
+    // }, (details, callback) => {
+    //   // log.info('request to -> ', details.url)
+    //   // details.requestHeaders['User-Agent'] = 'MyAgent'
+    //   callback({ })
+    // })
 
     this.webContents.openDevTools()
     // const path = require('path');
     // const extPath = path.join(path.dirname(app.getAppPath()), "extensions");
     // log.info('----extPath----', extPath)
+    // electron 向gui发送消息
     const _send = this.webContents.send
     this.webContents.send = function(channel, ...a) {
-      
+
       if (channel.includes('IPC_DOWN')) {
         // if(!tempEventStore[channel]) tempEventStore[channel] = {}
         const info = a[0]
@@ -161,7 +161,7 @@ const hookIpcMain = () => {
   ipcMain.handle = function(...args) {
     // log.info(`\nipcMain handle register from ${args[0]}:`, args)
     return (ipcMain as any)._handle(args[0], function(event: Electron.IpcMainInvokeEvent, ...a: any[]) {
-      // log.info('\nipcMain handle emit, arg length:', a.length)
+      // log.info('ipcMain handle emit, arg length:', a.length)
       // log.info('args:', ...a)
       args[1](event, ...a)
     })

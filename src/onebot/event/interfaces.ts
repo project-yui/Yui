@@ -41,4 +41,5 @@ export interface MessageData {
   sender_id: number
   sender_member_name: string
   elements: BotMessage.BotMsgBase[]
+  records: MessageData[]
 }

@@ -36,6 +36,7 @@ export const listenMessage = () => {
           sender_uid: msg.senderUid,
           sender_member_name: msg.sendMemberName,
           elements: [],
+          records: [],
         }
       }
       switch (msg.chatType) {
@@ -51,6 +52,16 @@ export const listenMessage = () => {
           break
       }
       ret.data.elements = convertNTMessage2BotMessage(msg.elements)
+      ret.data.records = msg.records.map(e => ({
+        message_id: e.msgId,
+        message_seq: e.msgSeq,
+        group_id: 0,
+        sender_id: parseInt(senderUserInfo.info.uin),
+        sender_uid: e.senderUid,
+        sender_member_name: e.sendMemberName,
+        elements: convertNTMessage2BotMessage(e.elements),
+        records: [],
+      }))
       sendMessage(JSON.stringify(ret))
     }
   })

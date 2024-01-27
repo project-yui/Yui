@@ -16,7 +16,7 @@ const _console = {
   trace: console.trace,
 }
 const Styles = ['color: black;', 'color: green;', 'color: orange;', 'color: red;']
-const Methods = ['log', 'info', 'warn', 'error'] as const
+const Methods = ['trace', 'log', 'info', 'warn', 'error'] as const
 /**
  * 日志的配置类型
  */
@@ -35,7 +35,7 @@ if (!isLogEnabled) {
   _console.info('================================日志打印已关闭！=======================================')
 }
 
-const CurrentLogLevel: LogLevel = LogLevel.Info
+const CurrentLogLevel: LogLevel = LogLevel.Trace
 
 /**
  * 日志打印工具，统一管理日志输出&上报
