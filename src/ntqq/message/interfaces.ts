@@ -238,6 +238,9 @@ export declare namespace NTReceiveMessageType {
      * 用户的群昵称
      */
     sendMemberName: string
+    /**
+     * 用户QQ昵称
+     */
     sendNickName: string
     guildName: string
     channelName: string
@@ -317,7 +320,7 @@ export declare namespace NTReceiveMessageType {
      * 
      * 7 - 引用回复 replyElement
      * 
-     * 8 - 提示消息
+     * 8 - 提示消息 [撤回]
      * 
      * 10 - ArkElement
      * 
@@ -326,7 +329,7 @@ export declare namespace NTReceiveMessageType {
      * 16 - 转发消息 multiForwardMsgElement
      * 
      */
-    elementType: 1 | 2 | 5 | 6 | 7 | 10 | 11 | 16
+    elementType: 1 | 2 | 5 | 6 | 7 | 8 | 10 | 11 | 16
     elementId: `${number}`
     extBufForUI: "0x"
     textElement: NTReceiveMessageType.TextElementType
@@ -340,7 +343,7 @@ export declare namespace NTReceiveMessageType {
     picElement: NTReceiveMessageType.PicElementType
     pttElement: null
     videoElement: null
-    grayTipElement: null
+    grayTipElement: NTReceiveMessageType.GrayTipElementType
     arkElement: null
     fileElement: null
     liveGiftElement: null
@@ -479,6 +482,20 @@ export declare namespace NTReceiveMessageType {
     isFlashPic: boolean
   }
 
+  /**
+   * 提示消息元素
+   */
+  export interface GrayTipElementType {
+    /**
+     * 提示类型
+     * 
+     * 1 - 撤回提示
+     */
+    subElementType: 1
+    revokeElement?: {
+      operatorTinyId: `${number}`
+    }
+  }
   /**
    * type: 6
    * 

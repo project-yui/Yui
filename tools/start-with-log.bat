@@ -1,1 +1,1 @@
-cmd.exe /C ".\ntqq\QQ.exe > output.log 2>&1"
+cmd.exe /C ".\ntqq\QQ.exe > .\tmp\output.log 2>&1"

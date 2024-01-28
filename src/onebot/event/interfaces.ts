@@ -40,6 +40,26 @@ export interface MessageData {
   sender_uid: string
   sender_id: number
   sender_member_name: string
+  time: number
   elements: BotMessage.BotMsgBase[]
   records: MessageData[]
+}
+
+/**
+ * 撤回消息
+ * 
+ * 对给对面ws的
+ */
+export interface RecallMessageData {
+  message_id: string
+  message_seq: string
+  group_id: number
+  sender_uid: string
+  sender_id: number
+  sender_member_name: string
+
+  /**
+   * 撤回消息的时间
+   */
+  time: number
 }

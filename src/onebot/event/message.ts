@@ -3,17 +3,16 @@ import { NTReceiveMessageType } from "../../ntqq/message/interfaces"
 import { useServer } from "../../server/server"
 import { useStore } from "../../store/store"
 import { getBotAccount, getUserInfoByUid } from "../common/user"
-import { EventDataType, MessageData } from "./interfaces"
+import { EventDataType, MessageData, RecallMessageData } from "./interfaces"
 
 const { registerEventListener } = useStore()
 const { sendMessage } = useServer()
 
 /**
- * 监听新消息事件
+ * 监听新消息
  * 
- * 每收到一条新消息就会触发事件
  */
-export const listenMessage = () => {
+const onRecvMsg = () => {
   registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
     const { msgList } = payload
     const botAccount = await getBotAccount()
@@ -35,6 +34,7 @@ export const listenMessage = () => {
           sender_id: parseInt(senderUserInfo.info.uin),
           sender_uid: msg.senderUid,
           sender_member_name: msg.sendMemberName,
+          time: parseInt(msg.msgTime),
           elements: [],
           records: [],
         }
@@ -59,10 +59,69 @@ export const listenMessage = () => {
         sender_id: parseInt(senderUserInfo.info.uin),
         sender_uid: e.senderUid,
         sender_member_name: e.sendMemberName,
+        time: parseInt(e.msgTime),
         elements: convertNTMessage2BotMessage(e.elements),
         records: [],
       }))
       sendMessage(JSON.stringify(ret))
     }
   })
+}
+
+/**
+ * 监听消息更新
+ */
+const onUpdateMsg = () => {
+  registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
+    const { msgList } = payload
+    const botAccount = await getBotAccount()
+    for (const msg of msgList) {
+      const senderUserInfo = await getUserInfoByUid(msg.senderUid)
+      // 判断一下撤回消息
+      const rMsg = msg.elements.find(e => e.elementType === 8 && e.grayTipElement.subElementType === 1)
+      if (rMsg) {
+        // 是撤回消息
+        const ret: EventDataType<RecallMessageData> = {
+          self: {
+            id: parseInt(botAccount.uin),
+            uid: botAccount.uid
+          },
+          time: parseInt(msg.msgTime),
+          type: "notice",
+          detail_type: "group_message_delete",
+          sub_type: "recall",
+          data: {
+            message_id: msg.msgId,
+            message_seq: msg.msgSeq,
+            group_id: 0,
+            sender_id: parseInt(senderUserInfo.info.uin),
+            sender_uid: msg.senderUid,
+            sender_member_name: msg.sendMemberName || msg.sendNickName,
+            time: parseInt(msg.recallTime),
+          }
+        }
+        switch (msg.chatType) {
+          case 1:
+            // 好友消息
+            ret.detail_type = 'private_message_delete'
+            break
+          case 2:
+            // 群聊消息
+            ret.detail_type = 'group_message_delete'
+            ret.data.group_id = parseInt(msg.peerUid)
+            break
+        }
+        sendMessage(JSON.stringify(ret))
+      }
+    }
+  })
+}
+/**
+ * 监听消息事件
+ * 
+ * 每收到一条新消息就会触发事件
+ */
+export const listenMessage = () => {
+  onRecvMsg()
+  onUpdateMsg()
 }
