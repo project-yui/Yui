@@ -1,12 +1,12 @@
-import { BotMessage } from "../../onebot/common/interfaces"
 import { NTSendForwardMessage, NTSendMessage } from "../../ntqq/message/message"
 import { NTSendMessageType } from "../../ntqq/message/interfaces"
 import { useLogger } from "../../common/log"
 import { convertBotMessage2NTMessage } from "./convert"
+import { BotMessage } from "../../onebot/common/message"
 
 const log = useLogger('Group')
 
-export const sendMessageToGroup = async (targetId: `${number}`, msg: BotMessage.BotMsgBase[]) => {
+export const sendMessageToGroup = async (targetId: `${number}`, msg: BotMessage.SendElement[]) => {
   log.info(`sendMessage to ${targetId} with:`, JSON.stringify(msg))
   const elements: NTSendMessageType.MsgElement[] = convertBotMessage2NTMessage(msg)
   return await NTSendMessage({

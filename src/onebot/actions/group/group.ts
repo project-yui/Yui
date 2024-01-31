@@ -2,7 +2,7 @@ import { useLogger } from "../../../common/log"
 import { useStore } from "../../../store/store"
 import { sendMessageToFriend } from "../../../transfer/message/friend"
 import { sendForwardMessageToGroup, sendMessageToGroup } from "../../../transfer/message/group"
-import { BotMessage } from "../../common/interfaces"
+import { BotMessage } from "../../common/message"
 import { getBotAccount } from "../../common/user"
 import { BotActionResponse } from "../interfaces"
 

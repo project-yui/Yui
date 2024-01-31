@@ -1,4 +1,4 @@
-import { BotMessage } from "../common/interfaces"
+import { BotMessage } from "../common/message"
 
 /**
  * 事件数据
@@ -41,7 +41,7 @@ export interface MessageData {
   sender_id: number
   sender_member_name: string
   time: number
-  elements: BotMessage.BotMsgBase[]
+  elements: BotMessage.SendElement[]
   records: MessageData[]
 }
 

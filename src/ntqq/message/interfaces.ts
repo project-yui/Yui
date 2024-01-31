@@ -87,8 +87,26 @@ export declare namespace NTSendMessageType {
      */
     elementType: 1 | 2 | 6 | 7 | 11
     elementId: string
+
+    /**
+     * 纯文本元素
+     */
     textElement?: TextElement
+
+    /**
+     * 图片元素
+     */
+    picElement?: PicElement
+
+    /**
+     * 引用回复元素
+     */
     replyElement?: ReplyElement
+
+    /**
+     * 图片元素的额外参数
+     */
+    extBufForUI?: string
   }
 
   interface MsgPeer {
@@ -170,6 +188,33 @@ export declare namespace NTSendMessageType {
      */
     sourceMsgIsIncPic: boolean,
     sourceMsgExpired: boolean,
+  }
+
+  /**
+   * 图片元素
+   */
+  interface PicElement {
+    md5HexStr: string
+    picWidth: number
+    picHeight: number
+    fileName: string
+    fileSize: `${number}`
+    original: boolean
+
+    /**
+     * 图片类型
+     * 
+     * 0 - 普通图片
+     * 
+     * 1 - 表情
+     */
+    picSubType: 0
+    sourcePath: string
+    picType: 1000
+    fileUuid: ''
+    fileSubId: ''
+    thumbFileSize: 0
+    summary: string
   }
 
 }

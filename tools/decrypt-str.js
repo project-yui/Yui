@@ -13,42 +13,17 @@
 const decrypt = (encrypted) => {
   const data = encrypted.split('')
   for (let i = 0; i < data.length; i++) {
-    data[i] = String.fromCharCode(data[i].charCodeAt(0) ^ 0x52)
+    data[i] = String.fromCharCode(data[i].charCodeAt(0) ^ 0x1B)
   }
   return data.join('')
 }
-{
-  const str = ">3'<1:7 |8!=<" // launcher.json
+const strList = [
+  'wznuxs~i5qhtu',
+  'zxpz|~5qhtu',
+  'kkDwznuxs~iG',
+]
+for (const str of strList){
   console.log('encrypt str:', str)
   console.log('decrypt:', decrypt(str))
-}
-console.log("\n=====\n")
-{
-  const str = "\"319357|8!=<" // package.json
-  console.log('encrypt str:', str)
-  console.log('decrypt:', decrypt(str))
-}
-console.log("\n=====\n")
-{
-  const str = ";<67*|8!" // index.js
-  console.log('encrypt str:', str)
-  console.log('decrypt:', decrypt(str))
-}
-console.log("\n=====\n")
-{
-  const str = ">3'<1:7 |8!" // launcher.js
-  console.log('encrypt str:', str)
-  console.log('decrypt:', decrypt(str))
-}
-console.log("\n=====\n")
-{
-  const str = ">3'<1:7 |<=67" // launcher.node
-  console.log('encrypt str:', str)
-  console.log('decrypt:', decrypt(str))
-}
-console.log("\n=====\n")
-{
-  const str = "7  = r1=67r$`h" // error code v2:
-  console.log('encrypt str:', str)
-  console.log('decrypt:', decrypt(str))
+  console.log('\n')
 }

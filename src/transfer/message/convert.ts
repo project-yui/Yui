@@ -1,6 +1,6 @@
 import { NTReceiveMessageType } from "../../ntqq/message/interfaces";
 import { NTSendMessageType } from "../../ntqq/message/interfaces";
-import { BotMessage } from "../../onebot/common/interfaces";
+import { BotMessage } from "../../onebot/common/message";
 
 /**
  * NTQQ的消息转bot消息
@@ -8,14 +8,14 @@ import { BotMessage } from "../../onebot/common/interfaces";
  * @param elems 来自NTQQ的消息
  * @returns 给bot的消息
  */
-export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.BotMsgBase[] => {
-  const result: BotMessage.BotMsgBase[] = []
+export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.ReceiveElement[] => {
+  const result: BotMessage.ReceiveElement[] = []
   for (const ele of elems) {
     switch (ele.elementType) {
       case 1:
         // 纯文本
         {
-          const text: BotMessage.BotMsgBase = {
+          const text: BotMessage.ReceiveElement = {
             type: 'text',
             data: {
               text: ele.textElement.content
@@ -29,7 +29,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
         // 图片
         {
           const p = ele.picElement
-          const pic: BotMessage.BotMsgBase = {
+          const pic: BotMessage.ReceiveElement = {
             type: 'image',
             data: {
               pic: {
@@ -55,7 +55,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
       case 7:
         // 引用回复
         {
-          const reply: BotMessage.BotMsgBase = {
+          const reply: BotMessage.ReceiveElement = {
             type: 'reply',
             data: {
               reply: {
@@ -86,7 +86,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
  * @param elems 来自bot的消息
  * @returns 给NTQQ的消息
  */
-export const convertBotMessage2NTMessage = (elems: BotMessage.BotMsgBase[]): NTSendMessageType.MsgElement[] => {
+export const convertBotMessage2NTMessage = (elems: BotMessage.SendElement[]): NTSendMessageType.MsgElement[] => {
   const result: NTSendMessageType.MsgElement[] = []
   for (const ele of elems) {
     const r = convertBotMessage2NTMessageSingle(ele)
@@ -103,7 +103,7 @@ export const convertBotMessage2NTMessage = (elems: BotMessage.BotMsgBase[]): NTS
  * @param msg 来自bot的消息
  * @returns 给NTQQ的消息
  */
-export const convertBotMessage2NTMessageSingle = (msg: BotMessage.BotMsgBase): NTSendMessageType.MsgElement | undefined => {
+export const convertBotMessage2NTMessageSingle = (msg: BotMessage.SendElement): NTSendMessageType.MsgElement | undefined => {
 
   switch (msg.type) {
     case 'text':
@@ -147,9 +147,26 @@ export const convertBotMessage2NTMessageSingle = (msg: BotMessage.BotMsgBase): N
     case 'image':
       // TODO: 图片
       {
+        if (!msg.data.pic) break
         const pic: NTSendMessageType.MsgElement = {
           elementType: 2,
           elementId: "",
+          extBufForUI: '',
+          picElement: {
+            md5HexStr: "f759efe0f975b7aa5ddc27386d71d4f1",
+            picWidth: 625,
+            picHeight: 608,
+            fileName: "f759efe0f975b7aa5ddc27386d71d4f1.jpg",
+            fileSize: "187249",
+            original: true,
+            picSubType: 0,
+            sourcePath: "D:\\Users\\jiyec\\Documents\\Tencent Files\\335438501\\nt_qq\\nt_data\\Pic\\2024-01\\Ori\\f759efe0f975b7aa5ddc27386d71d4f1.jpg",
+            picType: 1000,
+            fileUuid: "",
+            fileSubId: "",
+            thumbFileSize: 0,
+            summary: ""
+          },
         }
         return pic
       }
