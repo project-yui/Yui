@@ -223,38 +223,10 @@ declare namespace BotMessageSendElements {
     type: 'simple' | 'emoji'
 
     /**
-     * 图片宽度
-     */
-    width: number
-
-    /**
-     * 图片高度
-     */
-    height: number
-
-    /**
-     * 图片大小
-     */
-    size: number
-
-    /**
-     * 图片MD5
-     */
-    md5: string
-
-    /**
-     * 文件uuid
-     */
-    uuid: `${number}`
-
-    /**
-     * 图片网络地址
+     * 图片路径
      * 
-     * 没有host, https://gchat.qpic.cn/
-     * 
-     * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
      */
-    url: string
+    path: string
   }
 
 

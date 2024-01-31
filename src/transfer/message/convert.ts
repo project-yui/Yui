@@ -148,6 +148,7 @@ export const convertBotMessage2NTMessageSingle = (msg: BotMessage.SendElement): 
       // TODO: 图片
       {
         if (!msg.data.pic) break
+        // TODO: 获取图片基本信息
         const pic: NTSendMessageType.MsgElement = {
           elementType: 2,
           elementId: "",

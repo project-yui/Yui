@@ -31,24 +31,44 @@ export interface BotUserInfo {
 }
 
 /**
- * 对给对面ws的
+ * 回给对面ws的
  */
 export interface MessageData {
   message_id: string
   message_seq: string
   group_id: number
-  sender_uid: string
+
+  /**
+   * 发送者uid
+   */
+  sender_uid: `u_${string}`
+
+  /**
+   * 发送者QQ
+   */
   sender_id: number
   sender_member_name: string
+
+  /**
+   * 消息的发送时间
+   */
   time: number
-  elements: BotMessage.SendElement[]
+
+  /**
+   * 消息元素
+   */
+  elements: BotMessage.ReceiveElement[]
+
+  /**
+   * 被引用的消息
+   */
   records: MessageData[]
 }
 
 /**
  * 撤回消息
  * 
- * 对给对面ws的
+ * 回给对面ws的
  */
 export interface RecallMessageData {
   message_id: string
