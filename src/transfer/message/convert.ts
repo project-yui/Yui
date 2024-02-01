@@ -41,6 +41,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
                 md5: p.md5HexStr,
                 uuid: p.fileUuid,
                 url: p.originImageUrl,
+                path: p.sourcePath,
               }
             }
           }
@@ -146,12 +147,11 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
       }
       break;
     case 'image':
-      // TODO: 图片
       {
         if (!msg.data.pic) break
         // 获取图片基本信息
         const src = msg.data.pic
-        const info = await getImageInfo(src.path)
+        const info = src.info || await getImageInfo(src.path)
         if (!info) return undefined
 
         const pic: NTSendMessageType.MsgElement = {

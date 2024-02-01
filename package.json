@@ -8,7 +8,7 @@
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "start": "cross-env YUKIHANA_LOG=true .\\ntqq\\QQ.exe",
-    "test": "cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\""
+    "test": "cross-env YUKIHANA_LOG=true cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\""
   },
   "keywords": [],
   "author": "",

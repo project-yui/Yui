@@ -1,3 +1,4 @@
+import { ImageInfo } from "../../common/interface/file"
 import { BotActionParams } from "../actions/interfaces"
 
 export declare namespace BotMessage {
@@ -222,6 +223,8 @@ declare namespace BotMessageSendElements {
      */
     type: 'simple' | 'emoji'
 
+    info?: ImageInfo
+
     /**
      * 图片路径
      * 
@@ -346,6 +349,11 @@ declare namespace BotMessageReceiveElements {
      * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
      */
     url: string
+
+    /**
+     * 图片路径
+     */
+    path: string
   }
 
 
