@@ -1,3 +1,4 @@
+import { getImageInfo } from "../../common/file";
 import { NTReceiveMessageType } from "../../ntqq/message/interfaces";
 import { NTSendMessageType } from "../../ntqq/message/interfaces";
 import { BotMessage } from "../../onebot/common/message";
@@ -86,10 +87,10 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
  * @param elems 来自bot的消息
  * @returns 给NTQQ的消息
  */
-export const convertBotMessage2NTMessage = (elems: BotMessage.SendElement[]): NTSendMessageType.MsgElement[] => {
+export const convertBotMessage2NTMessage = async (elems: BotMessage.SendElement[]): Promise<NTSendMessageType.MsgElement[]> => {
   const result: NTSendMessageType.MsgElement[] = []
   for (const ele of elems) {
-    const r = convertBotMessage2NTMessageSingle(ele)
+    const r = await convertBotMessage2NTMessageSingle(ele)
     if (r !== undefined) {
       result.push(r)
     }
@@ -103,7 +104,7 @@ export const convertBotMessage2NTMessage = (elems: BotMessage.SendElement[]): NT
  * @param msg 来自bot的消息
  * @returns 给NTQQ的消息
  */
-export const convertBotMessage2NTMessageSingle = (msg: BotMessage.SendElement): NTSendMessageType.MsgElement | undefined => {
+export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElement): Promise<NTSendMessageType.MsgElement | undefined> => {
 
   switch (msg.type) {
     case 'text':
@@ -148,20 +149,24 @@ export const convertBotMessage2NTMessageSingle = (msg: BotMessage.SendElement): 
       // TODO: 图片
       {
         if (!msg.data.pic) break
-        // TODO: 获取图片基本信息
+        // 获取图片基本信息
+        const src = msg.data.pic
+        const info = await getImageInfo(src.path)
+        if (!info) return undefined
+
         const pic: NTSendMessageType.MsgElement = {
           elementType: 2,
           elementId: "",
           extBufForUI: '',
           picElement: {
-            md5HexStr: "f759efe0f975b7aa5ddc27386d71d4f1",
-            picWidth: 625,
-            picHeight: 608,
-            fileName: "f759efe0f975b7aa5ddc27386d71d4f1.jpg",
-            fileSize: "187249",
+            md5HexStr: info.md5,
+            picWidth: info.width,
+            picHeight: info.height,
+            fileName: `${info.md5}.jpg`,
+            fileSize: `${info.size}`,
             original: true,
-            picSubType: 0,
-            sourcePath: "D:\\Users\\jiyec\\Documents\\Tencent Files\\335438501\\nt_qq\\nt_data\\Pic\\2024-01\\Ori\\f759efe0f975b7aa5ddc27386d71d4f1.jpg",
+            picSubType: src.type === 'simple' ? 0 : 1,
+            sourcePath: src.path,
             picType: 1000,
             fileUuid: "",
             fileSubId: "",

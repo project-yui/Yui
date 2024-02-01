@@ -208,7 +208,7 @@ export declare namespace NTSendMessageType {
      * 
      * 1 - 表情
      */
-    picSubType: 0
+    picSubType: 0 | 1
     sourcePath: string
     picType: 1000
     fileUuid: ''

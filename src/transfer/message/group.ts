@@ -8,7 +8,7 @@ const log = useLogger('Group')
 
 export const sendMessageToGroup = async (targetId: `${number}`, msg: BotMessage.SendElement[]) => {
   log.info(`sendMessage to ${targetId} with:`, JSON.stringify(msg))
-  const elements: NTSendMessageType.MsgElement[] = convertBotMessage2NTMessage(msg)
+  const elements: NTSendMessageType.MsgElement[] = await convertBotMessage2NTMessage(msg)
   return await NTSendMessage({
     "msgId": "0",
     "peer": {
