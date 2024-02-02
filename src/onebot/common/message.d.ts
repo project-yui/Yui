@@ -243,6 +243,13 @@ declare namespace BotMessageSendElements {
      */
     md5?: string
 
+
+    /**
+     * 网络路径
+     * 
+     */
+    url?: string
+
     /**
      * 图片路径
      * 

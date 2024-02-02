@@ -9,3 +9,17 @@ export interface ImageSizeInfo {
   wUnits: 'px',
   hUnits: 'px'
 }
+
+/**
+ * 文件类型
+ */
+export interface FileType {
+  /**
+   * 文件后缀
+   */
+  ext: string
+  /**
+   * 文件mime类型
+   */
+  mime: string
+}

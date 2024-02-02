@@ -1,7 +1,13 @@
-import { getImageInfo } from "../../common/file";
+import fs from "fs";
+import { downloadFile, getImageInfo } from "../../common/file";
 import { NTReceiveMessageType } from "../../ntqq/message/interfaces";
 import { NTSendMessageType } from "../../ntqq/message/interfaces";
 import { BotMessage } from "../../onebot/common/message";
+import { useLogger } from "../../common/log";
+import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-apt";
+import { copyFile, getFileType } from "../../ntqq/common/fs-api";
+
+const log = useLogger('Convert')
 
 /**
  * NTQQ的消息转bot消息
@@ -40,7 +46,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
                 size: parseInt(p.fileSize),
                 md5: p.md5HexStr,
                 uuid: p.fileUuid,
-                url: p.originImageUrl,
+                url: `https://gchat.qpic.cn${p.originImageUrl}`,
                 path: p.sourcePath,
               }
             }
@@ -151,12 +157,34 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         if (!msg.data.pic) break
         // 获取图片基本信息
         const src = msg.data.pic
-        const info = src.md5 ? {
+        let info = src.md5 ? {
           width: src.width,
           height: src.height,
           md5: src.md5,
           size: src.size,
-        } : await getImageInfo(src.path)
+        } : undefined
+        if (!fs.existsSync(src.path)) {
+          // 文件被删除，检查是否有网络地址
+          if (!src.url) throw new Error(`File does not exists! ${src.path}`)
+          log.info(`开始从网络地址下载图片：${src.url}`)
+          src.path = await downloadFile(src.url)
+          log.info('获取图片信息')
+          info = await getImageInfo(src.path)
+          if (!info) return undefined
+          log.info('src path:', src.path)
+          // const fileType = await getFileType(src.path)
+          // log.info('file type:', fileType)
+          // get real storage path
+          const realPath = await getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+          log.info('real path:', realPath)
+          // copy
+          const ret = await copyFile(src.path, realPath)
+          // rm temp
+          if (ret) {
+            fs.rmSync(src.path)
+            src.path = realPath
+          }
+        }
         if (!info) return undefined
 
         const pic: NTSendMessageType.MsgElement = {
@@ -169,10 +197,10 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             fileName: `${info.md5}.jpg`,
             fileSize: `${info.size}`,
             original: true,
-            picSubType: src.type === 'simple' ? 0 : 1,
+            picSubType: 0,
             sourcePath: src.path,
             thumbPath: undefined,
-            picType: 1000,
+            picType: 1001,
             fileUuid: "",
             fileSubId: "",
             thumbFileSize: 0,
