@@ -7,6 +7,7 @@ import { ImageInfo } from './interface/file'
  * 获取图像信息
  * 
  * TODO: 使用NTQQ自带方法获取
+ * @deprecated 使用NTQQ自带方法获取
  * @param path 图片路径
  * @returns 取图像信息
  */
@@ -25,6 +26,7 @@ export const getImageInfo = async (path: string): Promise<ImageInfo | undefined>
 
 /**
  * 计算文件md5
+ * 
  * @param path 文件路径
  */
 export const getFileMd5 = (path: string) => {

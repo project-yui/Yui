@@ -15,6 +15,7 @@ const callbackMap: Record<string, CallbackInfo> = {}
 
 /**
  * 模拟渲染进程向主进程发送请求
+ * 
  * 超时reject
  * 
  * @param channel 通道

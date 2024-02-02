@@ -17,9 +17,9 @@ const { registerEventListener } = useStore()
  * @returns 发送结果
  */
 export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise<NTSendMessageType.SendResponse> => {
-  log.info('send data:', msg, msg.msgElements)
   const channel = 'IPC_UP_2'
   const uuid = randomUUID()
+  log.info(`send data with ${uuid}:`, msg, msg.msgElements)
   const reqInfo: IpcUpInfo = {
     type: 'request',
     callbackId: uuid,

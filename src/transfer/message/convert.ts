@@ -151,13 +151,17 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         if (!msg.data.pic) break
         // 获取图片基本信息
         const src = msg.data.pic
-        const info = src.info || await getImageInfo(src.path)
+        const info = src.md5 ? {
+          width: src.width,
+          height: src.height,
+          md5: src.md5,
+          size: src.size,
+        } : await getImageInfo(src.path)
         if (!info) return undefined
 
         const pic: NTSendMessageType.MsgElement = {
           elementType: 2,
           elementId: "",
-          extBufForUI: '',
           picElement: {
             md5HexStr: info.md5,
             picWidth: info.width,
@@ -167,12 +171,14 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             original: true,
             picSubType: src.type === 'simple' ? 0 : 1,
             sourcePath: src.path,
+            thumbPath: undefined,
             picType: 1000,
             fileUuid: "",
             fileSubId: "",
             thumbFileSize: 0,
             summary: ""
           },
+          extBufForUI: '',
         }
         return pic
       }

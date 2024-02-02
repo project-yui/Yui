@@ -222,8 +222,26 @@ declare namespace BotMessageSendElements {
      * 
      */
     type: 'simple' | 'emoji'
+    
+    /**
+     * 图片宽度
+     */
+    width: number
 
-    info?: ImageInfo
+    /**
+     * 图片高度
+     */
+    height: number
+
+    /**
+     * 图片大小
+     */
+    size: number
+
+    /**
+     * 图片MD5
+     */
+    md5?: string
 
     /**
      * 图片路径
