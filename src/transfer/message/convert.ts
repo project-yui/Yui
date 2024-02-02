@@ -4,7 +4,7 @@ import { NTReceiveMessageType } from "../../ntqq/message/interfaces";
 import { NTSendMessageType } from "../../ntqq/message/interfaces";
 import { BotMessage } from "../../onebot/common/message";
 import { useLogger } from "../../common/log";
-import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-apt";
+import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
 
 const log = useLogger('Convert')
@@ -154,6 +154,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
       break;
     case 'image':
       {
+        log.info('element type: image')
         if (!msg.data.pic) break
         // 获取图片基本信息
         const src = msg.data.pic
@@ -163,8 +164,8 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           md5: src.md5,
           size: src.size,
         } : undefined
-        if (!fs.existsSync(src.path)) {
-          // 文件被删除，检查是否有网络地址
+        if (src.path == null || !fs.existsSync(src.path)) {
+          // 文件路径有问题，检查是否有网络地址
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
