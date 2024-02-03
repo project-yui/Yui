@@ -1,3 +1,22 @@
+
+interface NTMsgPeer {
+  /**
+   * 1 - 好友
+   * 
+   * 2 - 群
+   * 
+   */
+  chatType: number
+
+  /**
+   * 群 - 群号
+   * 好友 - 好友的UID
+   * 频道 - ？
+   */
+  peerUid: `${number}` | `u_${string}`
+  guildId: string
+}
+
 /**
  * 向NTTQQ发送消息
  * 
@@ -12,9 +31,18 @@ export declare namespace NTSendMessageType {
    */
   export interface SendRequest {
     msgId: string
-    peer: MsgPeer
+    peer: NTMsgPeer
     msgElements: MsgElement[]
     msgAttributeInfos: Map<string, any>
+  }
+
+  /**
+   * 发送消息的结果
+   * 
+   * NTQQ -> 框架
+   */
+  export interface SendResponse {
+    msgId: `${number}`
   }
 
   /**
@@ -24,8 +52,8 @@ export declare namespace NTSendMessageType {
    */
   export interface SendForwardRequest {
     msgInfos: ForwardMsgItem[]
-    srcContact: MsgPeer
-    dstContact: MsgPeer
+    srcContact: NTMsgPeer
+    dstContact: NTMsgPeer
     commentElements: [],
     msgAttributeInfos: Map<string, any>
   }
@@ -44,15 +72,6 @@ export declare namespace NTSendMessageType {
      * 群昵称 / {QQ昵称}
      */
     senderShowName: string
-  }
-
-  /**
-   * 发送消息的结果
-   * 
-   * NTQQ -> 框架
-   */
-  export interface SendResponse {
-    msgId: `${number}`
   }
 
   /**
@@ -107,24 +126,6 @@ export declare namespace NTSendMessageType {
      * 图片元素的额外参数
      */
     extBufForUI?: string
-  }
-
-  interface MsgPeer {
-    /**
-     * 1 - 好友
-     * 
-     * 2 - 群
-     * 
-     */
-    chatType: number
-
-    /**
-     * 群 - 群号
-     * 好友 - 好友的UID
-     * 频道 - ？
-     */
-    peerUid: `${number}` | `u_${string}`
-    guildId: string
   }
 
   /**
@@ -648,10 +649,24 @@ export declare namespace NTReceiveMessageType {
 /**
  * 消息添加
  * 
- * 消息发送之后，NTBacken会向NTUI层下发新发送的消息
+ * 消息发送之后，NTBackend会向NTUI层下发新发送的消息
  */
 export interface AddMsgType {
   msgRecord: {
+    /**
+     * 消息Id
+     */
     msgId: `${number}`
+  }
+}
+
+export namespace NTRecallMessage{
+  export interface Request {
+    peer: NTMsgPeer
+    msgIds: `${number}`[]
+  }
+  export interface Response {
+    result: number
+    errMsg: string
   }
 }

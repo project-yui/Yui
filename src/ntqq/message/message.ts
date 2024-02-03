@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto"
 import { IpcUpInfo } from "../../store/interfaces"
 import { sendEvent } from "../event/base"
-import { NTSendMessageType, AddMsgType } from "./interfaces"
+import { NTSendMessageType, AddMsgType, NTRecallMessage as NTRecallMessageType } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { useStore } from "../../store/store"
 import { Lock } from "../../common/lock"
@@ -82,4 +82,31 @@ export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardReq
   return {
     msgId: info.msgRecord.msgId
   }
+}
+
+/**
+ * 调用NTAPI撤回消息
+ * 
+ * @param msg 撤回请求数据
+ * @returns 撤回结果
+ */
+export const NTRecallMessage = async (msg: NTRecallMessageType.Request): Promise<NTRecallMessageType.Response> => {
+  const channel = 'IPC_UP_2'
+  const uuid = randomUUID()
+  log.info(`recall msg with ${uuid}:`, msg)
+  const reqInfo: IpcUpInfo = {
+    type: 'request',
+    callbackId: uuid,
+    eventName: 'ns-ntApi-2'
+  }
+  const reqData: [string, NTRecallMessageType.Request, any] = [
+    "nodeIKernelMsgService/recallMsg",
+    msg,
+    null
+  ]
+
+  const sendResult = await sendEvent<NTRecallMessageType.Request, NTRecallMessageType.Response>(channel, reqInfo, reqData)
+  log.info('onAddSendMsg info:', JSON.stringify(sendResult, null, 4))
+  
+  return sendResult.data
 }
