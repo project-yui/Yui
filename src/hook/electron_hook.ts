@@ -168,6 +168,14 @@ const hookIpcMain = () => {
   }
 }
 
+const hookProtocol = () => {
+  const reg = protocol.registerSchemesAsPrivileged
+  protocol.registerSchemesAsPrivileged = function(...args) {
+    log.info('registerSchemesAsPrivileged:', ...args)
+    return reg.apply(this, args)
+  }
+}
+
 /**
  * 对Electron的一些关键类或方法进行拦截操作
  */
@@ -175,4 +183,5 @@ export const hookElectron = () => {
   hookLoadUrl()
   hookLoadFile()
   hookIpcMain()
+  hookProtocol()
 }

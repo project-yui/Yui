@@ -43,12 +43,13 @@ export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise
   log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
   // msgLock.unlock()
   return {
-    msgId: info.msgRecord.msgId
+    msgId: info.msgRecord.msgId,
+    subMsgType: info.msgRecord.subMsgType,
   }
 }
 
 /**
- * 调用NTAPI发送普通消息
+ * 调用NTAPI发送合并转发消息
  * 
  * @param msg 消息内容
  * @returns 发送结果
@@ -62,6 +63,8 @@ export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardReq
     callbackId: uuid,
     eventName: 'ns-ntApi-2'
   }
+  // nodeIKernelMsgService/forwardMsgWithComment 是逐条转发
+  // 合并转发
   const reqData: [string, NTSendMessageType.SendForwardRequest, any] = [
     "nodeIKernelMsgService/multiForwardMsgWithComment",
     msg,
@@ -80,7 +83,8 @@ export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardReq
   log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
   // msgLock.unlock()
   return {
-    msgId: info.msgRecord.msgId
+    msgId: info.msgRecord.msgId,
+    subMsgType: info.msgRecord.subMsgType,
   }
 }
 

@@ -171,7 +171,11 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           src.path = await downloadFile(src.url)
           log.info('获取图片信息')
           info = await getImageInfo(src.path)
-          if (!info) return undefined
+          if (!info) {
+            log.info('图片信息获取失败')
+            throw new Error('Failed to get information of image')
+            // return undefined
+          }
           log.info('src path:', src.path)
           // const fileType = await getFileType(src.path)
           // log.info('file type:', fileType)
@@ -182,6 +186,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           const ret = await copyFile(src.path, realPath)
           // rm temp
           if (ret) {
+            // 删除图片
             fs.rmSync(src.path)
             src.path = realPath
           }

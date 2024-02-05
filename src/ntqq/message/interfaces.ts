@@ -43,6 +43,10 @@ export declare namespace NTSendMessageType {
    */
   export interface SendResponse {
     msgId: `${number}`
+    /**
+     * 发送失败会出现4096
+     */
+    subMsgType: number
   }
 
   /**
@@ -391,7 +395,7 @@ export declare namespace NTReceiveMessageType {
     pttElement: null
     videoElement: null
     grayTipElement: NTReceiveMessageType.GrayTipElementType
-    arkElement: null
+    arkElement: NTReceiveMessageType.ArkElement
     fileElement: null
     liveGiftElement: null
     markdownElement: null
@@ -657,6 +661,7 @@ export interface AddMsgType {
      * 消息Id
      */
     msgId: `${number}`
+    subMsgType: number
   }
 }
 
