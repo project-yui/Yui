@@ -156,8 +156,10 @@ declare namespace WrapperExports {
   class NodeIKernelMsgService {
     addKernelMsgListener(listener: NodeIKernelMsgListener): number
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
+    getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
+    IsExistOldDb(): boolean
   }
   class NodeIKernelMSFService {
     getMsfStatus(): number
@@ -179,6 +181,8 @@ declare namespace WrapperExports {
     addKernelMsgBackupListener(listener: NodeIKernelMsgBackupListener): void
   }
   class NodeIKernelNodeMiscService {
+    getGetFullScreenInfo(): NodeIKernelNodeMiscServiceType.GetFullScreenInfoResp
+    isMiniAppExist(): boolean
     /**
      * 发送日志
      * 
@@ -267,6 +271,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelProfileService {
     addKernelProfileListener(listener: NodeIKernelProfileListener): number
+    getUserSimpleInfo(a: boolean, uid: `u_${string}`[]): Promise<NodeIKernelProfileServiceType.UserSimpleInfoResp>
   }
 
   interface NodeIKernelQiDianListenerConstructorOptions {
@@ -716,6 +721,50 @@ declare namespace NodeIKernelMsgServiceType {
     result: number
     errMsg: string
     content: string
+  }
+  interface GuildUnreadCntInfoResp {
+    /**
+     * 0 - 成功
+     */
+    result: number
+    errMsg: string
+    unreadCntInfos: GuildUnreadCntInfo[]
+  }
+  interface GuildUnreadCntInfo {
+    show_unread_cnt: UnreadCnt
+    all_unread_cnt: UnreadCnt
+    atme_unread_cnt: UnreadCnt
+    atall_unread_cnt: UnreadCnt
+    peer: Peer
+    related_to_me_string: string
+    related_to_me_cnt: number
+    last_related_to_me_type: number
+    related_to_me_string_time: `${number}`
+    last_related_to_feed_type: number
+    header_url: '0x'
+  }
+  interface UnreadCnt {
+    type: number
+    cnt: number
+  }
+  interface Peer {
+    chatType: number,
+    peerUid: string,
+    guildId: string
+  }
+}
+
+declare namespace NodeIKernelNodeMiscServiceType {
+  interface GetFullScreenInfoResp {
+    in_full_screen: boolean
+    is_self: boolean
+  }
+}
+
+declare namespace NodeIKernelProfileServiceType {
+  interface UserSimpleInfoResp {
+    result: number
+    errMsg: string
   }
 }
 
