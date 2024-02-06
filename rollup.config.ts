@@ -3,12 +3,17 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
+import { RollupOptions } from "rollup";
+import fs from 'fs'
 
-export default {
+const options: RollupOptions = {
   input: 'src/index.ts',
   output: {
     dir: 'ntqq/resources/app/app_launcher/',
-    format: 'cjs'
+    format: 'cjs',
+    banner: (chunk) => {
+      return fs.readFileSync('./tools/prepend.js').toString()
+    }
   },
   plugins: [
     resolve({
@@ -20,8 +25,9 @@ export default {
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
-    terser(),
+    // terser(),
   ],
   // 指出哪些模块应该视为外部模块
-  external: ['electron', 'module']
+  external: ['electron', 'module', 'ntwrapper']
 };
+export default options

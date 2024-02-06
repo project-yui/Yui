@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
+    "dev": "rollup -c --configPlugin @rollup/plugin-typescript -w",
+    "build": "rollup -c --configPlugin @rollup/plugin-typescript",
     "start": "cross-env YUKIHANA_LOG=true .\\ntqq\\QQ.exe",
     "test": "cross-env YUKIHANA_LOG=true cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\""
   },

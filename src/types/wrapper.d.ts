@@ -1,16 +1,24 @@
-import { UUID } from "crypto"
 
-export interface NativeWrapper {
-  NodeIGlobalAdapter: typeof WrapperExports.NodeIGlobalAdapter
-  NodeIKernelLoginService: typeof WrapperExports.NodeIKernelLoginService
-  NodeIQQNTWrapperEngine: typeof WrapperExports.NodeIQQNTWrapperEngine
-  NodeQQNTWrapperUtil: typeof WrapperExports.NodeQQNTWrapperUtil
-}
+/// <reference types="node" />
+
+
 /**
  * native层
  */
-declare namespace WrapperExports {
+declare namespace NTNativeWrapper {
   
+  namespace CrossProcessExports {
+    const NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
+    const NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
+    const NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
+    const NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+  }
+  interface CrossProcessExportsInterface {
+    NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
+    NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
+    NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
+    NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+  }
   interface NodeIDependsAdapterConstructorOptions {
     onMSFStatusChange: () => void
     onMSFSsoError: () => void
@@ -182,6 +190,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelNodeMiscService {
     getGetFullScreenInfo(): NodeIKernelNodeMiscServiceType.GetFullScreenInfoResp
+    getMiniAppPath(): string
     isMiniAppExist(): boolean
     /**
      * 发送日志
@@ -191,6 +200,7 @@ declare namespace WrapperExports {
      * @param log 日志内容
      */
     sendLog(level: number, module: string, log: string): void
+    setMiniAppVersion(ver: string): void
     /**
      * 注册系统协议
      * 
@@ -292,6 +302,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelQQPlayService {
     addKernelQQPlayListener(listener: NodeIKernelQQPlayListener): void
+    uninit(): void
   }
 
   interface NodeIKernelRecentContactListenerConstructorOptions {
@@ -522,6 +533,13 @@ declare namespace WrapperExports {
   }
   class NodeIKernelUnitedConfigService {
     addKernelUnitedConfigListener(listener: NodeIKernelUnitedConfigListener): void
+    /**
+     * 拉取配置
+     * 
+     * 在监听器里面回调
+     * @param ids 拉取的配置id
+     */
+    fetchUnitedCommendConfig(ids: `${string}`[]): void
     loadUnitedConfig(id: string): Promise<NodeIKernelUnitedConfigServiceType.UnitedConfigResp>
     isUnitedConfigSwitchOn(id: string): Promise<NodeIKernelUnitedConfigServiceType.IsUnitedConfigSwitchOnResp>
     registerUnitedConfigPushGroupList(list: string[]): void
@@ -574,6 +592,7 @@ declare namespace WrapperExports {
     getSkinService(): NodeIKernelSkinService
     getStorageCleanService(): NodeIKernelStorageCleanService
     getUnitedConfigService(): NodeIKernelUnitedConfigService
+    offLine(info: NodeIQQNTWrapperSessionType.OfflineReq): Promise<SimpleResult>
   }
   
 
@@ -696,7 +715,13 @@ declare namespace NodeIKernelLoginServiceType {
     isAutoLogin: boolean
   }
 }
-
+interface SimpleResult {
+  /**
+   * 0 - 成功
+   */
+  result: number
+  errMsg: string
+}
 declare namespace NodeIKernelMsgServiceType {
   interface FetchStatusMgrInfoResp {
     /**
@@ -895,7 +920,7 @@ declare namespace NodeIQQNTWrapperSessionType {
      */
     defaultFileDownloadPath: string
     deviceInfo: {
-      guid: UUID
+      guid: `${string}-${string}-${string}-${string}-${string}`
       /**
        * 构建版本
        * 
@@ -935,4 +960,48 @@ declare namespace NodeIQQNTWrapperSessionType {
      */
     deviceConfig: string
   }
+  interface OfflineReq {
+    deviceInfo: {
+      guid: `${string}-${string}-${string}-${string}-${string}`,
+      /**
+       * 构建版本
+       * 
+       * 形如：9.9.7-21357
+       */
+      buildVer: string,
+      /**
+       * 形如：2052
+       * 
+       */
+      localId: number,
+      /**
+       * 计算机用户名
+       */
+      devName: string,
+      /**
+       * 系统类型
+       * 
+       * Windows_NT
+       */
+      devType: 'Windows_NT',
+      vendorName: string,
+      /**
+       * 系统版本
+       */
+      osVer: string,
+      /**
+       * 形如：win32
+       */
+      vendorOsName: string,
+      /**
+       * 静音
+       */
+      setMute: boolean,
+      vendorType: 0
+    }
+  }
+}
+
+declare module 'ntwrapper' {
+  export = NTNativeWrapper.CrossProcessExports
 }
