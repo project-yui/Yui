@@ -18,7 +18,10 @@ const log = useLogger('File')
  * @returns 取图像信息
  */
 export const getImageInfo = async (path: string): Promise<ImageInfo | undefined> => {
-  if (!fs.existsSync(path)) return undefined
+  if (!fs.existsSync(path)) {
+    log.info('File does not exists!')
+    return undefined
+  }
   const ret = imageSize(path)
   const md5 = await getFileMd5(path)
   const stat = fs.statSync(path)
@@ -86,6 +89,7 @@ export const downloadFile = (url: string, targetPath?: string) => {
       })
     })
     client.on('error', (err) => {
+      log.error('failed to download file')
       fs.closeSync(fd)
       reject(err)
     })
