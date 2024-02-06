@@ -167,6 +167,35 @@ declare namespace NTNativeWrapper {
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
+    
+    /**
+     * 合转发并消息
+     * 
+     * @param forwardList 转发消息列表
+     * @param peer 目标对象
+     * @param comments 附带评论
+     * @param attributes 属性
+     */
+    multiForwardMsgWithComment(forwardList: any[], peer: PeerInfo, comments: any[], attributes: Map<any, any>): Promise<SimpleResult>
+    
+    /**
+     * 撤回指定消息
+     * 
+     * @param peer 操作对象
+     * @param ids 要撤回的消息id
+     */
+    recallMsg(peer: PeerInfo, ids: `${number}`[]): Promise<SimpleResult>
+    
+    /**
+     * 发送消息
+     * 
+     * 结果在监听器里面回调
+     * @param msgId 消息Id 0
+     * @param peer 发送目标
+     * @param msg 发送的消息内容
+     * @param attributes 属性
+     */
+    sendMsg(msgId: `${number}`, peer: PeerInfo, msg: any[], attributes: Map<any, any>): Promise<SimpleResult>
     IsExistOldDb(): boolean
   }
   class NodeIKernelMSFService {
@@ -371,8 +400,11 @@ declare namespace NTNativeWrapper {
   }
   class NodeIKernelSettingService {
     addKernelSettingListener(listener: NodeIKernelSettingListener): number
+    getAutoLoginSwitch(): Promise<any>
+    getNeedConfirmSwitch(): Promise<any>
     getSettingForNum(settings: number[]): Promise<NodeIKernelSettingServiceType.GetSettingResp>
     getSettingForStr(settings: number[]): Promise<NodeIKernelSettingServiceType.GetSettingResp>
+    setAutoLoginSwitch(on: boolean): Promise<SimpleResult>
   }
 
   interface NodeIKernelSkinListenerConstructorOptions {
@@ -413,6 +445,12 @@ declare namespace NTNativeWrapper {
     getMsfStatus(): number
     getLoginList(): Promise<NodeIKernelLoginServiceType.LoginInfoListResp>
     getLoginMiscData(name: string): Promise<NodeIKernelLoginServiceType.GetLoginMiscDataResp>
+    /**
+     * 获取登录二维码
+     * 
+     * 响应数据在监听器里面触发
+     */
+    getQRCodePicture(): void
     initConfig(config: NodeIKernelLoginServiceType.Init): void
     quickLoginWithUin(uin: `${number}`): Promise<NodeIKernelLoginServiceType.QuickLoginResp>
     setLoginMiscData(name: string, value: string): Promise<NodeIKernelLoginServiceType.SetLoginMiscDataResp>
@@ -424,6 +462,11 @@ declare namespace NTNativeWrapper {
     onLoginConnecting: () => void
     onQRCodeGetPicture: () => void
     onQRCodeLoginPollingStarted: () => void
+    /**
+     * 用户扫描了二维码
+     * 
+     * @returns 
+     */
     onQRCodeSessionUserScaned: () => void
     onLoginState: () => void
     onQRCodeLoginSucceed: () => void
@@ -715,12 +758,29 @@ declare namespace NodeIKernelLoginServiceType {
     isAutoLogin: boolean
   }
 }
+
+/**
+ * 简单响应体
+ * 
+ * ```js
+ * {
+ *   result: 0,
+ *   errMsg: ''
+ * }
+ * ```
+ */
 interface SimpleResult {
   /**
    * 0 - 成功
    */
   result: number
   errMsg: string
+}
+
+interface PeerInfo {
+  chatType: number,
+  peerUid: `${number}` | `u_${string}`,
+  guildId: string
 }
 declare namespace NodeIKernelMsgServiceType {
   interface FetchStatusMgrInfoResp {
@@ -760,7 +820,7 @@ declare namespace NodeIKernelMsgServiceType {
     all_unread_cnt: UnreadCnt
     atme_unread_cnt: UnreadCnt
     atall_unread_cnt: UnreadCnt
-    peer: Peer
+    peer: PeerInfo
     related_to_me_string: string
     related_to_me_cnt: number
     last_related_to_me_type: number
@@ -771,11 +831,6 @@ declare namespace NodeIKernelMsgServiceType {
   interface UnreadCnt {
     type: number
     cnt: number
-  }
-  interface Peer {
-    chatType: number,
-    peerUid: string,
-    guildId: string
   }
 }
 
@@ -962,6 +1017,9 @@ declare namespace NodeIQQNTWrapperSessionType {
   }
   interface OfflineReq {
     deviceInfo: {
+      /**
+       * 每次启动都不一样
+       */
       guid: `${string}-${string}-${string}-${string}-${string}`,
       /**
        * 构建版本
@@ -972,6 +1030,7 @@ declare namespace NodeIQQNTWrapperSessionType {
       /**
        * 形如：2052
        * 
+       * 不知道是否与版本有关
        */
       localId: number,
       /**
