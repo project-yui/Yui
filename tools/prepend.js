@@ -1,7 +1,7 @@
 (() => {
   const orgi_rquire = module.require
-  module.require = function (name) {
-    if (name === 'ntwrapper') {
+  module.require = function (...args) {
+    if (args[0] === 'ntwrapper') {
       const fs = orgi_rquire('fs')
       const path = orgi_rquire('path')
       const configPath = path.resolve(__dirname, '../versions/config.json')
@@ -13,6 +13,6 @@
       const version = config.curVersion
       return orgi_rquire(path.resolve(__dirname, `../versions/${version}/wrapper.node`))
     }
-    return orgi_rquire(name)
+    return orgi_rquire.apply(this, args)
   }
 })();
