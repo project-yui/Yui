@@ -6,7 +6,7 @@
       const path = orgi_rquire('path')
         /**  @type {import('electron')} */
       const electron = orgi_rquire('electron')
-      const appPath = electron.app.getPath('appData')
+      const appPath = electron.app.getAppPath()
       console.log('appPath:', appPath)
       const packagePath = path.resolve(appPath, './package.json')
       if (!fs.existsSync(packagePath)) {

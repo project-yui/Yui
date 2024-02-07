@@ -146,14 +146,6 @@ export const useStore = () => {
     getActionHandle,
 
     /**
-     * 获取事件的监听器
-     * 
-     * @deprecated
-     * @param eventFullName 事件名称 格式: `${channel}_${eventName}_${cmdName}`
-     * @returns 监听函数列表
-     */
-    // getEventListenerList,
-    /**
      * 添加事件的监听器
      * @param eventFullName 事件名称
      * @param type 事件类型 always长期 | once一次性

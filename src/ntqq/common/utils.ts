@@ -6,7 +6,7 @@ import { type, userInfo } from "os"
 import { execSync } from "child_process"
 
 export const getNTPackageInfo = (): NTPackageInfo => {
-  const appPath = app.getPath('appData')
+  const appPath = app.getAppPath()
   if (!existsSync(`${appPath}/package.json`)) {
     throw new Error('Can not find package.json!')
   }

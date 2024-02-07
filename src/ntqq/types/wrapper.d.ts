@@ -501,6 +501,7 @@ declare namespace NTNativeWrapper {
      */
     getQRCodePicture(): void
     initConfig(config: NodeIKernelLoginServiceType.LoginInitConfig): void
+    passwordLogin(login: NodeIKernelLoginServiceType.PasswordLoginReq): Promise<NodeIKernelLoginServiceType.PasswordLoginResp>
     quickLoginWithUin(uin: `${number}`): Promise<NodeIKernelLoginServiceType.QuickLoginResp>
     setLoginMiscData(name: string, value: string): Promise<NodeIKernelLoginServiceType.SetLoginMiscDataResp>
   }
@@ -751,6 +752,34 @@ declare namespace NodeIKernelLoginServiceType {
      * 计算机用户名
      */
     hostName: string
+  }
+  interface PasswordLoginReq {
+    /**
+     * QQ号码
+     */
+    uin: `${number}`,
+    /**
+     * 密码的MD5
+     */
+    passwordMd5: string,
+    step: number,
+    newDeviceLoginSig: string,
+    proofWaterSig: string,
+    proofWaterRand: string,
+    proofWaterSid: string,
+  }
+  interface PasswordLoginResp {
+    result: `${number}`,
+    loginErrorInfo: {
+      step: number,
+      errMsg: string,
+      proofWaterUrl: string,
+      newDevicePullQrCodeSig: '0x',
+      jumpUrl: string,
+      jumpWord: string,
+      tipsTitle: string,
+      tipsContent: string,
+    }
   }
   interface LoginInfoListResp {
     result: number

@@ -7,22 +7,28 @@ import { startServer } from "./server";
 import { hookWrapper } from "./wrapper/hook";
 
 const log = useLogger('Index')
-log.info('hi ntqq bot!! v0.0.2')
+try {
+  log.info('hi ntqq bot!! v0.0.2')
 
-// 核心事件hook
-hook()
+  // 核心事件hook
+  hook()
 
-initNTQQ()
+  initNTQQ()
 
-initOnebot()
+  initOnebot()
 
-// 启动服务器
-startServer()
+  // 启动服务器
+  startServer()
 
-// 测试
-// test(module)
+  // 测试
+  // test(module)
 
-hookWrapper()
+  hookWrapper()
 
-// ntqq/resources/app/app_launcher/index.js 原始代码
-// require('./launcher.node').load('external_index', module);
+  // ntqq/resources/app/app_launcher/index.js 原始代码
+  // require('./launcher.node').load('external_index', module);
+}
+catch(err) {
+  log.error('Error:', err)
+  process.exit(1)
+}
