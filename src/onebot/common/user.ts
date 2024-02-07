@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { NTEventListenerHandle, useStore } from "../../store/store"
 import { CurrentAccountInfo, UserDetailInfoType } from "./interfaces"
 import { sendEvent } from "../../ntqq/event/base"
+import { useNTStore } from "../../ntqq/core/store"
 
 const { registerEventListener, removeEventListener } = useStore()
 
@@ -11,7 +12,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     // 超时拒绝
     let time = setTimeout(() => {
       if (userInfoListener)
-        removeEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
+        removeEventListener('KernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
       reject('timeout')
     }, 30000)
     userInfoListener = (payload: UserDetailInfoType) => {
@@ -20,13 +21,12 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
       clearTimeout(time)
       resolve(payload)
     }
-    registerEventListener(`IPC_DOWN_2_ns-ntApi-2_nodeIKernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
-    const regResult = await sendEvent('IPC_UP_2', {
-      type: 'request',
-      callbackId: randomUUID(),
-      eventName: 'ns-ntApi-2'
-    }, ['nodeIKernelProfileService/getUserDetailInfo', {"uid": uid}, null])
-
+    registerEventListener(`KernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
+    const { getWrapperSession } = useNTStore()
+    const session = getWrapperSession()
+    const service = session.getProfileService()
+    const result = await service.getUserDetailInfo(uid)
+    
   })
 }
 

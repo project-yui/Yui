@@ -142,77 +142,77 @@ export const initMsgService = () => {
     onImportOldDbProgressUpdate(...args) {
       dispatcher.emit('KernelMsgListener/onImportOldDbProgressUpdate', ...args)
     },
-    onFeedEventUpdate() {
-        
+    onFeedEventUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onFeedEventUpdate', ...args)
     },
-    onFirstViewDirectMsgUpdate() {
-        
+    onFirstViewDirectMsgUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onFirstViewDirectMsgUpdate', ...args)
     },
-    onFirstViewGroupGuildMapping() {
-        
+    onFirstViewGroupGuildMapping(...args) {
+      dispatcher.emit('KernelMsgListener/onFirstViewGroupGuildMapping', ...args)
     },
-    onGrabPasswordRedBag() {
-        
+    onGrabPasswordRedBag(...args) {
+      dispatcher.emit('KernelMsgListener/onGrabPasswordRedBag', ...args)
     },
-    onGroupGuildUpdate() {
-        
+    onGroupGuildUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onGroupGuildUpdate', ...args)
     },
-    onGuildInteractiveUpdate() {
-        
+    onGuildInteractiveUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onGuildInteractiveUpdate', ...args)
     },
-    onGuildNotificationAbstractUpdate() {
-        
+    onGuildNotificationAbstractUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onGuildNotificationAbstractUpdate', ...args)
     },
-    onHitCsRelatedEmojiResult() {
-        
+    onHitCsRelatedEmojiResult(...args) {
+      dispatcher.emit('KernelMsgListener/onHitCsRelatedEmojiResult', ...args)
     },
-    onHitEmojiKeywordResult() {
-        
+    onHitEmojiKeywordResult(...args) {
+      dispatcher.emit('KernelMsgListener/onHitEmojiKeywordResult', ...args)
     },
-    onHitRelatedEmojiResult() {
-        
+    onHitRelatedEmojiResult(...args) {
+      dispatcher.emit('KernelMsgListener/onHitRelatedEmojiResult', ...args)
     },
-    onlineStatusBigIconDownloadPush() {
-        
+    onlineStatusBigIconDownloadPush(...args) {
+      dispatcher.emit('KernelMsgListener/onlineStatusBigIconDownloadPush', ...args)
     },
-    onlineStatusSmallIconDownloadPush() {
-        
+    onlineStatusSmallIconDownloadPush(...args) {
+      dispatcher.emit('KernelMsgListener/onlineStatusSmallIconDownloadPush', ...args)
     },
-    onLogLevelChanged() {
-        
+    onLogLevelChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onLogLevelChanged', ...args)
     },
-    onMsgBoxChanged() {
-        
+    onMsgBoxChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onMsgBoxChanged', ...args)
     },
-    onMsgQRCodeStatusChanged() {
-        
+    onMsgQRCodeStatusChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onMsgQRCodeStatusChanged', ...args)
     },
-    onReadFeedEventUpdate() {
-        
+    onReadFeedEventUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onReadFeedEventUpdate', ...args)
     },
-    onRecvGroupGuildFlag() {
-        
+    onRecvGroupGuildFlag(...args) {
+      dispatcher.emit('KernelMsgListener/onRecvGroupGuildFlag', ...args)
     },
-    onRecvUDCFlag() {
-        
+    onRecvUDCFlag(...args) {
+      dispatcher.emit('KernelMsgListener/onRecvUDCFlag', ...args)
     },
-    onRedTouchChanged() {
-        
+    onRedTouchChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onRedTouchChanged', ...args)
     },
-    onTempChatInfoUpdate() {
-        
+    onTempChatInfoUpdate(...args) {
+      dispatcher.emit('KernelMsgListener/onTempChatInfoUpdate', ...args)
     },
-    onUserChannelTabStatusChanged() {
-        
+    onUserChannelTabStatusChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onUserChannelTabStatusChanged', ...args)
     },
-    onUserOnlineStatusChanged() {
-        
+    onUserOnlineStatusChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onUserOnlineStatusChanged', ...args)
     },
-    onUserSecQualityChanged() {
-        
+    onUserSecQualityChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onUserSecQualityChanged', ...args)
     },
-    onUserTabStatusChanged() {
-        
+    onUserTabStatusChanged(...args) {
+      dispatcher.emit('KernelMsgListener/onUserTabStatusChanged', ...args)
     },
   })
   // 添加事件监听器

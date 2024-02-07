@@ -364,6 +364,7 @@ declare namespace NTNativeWrapper {
   class NodeIKernelProfileService {
     addKernelProfileListener(listener: NodeIKernelProfileListener): number
     getUserSimpleInfo(a: boolean, uid: `u_${string}`[]): Promise<NodeIKernelProfileServiceType.UserSimpleInfoResp>
+    getUserDetailInfo(uid: `u_${string}`): Promise<SimpleResult>
   }
 
   interface NodeIKernelQiDianListenerConstructorOptions {
