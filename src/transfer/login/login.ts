@@ -6,6 +6,15 @@ import { BotActionResponse, BotActionParams } from "../../onebot/actions/interfa
 import { useLogger } from "../../common/log"
 
 const log = useLogger('Login')
+
+/**
+ * 使用账户进行登录
+ * 
+ * wss -> NTQQ
+ * 
+ * @param p 账户信息
+ * @returns 登录结果
+ */
 export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<BotActionResponse<any>> => {
   log.info("req param from client:", JSON.stringify(p))
   const ret: BotActionResponse = {
@@ -44,6 +53,13 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<BotA
   }
 
 }
+
+/**
+ * 使用二维码登录
+ * 
+ * @param p 
+ * @returns 登录的二维码
+ */
 export const loginByQrCode = async (p: BotActionParams): Promise<BotActionResponse<BotLogin.QrCodeResponse>> => {
   const ret: BotActionResponse<BotLogin.QrCodeResponse> = {
     id: "",

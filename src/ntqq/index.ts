@@ -1,5 +1,8 @@
-import { init } from "./core/init"
+import { prepareBaseEnvironment } from "./core/core"
 
-export const initCore = () => {
-  init()
+/**
+ * 初始化NTQQ
+ */
+export const initNTQQ = () => {
+  prepareBaseEnvironment()
 }

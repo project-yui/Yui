@@ -1,9 +1,10 @@
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
-import { initBaseEvent } from "./ntqq/event/base";
+import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
-import { test } from "./test/test";
+// import { test } from "./test/test";
+import { hookWrapper } from "./wrapper/hook";
 
 const log = useLogger('Index')
 log.info('hi ntqq bot!! v0.0.2')
@@ -11,8 +12,7 @@ log.info('hi ntqq bot!! v0.0.2')
 // 核心事件hook
 hook()
 
-// 初始化基础事件处理
-initBaseEvent()
+initNTQQ()
 
 initOnebot()
 
@@ -20,7 +20,9 @@ initOnebot()
 startServer()
 
 // 测试
-// test()
+// test(module)
+
+hookWrapper()
 
 // ntqq/resources/app/app_launcher/index.js 原始代码
-require('./launcher.node').load('external_index', module);
+// require('./launcher.node').load('external_index', module);

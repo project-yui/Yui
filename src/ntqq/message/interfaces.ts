@@ -30,7 +30,7 @@ export declare namespace NTSendMessageType {
    * 框架 -> NTQQ
    */
   export interface SendRequest {
-    msgId: string
+    msgId: `${number}`
     peer: NTMsgPeer
     msgElements: MsgElement[]
     msgAttributeInfos: Map<string, any>

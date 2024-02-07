@@ -13,7 +13,7 @@ const { sendMessage } = useServer()
  * 
  */
 const onRecvMsg = () => {
-  registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
+  registerEventListener('KernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
     const { msgList } = payload
     const botAccount = await getBotAccount()
     for (const msg of msgList) {

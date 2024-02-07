@@ -12,12 +12,55 @@ declare namespace NTNativeWrapper {
     const NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
     const NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
     const NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+    const NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
+    const NodeIKernelMsgListener: typeof NTNativeWrapper.NodeIKernelMsgListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
     NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
     NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
     NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+  }
+  interface DeviceInfo {
+    guid: `${string}-${string}-${string}-${string}-${string}`
+    /**
+     * 构建版本
+     * 
+     * 形如：
+     * 
+     * 9.9.7-21357
+     */
+    buildVer: string,
+    /**
+     * ???
+     */
+    localId: 2052,
+    /**
+     * 计算机用户名
+     */
+    devName: string,
+    /**
+     * 计算机类别
+     * 
+     * Windows_NT/Linux
+     */
+    devType: string,
+    vendorName: '',
+    /**
+     * 操作系统版本
+     * 
+     * Windows 10 Pro
+     */
+    osVer: string,
+    /**
+     * win32 / linux
+     */
+    vendorOsName: string,
+    /**
+     * 静音
+     */
+    setMute: boolean,
+    vendorType: 0
   }
   interface NodeIDependsAdapterConstructorOptions {
     onMSFStatusChange: () => void
@@ -51,8 +94,14 @@ declare namespace NTNativeWrapper {
 
   }
 
+  interface NodeIKernelAvatarListenerConstructorOptions {
+    onAvatarChanged: () => void
+    onGroupAvatarChanged: () => void
+    onGroupPortraitChanged: () => void
+    onAvatarChangedForUin: () => void
+  }
   class NodeIKernelAvatarListener {
-    constructor()
+    constructor(options: NodeIKernelAvatarListenerConstructorOptions)
   }
   class NodeIKernelAvatarService {
     addAvatarListener(listener: NodeIKernelAvatarListener): number
@@ -451,7 +500,7 @@ declare namespace NTNativeWrapper {
      * 响应数据在监听器里面触发
      */
     getQRCodePicture(): void
-    initConfig(config: NodeIKernelLoginServiceType.Init): void
+    initConfig(config: NodeIKernelLoginServiceType.LoginInitConfig): void
     quickLoginWithUin(uin: `${number}`): Promise<NodeIKernelLoginServiceType.QuickLoginResp>
     setLoginMiscData(name: string, value: string): Promise<NodeIKernelLoginServiceType.SetLoginMiscDataResp>
   }
@@ -485,72 +534,72 @@ declare namespace NTNativeWrapper {
   }
 
   interface NodeIKernelMsgListenerConstructorOptions {
-    onRecvMsg: () => void
-    onFileMsgCome: () => void
-    onRecvOnlineFileMsg: () => void
-    onSysMsgNotification: () => void
-    onRecvSysMsg: () => void
-    onRecvS2CMsg: () => void
-    onLineDev: () => void
-    onKickedOffLine: () => void
-    onMsgSettingUpdate: () => void
-    onAddSendMsg: () => void
-    onMsgRecall: () => void
-    onSendMsgError: () => void
-    onRecvMsgSvrRspTransInfo: () => void
-    onMsgInfoListUpdate: () => void
-    onMsgInfoListAdd: () => void
-    onMsgSecurityNotify: () => void
-    onMsgDelete: () => void
-    onMsgEventListUpdate: () => void
-    onCustomWithdrawConfigUpdate: () => void
-    onChannelFreqLimitInfoUpdate: () => void
-    onUnreadCntUpdate: () => void
-    onUnreadCntAfterFirstView: () => void
-    onContactUnreadCntUpdate: () => void
-    onMsgAbstractUpdate: () => void
-    onDraftUpdate: () => void
-    onRichMediaUploadComplete: () => void
-    onRichMediaDownloadComplete: () => void
-    onRichMediaProgerssUpdate: () => void
-    onGroupFileInfoUpdate: () => void
-    onSearchGroupFileInfoUpdate: () => void
-    onGroupTransferInfoUpdate: () => void
-    onGroupFileInfoAdd: () => void
-    onGroupTransferInfoAdd: () => void
-    onEmojiDownloadComplete: () => void
-    onEmojiResourceUpdate: () => void
-    onNtMsgSyncStart: () => void
-    onNtFirstViewMsgSyncEnd: () => void
-    onNtMsgSyncEnd: () => void
-    onBroadcastHelperDownloadComplete: () => void
-    onBroadcastHelperProgerssUpdate: () => void
-    onInputStatusPush: () => void
-    onImportOldDbProgressUpdate: () => void
-    onMsgQRCodeStatusChanged: () => void
-    onlineStatusSmallIconDownloadPush: () => void
-    onFirstViewGroupGuildMapping: () => void
-    onlineStatusBigIconDownloadPush: () => void
-    onFirstViewDirectMsgUpdate: () => void
-    onFeedEventUpdate: () => void
-    onGuildInteractiveUpdate: () => void
-    onGuildNotificationAbstractUpdate: () => void
-    onReadFeedEventUpdate: () => void
-    onTempChatInfoUpdate: () => void
-    onUserOnlineStatusChanged: () => void
-    onHitEmojiKeywordResult: () => void
-    onHitRelatedEmojiResult: () => void
-    onHitCsRelatedEmojiResult: () => void
-    onUserTabStatusChanged: () => void
-    onMsgBoxChanged: () => void
-    onLogLevelChanged: () => void
-    onUserChannelTabStatusChanged: () => void
-    onGroupGuildUpdate: () => void
-    onGrabPasswordRedBag: () => void
-    onRedTouchChanged: () => void
-    onRecvUDCFlag: () => void
-    onRecvGroupGuildFlag: () => void
-    onUserSecQualityChanged: () => void
+    onRecvMsg?: () => void
+    onFileMsgCome?: () => void
+    onRecvOnlineFileMsg?: () => void
+    onSysMsgNotification?: () => void
+    onRecvSysMsg?: () => void
+    onRecvS2CMsg?: () => void
+    onLineDev?: () => void
+    onKickedOffLine?: () => void
+    onMsgSettingUpdate?: () => void
+    onAddSendMsg?: () => void
+    onMsgRecall?: () => void
+    onSendMsgError?: () => void
+    onRecvMsgSvrRspTransInfo?: () => void
+    onMsgInfoListUpdate?: () => void
+    onMsgInfoListAdd?: () => void
+    onMsgSecurityNotify?: () => void
+    onMsgDelete?: () => void
+    onMsgEventListUpdate?: () => void
+    onCustomWithdrawConfigUpdate?: () => void
+    onChannelFreqLimitInfoUpdate?: () => void
+    onUnreadCntUpdate?: () => void
+    onUnreadCntAfterFirstView?: () => void
+    onContactUnreadCntUpdate?: () => void
+    onMsgAbstractUpdate?: () => void
+    onDraftUpdate?: () => void
+    onRichMediaUploadComplete?: () => void
+    onRichMediaDownloadComplete?: () => void
+    onRichMediaProgerssUpdate?: () => void
+    onGroupFileInfoUpdate?: () => void
+    onSearchGroupFileInfoUpdate?: () => void
+    onGroupTransferInfoUpdate?: () => void
+    onGroupFileInfoAdd?: () => void
+    onGroupTransferInfoAdd?: () => void
+    onEmojiDownloadComplete?: () => void
+    onEmojiResourceUpdate?: () => void
+    onNtMsgSyncStart?: () => void
+    onNtFirstViewMsgSyncEnd?: () => void
+    onNtMsgSyncEnd?: () => void
+    onBroadcastHelperDownloadComplete?: () => void
+    onBroadcastHelperProgerssUpdate?: () => void
+    onInputStatusPush?: () => void
+    onImportOldDbProgressUpdate?: () => void
+    onMsgQRCodeStatusChanged?: () => void
+    onlineStatusSmallIconDownloadPush?: () => void
+    onFirstViewGroupGuildMapping?: () => void
+    onlineStatusBigIconDownloadPush?: () => void
+    onFirstViewDirectMsgUpdate?: () => void
+    onFeedEventUpdate?: () => void
+    onGuildInteractiveUpdate?: () => void
+    onGuildNotificationAbstractUpdate?: () => void
+    onReadFeedEventUpdate?: () => void
+    onTempChatInfoUpdate?: () => void
+    onUserOnlineStatusChanged?: () => void
+    onHitEmojiKeywordResult?: () => void
+    onHitRelatedEmojiResult?: () => void
+    onHitCsRelatedEmojiResult?: () => void
+    onUserTabStatusChanged?: () => void
+    onMsgBoxChanged?: () => void
+    onLogLevelChanged?: () => void
+    onUserChannelTabStatusChanged?: () => void
+    onGroupGuildUpdate?: () => void
+    onGrabPasswordRedBag?: () => void
+    onRedTouchChanged?: () => void
+    onRecvUDCFlag?: () => void
+    onRecvGroupGuildFlag?: () => void
+    onUserSecQualityChanged?: () => void
   }
   class NodeIKernelMsgListener {
     constructor(options: NodeIKernelMsgListenerConstructorOptions);
@@ -671,7 +720,7 @@ declare namespace NodeIQQNTWrapperEngineType {
     /**
      * 形如：V1_WIN_NQ_9.9.7_21357_GW_B
      */
-    qua: string
+    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B`
     global_path_config: {
       desktopGlobalPath: string
     }
@@ -688,7 +737,7 @@ declare namespace NodeIDependsAdapterType {
 
 }
 declare namespace NodeIKernelLoginServiceType {
-  interface Init {
+  interface LoginInitConfig {
     machineId: string
     appid: string
     platVer: string
@@ -974,40 +1023,7 @@ declare namespace NodeIQQNTWrapperSessionType {
      * 默认下载路径
      */
     defaultFileDownloadPath: string
-    deviceInfo: {
-      guid: `${string}-${string}-${string}-${string}-${string}`
-      /**
-       * 构建版本
-       * 
-       * 形如：
-       * 
-       * 9.9.7-21357
-       */
-      buildVer: string,
-      /**
-       * 
-       */
-      localId: 2052,
-      /**
-       * 计算机用户名
-       */
-      devName: String,
-      /**
-       * 计算机类别
-       */
-      devType: 'Windows_NT',
-      vendorName: '',
-      /**
-       * 操作系统版本
-       */
-      osVer: 'Windows 10 Pro',
-      vendorOsName: 'win32',
-      /**
-       * 静音
-       */
-      setMute: boolean,
-      vendorType: 0
-    }
+    deviceInfo: NTNativeWrapper.DeviceInfo
     /**
      * 示例：
      * 
@@ -1060,6 +1076,7 @@ declare namespace NodeIQQNTWrapperSessionType {
     }
   }
 }
+
 
 declare module 'ntwrapper' {
   export = NTNativeWrapper.CrossProcessExports

@@ -1,4 +1,5 @@
 import { useLogger } from "../common/log"
+import { useNTDispatcher } from "../ntqq/core/dispatcher"
 import { BotActionParams } from "../onebot/actions/interfaces"
 import { BotActionResponse } from "../onebot/actions/interfaces"
 import { IpcDownInfo, IpcUpInfo } from "./interfaces"
@@ -93,36 +94,15 @@ const registerActionHandle = <T extends BotActionParams>(name: string, handle: (
  * NT事件监听器类型
  */
 export type NTEventListenerHandle = (payload: any) => void
-/**
- * eventName_cmdName
- */
-type EventFullNameType = `IPC_DOWN_${number}_ns-${string}_${string}`
-/**
- * NT事件监听
- */
-interface NTEventListener {
-  /**
-   * always: 一直调用
-   * once: 调用一次后不再调用
-   */
-  type: 'always' | 'once'
-  handle: NTEventListenerHandle
-}
-const eventListenerListMap: Record<EventFullNameType, NTEventListener[]> = {}
 
 /**
- * 获取事件的监听器
- * @param eventFullName 事件名称 格式: `${channel}_${eventName}_${cmdName}`
- * @returns 监听函数列表
+ * 事件分发
  */
-const getEventListenerList = (eventFullName: EventFullNameType): NTEventListener[] | undefined => {
-  const listenerList = eventListenerListMap[eventFullName]
-  if (!listenerList) return undefined
-  const ret = [...listenerList]
-  // 把一次性的监听排除掉
-  eventListenerListMap[eventFullName] = listenerList.filter(e => e.type === 'always')
-  return ret
-}
+const dispatcher = useNTDispatcher()
+/**
+ * Service/action
+ */
+type EventFullNameType = `${string}/${string}`
 
 /**
  * 添加事件的监听器
@@ -131,17 +111,20 @@ const getEventListenerList = (eventFullName: EventFullNameType): NTEventListener
  * @param listener 事件监听器
  */
 const registerEventListener = (eventFullName: EventFullNameType, type: 'always' | 'once', listener: NTEventListenerHandle) => {
-  let listenerList = eventListenerListMap[eventFullName]
-  if (!listenerList) {
-    listenerList = []
-    eventListenerListMap[eventFullName] = listenerList
+  if (type === 'once') {
+    // 一次性监听
+    dispatcher.once(eventFullName, listener);
   }
-  listenerList.push({
-    type,
-    handle: listener,
-  })
+  else if (type === 'always') {
+    // 持续性监听
+    dispatcher.on(eventFullName, listener)
+  }
   return {
-    remove: () => removeEventListener(eventFullName, listener)
+    /**
+     * 移除监听器
+     * @returns 
+     */
+    remove: () => dispatcher.removeListener(eventFullName, listener)
   }
 }
 
@@ -153,11 +136,7 @@ const registerEventListener = (eventFullName: EventFullNameType, type: 'always' 
  * @param listener 事件监听器
  */
 const removeEventListener = (eventFullName: EventFullNameType, listener: NTEventListenerHandle) => {
-  let listenerList = eventListenerListMap[eventFullName]
-  if (!listenerList) {
-    return
-  }
-  eventListenerListMap[eventFullName] = listenerList.filter(e => e.handle !== listener)
+  dispatcher.removeListener(eventFullName, listener)
 }
 
 export const useStore = () => {
@@ -211,10 +190,12 @@ export const useStore = () => {
 
     /**
      * 获取事件的监听器
+     * 
+     * @deprecated
      * @param eventFullName 事件名称 格式: `${channel}_${eventName}_${cmdName}`
      * @returns 监听函数列表
      */
-    getEventListenerList,
+    // getEventListenerList,
     /**
      * 添加事件的监听器
      * @param eventFullName 事件名称

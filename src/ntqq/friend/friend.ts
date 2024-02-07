@@ -29,7 +29,7 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
       reject(new Error('timeout'))
     }, 30000)
 
-    registerEventListener(`IPC_DOWN_2_ns-NodeStoreApi-2_onBuddyListChange`, 'once', (payload: NTFriend.PayloadBuddyList) => {
+    registerEventListener(`KernelBuddyListener/onBuddyListChange`, 'once', (payload: NTFriend.PayloadBuddyList) => {
 
       // 清除超时计时
       clearTimeout(time)
