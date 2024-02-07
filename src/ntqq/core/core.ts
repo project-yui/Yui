@@ -2,9 +2,11 @@ import { useLogger } from "../../common/log"
 import { sleep } from "../../common/utils"
 import path from 'path'
 import { release, userInfo } from "os"
-import { getNTPackageInfo } from "../common/utils"
+import { getDeviceInfo, getNTPackageInfo } from "../common/utils"
 import { useNTStore } from "./store"
 import { initMsgService } from "./service/msg"
+import { NodeIDependsAdapter, NodeIDispatcherAdapter, NodeIKernelSessionListener } from "ntwrapper"
+import { initUnitedConfig } from "./service/united-config"
 
 const log = useLogger('NTCore/init')
 
@@ -13,7 +15,7 @@ const log = useLogger('NTCore/init')
  */
 export const prepareBaseEnvironment = async() => {
   log.info('init start')
-  const { getWrapperUtil, getGlobalAdapter, getWrapperEngine, getLoginService } = useNTStore()
+  const { getWrapperUtil, getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTStore()
   // const wrapper = require('../versions/9.9.7-21357/wrapper.node') as typeof NTNativeWrapper
   const wrapperUtil = getWrapperUtil()
   const configFolder = wrapperUtil.getNTUserDataInfoConfig()
@@ -34,7 +36,7 @@ export const prepareBaseEnvironment = async() => {
     app_version: pkgInfo.version,
     os_version: 'Windows 10 Pro',
     use_xlog: true,
-    qua: 'V1_WIN_NQ_9.9.7_21357_GW_B',
+    qua: `V1_WIN_NQ_${pkgInfo.version.replace('-', '_')}_GW_B`,
     global_path_config: {
       desktopGlobalPath: globalPath
     },
@@ -73,7 +75,104 @@ export const prepareBaseEnvironment = async() => {
   const isLogout = await login.getLoginMiscData('isLogout')
   log.info('isLogout:', isLogout)
   await sleep(2000)
-
-  initMsgService()
+  const user = loginList.LocalLoginInfoList.find(e => e.isQuickLogin)
+  if (!user) {
+    return
+  }
+  const session = getWrapperSession()
+  const miscService = session.getNodeMiscService()
+  miscService.sendLog(2,"electron","[1707329334406][Main][performance/Reporter] [performance report histogram]:  LOGIN_SERVICE 60 {}")
+  const msfService = session.getMSFService()
+  log.info('getMsfStatus:', msfService.getMsfStatus())
+  
+  const loginResult = await login.quickLoginWithUin(user.uin)
+  log.info('loginResult:', loginResult)
+  await sleep(1000)
+  // wrapperUtil.emptyWorkingSet(61444);
+  const depends = new NodeIDependsAdapter({
+    onMSFSsoError() {
+        log.info('DependsAdapter/onMSFSsoError')
+    },
+    onMSFStatusChange() {
+      log.info('DependsAdapter/onMSFStatusChange')
+    },
+    getGroupCode() {
+      log.info('DependsAdapter/getGroupCode')
+    },
+  })
+  const dispatcherAdapter = new NodeIDispatcherAdapter({
+    dispatchCall() {
+      log.info('DispatcherAdapter/dispatchCall')
+    },
+    dispatchCallWithJson() {
+      log.info('DispatcherAdapter/dispatchCallWithJson')
+    },
+    dispatchRequest() {
+      log.info('DispatcherAdapter/dispatchRequest')
+    },
+  })
+  const sessionListener = new NodeIKernelSessionListener({
+    onGetSelfTinyId(...args) {
+      log.info('KernelSessionListener/onGetSelfTinyId', ...args)
+    },
+    onGProSessionCreate( ...args) {
+      log.info('KernelSessionListener/onGProSessionCreate', ...args)
+    },
+    onNTSessionCreate( ...args) {
+      log.info('KernelSessionListener/onNTSessionCreate', ...args)
+    },
+    onOpentelemetryInit(result) {
+      log.info('KernelSessionListener/onOpentelemetryInit', result)
+      if (result.is_init) {
+        log.info('NTWrapperSession init successful!')
+        initUnitedConfig()
+        initMsgService()
+      }
+      else {
+        log.error('NTWrapperSession init failed!')
+      }
+    },
+    onSessionInitComplete(...args) {
+      log.info('KernelSessionListener/onSessionInitComplete', ...args)
+    },
+    onUserOnlineResult( ...args) {
+      log.info('KernelSessionListener/onUserOnlineResult', ...args)
+    },
+  })
+  session.init({
+    selfUin: user.uin,
+    selfUid: user.uid,
+    desktopPathConfig: {
+      account_path: configFolder
+    },
+    clientVer: pkgInfo.version,
+    a2: '',
+    d2: '',
+    d2Key: '',
+    machineId: '',
+    platform: 3,
+    platVer: release(),
+    appid: '537207183',
+    rdeliveryConfig: {
+      appKey: '',
+      systemId: 0,
+      appId: '',
+      logicEnvironment: '',
+      platform: 3,
+      language: '',
+      sdkVersion: '',
+      userId: '',
+      appVersion: '',
+      osVersion: '',
+      bundleId: '',
+      serverUrl: '',
+      fixedAfterHitKeys: [ '' ]
+    },
+    defaultFileDownloadPath: 'C:\\Users\\jiyec\\Downloads',
+    deviceInfo: getDeviceInfo(),
+    deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}'
+  }, depends, dispatcherAdapter, sessionListener)
+  await sleep(1000)
+  session.startNT()
   
 }

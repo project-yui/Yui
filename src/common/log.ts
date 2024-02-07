@@ -69,7 +69,7 @@ class Logger {
     this.beforeFuncs.forEach(e => e(this.config))
     const now = new Date()
     const fix = (d: number) => (d + '').padStart(2, '0')
-    const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}`
+    const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}.${now.getMilliseconds()}`
     _console[Methods[level]](`%c[${time}]${this.config.namespace}`, Styles[level], ...args)
     this.afterFuncs.forEach(e => e(this.config))
   }

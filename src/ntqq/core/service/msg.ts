@@ -1,16 +1,20 @@
 import { NodeIKernelMsgListener } from "ntwrapper"
 import { useNTDispatcher } from "../dispatcher"
 import { useNTStore } from "../store"
+import { useLogger } from "../../../common/log"
 
 const dispatcher = useNTDispatcher()
-
+const log = useLogger('Service/msg')
 /**
  * 初始化消息服务
  */
 export const initMsgService = () => {
+  log.info('initMsgService')
   const { getWrapperSession } = useNTStore()
   const session = getWrapperSession()
+  log.info('getMsgService')
   const msgService = session.getMsgService()
+  log.info('create listener')
   const listener = new NodeIKernelMsgListener({
     onAddSendMsg(...args) {
       dispatcher.emit('KernelMsgListener/onAddSendMsg', ...args)
@@ -138,7 +142,80 @@ export const initMsgService = () => {
     onImportOldDbProgressUpdate(...args) {
       dispatcher.emit('KernelMsgListener/onImportOldDbProgressUpdate', ...args)
     },
+    onFeedEventUpdate() {
+        
+    },
+    onFirstViewDirectMsgUpdate() {
+        
+    },
+    onFirstViewGroupGuildMapping() {
+        
+    },
+    onGrabPasswordRedBag() {
+        
+    },
+    onGroupGuildUpdate() {
+        
+    },
+    onGuildInteractiveUpdate() {
+        
+    },
+    onGuildNotificationAbstractUpdate() {
+        
+    },
+    onHitCsRelatedEmojiResult() {
+        
+    },
+    onHitEmojiKeywordResult() {
+        
+    },
+    onHitRelatedEmojiResult() {
+        
+    },
+    onlineStatusBigIconDownloadPush() {
+        
+    },
+    onlineStatusSmallIconDownloadPush() {
+        
+    },
+    onLogLevelChanged() {
+        
+    },
+    onMsgBoxChanged() {
+        
+    },
+    onMsgQRCodeStatusChanged() {
+        
+    },
+    onReadFeedEventUpdate() {
+        
+    },
+    onRecvGroupGuildFlag() {
+        
+    },
+    onRecvUDCFlag() {
+        
+    },
+    onRedTouchChanged() {
+        
+    },
+    onTempChatInfoUpdate() {
+        
+    },
+    onUserChannelTabStatusChanged() {
+        
+    },
+    onUserOnlineStatusChanged() {
+        
+    },
+    onUserSecQualityChanged() {
+        
+    },
+    onUserTabStatusChanged() {
+        
+    },
   })
   // 添加事件监听器
+  log.info('add listener')
   msgService.addKernelMsgListener(listener)
 }

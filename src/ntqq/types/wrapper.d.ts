@@ -14,6 +14,10 @@ declare namespace NTNativeWrapper {
     const NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
     const NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
     const NodeIKernelMsgListener: typeof NTNativeWrapper.NodeIKernelMsgListener
+    const NodeIKernelUnitedConfigService: typeof NTNativeWrapper.NodeIKernelUnitedConfigService
+    const NodeIDependsAdapter: typeof NTNativeWrapper.NodeIDependsAdapter
+    const NodeIDispatcherAdapter: typeof NTNativeWrapper.NodeIDispatcherAdapter
+    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
@@ -535,72 +539,72 @@ declare namespace NTNativeWrapper {
   }
 
   interface NodeIKernelMsgListenerConstructorOptions {
-    onRecvMsg?: () => void
-    onFileMsgCome?: () => void
-    onRecvOnlineFileMsg?: () => void
-    onSysMsgNotification?: () => void
-    onRecvSysMsg?: () => void
-    onRecvS2CMsg?: () => void
-    onLineDev?: () => void
-    onKickedOffLine?: () => void
-    onMsgSettingUpdate?: () => void
-    onAddSendMsg?: () => void
-    onMsgRecall?: () => void
-    onSendMsgError?: () => void
-    onRecvMsgSvrRspTransInfo?: () => void
-    onMsgInfoListUpdate?: () => void
-    onMsgInfoListAdd?: () => void
-    onMsgSecurityNotify?: () => void
-    onMsgDelete?: () => void
-    onMsgEventListUpdate?: () => void
-    onCustomWithdrawConfigUpdate?: () => void
-    onChannelFreqLimitInfoUpdate?: () => void
-    onUnreadCntUpdate?: () => void
-    onUnreadCntAfterFirstView?: () => void
-    onContactUnreadCntUpdate?: () => void
-    onMsgAbstractUpdate?: () => void
-    onDraftUpdate?: () => void
-    onRichMediaUploadComplete?: () => void
-    onRichMediaDownloadComplete?: () => void
-    onRichMediaProgerssUpdate?: () => void
-    onGroupFileInfoUpdate?: () => void
-    onSearchGroupFileInfoUpdate?: () => void
-    onGroupTransferInfoUpdate?: () => void
-    onGroupFileInfoAdd?: () => void
-    onGroupTransferInfoAdd?: () => void
-    onEmojiDownloadComplete?: () => void
-    onEmojiResourceUpdate?: () => void
-    onNtMsgSyncStart?: () => void
-    onNtFirstViewMsgSyncEnd?: () => void
-    onNtMsgSyncEnd?: () => void
-    onBroadcastHelperDownloadComplete?: () => void
-    onBroadcastHelperProgerssUpdate?: () => void
-    onInputStatusPush?: () => void
-    onImportOldDbProgressUpdate?: () => void
-    onMsgQRCodeStatusChanged?: () => void
-    onlineStatusSmallIconDownloadPush?: () => void
-    onFirstViewGroupGuildMapping?: () => void
-    onlineStatusBigIconDownloadPush?: () => void
-    onFirstViewDirectMsgUpdate?: () => void
-    onFeedEventUpdate?: () => void
-    onGuildInteractiveUpdate?: () => void
-    onGuildNotificationAbstractUpdate?: () => void
-    onReadFeedEventUpdate?: () => void
-    onTempChatInfoUpdate?: () => void
-    onUserOnlineStatusChanged?: () => void
-    onHitEmojiKeywordResult?: () => void
-    onHitRelatedEmojiResult?: () => void
-    onHitCsRelatedEmojiResult?: () => void
-    onUserTabStatusChanged?: () => void
-    onMsgBoxChanged?: () => void
-    onLogLevelChanged?: () => void
-    onUserChannelTabStatusChanged?: () => void
-    onGroupGuildUpdate?: () => void
-    onGrabPasswordRedBag?: () => void
-    onRedTouchChanged?: () => void
-    onRecvUDCFlag?: () => void
-    onRecvGroupGuildFlag?: () => void
-    onUserSecQualityChanged?: () => void
+    onRecvMsg: () => void
+    onFileMsgCome: () => void
+    onRecvOnlineFileMsg: () => void
+    onSysMsgNotification: () => void
+    onRecvSysMsg: () => void
+    onRecvS2CMsg: () => void
+    onLineDev: () => void
+    onKickedOffLine: () => void
+    onMsgSettingUpdate: () => void
+    onAddSendMsg: () => void
+    onMsgRecall: () => void
+    onSendMsgError: () => void
+    onRecvMsgSvrRspTransInfo: () => void
+    onMsgInfoListUpdate: () => void
+    onMsgInfoListAdd: () => void
+    onMsgSecurityNotify: () => void
+    onMsgDelete: () => void
+    onMsgEventListUpdate: () => void
+    onCustomWithdrawConfigUpdate: () => void
+    onChannelFreqLimitInfoUpdate: () => void
+    onUnreadCntUpdate: () => void
+    onUnreadCntAfterFirstView: () => void
+    onContactUnreadCntUpdate: () => void
+    onMsgAbstractUpdate: () => void
+    onDraftUpdate: () => void
+    onRichMediaUploadComplete: () => void
+    onRichMediaDownloadComplete: () => void
+    onRichMediaProgerssUpdate: () => void
+    onGroupFileInfoUpdate: () => void
+    onSearchGroupFileInfoUpdate: () => void
+    onGroupTransferInfoUpdate: () => void
+    onGroupFileInfoAdd: () => void
+    onGroupTransferInfoAdd: () => void
+    onEmojiDownloadComplete: () => void
+    onEmojiResourceUpdate: () => void
+    onNtMsgSyncStart: () => void
+    onNtFirstViewMsgSyncEnd: () => void
+    onNtMsgSyncEnd: () => void
+    onBroadcastHelperDownloadComplete: () => void
+    onBroadcastHelperProgerssUpdate: () => void
+    onInputStatusPush: () => void
+    onImportOldDbProgressUpdate: () => void
+    onMsgQRCodeStatusChanged: () => void
+    onlineStatusSmallIconDownloadPush: () => void
+    onFirstViewGroupGuildMapping: () => void
+    onlineStatusBigIconDownloadPush: () => void
+    onFirstViewDirectMsgUpdate: () => void
+    onFeedEventUpdate: () => void
+    onGuildInteractiveUpdate: () => void
+    onGuildNotificationAbstractUpdate: () => void
+    onReadFeedEventUpdate: () => void
+    onTempChatInfoUpdate: () => void
+    onUserOnlineStatusChanged: () => void
+    onHitEmojiKeywordResult: () => void
+    onHitRelatedEmojiResult: () => void
+    onHitCsRelatedEmojiResult: () => void
+    onUserTabStatusChanged: () => void
+    onMsgBoxChanged: () => void
+    onLogLevelChanged: () => void
+    onUserChannelTabStatusChanged: () => void
+    onGroupGuildUpdate: () => void
+    onGrabPasswordRedBag: () => void
+    onRedTouchChanged: () => void
+    onRecvUDCFlag: () => void
+    onRecvGroupGuildFlag: () => void
+    onUserSecQualityChanged: () => void
   }
   class NodeIKernelMsgListener {
     constructor(options: NodeIKernelMsgListenerConstructorOptions);
@@ -610,7 +614,7 @@ declare namespace NTNativeWrapper {
     onNTSessionCreate: () => void
     onGProSessionCreate: () => void
     onSessionInitComplete: () => void
-    onOpentelemetryInit: () => void
+    onOpentelemetryInit: (result: {is_init: boolean, is_report: boolean}) => void
     onUserOnlineResult: () => void
     onGetSelfTinyId: () => void
   }
