@@ -13,11 +13,6 @@ const log = useLogger('Store')
 const ipcUpMap: Record<string, (event: Electron.IpcMainEvent, info: IpcUpInfo, ...args: any[]) => void> = {}
 
 type IpcDownHandleType = (info: IpcDownInfo, data: any) => void
-/**
- * 主进程 -> 渲染进程
- * <channel, function>
- */
-const ipcDownMap: Record<string, IpcDownHandleType> = {}
 
 /**
  * GUI通过通道发送消息给electron
@@ -43,28 +38,6 @@ const addIpcMainSend = (channel: string, listener: (event: Electron.IpcMainEvent
  */
 const getIpcMainSend = (channel: string) => {
   return ipcUpMap[channel]
-}
-
-/**
- * 注册通道监听器（唯一）
- * 
- * 主进程 -> 渲染进程
- * 
- * @param channel 通道
- * @param listener 监听器
- */
-const registerIpcDownHandle = (channel: string, listener: IpcDownHandleType) => {
-  ipcDownMap[channel] = listener
-}
-
-/**
- * 获取通道的监听器
- * @param channel 通道
- * @returns 监听器
- */
-const getIpcDownHandle = (channel: string) => {
-  // receive
-  return ipcDownMap[channel]
 }
 
 const ActionMap: Record<string, (p: any) => Promise<BotActionResponse>> = {}
@@ -158,23 +131,7 @@ export const useStore = () => {
      * @returns 触发方法
      */
     getIpcMainSend,
-    
-    /**
-     * 注册通道监听器（唯一）
-     * 
-     * 主进程 -> 渲染进程
-     * 
-     * @param channel 通道
-     * @param listener 监听器
-     */
-    registerIpcDownHandle,
-    /**
-     * 获取通道的监听器
-     * @param channel 通道
-     * @returns 监听器
-     */
-    getIpcDownHandle,
-    
+  
     /**
      * 注册动作处理函数
      * @param name 动作名称

@@ -5,7 +5,9 @@ import { useStore } from "../../store/store"
 import { NTCmdDataType } from "./interfaces"
 import { CallbackInfo } from "../interfaces"
 
-const { registerIpcDownHandle, getIpcMainSend, 
+const { 
+  // registerIpcDownHandle,
+   getIpcMainSend, 
   // getEventListenerList 
 } = useStore()
 const log = useLogger('Base')

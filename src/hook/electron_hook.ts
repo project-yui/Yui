@@ -49,7 +49,6 @@ export const getHookedBrowserWindow = () => {
 }
 
 const hookLoadUrl = () => {
-  const { getIpcDownHandle } = useStore()
   const _loadURL = BrowserWindow.prototype.loadURL;
   BrowserWindow.prototype.loadURL = function(...args){
     // this.setMinimumSize(300, 300);
@@ -84,12 +83,6 @@ const hookLoadUrl = () => {
           // })
         }
         log.info('send:', channel, JSON.stringify(a))
-      }
-      // log.info('寻找监听器...')
-      const listener = getIpcDownHandle(channel)
-      if (listener) {
-        // log.info('找到监听器，开始处理...')
-        listener(a[0], a[1])
       }
       // else {
         // log.info('没有找到监听器！')
