@@ -80,8 +80,6 @@ export const prepareBaseEnvironment = async() => {
     return
   }
   const session = getWrapperSession()
-  const miscService = session.getNodeMiscService()
-  miscService.sendLog(2,"electron","[1707329334406][Main][performance/Reporter] [performance report histogram]:  LOGIN_SERVICE 60 {}")
   const msfService = session.getMSFService()
   log.info('getMsfStatus:', msfService.getMsfStatus())
   
@@ -90,25 +88,25 @@ export const prepareBaseEnvironment = async() => {
   await sleep(1000)
   // wrapperUtil.emptyWorkingSet(61444);
   const depends = new NodeIDependsAdapter({
-    onMSFSsoError() {
-        log.info('DependsAdapter/onMSFSsoError')
+    onMSFSsoError(...args) {
+        log.info('DependsAdapter/onMSFSsoError', ...args)
     },
-    onMSFStatusChange() {
-      log.info('DependsAdapter/onMSFStatusChange')
+    onMSFStatusChange(...args) {
+      log.info('DependsAdapter/onMSFStatusChange', ...args)
     },
-    getGroupCode() {
-      log.info('DependsAdapter/getGroupCode')
+    getGroupCode(...args) {
+      log.info('DependsAdapter/getGroupCode', ...args)
     },
   })
   const dispatcherAdapter = new NodeIDispatcherAdapter({
-    dispatchCall() {
-      log.info('DispatcherAdapter/dispatchCall')
+    dispatchCall(...args) {
+      log.info('DispatcherAdapter/dispatchCall', ...args)
     },
-    dispatchCallWithJson() {
-      log.info('DispatcherAdapter/dispatchCallWithJson')
+    dispatchCallWithJson(...args) {
+      log.info('DispatcherAdapter/dispatchCallWithJson', ...args)
     },
-    dispatchRequest() {
-      log.info('DispatcherAdapter/dispatchRequest')
+    dispatchRequest(...args) {
+      log.info('DispatcherAdapter/dispatchRequest', ...args)
     },
   })
   const sessionListener = new NodeIKernelSessionListener({
@@ -132,8 +130,8 @@ export const prepareBaseEnvironment = async() => {
         log.error('NTWrapperSession init failed!')
       }
     },
-    onSessionInitComplete(...args) {
-      log.info('KernelSessionListener/onSessionInitComplete', ...args)
+    onSessionInitComplete(a, uid) {
+      log.info('KernelSessionListener/onSessionInitComplete', a, uid)
     },
     onUserOnlineResult( ...args) {
       log.info('KernelSessionListener/onUserOnlineResult', ...args)

@@ -614,7 +614,7 @@ declare namespace NTNativeWrapper {
   interface NodeIKernelSessionListenerConstructorOptions {
     onNTSessionCreate: () => void
     onGProSessionCreate: () => void
-    onSessionInitComplete: () => void
+    onSessionInitComplete: (a: number, uid: `u_${string}`) => void
     onOpentelemetryInit: (result: {is_init: boolean, is_report: boolean}) => void
     onUserOnlineResult: () => void
     onGetSelfTinyId: () => void
