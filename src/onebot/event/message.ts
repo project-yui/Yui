@@ -19,6 +19,9 @@ const onRecvMsg = () => {
     if (user.uid === undefined || user.uin === undefined)
       throw new Error('can not get user info!')
     for (const msg of msgList) {
+      // 频道消息暂不处理
+      if (msg.chatType === 4) continue
+      
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       const ret: EventDataType<MessageData> = {
         self: {
@@ -74,7 +77,7 @@ const onRecvMsg = () => {
  * 监听消息更新
  */
 const onUpdateMsg = () => {
-  registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessageItemType[]) => {
+  registerEventListener('KernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessageItemType[]) => {
     const msgList = payload
     const user = getBotAccount()
     if (user.uid === undefined || user.uin === undefined)

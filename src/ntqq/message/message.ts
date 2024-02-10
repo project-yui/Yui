@@ -71,7 +71,7 @@ export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardReq
   
   const { getWrapperSession } = useNTCore()
   const msgService = getWrapperSession().getMsgService()
-  const sendResult = await msgService.multiForwardMsgWithComment(msg.msgInfos, msg.dstContact, msg.commentElements, new Map())
+  const sendResult = await msgService.multiForwardMsgWithComment(msg.msgInfos, msg.srcContact, msg.dstContact, msg.commentElements, new Map())
   const info = await msgInfo
   log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
   // msgLock.unlock()

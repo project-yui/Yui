@@ -247,8 +247,10 @@ export declare namespace NTReceiveMessageType {
      * 
      * 2 - 群聊消息
      * 
+     * 4 - 频道
+     * 
      */
-    chatType: 1 | 2
+    chatType: 1 | 2 | 4
     /**
      * 2 - 普通消息 ?
      * 5 - 撤回消息 ?

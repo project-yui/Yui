@@ -13,7 +13,6 @@ const log = useLogger('File')
  * 获取图像信息
  * 
  * TODO: 使用NTQQ自带方法获取
- * @deprecated 使用NTQQ自带方法获取
  * @param path 图片路径
  * @returns 取图像信息
  */

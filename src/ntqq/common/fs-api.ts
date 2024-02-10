@@ -2,6 +2,10 @@ import { randomUUID } from "crypto"
 import { sendEvent } from "../event/base"
 import { IpcUpInfo } from "../../store/interfaces"
 import { FileType, ImageSizeInfo } from "./fsapi"
+import { useNTCore } from "../core/core"
+import { useLogger } from "../../common/log"
+
+const log = useLogger('FsApi')
 
 /**
  * 调用NT自带的FsApi获取md5
@@ -76,27 +80,32 @@ export const getImageSizeFromPath = async (path: string) => {
  * @param to 目标路径
  * @returns boolean
  */
-export const copyFile = async (from: string, to: string) => {
-  const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-FsApi-2'
-  }
-  const reqData: [string, {
-    fromPath: string
-    toPath: string
-  }, any] = [
-    'copyFile',
-    {
-      fromPath: from,
-      toPath: to,
-    },
-    null,
-  ]
-  const sendResult = await sendEvent<{
-    fromPath: string
-    toPath: string
-  }, boolean>('IPC_UP_2', reqInfo, reqData)
-  return sendResult.data
+export const copyFile = (from: string, to: string) => {
+  const { getWrapperUtil } = useNTCore()
+  const util = getWrapperUtil()
+  const ret = util.copyFile(from, to)
+  log.info('copyFile:', ret)
+  return ret
+  // const uuid = randomUUID()
+  // const reqInfo: IpcUpInfo = {
+  //   type: 'request',
+  //   callbackId: uuid,
+  //   eventName: 'ns-FsApi-2'
+  // }
+  // const reqData: [string, {
+  //   fromPath: string
+  //   toPath: string
+  // }, any] = [
+  //   'copyFile',
+  //   {
+  //     fromPath: from,
+  //     toPath: to,
+  //   },
+  //   null,
+  // ]
+  // const sendResult = await sendEvent<{
+  //   fromPath: string
+  //   toPath: string
+  // }, boolean>('IPC_UP_2', reqInfo, reqData)
+  // return sendResult.data
 }

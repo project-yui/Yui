@@ -223,7 +223,7 @@ declare namespace NTNativeWrapper {
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
-    
+    getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
     /**
      * 合转发并消息
      * 
@@ -232,7 +232,7 @@ declare namespace NTNativeWrapper {
      * @param comments 附带评论
      * @param attributes 属性
      */
-    multiForwardMsgWithComment(forwardList: any[], peer: PeerInfo, comments: any[], attributes: Map<any, any>): Promise<SimpleResult>
+    multiForwardMsgWithComment(forwardList: any[], fromPeer: PeerInfo, toPeer: PeerInfo, comments: any[], attributes: Map<any, any>): Promise<SimpleResult>
     
     /**
      * 撤回指定消息
@@ -702,6 +702,7 @@ declare namespace NTNativeWrapper {
     constructor()
     emptyWorkingSet(a: number): void
     getNTUserDataInfoConfig(): string
+    copyFile(from: string, to: string): boolean
   }
 }
 /**
@@ -912,6 +913,16 @@ declare namespace NodeIKernelMsgServiceType {
     result: number
     errMsg: string
     resourcePath: string
+  }
+  interface GetRichMediaFilePathForGuildReq {
+    md5HexStr: string
+    fileName: string
+    elementType: number,
+    elementSubType: number,
+    thumbSize: number,
+    needCreate: boolean,
+    downloadType: number,
+    file_uuid: ''
   }
   interface BasePathResp {
     /**
