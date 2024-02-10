@@ -1,16 +1,18 @@
 import { NodeIKernelMsgListener } from "ntwrapper"
 import { useNTDispatcher } from "../dispatcher"
-import { useNTStore } from "../store"
+import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
 
 const dispatcher = useNTDispatcher()
 const log = useLogger('Service/msg')
 /**
  * 初始化消息服务
+ * 
+ * Session初始化完成后，才能调用
  */
 export const initMsgService = () => {
   log.info('initMsgService')
-  const { getWrapperSession } = useNTStore()
+  const { getWrapperSession } = useNTCore()
   const session = getWrapperSession()
   log.info('getMsgService')
   const msgService = session.getMsgService()

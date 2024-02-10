@@ -17,13 +17,6 @@ const log = useLogger('NTQQ/Friend')
 export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
   return new Promise(async (resolve, reject) => {
 
-    // 订阅好友列表更新事件
-    const regResult = await sendEvent('IPC_UP_2', {
-      type: 'request',
-      callbackId: randomUUID(),
-      eventName: 'ns-NodeStoreApi-2-register'
-    }, ['onBuddyListChange', null, null])
-
     // 超时拒绝
     let time = setTimeout(() => {
       reject(new Error('timeout'))

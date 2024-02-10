@@ -1,9 +1,8 @@
 import { randomUUID } from "crypto"
 import { useLogger } from "../../common/log"
-import { sendEvent } from "../event/base"
 import { NTLogin } from "./interfaces"
 import { useStore } from "../../store/store"
-import { useNTStore } from "../core/store"
+import { useNTCore } from "../core/core"
 
 const log = useLogger('NT Account')
 const { registerEventListener } = useStore()
@@ -73,9 +72,21 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
     })
     try {
       // 重复登录会导致超时
-      const { getLoginService } = useNTStore()
-      const service = getLoginService()
-      const resp = await service.passwordLogin(ntLogin.loginInfo)
+      const { getLoginService } = useNTCore()
+      const loginService = getLoginService()
+      // 获取登录列表
+      const loginList = await loginService.getLoginList()
+      log.info('login list:', loginList)
+      const quick = loginList.LocalLoginInfoList.find(e => e.uin === ntLogin.loginInfo.uin && e.isQuickLogin)
+      if (quick) {
+        // 可以快速登陆
+        log.info('using quick login.')
+        const loginResult = await loginService.quickLoginWithUin( ntLogin.loginInfo.uin)
+        log.info('loginResult:', loginResult)
+        resolve(loginResult)
+        return
+      }
+      const resp = await loginService.passwordLogin(ntLogin.loginInfo)
       
       // 非重复登录，移除监听
       onUserLoggedIn.remove()

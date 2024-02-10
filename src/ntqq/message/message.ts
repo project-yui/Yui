@@ -5,7 +5,7 @@ import { NTSendMessageType, AddMsgType, NTRecallMessage as NTRecallMessageType }
 import { useLogger } from "../../common/log"
 import { useStore } from "../../store/store"
 import { Lock } from "../../common/lock"
-import { useNTStore } from "../core/store"
+import { useNTCore } from "../core/core"
 
 const log = useLogger('NTMessage')
 // const msgLock = new Lock()
@@ -18,7 +18,7 @@ const { registerEventListener } = useStore()
  * @returns 发送结果
  */
 export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise<NTSendMessageType.SendResponse> => {
-  const { getWrapperSession } = useNTStore()
+  const { getWrapperSession } = useNTCore()
   const session = getWrapperSession()
   const service = session.getMsgService()
   // await msgLock.lock()

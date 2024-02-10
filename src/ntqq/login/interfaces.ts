@@ -11,7 +11,7 @@ export declare namespace NTLogin {
   interface AccountLoginRequest {
     loginInfo: {
       /**
-       * 用户账号
+       * 用户QQ账号
        */
       uin: `${number}`
       /**

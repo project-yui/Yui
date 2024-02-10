@@ -2,7 +2,8 @@ import { randomUUID } from "crypto"
 import { NTEventListenerHandle, useStore } from "../../store/store"
 import { CurrentAccountInfo, UserDetailInfoType } from "./interfaces"
 import { sendEvent } from "../../ntqq/event/base"
-import { useNTStore } from "../../ntqq/core/store"
+import { useNTCore } from "../../ntqq/core/core"
+import { useNTUserStore } from "../../ntqq/store/user"
 
 const { registerEventListener, removeEventListener } = useStore()
 
@@ -22,7 +23,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
       resolve(payload)
     }
     registerEventListener(`KernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
-    const { getWrapperSession } = useNTStore()
+    const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()
     const service = session.getProfileService()
     const result = await service.getUserDetailInfo(uid)
@@ -35,11 +36,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
  * 
  * @returns 
  */
-export const getBotAccount = async (): Promise<CurrentAccountInfo> => {
-  const regResult = await sendEvent<null, CurrentAccountInfo>('IPC_UP_2', {
-    type: 'request',
-    callbackId: randomUUID(),
-    eventName: 'ns-GlobalDataApi-2'
-  }, ['fetchAuthData', null, null])
-  return regResult.data
+export const getBotAccount = () => {
+  const { userInfo } = useNTUserStore()
+  return userInfo
 }

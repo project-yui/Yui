@@ -1,11 +1,14 @@
 import { useLogger } from "../../../common/log"
-import { useNTStore } from "../store"
+import { useNTCore } from "../core"
 
 const log = useLogger('UnitedConfig')
 
+/**
+ * Session初始化完成后才能调用
+ */
 export const initUnitedConfig = () => {
   log.info('initUnitedConfig')
-  const { getWrapperSession } = useNTStore()
+  const { getWrapperSession } = useNTCore()
   const session = getWrapperSession()
   
   const unitedConfig = session.getUnitedConfigService()

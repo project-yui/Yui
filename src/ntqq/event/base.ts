@@ -1,15 +1,8 @@
 import { useConfig } from "../../common/config"
 import { useLogger } from "../../common/log"
 import { IpcDownInfo, IpcUpInfo } from "../../store/interfaces"
-import { useStore } from "../../store/store"
-import { NTCmdDataType } from "./interfaces"
 import { CallbackInfo } from "../interfaces"
 
-const { 
-  // registerIpcDownHandle,
-   getIpcMainSend, 
-  // getEventListenerList 
-} = useStore()
 const log = useLogger('Base')
 const { timeout } = useConfig()
 /**
@@ -42,8 +35,7 @@ export const sendEvent = <ReqType = any, RespType = any>(channel: `IPC_UP_${numb
         timeout: t,
       }
       log.info('getIpcMainSend')
-      const send = getIpcMainSend(channel)
-      send({} as any, reqInfo, reqData)
+      throw new Error('deprecated')
     }
     else {
       reject()

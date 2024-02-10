@@ -6,39 +6,6 @@ import { IpcDownInfo, IpcUpInfo } from "./interfaces"
 
 const log = useLogger('Store')
 
-/**
- * 渲染进程 -> 主进程
- * <channel, function>
- */
-const ipcUpMap: Record<string, (event: Electron.IpcMainEvent, info: IpcUpInfo, ...args: any[]) => void> = {}
-
-type IpcDownHandleType = (info: IpcDownInfo, data: any) => void
-
-/**
- * GUI通过通道发送消息给electron
- * Electron收到消息触发listener
- * 
- * 因此，可以跳过GUI直接触发特定channel的listener
- * 
- * @param channel 通道
- * @param listener 监听器
- */
-const addIpcMainSend = (channel: string, listener: (event: Electron.IpcMainEvent, ...args: any[]) => void) => {
-  if (ipcUpMap[channel]) {
-    log.warn(`通道[${channel}]重复添加`)
-  }
-  ipcUpMap[channel] = listener
-}
-
-/**
- * 获取指定通道的触发方法
- * 
- * @param channel 通道
- * @returns 触发方法
- */
-const getIpcMainSend = (channel: string) => {
-  return ipcUpMap[channel]
-}
 
 const ActionMap: Record<string, (p: any) => Promise<BotActionResponse>> = {}
 
@@ -114,23 +81,6 @@ const removeEventListener = (eventFullName: EventFullNameType, listener: NTEvent
 
 export const useStore = () => {
   return {
-    /**
-     * GUI通过通道发送消息给electron
-     * Electron收到消息触发listener
-     * 
-     * 因此，可以跳过GUI直接触发特定channel的listener
-     * 
-     * @param channel 通道
-     * @param listener 监听器
-     */
-    addIpcMainSend,
-    /**
-     * 获取指定通道的触发方法
-     * 
-     * @param channel 通道
-     * @returns 触发方法
-     */
-    getIpcMainSend,
   
     /**
      * 注册动作处理函数

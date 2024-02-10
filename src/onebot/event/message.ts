@@ -15,13 +15,15 @@ const { sendMessage } = useServer()
 const onRecvMsg = () => {
   registerEventListener('KernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
     const { msgList } = payload
-    const botAccount = await getBotAccount()
+    const user = getBotAccount()
+    if (user.uid === undefined || user.uin === undefined)
+      throw new Error('can not get user info!')
     for (const msg of msgList) {
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       const ret: EventDataType<MessageData> = {
         self: {
-          id: parseInt(botAccount.uin),
-          uid: botAccount.uid
+          id: parseInt(user.uin),
+          uid: user.uid
         },
         time: parseInt(msg.msgTime),
         type: "message",
@@ -74,7 +76,9 @@ const onRecvMsg = () => {
 const onUpdateMsg = () => {
   registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
     const { msgList } = payload
-    const botAccount = await getBotAccount()
+    const user = getBotAccount()
+    if (user.uid === undefined || user.uin === undefined)
+      throw new Error('can not get user info!')
     for (const msg of msgList) {
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
@@ -83,8 +87,8 @@ const onUpdateMsg = () => {
         // 是撤回消息
         const ret: EventDataType<RecallMessageData> = {
           self: {
-            id: parseInt(botAccount.uin),
-            uid: botAccount.uid
+            id: parseInt(user.uin),
+            uid: user.uid
           },
           time: parseInt(msg.msgTime),
           type: "notice",

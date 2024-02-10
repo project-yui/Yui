@@ -53,13 +53,16 @@ const sendForwardMessage = (p: BotMessage.SendMsg): Promise<BotActionResponse<an
         if (msg.data.forwardList) {
           const idList: `${number}`[] = []
           // 2. 发送转发消息的内容
-          const bot = await getBotAccount()
+          const user = getBotAccount()
+          
+          if (user.uid === undefined || user.uin === undefined)
+            throw new Error('can not get user info!')
           for(const m of msg.data.forwardList)
           {
             // 给机器人自己发消息
             if (Array.isArray(m)) {
               log.info('forward item type: msgElement')
-              const result = await sendMessageToFriend(bot.uid, m)
+              const result = await sendMessageToFriend(user.uid, m)
               idList.push(result.msgId)
             }
             else
@@ -70,7 +73,7 @@ const sendForwardMessage = (p: BotMessage.SendMsg): Promise<BotActionResponse<an
           }
           // 3. 创建并发送转发消息
           log.info('forward list:', idList)
-          const result = await sendForwardMessageToGroup(bot.uid, p.group_id, idList.map(e => ({
+          const result = await sendForwardMessageToGroup(user.uid, p.group_id, idList.map(e => ({
             msgId: e,
             senderShowName: 'QQ用户'
           })))

@@ -106,7 +106,6 @@ const hookLoadFile = () => {
 }
 
 const hookIpcMain = () => {
-  const { addIpcMainSend } = useStore()
   /**
    * 不能使用一个变量承接，会导致无法启动
    * const _on = ipcMain.on
@@ -116,9 +115,6 @@ const hookIpcMain = () => {
   // gui发送消息，electron 收到消息
   ipcMain.on = function(channel, listener) {
     log.info('注册频道监听器，监听频道:', channel)
-    if (channel.includes('IPC_UP')) {
-      addIpcMainSend(channel, listener)
-    }
     return (ipcMain as any)._on(channel, function(event: Electron.IpcMainEvent, ...a: any[]) {
 
       if (channel?.includes('IPC_UP') && a.length >= 2 && a[1]) {

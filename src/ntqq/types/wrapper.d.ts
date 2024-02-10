@@ -18,6 +18,8 @@ declare namespace NTNativeWrapper {
     const NodeIDependsAdapter: typeof NTNativeWrapper.NodeIDependsAdapter
     const NodeIDispatcherAdapter: typeof NTNativeWrapper.NodeIDispatcherAdapter
     const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
+    const NodeIKernelBuddyListener: typeof NTNativeWrapper.NodeIKernelBuddyListener
+    const NodeIKernelLoginListener: typeof NTNativeWrapper.NodeIKernelLoginListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
@@ -524,7 +526,7 @@ declare namespace NTNativeWrapper {
      */
     onQRCodeSessionUserScaned: () => void
     onLoginState: () => void
-    onQRCodeLoginSucceed: () => void
+    onQRCodeLoginSucceed: (info: NodeIKernelLoginListenerType.UserInfo) => void
     onQRCodeSessionFailed: () => void
     onLoginFailed: () => void
     onLogoutSucceed: () => void
@@ -741,6 +743,33 @@ declare namespace NodeIQQNTWrapperEngineType {
 }
 declare namespace NodeIDependsAdapterType {
 
+}
+declare namespace NodeIKernelLoginListenerType {
+  interface UserInfo {
+    /**
+     * QQ号
+     */
+    account: `${number}`
+    mainAccount: ''
+    /**
+     * QQ号
+     */
+    uin: `${number}`
+    /**
+     * 用户uid
+     */
+    uid: `u_${string}`
+    /**
+     * 昵称，实际空
+     */
+    nickName: ''
+    gender: 0
+    /**
+     * 年龄，实际0
+     */
+    age: 0
+    faceUrl: ''
+  }
 }
 declare namespace NodeIKernelLoginServiceType {
   interface LoginInitConfig {
