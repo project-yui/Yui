@@ -28,7 +28,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     const session = getWrapperSession()
     const service = session.getProfileService()
     const result = await service.getUserDetailInfo(uid)
-    log.info('getUserDetailInfo:', result)
+    log.info(`getUserDetailInfo[${uid}]:`, result)
   })
 }
 

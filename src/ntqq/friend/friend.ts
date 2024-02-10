@@ -50,27 +50,14 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
  */
 export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Promise<NTFriend.LikeRespType> => {
   log.info('send like:', userId, count)
-  const channel = 'IPC_UP_2'
-  const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-ntApi-2'
-  }
-  const reqData: [string, NTFriend.LikeReqType, any] = [
-    "nodeIKernelProfileLikeService/setBuddyProfileLike",
-    {
-      doLikeUserInfo: {
-        friendUid: userId,
-        sourceId: 71,
-        doLikeCount: count,
-        doLikeTollCount: 0
-      }
-    },
-    null
-  ]
-  const likeResult = await sendEvent<NTFriend.LikeReqType, NTFriend.LikeRespType>(channel, reqInfo, reqData)
-  
+  const { getWrapperSession } = useNTCore()
+  const likeService = getWrapperSession().getProfileLikeService()
+  const likeResult = await likeService.setBuddyProfileLike({
+    friendUid: userId,
+    sourceId: 71,
+    doLikeCount: count,
+    doLikeTollCount: 0
+  })
   log.info('send like result:', likeResult)
-  return likeResult.data
+  return likeResult
 }

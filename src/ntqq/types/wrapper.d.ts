@@ -316,6 +316,7 @@ declare namespace NTNativeWrapper {
   }
   class NodeIKernelProfileLikeService {
     addKernelProfileLikeListener(listener: NodeIKernelProfileLikeListener): number
+    setBuddyProfileLike(like: NodeIKernelProfileLikeServiceType.LikeReq): Promise<NodeIKernelProfileLikeServiceType.LikeResp>
   }
 
   interface NodeIKernelNodeMiscListenerConstructorOptions {
@@ -951,6 +952,18 @@ declare namespace NodeIKernelNodeMiscServiceType {
   interface GetFullScreenInfoResp {
     in_full_screen: boolean
     is_self: boolean
+  }
+}
+
+declare namespace NodeIKernelProfileLikeServiceType {
+  interface LikeReq {
+    friendUid: `u_${string}`,
+    sourceId: 71,
+    doLikeCount: number,
+    doLikeTollCount: 0
+  }
+  interface LikeResp extends SimpleResult{
+    succCounts: number
   }
 }
 
