@@ -15,12 +15,6 @@ const options: RollupOptions = {
       return fs.readFileSync('./tools/prepend.js').toString()
     }
   },
-  watch: {
-    include: [
-      'src/**',
-      'tools/**'
-    ]
-  },
   plugins: [
     resolve({
         // 将自定义选项传递给解析插件

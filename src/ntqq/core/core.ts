@@ -77,6 +77,7 @@ export const prepareBaseEnvironment = async() => {
   await sleep(2000)
   const user = loginList.LocalLoginInfoList.find(e => e.isQuickLogin)
   if (!user) {
+    log.info('no user find!')
     return
   }
   const session = getWrapperSession()
