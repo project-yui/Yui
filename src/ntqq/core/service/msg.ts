@@ -28,6 +28,7 @@ export const initMsgService = () => {
       dispatcher.emit('KernelMsgListener/onBroadcastHelperProgerssUpdate', ...args)
     },
     onRecvMsg(...args) {
+      log.info('KernelMsgListener/onRecvMsg', ...args)
       dispatcher.emit('KernelMsgListener/onRecvMsg', ...args)
     },
     onFileMsgCome(...args) {

@@ -1,30 +1,28 @@
 export interface UserDetailInfoType {
-  info: {
-    /**
-     * 唯一标识
-     */
-    uid: `u_${string}`
-    qid: string
-    /**
-     * QQ号
-     */
-    uin: string
-    /**
-     * QQ昵称
-     */
-    nick: string
-    remark: string
-    longNick: string
-    avatarUrl: string
-    birthday_year: number
-    birthday_month: number
-    birthday_day: number
-    /**
-     * 2 - 女
-     */
-    sex: number
-    regTime: number
-  }
+  /**
+   * 唯一标识
+   */
+  uid: `u_${string}`
+  qid: string
+  /**
+   * QQ号
+   */
+  uin: string
+  /**
+   * QQ昵称
+   */
+  nick: string
+  remark: string
+  longNick: string
+  avatarUrl: string
+  birthday_year: number
+  birthday_month: number
+  birthday_day: number
+  /**
+   * 2 - 女
+   */
+  sex: number
+  regTime: number
 }
 
 /**

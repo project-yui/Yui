@@ -6,6 +6,7 @@ import { release } from "os"
 import { getDeviceInfo, getNTPackageInfo } from "../common/utils"
 import { initMsgService } from "./service/msg"
 import { initUnitedConfig } from "./service/united-config"
+import { initProfileService } from "./service/profile"
 
 const log = useLogger('AfterLogin')
 
@@ -57,6 +58,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
         log.info('NTWrapperSession init successful!')
         initUnitedConfig()
         initMsgService()
+        initProfileService()
       }
       else {
         log.error('NTWrapperSession init failed!')

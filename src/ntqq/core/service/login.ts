@@ -2,7 +2,7 @@ import { NodeIKernelLoginListener } from "ntwrapper"
 import { useLogger } from "../../../common/log"
 import { useNTDispatcher } from "../dispatcher"
 import { useNTCore } from "../core"
-import { initWrapperSession } from "../wraapper-session"
+import { initWrapperSession } from "../wrapper-session"
 import { useNTUserStore } from "../../store/user"
 
 const log = useLogger('LoginInit')

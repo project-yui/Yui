@@ -232,16 +232,6 @@ export declare namespace NTSendMessageType {
  */
 export declare namespace NTReceiveMessageType {
   /**
-   * 消息事件的payload
-   * 
-   * NTQQ -> 框架
-   * 
-   */
-  export interface NTMessagePayloadType {
-    msgList: NTMessageItemType[]
-  }
-
-  /**
    * 每一条消息的信息
    * 
    * NTQQ -> 框架
@@ -656,13 +646,11 @@ export declare namespace NTReceiveMessageType {
  * 消息发送之后，NTBackend会向NTUI层下发新发送的消息
  */
 export interface AddMsgType {
-  msgRecord: {
-    /**
-     * 消息Id
-     */
-    msgId: `${number}`
-    subMsgType: number
-  }
+  /**
+   * 消息Id
+   */
+  msgId: `${number}`
+  subMsgType: number
 }
 
 export namespace NTRecallMessage{

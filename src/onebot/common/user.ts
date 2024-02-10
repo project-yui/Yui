@@ -1,11 +1,12 @@
 import { randomUUID } from "crypto"
 import { NTEventListenerHandle, useStore } from "../../store/store"
 import { CurrentAccountInfo, UserDetailInfoType } from "./interfaces"
-import { sendEvent } from "../../ntqq/event/base"
 import { useNTCore } from "../../ntqq/core/core"
 import { useNTUserStore } from "../../ntqq/store/user"
+import { useLogger } from "../../common/log"
 
 const { registerEventListener, removeEventListener } = useStore()
+const log = useLogger('Common/User')
 
 export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType> => {
   return new Promise(async (resolve, reject) => {
@@ -14,7 +15,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     let time = setTimeout(() => {
       if (userInfoListener)
         removeEventListener('KernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
-      reject('timeout')
+      reject('getUserInfoByUid timeout')
     }, 30000)
     userInfoListener = (payload: UserDetailInfoType) => {
 
@@ -27,7 +28,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     const session = getWrapperSession()
     const service = session.getProfileService()
     const result = await service.getUserDetailInfo(uid)
-    
+    log.info('getUserDetailInfo:', result)
   })
 }
 

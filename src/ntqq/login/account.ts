@@ -3,6 +3,7 @@ import { useLogger } from "../../common/log"
 import { NTLogin } from "./interfaces"
 import { useStore } from "../../store/store"
 import { useNTCore } from "../core/core"
+import { sleep } from "../../common/utils"
 
 const log = useLogger('NT Account')
 const { registerEventListener } = useStore()
@@ -73,6 +74,7 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
     try {
       // 重复登录会导致超时
       const { getLoginService } = useNTCore()
+      await sleep(2000)
       const loginService = getLoginService()
       // 获取登录列表
       const loginList = await loginService.getLoginList()

@@ -1,9 +1,10 @@
 import { randomUUID } from "crypto"
 import { useStore } from "../../store/store"
-import { sendEvent } from "../event/base"
 import { NTFriend } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { IpcUpInfo } from "../../store/interfaces"
+import { useNTCore } from "../core/core"
+import { sendEvent } from "../event/base"
 
 
 const { registerEventListener } = useStore()
@@ -19,7 +20,7 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
 
     // 超时拒绝
     let time = setTimeout(() => {
-      reject(new Error('timeout'))
+      reject(new Error('NTGetFriendList timeout'))
     }, 30000)
 
     registerEventListener(`KernelBuddyListener/onBuddyListChange`, 'once', (payload: NTFriend.PayloadBuddyList) => {
@@ -28,6 +29,9 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
       clearTimeout(time)
       resolve(payload.data)
     })
+    const { getWrapperSession } = useNTCore()
+    const buddyService = getWrapperSession().getBuddyService()
+    // buddyService.
     const reqResult = await sendEvent('IPC_UP_2', {
       type: 'request',
       callbackId: randomUUID(),

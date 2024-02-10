@@ -26,7 +26,7 @@ export const sendEvent = <ReqType = any, RespType = any>(channel: `IPC_UP_${numb
   return new Promise<{ info: IpcDownInfo, data: RespType }>((resolve, reject) => {
     const t = setTimeout(() => {
       log.info('log timeout')
-      reject('timeout')
+      reject('sendEvent timeout')
     }, timeout)
     if (reqInfo.callbackId) {
       callbackMap[reqInfo.callbackId] = {

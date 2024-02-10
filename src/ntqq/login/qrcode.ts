@@ -2,6 +2,7 @@ import { randomUUID } from "crypto"
 import { useStore } from "../../store/store"
 import { NTLogin } from "./interfaces"
 import { useNTCore } from "../core/core"
+import { sleep } from "../../common/utils"
 
 const { registerEventListener } = useStore()
 
@@ -15,6 +16,7 @@ export const NTGetLoginQrCode = (): Promise<NTLogin.GetQRCodeResponse> => {
       resolve(payload)
     })
     const { getLoginService } = useNTCore()
+    await sleep(2000)
     const login = getLoginService()
     login.getQRCodePicture()
 

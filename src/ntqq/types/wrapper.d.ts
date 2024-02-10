@@ -20,6 +20,7 @@ declare namespace NTNativeWrapper {
     const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
     const NodeIKernelBuddyListener: typeof NTNativeWrapper.NodeIKernelBuddyListener
     const NodeIKernelLoginListener: typeof NTNativeWrapper.NodeIKernelLoginListener
+    const NodeIKernelProfileListener: typeof NTNativeWrapper.NodeIKernelProfileListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
