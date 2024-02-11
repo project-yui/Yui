@@ -62,12 +62,10 @@ export declare namespace NTLogin {
    * 二维码
    */
   export interface GetQRCodeResponse {
-    qrcodeInfo: {
-      pngBase64QrcodeData: string
-      qrcodeUrl: string
-      expireTime: number
-      pollTimeInterval: number
-    }
+    pngBase64QrcodeData: string
+    qrcodeUrl: string
+    expireTime: number
+    pollTimeInterval: number
   }
 
   export interface PayloadQRCodeSessionQuickLoginFailed {

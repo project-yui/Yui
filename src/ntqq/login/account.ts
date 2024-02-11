@@ -88,6 +88,7 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
         resolve(loginResult)
         return
       }
+      log.info('using password login:', ntLogin.loginInfo)
       const resp = await loginService.passwordLogin(ntLogin.loginInfo)
       
       // 非重复登录，移除监听
