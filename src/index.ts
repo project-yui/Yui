@@ -1,5 +1,4 @@
 import { useLogger } from "./common/log"
-import { hook } from "./hook";
 import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
@@ -12,12 +11,12 @@ try {
 
   process.on('unhandledRejection', (err) => {
     log.error('unhandledRejection:', err)
-    process.exit(1)
+    // process.exit(1)
   })
 
   log.info('hook')
   // 核心事件hook
-  hook()
+  // hook()
 
   log.info('initNTQQ')
   initNTQQ()

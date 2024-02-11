@@ -15,28 +15,28 @@ const log = useLogger('NTCore/init')
  */
 export const prepareBaseEnvironment = async() => {
   log.info('init start')
-  const { getWrapperUtil, getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTCore()
+  const { getNTConfigStoreFolder, getAppId, getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTCore()
   // const wrapper = require('../versions/9.9.7-21357/wrapper.node') as typeof NTNativeWrapper
-  const wrapperUtil = getWrapperUtil()
-  const configFolder = wrapperUtil.getNTUserDataInfoConfig()
+  const configFolder = getNTConfigStoreFolder()
   log.info('configFolder:', configFolder)
-  const globalPath = path.resolve(configFolder, './nt_qq/global')
+  const globalPath = path.resolve(configFolder, './global')
   const pkgInfo = getNTPackageInfo()
+  const devInfo = getDeviceInfo()
   const cfg: NodeIQQNTWrapperEngineType.Init = {
     base_path_prefix: '',
     /**
      * 3 - windows
      * 5 - linux
      */
-    platform_type: 3,
+    platform_type: process.platform === 'win32' ? 3 : 5,
     /**
      * 4 - desktop ?
      */
     app_type: 4,
     app_version: pkgInfo.version,
-    os_version: 'Windows 10 Pro',
+    os_version: devInfo.osVer,
     use_xlog: true,
-    qua: `V1_WIN_NQ_${pkgInfo.version.replace('-', '_')}_GW_B`,
+    qua: `V1_${process.platform === 'win32' ? 'WIN' : 'LNX' }_NQ_${pkgInfo.version.replace('-', '_')}_GW_B`,
     global_path_config: {
       desktopGlobalPath: globalPath
     },
@@ -54,7 +54,7 @@ export const prepareBaseEnvironment = async() => {
   const login = getLoginService()
   login.initConfig({
     machineId: '',
-    appid: '537207183',
+    appid: getAppId(),
     platVer: release(),
     commonPath: globalPath,
     clientVer: pkgInfo.version,

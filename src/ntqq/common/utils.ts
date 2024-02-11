@@ -1,16 +1,16 @@
 import { randomUUID } from "crypto"
 import { NTPackageInfo } from "./types/utils"
-import { app } from "electron"
 import { existsSync, readFileSync } from "fs"
 import { type, userInfo } from "os"
 import { execSync } from "child_process"
+import path from "path"
 
 export const getNTPackageInfo = (): NTPackageInfo => {
-  const appPath = app.getAppPath()
-  if (!existsSync(`${appPath}/package.json`)) {
+  const pkgPath = path.resolve(__dirname, '../package.json')
+  if (!existsSync(pkgPath)) {
     throw new Error('Can not find package.json!')
   }
-  const pkg = JSON.parse(readFileSync(`${appPath}/package.json`).toString())
+  const pkg = JSON.parse(readFileSync(pkgPath).toString())
   return {
     version: pkg.version
   }

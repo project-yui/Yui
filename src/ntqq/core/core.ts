@@ -38,11 +38,28 @@ const globalAdapter = new NodeIGlobalAdapter({
 const wrapperEngine = new NodeIQQNTWrapperEngine()
 const loginService = new NodeIKernelLoginService()
 const wrapperSession = new NodeIQQNTWrapperSession()
-
+const getAppId = () => {
+   return process.platform === 'win32' ? '537207183' : '537207207'
+}
+const getNTConfigStoreFolder = (): string => {
+  switch(process.platform) {
+    case 'win32':
+      return wrapperUtil.getNTUserDataInfoConfig() + '/nt_qq'
+    case 'linux':
+      // const p = app.getPath('appData')
+      return '~/.config/QQ'
+      break
+    default:
+      return './nt_qq'
+      break
+  }
+}
 export const useNTCore = () => ({
   getWrapperUtil: () => wrapperUtil,
   getGlobalAdapter: () => globalAdapter,
   getWrapperEngine: () => wrapperEngine,
   getLoginService: () => loginService,
   getWrapperSession: () => wrapperSession,
+  getAppId,
+  getNTConfigStoreFolder,
 })

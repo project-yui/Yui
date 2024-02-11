@@ -12,7 +12,7 @@ const log = useLogger('AfterLogin')
 
 export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) => {
   log.info('start to init wrapper session')
-  const { getWrapperSession, getWrapperUtil } = useNTCore()
+  const { getWrapperSession, getAppId, getNTConfigStoreFolder } = useNTCore()
   const session = getWrapperSession()
   const msfService = session.getMSFService()
   log.info('getMsfStatus:', msfService.getMsfStatus())
@@ -71,8 +71,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       log.info('KernelSessionListener/onUserOnlineResult', ...args)
     },
   })
-  const wrapperUtil = getWrapperUtil()
-  const configFolder = wrapperUtil.getNTUserDataInfoConfig()
+  const configFolder = getNTConfigStoreFolder()
   const pkgInfo = getNTPackageInfo()
   session.init({
     selfUin: uin,
@@ -87,7 +86,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     machineId: '',
     platform: 3,
     platVer: release(),
-    appid: '537207183',
+    appid: getAppId(),
     rdeliveryConfig: {
       appKey: '',
       systemId: 0,
