@@ -1,13 +1,15 @@
 {
   "name": "ntqq-bot",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
+    "dev": "rollup -c --configPlugin @rollup/plugin-typescript -w",
+    "build": "rollup -c --configPlugin @rollup/plugin-typescript",
     "start": "cross-env YUKIHANA_LOG=true .\\ntqq\\QQ.exe",
+    "nodestart": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js",
+    "compile": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\compile.js",
     "test": "cross-env YUKIHANA_LOG=true cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\""
   },
   "keywords": [],
@@ -21,9 +23,12 @@
     "@types/node": "^20.8.7",
     "@types/uuid": "^9.0.6",
     "@types/ws": "^8.5.8",
+    "bytenode": "^1.5.3",
     "cross-env": "^7.0.3",
     "electron": "25.8.1",
+    "javascript-obfuscator": "^4.1.0",
     "rollup": "^4.1.4",
+    "rollup-plugin-obfuscator": "^1.1.0",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
   },

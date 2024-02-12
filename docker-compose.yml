@@ -13,6 +13,6 @@ services:
       - "8080:8080"     #red默认端口
     environment:
       - TZ=Asia/Shanghai
-      - VNC_PASSWD=vncpasswd
+      - YUKIHANA_LOG=true
     volumes:
       - ./data/QQ:/root/.config/QQ

@@ -13,12 +13,14 @@ const log = useLogger('File')
  * 获取图像信息
  * 
  * TODO: 使用NTQQ自带方法获取
- * @deprecated 使用NTQQ自带方法获取
  * @param path 图片路径
  * @returns 取图像信息
  */
 export const getImageInfo = async (path: string): Promise<ImageInfo | undefined> => {
-  if (!fs.existsSync(path)) return undefined
+  if (!fs.existsSync(path)) {
+    log.info('File does not exists!')
+    return undefined
+  }
   const ret = imageSize(path)
   const md5 = await getFileMd5(path)
   const stat = fs.statSync(path)
@@ -86,6 +88,7 @@ export const downloadFile = (url: string, targetPath?: string) => {
       })
     })
     client.on('error', (err) => {
+      log.error('failed to download file')
       fs.closeSync(fd)
       reject(err)
     })

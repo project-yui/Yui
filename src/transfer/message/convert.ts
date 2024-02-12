@@ -180,10 +180,10 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           // const fileType = await getFileType(src.path)
           // log.info('file type:', fileType)
           // get real storage path
-          const realPath = await getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
           log.info('real path:', realPath)
           // copy
-          const ret = await copyFile(src.path, realPath)
+          const ret = copyFile(src.path, realPath)
           // rm temp
           if (ret) {
             // 删除图片

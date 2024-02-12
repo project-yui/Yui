@@ -1,8 +1,9 @@
 import { randomUUID } from "crypto"
 import { useLogger } from "../../common/log"
-import { sendEvent } from "../event/base"
 import { NTLogin } from "./interfaces"
 import { useStore } from "../../store/store"
+import { useNTCore } from "../core/core"
+import { sleep } from "../../common/utils"
 
 const log = useLogger('NT Account')
 const { registerEventListener } = useStore()
@@ -32,7 +33,7 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
     }
 
     // 注册重复登录监听事件
-    const onUserLoggedIn = registerEventListener('IPC_DOWN_1_ns-ntApi-1_nodeIKernelLoginListener/onUserLoggedIn', 'once', (payload: any) => {
+    const onUserLoggedIn = registerEventListener('KernelLoginListener/onUserLoggedIn', 'once', (payload: any) => {
       if (!responseStart) {
         responseStart = true
         result.result = '-1'
@@ -41,13 +42,13 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
       }
     })
     // 注册登录失败事件
-    const onQRCodeSessionQuickLoginFailed = registerEventListener('IPC_DOWN_1_ns-ntApi-1_nodeIKernelLoginListener/onQRCodeSessionQuickLoginFailed', 'once', (payload: NTLogin.PayloadQRCodeSessionQuickLoginFailed) => {
+    const onQRCodeSessionQuickLoginFailed = registerEventListener('KernelLoginListener/onQRCodeSessionQuickLoginFailed', 'once', (payload: NTLogin.PayloadQRCodeSessionQuickLoginFailed) => {
       // 需要手Q确认，但是手Q没有登录
       result.result = '-1'
       result.loginErrorInfo.errMsg = '需要手Q确认，但是手Q没有登录'
       reject(result)
     })
-    const onConfirmUnusualDeviceFailed = registerEventListener('IPC_DOWN_1_ns-ntApi-1_nodeIKernelLoginListener/OnConfirmUnusualDeviceFailed', 'once', (payload: NTLogin.PayloadConfirmUnusualDeviceFailed) => {
+    const onConfirmUnusualDeviceFailed = registerEventListener('KernelLoginListener/OnConfirmUnusualDeviceFailed', 'once', (payload: NTLogin.PayloadConfirmUnusualDeviceFailed) => {
       // 手Q有登录，但是手Q取消/拒绝授权
       result.result = '-1'
       let msg = '不知道发生了什么'
@@ -64,7 +65,7 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
       reject(result)
     })
     
-    const onLoginState = registerEventListener('IPC_DOWN_1_ns-ntApi-1_nodeIKernelLoginListener/onLoginState', 'once', (payload: { state: number }) => {
+    const onLoginState = registerEventListener('KernelLoginListener/onLoginState', 'once', (payload: { state: number }) => {
       if (payload.state === 0) {
         // 手Q确认，登录成功
         resolve(result)
@@ -72,45 +73,53 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
     })
     try {
       // 重复登录会导致超时
-      const resp = await sendEvent<NTLogin.AccountLoginRequest, NTLogin.AccountLoginResponse>('IPC_UP_1', {
-        type: "request",
-        callbackId: randomUUID(),
-        eventName: "ns-ntApi-1"
-      }, [
-        'nodeIKernelLoginService/passwordLogin',
-        ntLogin,
-        null
-      ])
+      const { getLoginService } = useNTCore()
+      await sleep(2000)
+      const loginService = getLoginService()
+      // 获取登录列表
+      const loginList = await loginService.getLoginList()
+      log.info('login list:', loginList)
+      const quick = loginList.LocalLoginInfoList.find(e => e.uin === ntLogin.loginInfo.uin && e.isQuickLogin)
+      if (quick) {
+        // 可以快速登陆
+        log.info('using quick login.')
+        const loginResult = await loginService.quickLoginWithUin( ntLogin.loginInfo.uin)
+        log.info('loginResult:', loginResult)
+        resolve(loginResult)
+        return
+      }
+      log.info('using password login:', ntLogin.loginInfo)
+      const resp = await loginService.passwordLogin(ntLogin.loginInfo)
+      
       // 非重复登录，移除监听
       onUserLoggedIn.remove()
 
       if (!responseStart) {
         responseStart = true
-        const data = resp.data
-        if (data.result === '0') {
+        if (resp.result === '0') {
           // 直接成功
           onLoginState.remove()
           onQRCodeSessionQuickLoginFailed.remove()
           onConfirmUnusualDeviceFailed.remove()
-          resolve(resp.data)
+          resolve(resp)
         }
-        else if (data.result === '4'){
+        else if (resp.result === '4'){
           // 需要手Q确认，通知客户端
 
         }
-        else if (data.result === '140022008') {
+        else if (resp.result === '140022008') {
           // 滑动验证
           onLoginState.remove()
           onQRCodeSessionQuickLoginFailed.remove()
           onConfirmUnusualDeviceFailed.remove()
-          resolve(resp.data)
+          resolve(resp)
         }
         else {
           // 其它情况
           onLoginState.remove()
           onQRCodeSessionQuickLoginFailed.remove()
           onConfirmUnusualDeviceFailed.remove()
-          reject(resp.data)
+          reject(resp)
         }
       }
     }

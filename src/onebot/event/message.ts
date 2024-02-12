@@ -13,15 +13,20 @@ const { sendMessage } = useServer()
  * 
  */
 const onRecvMsg = () => {
-  registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
-    const { msgList } = payload
-    const botAccount = await getBotAccount()
+  registerEventListener('KernelMsgListener/onRecvMsg', 'always', async (payload: NTReceiveMessageType.NTMessageItemType[]) => {
+    const msgList = payload
+    const user = getBotAccount()
+    if (user.uid === undefined || user.uin === undefined)
+      throw new Error('can not get user info!')
     for (const msg of msgList) {
+      // 频道消息暂不处理
+      if (msg.chatType === 4) continue
+      
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       const ret: EventDataType<MessageData> = {
         self: {
-          id: parseInt(botAccount.uin),
-          uid: botAccount.uid
+          id: parseInt(user.uin),
+          uid: user.uid
         },
         time: parseInt(msg.msgTime),
         type: "message",
@@ -31,7 +36,7 @@ const onRecvMsg = () => {
           message_id: msg.msgId,
           message_seq: msg.msgSeq,
           group_id: 0,
-          sender_id: parseInt(senderUserInfo.info.uin),
+          sender_id: parseInt(senderUserInfo.uin),
           sender_uid: msg.senderUid,
           sender_member_name: msg.sendMemberName,
           time: parseInt(msg.msgTime),
@@ -56,7 +61,7 @@ const onRecvMsg = () => {
         message_id: e.msgId,
         message_seq: e.msgSeq,
         group_id: 0,
-        sender_id: parseInt(senderUserInfo.info.uin),
+        sender_id: parseInt(senderUserInfo.uin),
         sender_uid: e.senderUid,
         sender_member_name: e.sendMemberName,
         time: parseInt(e.msgTime),
@@ -72,9 +77,11 @@ const onRecvMsg = () => {
  * 监听消息更新
  */
 const onUpdateMsg = () => {
-  registerEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessagePayloadType) => {
-    const { msgList } = payload
-    const botAccount = await getBotAccount()
+  registerEventListener('KernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessageItemType[]) => {
+    const msgList = payload
+    const user = getBotAccount()
+    if (user.uid === undefined || user.uin === undefined)
+      throw new Error('can not get user info!')
     for (const msg of msgList) {
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
@@ -83,8 +90,8 @@ const onUpdateMsg = () => {
         // 是撤回消息
         const ret: EventDataType<RecallMessageData> = {
           self: {
-            id: parseInt(botAccount.uin),
-            uid: botAccount.uid
+            id: parseInt(user.uin),
+            uid: user.uid
           },
           time: parseInt(msg.msgTime),
           type: "notice",
@@ -94,7 +101,7 @@ const onUpdateMsg = () => {
             message_id: msg.msgId,
             message_seq: msg.msgSeq,
             group_id: 0,
-            sender_id: parseInt(senderUserInfo.info.uin),
+            sender_id: parseInt(senderUserInfo.uin),
             sender_uid: msg.senderUid,
             sender_member_name: msg.sendMemberName || msg.sendNickName,
             time: parseInt(msg.recallTime),

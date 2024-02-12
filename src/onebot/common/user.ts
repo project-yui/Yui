@@ -1,9 +1,12 @@
 import { randomUUID } from "crypto"
 import { NTEventListenerHandle, useStore } from "../../store/store"
 import { CurrentAccountInfo, UserDetailInfoType } from "./interfaces"
-import { sendEvent } from "../../ntqq/event/base"
+import { useNTCore } from "../../ntqq/core/core"
+import { useNTUserStore } from "../../ntqq/store/user"
+import { useLogger } from "../../common/log"
 
 const { registerEventListener, removeEventListener } = useStore()
+const log = useLogger('Common/User')
 
 export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType> => {
   return new Promise(async (resolve, reject) => {
@@ -11,8 +14,8 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     // 超时拒绝
     let time = setTimeout(() => {
       if (userInfoListener)
-        removeEventListener('IPC_DOWN_2_ns-ntApi-2_nodeIKernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
-      reject('timeout')
+        removeEventListener('KernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
+      reject('getUserInfoByUid timeout')
     }, 30000)
     userInfoListener = (payload: UserDetailInfoType) => {
 
@@ -20,13 +23,12 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
       clearTimeout(time)
       resolve(payload)
     }
-    registerEventListener(`IPC_DOWN_2_ns-ntApi-2_nodeIKernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
-    const regResult = await sendEvent('IPC_UP_2', {
-      type: 'request',
-      callbackId: randomUUID(),
-      eventName: 'ns-ntApi-2'
-    }, ['nodeIKernelProfileService/getUserDetailInfo', {"uid": uid}, null])
-
+    registerEventListener(`KernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
+    const { getWrapperSession } = useNTCore()
+    const session = getWrapperSession()
+    const service = session.getProfileService()
+    const result = await service.getUserDetailInfo(uid)
+    log.info(`getUserDetailInfo[${uid}]:`, result)
   })
 }
 
@@ -35,11 +37,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
  * 
  * @returns 
  */
-export const getBotAccount = async (): Promise<CurrentAccountInfo> => {
-  const regResult = await sendEvent<null, CurrentAccountInfo>('IPC_UP_2', {
-    type: 'request',
-    callbackId: randomUUID(),
-    eventName: 'ns-GlobalDataApi-2'
-  }, ['fetchAuthData', null, null])
-  return regResult.data
+export const getBotAccount = () => {
+  const { userInfo } = useNTUserStore()
+  return userInfo
 }

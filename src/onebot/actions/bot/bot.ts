@@ -1,9 +1,7 @@
 import { useStore } from "../../../store/store"
-import { BotActionResponse, BotActionParams } from "../interfaces"
-import { getUserInfoByUid } from "../../common/user"
 import { loginByAccount, loginByQrCode } from "../../../transfer/login/login"
 
-const { registerActionHandle, registerEventListener, removeEventListener } = useStore()
+const { registerActionHandle } = useStore()
 
 export const initBot = () => {
   // 登录

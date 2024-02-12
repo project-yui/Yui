@@ -1,16 +1,74 @@
-import { UUID } from "crypto"
 
-export interface NativeWrapper {
-  NodeIGlobalAdapter: typeof WrapperExports.NodeIGlobalAdapter
-  NodeIKernelLoginService: typeof WrapperExports.NodeIKernelLoginService
-  NodeIQQNTWrapperEngine: typeof WrapperExports.NodeIQQNTWrapperEngine
-  NodeQQNTWrapperUtil: typeof WrapperExports.NodeQQNTWrapperUtil
-}
+/// <reference types="node" />
+
+
 /**
  * native层
  */
-declare namespace WrapperExports {
+declare namespace NTNativeWrapper {
   
+  namespace CrossProcessExports {
+    const NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
+    const NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
+    const NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
+    const NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+    const NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
+    const NodeIKernelMsgListener: typeof NTNativeWrapper.NodeIKernelMsgListener
+    const NodeIKernelUnitedConfigService: typeof NTNativeWrapper.NodeIKernelUnitedConfigService
+    const NodeIDependsAdapter: typeof NTNativeWrapper.NodeIDependsAdapter
+    const NodeIDispatcherAdapter: typeof NTNativeWrapper.NodeIDispatcherAdapter
+    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
+    const NodeIKernelBuddyListener: typeof NTNativeWrapper.NodeIKernelBuddyListener
+    const NodeIKernelLoginListener: typeof NTNativeWrapper.NodeIKernelLoginListener
+    const NodeIKernelProfileListener: typeof NTNativeWrapper.NodeIKernelProfileListener
+  }
+  interface CrossProcessExportsInterface {
+    NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
+    NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
+    NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
+    NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+  }
+  interface DeviceInfo {
+    guid: `${string}-${string}-${string}-${string}-${string}`
+    /**
+     * 构建版本
+     * 
+     * 形如：
+     * 
+     * 9.9.7-21357
+     */
+    buildVer: string,
+    /**
+     * ???
+     */
+    localId: 2052,
+    /**
+     * 计算机用户名
+     */
+    devName: string,
+    /**
+     * 计算机类别
+     * 
+     * Windows_NT/Linux
+     */
+    devType: string,
+    vendorName: '',
+    /**
+     * 操作系统版本
+     * 
+     * Windows 10 Pro
+     */
+    osVer: string,
+    /**
+     * win32 / linux
+     */
+    vendorOsName: string,
+    /**
+     * 静音
+     */
+    setMute: boolean,
+    vendorType: 0
+  }
   interface NodeIDependsAdapterConstructorOptions {
     onMSFStatusChange: () => void
     onMSFSsoError: () => void
@@ -43,8 +101,14 @@ declare namespace WrapperExports {
 
   }
 
+  interface NodeIKernelAvatarListenerConstructorOptions {
+    onAvatarChanged: () => void
+    onGroupAvatarChanged: () => void
+    onGroupPortraitChanged: () => void
+    onAvatarChangedForUin: () => void
+  }
   class NodeIKernelAvatarListener {
-    constructor()
+    constructor(options: NodeIKernelAvatarListenerConstructorOptions)
   }
   class NodeIKernelAvatarService {
     addAvatarListener(listener: NodeIKernelAvatarListener): number
@@ -159,6 +223,35 @@ declare namespace WrapperExports {
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
+    getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
+    /**
+     * 合转发并消息
+     * 
+     * @param forwardList 转发消息列表
+     * @param peer 目标对象
+     * @param comments 附带评论
+     * @param attributes 属性
+     */
+    multiForwardMsgWithComment(forwardList: any[], fromPeer: PeerInfo, toPeer: PeerInfo, comments: any[], attributes: Map<any, any>): Promise<SimpleResult>
+    
+    /**
+     * 撤回指定消息
+     * 
+     * @param peer 操作对象
+     * @param ids 要撤回的消息id
+     */
+    recallMsg(peer: PeerInfo, ids: `${number}`[]): Promise<SimpleResult>
+    
+    /**
+     * 发送消息
+     * 
+     * 结果在监听器里面回调
+     * @param msgId 消息Id 0
+     * @param peer 发送目标
+     * @param msg 发送的消息内容
+     * @param attributes 属性
+     */
+    sendMsg(msgId: `${number}`, peer: PeerInfo, msg: any[], attributes: Map<any, any>): Promise<SimpleResult>
     IsExistOldDb(): boolean
   }
   class NodeIKernelMSFService {
@@ -182,6 +275,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelNodeMiscService {
     getGetFullScreenInfo(): NodeIKernelNodeMiscServiceType.GetFullScreenInfoResp
+    getMiniAppPath(): string
     isMiniAppExist(): boolean
     /**
      * 发送日志
@@ -191,6 +285,7 @@ declare namespace WrapperExports {
      * @param log 日志内容
      */
     sendLog(level: number, module: string, log: string): void
+    setMiniAppVersion(ver: string): void
     /**
      * 注册系统协议
      * 
@@ -221,6 +316,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelProfileLikeService {
     addKernelProfileLikeListener(listener: NodeIKernelProfileLikeListener): number
+    setBuddyProfileLike(like: NodeIKernelProfileLikeServiceType.LikeReq): Promise<NodeIKernelProfileLikeServiceType.LikeResp>
   }
 
   interface NodeIKernelNodeMiscListenerConstructorOptions {
@@ -272,6 +368,7 @@ declare namespace WrapperExports {
   class NodeIKernelProfileService {
     addKernelProfileListener(listener: NodeIKernelProfileListener): number
     getUserSimpleInfo(a: boolean, uid: `u_${string}`[]): Promise<NodeIKernelProfileServiceType.UserSimpleInfoResp>
+    getUserDetailInfo(uid: `u_${string}`): Promise<SimpleResult>
   }
 
   interface NodeIKernelQiDianListenerConstructorOptions {
@@ -292,6 +389,7 @@ declare namespace WrapperExports {
   }
   class NodeIKernelQQPlayService {
     addKernelQQPlayListener(listener: NodeIKernelQQPlayListener): void
+    uninit(): void
   }
 
   interface NodeIKernelRecentContactListenerConstructorOptions {
@@ -360,8 +458,11 @@ declare namespace WrapperExports {
   }
   class NodeIKernelSettingService {
     addKernelSettingListener(listener: NodeIKernelSettingListener): number
+    getAutoLoginSwitch(): Promise<any>
+    getNeedConfirmSwitch(): Promise<any>
     getSettingForNum(settings: number[]): Promise<NodeIKernelSettingServiceType.GetSettingResp>
     getSettingForStr(settings: number[]): Promise<NodeIKernelSettingServiceType.GetSettingResp>
+    setAutoLoginSwitch(on: boolean): Promise<SimpleResult>
   }
 
   interface NodeIKernelSkinListenerConstructorOptions {
@@ -402,7 +503,14 @@ declare namespace WrapperExports {
     getMsfStatus(): number
     getLoginList(): Promise<NodeIKernelLoginServiceType.LoginInfoListResp>
     getLoginMiscData(name: string): Promise<NodeIKernelLoginServiceType.GetLoginMiscDataResp>
-    initConfig(config: NodeIKernelLoginServiceType.Init): void
+    /**
+     * 获取登录二维码
+     * 
+     * 响应数据在监听器里面触发
+     */
+    getQRCodePicture(): void
+    initConfig(config: NodeIKernelLoginServiceType.LoginInitConfig): void
+    passwordLogin(login: NodeIKernelLoginServiceType.PasswordLoginReq): Promise<NodeIKernelLoginServiceType.PasswordLoginResp>
     quickLoginWithUin(uin: `${number}`): Promise<NodeIKernelLoginServiceType.QuickLoginResp>
     setLoginMiscData(name: string, value: string): Promise<NodeIKernelLoginServiceType.SetLoginMiscDataResp>
   }
@@ -413,9 +521,14 @@ declare namespace WrapperExports {
     onLoginConnecting: () => void
     onQRCodeGetPicture: () => void
     onQRCodeLoginPollingStarted: () => void
+    /**
+     * 用户扫描了二维码
+     * 
+     * @returns 
+     */
     onQRCodeSessionUserScaned: () => void
     onLoginState: () => void
-    onQRCodeLoginSucceed: () => void
+    onQRCodeLoginSucceed: (info: NodeIKernelLoginListenerType.UserInfo) => void
     onQRCodeSessionFailed: () => void
     onLoginFailed: () => void
     onLogoutSucceed: () => void
@@ -505,8 +618,8 @@ declare namespace WrapperExports {
   interface NodeIKernelSessionListenerConstructorOptions {
     onNTSessionCreate: () => void
     onGProSessionCreate: () => void
-    onSessionInitComplete: () => void
-    onOpentelemetryInit: () => void
+    onSessionInitComplete: (a: number, uid: `u_${string}`) => void
+    onOpentelemetryInit: (result: {is_init: boolean, is_report: boolean}) => void
     onUserOnlineResult: () => void
     onGetSelfTinyId: () => void
   }
@@ -522,6 +635,13 @@ declare namespace WrapperExports {
   }
   class NodeIKernelUnitedConfigService {
     addKernelUnitedConfigListener(listener: NodeIKernelUnitedConfigListener): void
+    /**
+     * 拉取配置
+     * 
+     * 在监听器里面回调
+     * @param ids 拉取的配置id
+     */
+    fetchUnitedCommendConfig(ids: `${string}`[]): void
     loadUnitedConfig(id: string): Promise<NodeIKernelUnitedConfigServiceType.UnitedConfigResp>
     isUnitedConfigSwitchOn(id: string): Promise<NodeIKernelUnitedConfigServiceType.IsUnitedConfigSwitchOnResp>
     registerUnitedConfigPushGroupList(list: string[]): void
@@ -574,6 +694,7 @@ declare namespace WrapperExports {
     getSkinService(): NodeIKernelSkinService
     getStorageCleanService(): NodeIKernelStorageCleanService
     getUnitedConfigService(): NodeIKernelUnitedConfigService
+    offLine(info: NodeIQQNTWrapperSessionType.OfflineReq): Promise<SimpleResult>
   }
   
 
@@ -581,6 +702,7 @@ declare namespace WrapperExports {
     constructor()
     emptyWorkingSet(a: number): void
     getNTUserDataInfoConfig(): string
+    copyFile(from: string, to: string): boolean
   }
 }
 /**
@@ -609,7 +731,7 @@ declare namespace NodeIQQNTWrapperEngineType {
     /**
      * 形如：V1_WIN_NQ_9.9.7_21357_GW_B
      */
-    qua: string
+    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B`
     global_path_config: {
       desktopGlobalPath: string
     }
@@ -625,8 +747,35 @@ declare namespace NodeIQQNTWrapperEngineType {
 declare namespace NodeIDependsAdapterType {
 
 }
+declare namespace NodeIKernelLoginListenerType {
+  interface UserInfo {
+    /**
+     * QQ号
+     */
+    account: `${number}`
+    mainAccount: ''
+    /**
+     * QQ号
+     */
+    uin: `${number}`
+    /**
+     * 用户uid
+     */
+    uid: `u_${string}`
+    /**
+     * 昵称，实际空
+     */
+    nickName: ''
+    gender: 0
+    /**
+     * 年龄，实际0
+     */
+    age: 0
+    faceUrl: ''
+  }
+}
 declare namespace NodeIKernelLoginServiceType {
-  interface Init {
+  interface LoginInitConfig {
     machineId: string
     appid: string
     platVer: string
@@ -640,6 +789,34 @@ declare namespace NodeIKernelLoginServiceType {
      * 计算机用户名
      */
     hostName: string
+  }
+  interface PasswordLoginReq {
+    /**
+     * QQ号码
+     */
+    uin: `${number}`,
+    /**
+     * 密码的MD5
+     */
+    passwordMd5: string,
+    step: number,
+    newDeviceLoginSig: string,
+    proofWaterSig: string,
+    proofWaterRand: string,
+    proofWaterSid: string,
+  }
+  interface PasswordLoginResp {
+    result: `${number}`,
+    loginErrorInfo: {
+      step: number,
+      errMsg: string,
+      proofWaterUrl: string,
+      newDevicePullQrCodeSig: '0x',
+      jumpUrl: string,
+      jumpWord: string,
+      tipsTitle: string,
+      tipsContent: string,
+    }
   }
   interface LoginInfoListResp {
     result: number
@@ -697,6 +874,29 @@ declare namespace NodeIKernelLoginServiceType {
   }
 }
 
+/**
+ * 简单响应体
+ * 
+ * ```js
+ * {
+ *   result: 0,
+ *   errMsg: ''
+ * }
+ * ```
+ */
+interface SimpleResult {
+  /**
+   * 0 - 成功
+   */
+  result: number
+  errMsg: string
+}
+
+interface PeerInfo {
+  chatType: number,
+  peerUid: `${number}` | `u_${string}`,
+  guildId: string
+}
 declare namespace NodeIKernelMsgServiceType {
   interface FetchStatusMgrInfoResp {
     /**
@@ -713,6 +913,16 @@ declare namespace NodeIKernelMsgServiceType {
     result: number
     errMsg: string
     resourcePath: string
+  }
+  interface GetRichMediaFilePathForGuildReq {
+    md5HexStr: string
+    fileName: string
+    elementType: number,
+    elementSubType: number,
+    thumbSize: number,
+    needCreate: boolean,
+    downloadType: number,
+    file_uuid: ''
   }
   interface BasePathResp {
     /**
@@ -735,7 +945,7 @@ declare namespace NodeIKernelMsgServiceType {
     all_unread_cnt: UnreadCnt
     atme_unread_cnt: UnreadCnt
     atall_unread_cnt: UnreadCnt
-    peer: Peer
+    peer: PeerInfo
     related_to_me_string: string
     related_to_me_cnt: number
     last_related_to_me_type: number
@@ -747,17 +957,24 @@ declare namespace NodeIKernelMsgServiceType {
     type: number
     cnt: number
   }
-  interface Peer {
-    chatType: number,
-    peerUid: string,
-    guildId: string
-  }
 }
 
 declare namespace NodeIKernelNodeMiscServiceType {
   interface GetFullScreenInfoResp {
     in_full_screen: boolean
     is_self: boolean
+  }
+}
+
+declare namespace NodeIKernelProfileLikeServiceType {
+  interface LikeReq {
+    friendUid: `u_${string}`,
+    sourceId: 71,
+    doLikeCount: number,
+    doLikeTollCount: 0
+  }
+  interface LikeResp extends SimpleResult{
+    succCounts: number
   }
 }
 
@@ -894,40 +1111,7 @@ declare namespace NodeIQQNTWrapperSessionType {
      * 默认下载路径
      */
     defaultFileDownloadPath: string
-    deviceInfo: {
-      guid: UUID
-      /**
-       * 构建版本
-       * 
-       * 形如：
-       * 
-       * 9.9.7-21357
-       */
-      buildVer: string,
-      /**
-       * 
-       */
-      localId: 2052,
-      /**
-       * 计算机用户名
-       */
-      devName: String,
-      /**
-       * 计算机类别
-       */
-      devType: 'Windows_NT',
-      vendorName: '',
-      /**
-       * 操作系统版本
-       */
-      osVer: 'Windows 10 Pro',
-      vendorOsName: 'win32',
-      /**
-       * 静音
-       */
-      setMute: boolean,
-      vendorType: 0
-    }
+    deviceInfo: NTNativeWrapper.DeviceInfo
     /**
      * 示例：
      * 
@@ -935,4 +1119,53 @@ declare namespace NodeIQQNTWrapperSessionType {
      */
     deviceConfig: string
   }
+  interface OfflineReq {
+    deviceInfo: {
+      /**
+       * 每次启动都不一样
+       */
+      guid: `${string}-${string}-${string}-${string}-${string}`,
+      /**
+       * 构建版本
+       * 
+       * 形如：9.9.7-21357
+       */
+      buildVer: string,
+      /**
+       * 形如：2052
+       * 
+       * 不知道是否与版本有关
+       */
+      localId: number,
+      /**
+       * 计算机用户名
+       */
+      devName: string,
+      /**
+       * 系统类型
+       * 
+       * Windows_NT
+       */
+      devType: 'Windows_NT',
+      vendorName: string,
+      /**
+       * 系统版本
+       */
+      osVer: string,
+      /**
+       * 形如：win32
+       */
+      vendorOsName: string,
+      /**
+       * 静音
+       */
+      setMute: boolean,
+      vendorType: 0
+    }
+  }
+}
+
+
+declare module 'ntwrapper' {
+  export = NTNativeWrapper.CrossProcessExports
 }
