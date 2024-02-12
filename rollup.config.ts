@@ -8,7 +8,28 @@ import fs from 'fs'
 import obfuscator from 'rollup-plugin-obfuscator';
 import { spawnSync } from 'child_process';
 
-const options: RollupOptions[] = [{
+const options: RollupOptions[] = [ {
+  input: 'src/compile.ts',
+  output: {
+    dir: 'ntqq/resources/app/app_launcher/',
+    format: 'cjs',
+  },
+  plugins: [
+    resolve({
+      // 将自定义选项传递给解析插件
+      moduleDirectories: ['node_modules'],
+      preferBuiltins: true,
+    }),
+    commonjs({
+      include: /node_modules/,
+      requireReturnsDefault: 'auto', // <---- this solves default issue
+    }),
+    typescript(),
+    // terser(),
+  ],
+  // 指出哪些模块应该视为外部模块
+  external: ['electron', 'module', 'ntwrapper']
+},{
   input: 'src/core.ts',
   output: {
     dir: 'ntqq/resources/app/app_launcher/',
@@ -78,27 +99,6 @@ const options: RollupOptions[] = [{
   ],
   // 指出哪些模块应该视为外部模块
   external: ['electron', 'module', 'ntwrapper']
-}, {
-  input: 'src/compile.ts',
-  output: {
-    dir: 'ntqq/resources/app/app_launcher/',
-    format: 'cjs',
-  },
-  plugins: [
-    resolve({
-      // 将自定义选项传递给解析插件
-      moduleDirectories: ['node_modules'],
-      preferBuiltins: true,
-    }),
-    commonjs({
-      include: /node_modules/,
-      requireReturnsDefault: 'auto', // <---- this solves default issue
-    }),
-    typescript(),
-    // terser(),
-  ],
-  // 指出哪些模块应该视为外部模块
-  external: ['electron', 'module', 'ntwrapper']
-}
+},
 ];
 export default options
