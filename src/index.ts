@@ -1,16 +1,24 @@
 import bytenode from 'bytenode'
-import { readFileSync } from 'fs'
+import { existsSync } from 'fs'
 import { resolve } from 'path'
-// require('./compile.js')
-if (false) {
-  require('./core.js')
-}
-else {
-  const corePath = resolve(__dirname, './core.jsc')
-  console.log('require:', corePath)
-  const code = readFileSync(corePath)
-  const f = bytenode.runBytecode(code)
-  // const f = require(corePath)
-  const d = {}
-  f(d, require, module, __filename, __dirname)
+switch (process.env['YUKIHANA_ACTION']) {
+  case 'dev':
+    // 开发模式，从源码启动
+    require('./core.js')
+    break
+  case 'compile':
+    // 调用编译模块
+    /**
+     * 用途：
+     * 快速生成Linux平台字节码
+     */
+    if (existsSync(resolve(__dirname, './compile.js')))
+      require('./compile.js')
+    break
+  default: {
+      bytenode
+      // 从字节码启动
+      require('./core.jsc')
+    }
+    break
 }

@@ -1,4 +1,5 @@
 import { useLogger } from "./common/log"
+import { hook } from "./hook";
 import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
@@ -15,8 +16,8 @@ try {
     // process.exit(1)
   })
 
-  // log.info('hook')
   // 核心事件hook
+  // log.info('hook')
   // hook()
 
   log.info('initNTQQ')
@@ -34,8 +35,9 @@ try {
 
   log.info('hookWrapper')
   hookWrapper()
+
   // ntqq/resources/app/app_launcher/index.js 原始代码
-  // require('./launcher.node').load('external_index', module);
+  require('./launcher.node').load('external_index', module);
 }
 catch(err) {
   log.error('Error:', err)
