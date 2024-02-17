@@ -3,6 +3,7 @@ import { hook } from "./hook";
 import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
+import { test } from "./test/test";
 // import { test } from "./test/test";
 import { hookWrapper } from "./wrapper/hook";
 
@@ -17,8 +18,10 @@ try {
   })
 
   // 核心事件hook
-  // log.info('hook')
-  // hook()
+  if (process.env['YUKIHANA_ACTION'] === 'dev') {
+    log.info('hook')
+    hook()
+  }
 
   log.info('initNTQQ')
   initNTQQ()
@@ -37,7 +40,8 @@ try {
   hookWrapper()
 
   // ntqq/resources/app/app_launcher/index.js 原始代码
-  require('./launcher.node').load('external_index', module);
+  if (process.env['YUKIHANA_ACTION'] === 'dev')
+    require('./launcher.node').load('external_index', module);
 }
 catch(err) {
   log.error('Error:', err)

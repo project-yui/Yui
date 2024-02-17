@@ -1,7 +1,5 @@
-import { ipcMain, BrowserWindow, protocol, app } from 'electron'
+import { ipcMain, BrowserWindow, protocol } from 'electron'
 import { useLogger } from '../common/log';
-import { useStore } from '../store/store';
-import { readFileSync, writeFileSync } from 'fs';
 
 const log = useLogger('ElectronHook')
 

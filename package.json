@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "rollup -c --configPlugin @rollup/plugin-typescript -w",
     "build": "rollup -c --configPlugin @rollup/plugin-typescript",
-    "start": "cross-env YUKIHANA_LOG=true .\\ntqq\\QQ.exe",
-    "start-log-file": "cross-env YUKIHANA_LOG=true cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"",
+    "start": "cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev .\\ntqq\\QQ.exe",
+    "start-log-file": "cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"",
     "nodestart": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js",
     "compile-jsc": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\compile.js"
   },

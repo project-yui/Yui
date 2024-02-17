@@ -101,6 +101,7 @@ export const initMsgService = () => {
       dispatcher.emit('KernelMsgListener/onDraftUpdate', ...args)
     },
     onRichMediaUploadComplete(...args) {
+      log.info('KernelMsgListener/onRichMediaUploadComplete', ...args)
       dispatcher.emit('KernelMsgListener/onRichMediaUploadComplete', ...args)
     },
     onRichMediaDownloadComplete(...args) {
@@ -219,6 +220,6 @@ export const initMsgService = () => {
     },
   })
   // 添加事件监听器
-  log.info('add listener')
+  log.info('add msg listener')
   msgService.addKernelMsgListener(listener)
 }

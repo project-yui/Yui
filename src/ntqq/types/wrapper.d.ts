@@ -294,6 +294,13 @@ declare namespace NTNativeWrapper {
      * @param schemes 协议
      */
     registerSchemes(schemes: string): boolean
+    /**
+     * 重新发送消息
+     * 
+     * @param peer 消息所属对象 群/好友
+     * @param msgId 消息ID
+     */
+    resendMsg(peer: PeerInfo, msgId: `${number}`): Promise<SimpleResult>
     addKernelNodeMiscListener(listener: NodeIKernelNodeMiscListener): void
   }
 
