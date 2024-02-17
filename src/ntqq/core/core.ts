@@ -1,6 +1,7 @@
 import { NodeIGlobalAdapter, NodeIKernelLoginService, NodeIQQNTWrapperEngine, NodeIQQNTWrapperSession, NodeQQNTWrapperUtil } from "ntwrapper"
 import { useNTDispatcher } from "./dispatcher"
 import { useLogger } from "../../common/log"
+import { homedir } from "os"
 
 const dispatcher = useNTDispatcher()
 const log = useLogger('NTStore')
@@ -46,8 +47,7 @@ const getNTConfigStoreFolder = (): string => {
     case 'win32':
       return wrapperUtil.getNTUserDataInfoConfig() + '/nt_qq'
     case 'linux':
-      // const p = app.getPath('appData')
-      return '~/.config/QQ'
+      return `${homedir()}/.config/QQ`
       break
     default:
       return './nt_qq'
