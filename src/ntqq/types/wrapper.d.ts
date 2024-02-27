@@ -224,6 +224,7 @@ declare namespace NTNativeWrapper {
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
     getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
+    getSingleMsg(peer: PeerInfo, msgSeq: `${number}`): Promise<any>
     /**
      * 合转发并消息
      * 

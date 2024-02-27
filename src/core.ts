@@ -4,7 +4,6 @@ import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
 import { test } from "./test/test";
-// import { test } from "./test/test";
 import { hookWrapper } from "./wrapper/hook";
 
 global.module = module
@@ -34,7 +33,7 @@ try {
   startServer()
 
   // 测试
-  // test(module)
+  test(module)
 
   log.info('hookWrapper')
   hookWrapper()
