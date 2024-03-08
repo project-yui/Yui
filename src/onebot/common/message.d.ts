@@ -86,7 +86,7 @@ export declare namespace BotMessage {
       /**
        * 转发消息的内容
        */
-      forwardList?: SendElement[][] | `${number}`[]
+      forwardList?: BotMessageSendElements.ForwardElement[]
     }
   }
 
@@ -165,6 +165,21 @@ export declare namespace BotMessage {
  * bot -> framework
  */
 declare namespace BotMessageSendElements {
+  /**
+   * 转发消息元素
+   */
+  interface ForwardElement {
+    msgId: `${number}`
+    msgRandom: `${number}`
+    msgSeq: `${number}`
+    cntSeq: `${number}`
+    senderUid: `u_${string}`
+    peerUid: `${number}`
+    msgTime: `${number}`
+    senderUin: `${number}`
+    peerUin: `${number}`
+    elements: BotMessage.SendElement[]
+  }
 
   /**
    * 引用回复消息类型
@@ -188,6 +203,10 @@ declare namespace BotMessageSendElements {
      * 源消息发送者的id
      */
     uid: `u_${string}`
+    /**
+     * 源消息发送者的id
+     */
+    uin: `${number}`
   }
 
   /**
@@ -201,11 +220,15 @@ declare namespace BotMessageSendElements {
      */
     isAll: boolean
     /**
-     * 用户ID
-     * 
+     * 用户QQ
      * 
      */
-    uid: string
+    uin: `${number}`
+    /**
+     * 用户ID
+     * 
+     */
+    uid: `u_${string}`
     name?: string
   }
 

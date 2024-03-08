@@ -85,7 +85,7 @@ const onUpdateMsg = () => {
     for (const msg of msgList) {
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
-      const rMsg = msg.elements.find(e => e.elementType === 8 && e.grayTipElement.subElementType === 1)
+      const rMsg = msg.elements.find(e => e.elementType === 8 && e.grayTipElement?.subElementType === 1)
       if (rMsg) {
         // 是撤回消息
         const ret: EventDataType<RecallMessageData> = {

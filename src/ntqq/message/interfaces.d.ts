@@ -375,38 +375,36 @@ export declare namespace NTReceiveMessageType {
     elementType: 1 | 2 | 5 | 6 | 7 | 8 | 10 | 11 | 16
     elementId: `${number}`
     extBufForUI: "0x"
-    textElement: NTReceiveMessageType.TextElementType
-    faceElement: null
-    marketFaceElement: null
-    replyElement: NTReceiveMessageType.ReplyElementType
+    textElement?: NTReceiveMessageType.TextElementType
+    faceElement?: null
+    marketFaceElement?: null
+    replyElement?: NTReceiveMessageType.ReplyElementType
 
     /**
      * 图片元素
      */
-    picElement: NTReceiveMessageType.PicElementType
-    pttElement: null
-    videoElement: null
-    grayTipElement: NTReceiveMessageType.GrayTipElementType
-    arkElement: NTReceiveMessageType.ArkElement
-    fileElement: null
-    liveGiftElement: null
-    markdownElement: null
-    structLongMsgElement: null
-    multiForwardMsgElement: NTReceiveMessageType.MultiForwardMsgElement
-    giphyElement: null
-    walletElement: null
-    inlineKeyboardElement: null
-    textGiftElement: null
-    calendarElement: null
-    yoloGameResultElement: null
-    avRecordElement: null
-    structMsgElement: null
-    faceBubbleElement: null
-    shareLocationElement: null
-    tofuRecordElement: null
+    picElement?: NTReceiveMessageType.PicElementType
+    pttElement?: null
+    videoElement?: null
+    grayTipElement?: NTReceiveMessageType.GrayTipElementType
+    arkElement?: NTReceiveMessageType.ArkElement
+    fileElement?: null
+    liveGiftElement?: null
+    markdownElement?: null
+    structLongMsgElement?: null
+    multiForwardMsgElement?: NTReceiveMessageType.MultiForwardMsgElement
+    giphyElement?: null
+    walletElement?: null
+    inlineKeyboardElement?: null
+    textGiftElement?: null
+    calendarElement?: null
+    yoloGameResultElement?: null
+    avRecordElement?: null
+    structMsgElement?: null
+    faceBubbleElement?: null
+    shareLocationElement?: null
+    tofuRecordElement?: null
   }
-
-
 
   /**
    * 纯文本消息元素
@@ -418,15 +416,15 @@ export declare namespace NTReceiveMessageType {
      * 1 - @ 全体成员
      * 2 - 有@
      */
-    atType: 0 | 2
-    atUid: `${number}`
-    atTinyId: `${number}`
+    atType: 0 | 1 | 2
+    atUid: `${number}` | 'all' | ''
+    atTinyId: `${number}` | ''
     /**
      * NT QQ中的uid
      */
-    atNtUid: string
+    atNtUid: `u_${string}` | 'all' | ''
     subElementType: 0
-    atChannelId: `${number}`
+    atChannelId: `${number}` | ''
     linkInfo: null
     atRoleId: `${number}`
     atRoleColor: 0

@@ -1,6 +1,17 @@
 import bytenode from 'bytenode'
 import { existsSync } from 'fs'
 import { resolve } from 'path'
+
+// const nativeModule = require('D:/GitHub/nt-native/build/Debug/nt_native.node')
+// const signature = '48895C2420564883EC20488BD933F6E8DC'
+// const sigArr = signature.match(/[a-zA-Z0-9]{2}/g)?.map(e=>parseInt(`0x${e}`))
+// if (sigArr !== null) {
+//   setTimeout(() => {
+//     const result = nativeModule.install(sigArr)
+//     console.log('install result:', result)
+//   }, 2000)
+// }
+
 switch (process.env['YUKIHANA_ACTION']) {
   case 'dev':
     // 开发模式，从源码启动

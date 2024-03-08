@@ -906,20 +906,10 @@ interface PeerInfo {
   guildId: string
 }
 declare namespace NodeIKernelMsgServiceType {
-  interface FetchStatusMgrInfoResp {
-    /**
-     * 0 - 成功
-     */
-    result: number
-    errMsg: string
+  interface FetchStatusMgrInfoResp extends SimpleResult {
     content: string
   }
-  interface ResourcePathResp {
-    /**
-     * 0 - 成功
-     */
-    result: number
-    errMsg: string
+  interface ResourcePathResp extends SimpleResult {
     resourcePath: string
   }
   interface GetRichMediaFilePathForGuildReq {
@@ -932,20 +922,10 @@ declare namespace NodeIKernelMsgServiceType {
     downloadType: number,
     file_uuid: ''
   }
-  interface BasePathResp {
-    /**
-     * 0 - 成功
-     */
-    result: number
-    errMsg: string
+  interface BasePathResp extends SimpleResult {
     content: string
   }
-  interface GuildUnreadCntInfoResp {
-    /**
-     * 0 - 成功
-     */
-    result: number
-    errMsg: string
+  interface GuildUnreadCntInfoResp extends SimpleResult {
     unreadCntInfos: GuildUnreadCntInfo[]
   }
   interface GuildUnreadCntInfo {

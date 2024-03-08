@@ -22,36 +22,40 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
       case 1:
         // 纯文本
         {
-          const text: BotMessage.ReceiveElement = {
-            type: 'text',
-            data: {
-              text: ele.textElement.content
+          if (ele.textElement) {
+            const text: BotMessage.ReceiveElement = {
+              type: 'text',
+              data: {
+                text: ele.textElement.content
+              }
             }
+            // TODO: 对@的处理
+            result.push(text)
           }
-          // TODO: 对@的处理
-          result.push(text)
         }
         break;
       case 2:
         // 图片
         {
           const p = ele.picElement
-          const pic: BotMessage.ReceiveElement = {
-            type: 'image',
-            data: {
-              pic: {
-                type: p.picSubType === 0 ? 'simple' : 'emoji',
-                width: p.picWidth,
-                height: p.picHeight,
-                size: parseInt(p.fileSize),
-                md5: p.md5HexStr,
-                uuid: p.fileUuid,
-                url: `https://gchat.qpic.cn${p.originImageUrl}`,
-                path: p.sourcePath,
+          if (p) {
+            const pic: BotMessage.ReceiveElement = {
+              type: 'image',
+              data: {
+                pic: {
+                  type: p.picSubType === 0 ? 'simple' : 'emoji',
+                  width: p.picWidth,
+                  height: p.picHeight,
+                  size: parseInt(p.fileSize),
+                  md5: p.md5HexStr,
+                  uuid: p.fileUuid,
+                  url: `https://gchat.qpic.cn${p.originImageUrl}`,
+                  path: p.sourcePath,
+                }
               }
             }
+            result.push(pic)
           }
-          result.push(pic)
         }
         break;
       case 5:
@@ -63,18 +67,20 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
       case 7:
         // 引用回复
         {
-          const reply: BotMessage.ReceiveElement = {
-            type: 'reply',
-            data: {
-              reply: {
-                msgId: ele.replyElement.replayMsgId,
-                msgSeq: ele.replyElement.replayMsgSeq,
-                text: ele.replyElement.sourceMsgText,
-                uid: ele.replyElement.senderUidStr,
+          if (ele.replyElement) {
+            const reply: BotMessage.ReceiveElement = {
+              type: 'reply',
+              data: {
+                reply: {
+                  msgId: ele.replyElement.replayMsgId,
+                  msgSeq: ele.replyElement.replayMsgSeq,
+                  text: ele.replyElement.sourceMsgText,
+                  uid: ele.replyElement.senderUidStr,
+                }
               }
             }
+            result.push(reply)
           }
-          result.push(reply)
         }
         break;
       case 11:
@@ -143,9 +149,9 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           textElement: {
             content: `@${msg.data.at.isAll ? '全体成员' : msg.data.at.name}`,
             atType: msg.data.at.isAll ? 1 : 2,
-            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
+            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
             atTinyId: "",
-            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
+            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
           }
         }
         // TODO: 对@的处理
@@ -255,4 +261,216 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
       break;
   }
 
+}
+
+/**
+ * bot消息转NTQQ的消息
+ * 
+ * @param elems 来自bot的消息
+ * @returns 给NTQQ的消息
+ */
+export const convertBotMessage2NTInnerMessage = async (elems: BotMessage.SendElement[]): Promise<NTReceiveMessageType.NTMessageElementType[]> => {
+  const result: NTReceiveMessageType.NTMessageElementType[] = []
+  let eleId = Math.floor(Math.random() * 10e15)
+  for (const ele of elems) {
+    const r = await convertBotMessage2NTInnerMessageSingle(ele, eleId++)
+    if (r !== undefined) {
+      result.push(r)
+    }
+  }
+  return result
+}
+
+/**
+ * bot消息转NTQQ的消息
+ * 
+ * @param msg 来自bot的消息
+ * @returns 给NTQQ的消息
+ */
+export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.SendElement, eleId: number): Promise<NTReceiveMessageType.NTMessageElementType | undefined> => {
+
+  const result: NTReceiveMessageType.NTMessageElementType = {
+    elementType: 1,
+    elementId: `${eleId}`,
+    extBufForUI: "0x"
+  }
+  switch (msg.type) {
+    case 'text':
+      // 纯文本
+      {
+        if (!msg.data.text) break
+        result.textElement = {
+            content: msg.data.text,
+            atType: 0,
+            atUid: "",
+            atTinyId: "",
+            atNtUid: "",
+            subElementType: 0,
+            atChannelId: '',
+            linkInfo: null,
+            atRoleId: '0',
+            atRoleColor: 0,
+            atRoleName: '',
+            needNotify: 0,
+          }
+        // TODO: 对@的处理
+      }
+      break;
+    case 'mention':
+      // At
+      {
+        if (!msg.data.at) break
+        result.elementType = 1
+        result.textElement = {
+            content: `@${msg.data.at.isAll ? '全体成员' : msg.data.at.name}`,
+            atType: msg.data.at.isAll ? 1 : 2,
+            atUid: msg.data.at.isAll ? 'all' : msg.data.at.uin,
+            atTinyId: "",
+            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
+            subElementType: 0,
+            atChannelId: '0',
+            linkInfo: null,
+            atRoleId: '0',
+            atRoleColor: 0,
+            atRoleName: '',
+            needNotify: 0,
+          }
+        // TODO: 对@的处理
+      }
+      break;
+    case 'image':
+      {
+        log.info('element type: image')
+        if (!msg.data.pic) break
+        // 获取图片基本信息
+        const src = msg.data.pic
+        let info = src.md5 ? {
+          width: src.width,
+          height: src.height,
+          md5: src.md5,
+          size: src.size,
+        } : undefined
+        if (src.path == null || !fs.existsSync(src.path)) {
+          // 文件路径有问题，检查是否有网络地址
+          if (!src.url) throw new Error(`File does not exists! ${src.path}`)
+          log.info(`开始从网络地址下载图片：${src.url}`)
+          src.path = await downloadFile(src.url)
+          log.info('获取图片信息')
+          info = await getImageInfo(src.path)
+          if (!info) {
+            log.info('图片信息获取失败')
+            throw new Error('Failed to get information of image')
+            // return undefined
+          }
+          log.info('src path:', src.path)
+          // const fileType = await getFileType(src.path)
+          // log.info('file type:', fileType)
+          // get real storage path
+          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+          log.info('real path:', realPath)
+          // copy
+          const ret = copyFile(src.path, realPath)
+          // rm temp
+          if (ret) {
+            // 删除图片
+            fs.rmSync(src.path)
+            src.path = realPath
+          }
+        }
+        if (!info) return undefined
+        result.elementType = 2
+        result.picElement = {
+            md5HexStr: info.md5,
+            picWidth: info.width,
+            picHeight: info.height,
+            fileName: `{${info.md5}}.jpg`,
+            fileSize: `${info.size}`,
+            original: true,
+            picSubType: 0,
+            sourcePath: src.path,
+            thumbPath: {},
+            picType: 1001,
+            fileUuid: `${Math.floor(Math.random() * 10e10)}`,
+            fileSubId: "",
+            thumbFileSize: 0,
+            summary: "",
+            emojiFrom: null,
+            emojiWebUrl: null,
+            emojiAd:{
+              url: '',
+              desc: '',
+            },
+            emojiMall:{
+              packageId: 0,
+              emojiId: 0,
+            },
+            emojiZplan:{
+              actionId: 0,
+              actionName: '',
+              actionType: 0,
+              playerNumber: 0,
+              peerUid: '1',
+              bytesReserveInfo: ''
+            },
+            originImageMd5: '',
+        
+            /**
+             * 图片网络地址
+             * 
+             * 没有host, https://gchat.qpic.cn/
+             * 
+             * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
+             */
+            originImageUrl: '',
+            import_rich_media_context: null,
+            isFlashPic: false,
+            transferStatus: 1,
+            progress: 100,
+            invalidState: 0,
+            fileBizId: null,
+            downloadIndex: null,
+          }
+      }
+      break;
+    case 'video':
+      // 视频
+      break;
+    // case '':
+    //   // 表情
+    //   break;
+    case 'reply':
+      // TODO:引用回复
+      {
+        if (!msg.data.reply) break
+        result.elementType = 7
+        result.replyElement = {
+            replayMsgId: `${msg.data.reply.msgId}`,
+            replayMsgSeq:  `${msg.data.reply.msgSeq}`,
+            sourceMsgText:  `${msg.data.reply.text}`,
+            senderUid:  `${msg.data.reply.uin}`,
+            senderUidStr:  `${msg.data.reply.uid}`,
+            replyMsgClientSeq: "0",
+            replyMsgTime: `${Date.now()}`,
+            replyMsgRevokeType: 0,
+            sourceMsgTextElems: [],
+            sourceMsgIsIncPic: false,
+            sourceMsgExpired: false,
+            replayMsgRootSeq: '0',
+            replayMsgRootMsgId: '1',
+            replayMsgRootCommentCnt: '0',
+            sourceMsgIdInRecords: '1',
+            anonymousNickName: null,
+            originalMsgState: null,
+          }
+        }
+      break;
+    // case 'marketFace':
+    //   // 商城表情
+    //   break;
+  
+    default:
+      return undefined
+      break;
+  }
+  return result
 }

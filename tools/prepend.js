@@ -1,10 +1,10 @@
 (() => {
   const orgi_rquire = module.require
-  module.require = function (...args) {
-    if (args[0] === 'ntwrapper') {
-      const log = (...a) => {
-        console.log('[prepend]', ...a)
-      }
+  const log = (...a) => {
+    console.log('[prepend]', ...a)
+  }
+  const handle = {
+    ntwrapper: (t) => {
       /**  @type {import('fs')} */
       const fs = orgi_rquire('fs')
       const path = orgi_rquire('path')
@@ -30,7 +30,18 @@
       else {
         wrapperPath = path.resolve(__dirname, `../wrapper.node`)
       }
-      return orgi_rquire.apply(this, [wrapperPath])
+      return orgi_rquire.apply(t, [wrapperPath])
+    },
+    'yukihana-native': (t) => {
+      /**  @type {import('path')} */
+      const path = orgi_rquire('path')
+      const wrapperPath = path.resolve(__dirname, `./native.node`)
+      return orgi_rquire.apply(t, [wrapperPath])
+    }
+  }
+  module.require = function (...args) {
+    if (handle[args[0]]) {
+      return handle[args[0]](this)
     }
     return orgi_rquire.apply(this, args)
   }

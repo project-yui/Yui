@@ -46,13 +46,7 @@ export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise
  */
 export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardRequest): Promise<NTSendMessageType.SendResponse> => {
   log.info('send data:', msg, msg.msgInfos)
-  const channel = 'IPC_UP_2'
   const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-ntApi-2'
-  }
   // nodeIKernelMsgService/forwardMsgWithComment 是逐条转发
   // 合并转发
   const reqData: [string, NTSendMessageType.SendForwardRequest, any] = [

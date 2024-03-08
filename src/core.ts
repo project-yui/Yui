@@ -1,5 +1,6 @@
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
+import { initNative } from "./native/init";
 import { initNTQQ } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
@@ -19,11 +20,12 @@ try {
   // 核心事件hook
   if (process.env['YUKIHANA_ACTION'] === 'dev') {
     log.info('hook')
-    hook()
+    // hook()
   }
 
   log.info('initNTQQ')
   initNTQQ()
+  initNative()
 
   log.info('initOnebot')
   initOnebot()
