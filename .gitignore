@@ -4,3 +4,4 @@ dist
 event.json
 data
 tmp
+.pnpm-store

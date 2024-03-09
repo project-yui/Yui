@@ -69,12 +69,16 @@ const options: RollupOptions[] = [
             const fromPath = path.resolve(options.dir, './core.js')
             console.log('compile file:', fromPath)
             // 字节码生成
+            let qqBinaryPath:string = './ntqq/QQ.exe'
+            if (process.platform == 'linux') {
+              qqBinaryPath = '/opt/QQ/qq'
+            }
             bytenode.compileFile({
               filename: fromPath,
               compileAsModule: true,
               electron: true,
               compress: true,
-              electronPath: './ntqq/QQ.exe',
+              electronPath: qqBinaryPath,
               output: `${fromPath}c`,
             })
           }
