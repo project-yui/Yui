@@ -9,3 +9,4 @@ tmp
 *.local.y*ml
 yukihana.db
 *.local.y*ml
+.pnpm-store
