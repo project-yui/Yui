@@ -86,7 +86,7 @@ export declare namespace BotMessage {
       /**
        * 转发消息的内容
        */
-      forwardList?: BotMessageSendElements.ForwardElement[]
+      forward_data?: BotMessageSendElements.ForwardElement
     }
   }
 
@@ -169,15 +169,62 @@ declare namespace BotMessageSendElements {
    * 转发消息元素
    */
   interface ForwardElement {
-    msgId: `${number}`
-    msgRandom: `${number}`
-    msgSeq: `${number}`
-    cntSeq: `${number}`
-    senderUid: `u_${string}`
-    peerUid: `${number}`
-    msgTime: `${number}`
-    senderUin: `${number}`
-    peerUin: `${number}`
+    /**
+     * 转发消息的来源
+     * 
+     * group - 群
+     * 
+     * friend - 好友
+     */
+    from_type: 'group' | 'friend'
+
+    /**
+     * 来源群号，`from_type` 为group时必须
+     */
+    group_id?: `${number}`
+
+    /**
+     * 来源好友QQ，`from_type` 为friend时必须
+     */
+    sender_id?: `${number}`
+    
+    /**
+     * 转发消息的内容
+     */
+    items: ForwardItem[]
+  }
+
+  /**
+   * 转发消息的内容
+   */
+  interface ForwardItem {
+    /**
+     * 消息id
+     * 
+     * 有的时候会去数据库找一下，找不到会替换成随机生成的id
+     */
+    msg_id?: `${number}`
+
+    /**
+     * QQ号
+     */
+    sender_uin: number
+
+    /**
+     * QQ用户UID
+     */
+    sender_uid: `u_${string}`
+    
+    /**
+     * 消息发送的时间
+     */
+    msg_time: number
+
+    sender_member_name: string
+    
+    /**
+     * 组成消息内容的元素
+     */
     elements: BotMessage.SendElement[]
   }
 

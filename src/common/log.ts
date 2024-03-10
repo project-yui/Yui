@@ -3,20 +3,22 @@ const enum LogLevel {
   Trace,
   /** 普通日志 */
   Info,
+  /** 调试日志 */
+  Debug,
   /** 警告日志 */
   Warning,
   /** 错误日志 */
   Error,
 }
 const _console = {
-  log: console.log,
+  debug: console.debug,
   info: console.info,
   warn: console.warn,
   error: console.error,
   trace: console.trace,
 }
 const Styles = ['color: black;', 'color: green;', 'color: orange;', 'color: red;']
-const Methods = ['trace', 'log', 'info', 'warn', 'error'] as const
+const Methods = ['trace', 'debug', 'info', 'warn', 'error'] as const
 /**
  * 日志的配置类型
  */
@@ -120,6 +122,16 @@ class Logger {
    */
   public trace (...args: unknown[]) {
     this._log(LogLevel.Trace, args)
+    return this
+  }
+
+  /**
+   * 打印调试信息 🐛
+   *
+   * @param args 任意参数
+   */
+  public debug (...args: unknown[]) {
+    this._log(LogLevel.Info, args)
     return this
   }
 
