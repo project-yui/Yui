@@ -21,7 +21,7 @@ const sendMessage = (p: BotMessage.SendMsg): Promise<BotActionResponse<any>> => 
       message: ""
     }
     if (p.detail_type === 'group' && p.group_id) {
-      const result = await sendMessageToGroup(p.group_id, p.message)
+      const result = await sendMessageToGroup(`${p.group_id}`, p.message)
       resp.data = result
       resolve(resp)
     }
@@ -54,7 +54,7 @@ const sendForwardMessage = (p: BotMessage.SendMsg): Promise<BotActionResponse<an
       const msg = p.message[0]
       if (msg.type == 'multiforward') {
         if (msg.data.forward_data) {
-          const result = await sendForwardMessageToGroup(p.group_id, msg.data.forward_data)
+          const result = await sendForwardMessageToGroup(`${p.group_id}`, msg.data.forward_data)
           resp.data = result
         }
       }

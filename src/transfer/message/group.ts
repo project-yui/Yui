@@ -58,26 +58,26 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
    */
   const peer: PeerInfo = {
     chatType: forwardData.from_type === 'group' ? 2 : 1,
-    peerUid: (forwardData.from_type === 'group' ? forwardData.group_id : forwardData.sender_id) || '',
+    peerUid: (forwardData.from_type === 'group' ? `${forwardData.group_id ?? ''}` : forwardData.sender_id) || '',
     guildId: ''
   }
   const msgList: NTSendMessageType.ForwardMsgItem[] = []
   for (let i = 0; i < forwardData.items.length; i++) {
     const msgItem = forwardData.items[i]
-    if (msgItem.msg_id) {
-      // 搜索消息
-      log.info('getMsgsByMsgId:', msgItem.msg_id)
-      const targetMsg = await msgService.getMsgsByMsgId(peer, [msgItem.msg_id])
-      log.info('targetMsg:', targetMsg.msgList)
-      if (targetMsg.msgList.length > 0) {
-        // 找到不用添加进数据库
-        msgList.push({
-          msgId: msgItem.msg_id,
-          senderShowName: '',
-        })
-        continue
-      }
-    }
+    // if (msgItem.msg_id) {
+    //   // 搜索消息
+    //   log.info('getMsgsByMsgId:', msgItem.msg_id)
+    //   const targetMsg = await msgService.getMsgsByMsgId(peer, [msgItem.msg_id])
+    //   log.info('targetMsg:', targetMsg.msgList)
+    //   if (targetMsg.msgList.length > 0) {
+    //     // 找到不用添加进数据库
+    //     msgList.push({
+    //       msgId: msgItem.msg_id,
+    //       senderShowName: '',
+    //     })
+    //     continue
+    //   }
+    // }
     // 生成随机msgId
     const msgId: `${number}` = `${Math.floor(Math.random() * 10e15)}`
     log.info('use random msgId:', msgId)
