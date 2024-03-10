@@ -35,7 +35,8 @@
     'yukihana-native': (t) => {
       /**  @type {import('path')} */
       const path = orgi_rquire('path')
-      const wrapperPath = path.resolve(__dirname, `./native.node`)
+      let wrapperPath = path.resolve(__dirname, `./native.node`)
+      wrapperPath = "D:/GitHub/nt-native/build/nt_native.node"
       return orgi_rquire.apply(t, [wrapperPath])
     }
   }

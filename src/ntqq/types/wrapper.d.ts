@@ -221,8 +221,9 @@ declare namespace NTNativeWrapper {
     addKernelMsgListener(listener: NodeIKernelMsgListener): number
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
-    getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
+    getMsgsByMsgId(peer: PeerInfo, msgId: `${number}`[]): Promise<any>
+    getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
     getSingleMsg(peer: PeerInfo, msgSeq: `${number}`): Promise<any>
     /**
@@ -902,7 +903,7 @@ interface SimpleResult {
 
 interface PeerInfo {
   chatType: number,
-  peerUid: `${number}` | `u_${string}`,
+  peerUid: `${number}` | `u_${string}` | '',
   guildId: string
 }
 declare namespace NodeIKernelMsgServiceType {

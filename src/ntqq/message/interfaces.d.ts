@@ -13,7 +13,7 @@ interface NTMsgPeer {
    * 好友 - 好友的UID
    * 频道 - ？
    */
-  peerUid: `${number}` | `u_${string}`
+  peerUid: `${number}` | `u_${string}` | ''
   guildId: string
 }
 
@@ -253,6 +253,7 @@ export declare namespace NTReceiveMessageType {
     chatType: 1 | 2 | 4
     /**
      * 2 - 普通消息 ?
+     * 
      * 5 - 撤回消息 ?
      */
     msgType: 2 | 5
