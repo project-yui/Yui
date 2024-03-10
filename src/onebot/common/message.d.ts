@@ -10,7 +10,7 @@ export declare namespace BotMessage {
    */
   export interface SendMsg extends BotActionParams {
     detail_type: 'private' | 'group'
-    group_id?: `${number}`
+    group_id?: number
     user_id?: string
     message: SendElement[]
   }
@@ -181,7 +181,7 @@ declare namespace BotMessageSendElements {
     /**
      * 来源群号，`from_type` 为group时必须
      */
-    group_id?: `${number}`
+    group_id?: number
 
     /**
      * 来源好友QQ，`from_type` 为friend时必须
