@@ -5,6 +5,7 @@ import { NIL as NIL_UUID} from 'uuid'
 import { checkBaseRequestField } from '../common/action';
 import { useLogger } from '../common/log';
 import { useServer } from './server';
+import { useConfigStore } from '../store/config';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -15,7 +16,12 @@ const { addSendHandle, removeSendHandle } = useServer()
  */
 export const startWebsocketServer = () => {
 
-  const wss = new WebSocketServer({ port: 8080 });
+  const { getConfig } = useConfigStore()
+  const cfg = getConfig()
+  const wss = new WebSocketServer({
+    host: cfg.yukihana.ws.host,
+    port: cfg.yukihana.ws.port,
+  });
 
   wss.on('connection', function connection(ws) {
     log.info('receive connection.');

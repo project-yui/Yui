@@ -2,10 +2,8 @@ import { useLogger } from "../common/log"
 import { useNTDispatcher } from "../ntqq/core/dispatcher"
 import { BotActionParams } from "../onebot/actions/interfaces"
 import { BotActionResponse } from "../onebot/actions/interfaces"
-import { IpcDownInfo, IpcUpInfo } from "./interfaces"
 
 const log = useLogger('Store')
-
 
 const ActionMap: Record<string, (p: any) => Promise<BotActionResponse>> = {}
 
