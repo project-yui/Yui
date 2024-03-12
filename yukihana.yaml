@@ -1,0 +1,11 @@
+yukihana:
+  ws:
+    host: 127.0.0.1
+    port: 8080
+  signature:
+    win32:
+      9.9.7-21453:
+        sqlite3_stmt: 48895C2420564883EC20488BD933F6E8DC
+    linux:
+      3.2.5-21453:
+        sqlite3_stmt: 554157415641554154534883EC184885FF0F84960300004989FC488B074885C0
