@@ -1,5 +1,4 @@
 import { randomUUID } from "crypto"
-import { IpcUpInfo } from "../../store/interfaces"
 import { NTSendMessageType, AddMsgType, NTRecallMessage as NTRecallMessageType } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { useStore } from "../../store/store"

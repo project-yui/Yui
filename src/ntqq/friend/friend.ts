@@ -2,9 +2,7 @@ import { randomUUID } from "crypto"
 import { useStore } from "../../store/store"
 import { NTFriend } from "./interfaces"
 import { useLogger } from "../../common/log"
-import { IpcUpInfo } from "../../store/interfaces"
 import { useNTCore } from "../core/core"
-import { sendEvent } from "../event/base"
 
 
 const { registerEventListener } = useStore()
@@ -32,11 +30,11 @@ export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
     const { getWrapperSession } = useNTCore()
     const buddyService = getWrapperSession().getBuddyService()
     // buddyService.
-    const reqResult = await sendEvent('IPC_UP_2', {
-      type: 'request',
-      callbackId: randomUUID(),
-      eventName: 'ns-NodeStoreApi-2'
-    }, ['getBuddyList', null, null])
+    // const reqResult = await sendEvent('IPC_UP_2', {
+    //   type: 'request',
+    //   callbackId: randomUUID(),
+    //   eventName: 'ns-NodeStoreApi-2'
+    // }, ['getBuddyList', null, null])
     
   })
 }

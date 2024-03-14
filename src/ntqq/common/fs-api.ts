@@ -1,6 +1,4 @@
 import { randomUUID } from "crypto"
-import { sendEvent } from "../event/base"
-import { IpcUpInfo } from "../../store/interfaces"
 import { FileType, ImageSizeInfo } from "./fsapi"
 import { useNTCore } from "../core/core"
 import { useLogger } from "../../common/log"
@@ -15,18 +13,19 @@ const log = useLogger('FsApi')
  */
 export const getFileMd5 = async (path: string) => {
   const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-FsApi-2'
-  }
-  const reqData: [string, string, any] = [
-    'getFileMd5',
-    path,
-    null,
-  ]
-  const sendResult = await sendEvent<string, string>('IPC_UP_2', reqInfo, reqData)
-  return sendResult.data
+  // const reqInfo: IpcUpInfo = {
+  //   type: 'request',
+  //   callbackId: uuid,
+  //   eventName: 'ns-FsApi-2'
+  // }
+  // const reqData: [string, string, any] = [
+  //   'getFileMd5',
+  //   path,
+  //   null,
+  // ]
+  // const sendResult = await sendEvent<string, string>('IPC_UP_2', reqInfo, reqData)
+  // return sendResult.data
+  return ''
 }
 
 /**
@@ -37,18 +36,19 @@ export const getFileMd5 = async (path: string) => {
  */
 export const getFileType = async (path: string) => {
   const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-FsApi-2'
-  }
-  const reqData: [string, string, any] = [
-    'nodeIKernelMsgService/getRichMediaFilePathForGuild',
-    path,
-    undefined,
-  ]
-  const sendResult = await sendEvent<string, FileType>('IPC_UP_2', reqInfo, reqData)
-  return sendResult.data
+  // const reqInfo: IpcUpInfo = {
+  //   type: 'request',
+  //   callbackId: uuid,
+  //   eventName: 'ns-FsApi-2'
+  // }
+  // const reqData: [string, string, any] = [
+  //   'nodeIKernelMsgService/getRichMediaFilePathForGuild',
+  //   path,
+  //   undefined,
+  // ]
+  // const sendResult = await sendEvent<string, FileType>('IPC_UP_2', reqInfo, reqData)
+  // return sendResult.data
+  return ''
 }
 
 /**
@@ -59,18 +59,19 @@ export const getFileType = async (path: string) => {
  */
 export const getImageSizeFromPath = async (path: string) => {
   const uuid = randomUUID()
-  const reqInfo: IpcUpInfo = {
-    type: 'request',
-    callbackId: uuid,
-    eventName: 'ns-FsApi-2'
-  }
-  const reqData: [string, string, any] = [
-    'getImageSizeFromPath',
-    path,
-    null,
-  ]
-  const sendResult = await sendEvent<string, ImageSizeInfo>('IPC_UP_2', reqInfo, reqData)
-  return sendResult.data
+  // const reqInfo: IpcUpInfo = {
+  //   type: 'request',
+  //   callbackId: uuid,
+  //   eventName: 'ns-FsApi-2'
+  // }
+  // const reqData: [string, string, any] = [
+  //   'getImageSizeFromPath',
+  //   path,
+  //   null,
+  // ]
+  // const sendResult = await sendEvent<string, ImageSizeInfo>('IPC_UP_2', reqInfo, reqData)
+  // return sendResult.data
+  return ''
 }
 
 /**

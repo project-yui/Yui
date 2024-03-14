@@ -1,9 +1,7 @@
 import path, { resolve } from "path"
 import { useLogger } from "../common/log"
-import { sendEvent } from "../ntqq/event/base"
 import { NTSendForwardMessage, NTSendMessage } from "../ntqq/message/message"
 import { BotActionResponse } from "../onebot/actions/interfaces"
-import { IpcUpInfo } from "../store/interfaces"
 import { useStore } from "../store/store"
 import { sendForwardMessageToGroup, sendMessageToGroup } from "../transfer/message/group"
 import fs from 'fs'

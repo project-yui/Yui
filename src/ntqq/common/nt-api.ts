@@ -1,7 +1,4 @@
-import { randomUUID } from "crypto"
-import { IpcUpInfo } from "../../store/interfaces"
-import { PathInfo } from "./ntapi"
-import { sendEvent } from "../event/base"
+
 import { useNTCore } from "../core/core"
 
 /**
