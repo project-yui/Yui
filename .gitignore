@@ -5,3 +5,5 @@ event.json
 data
 tmp
 .pnpm-store
+
+*.local.y*ml

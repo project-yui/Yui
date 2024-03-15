@@ -7,10 +7,10 @@
   "scripts": {
     "dev": "rollup -c --configPlugin @rollup/plugin-typescript -w",
     "build": "rollup -c --configPlugin @rollup/plugin-typescript",
-    "start": "cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev .\\ntqq\\QQ.exe",
-    "start-log-file": "cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"",
-    "nodestart": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js",
-    "compile-jsc": "cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\compile.js"
+    "start": "node tools/dev.cjs start",
+    "start-log-file": "node tools/dev.cjs start-log-file",
+    "nodestart": "node tools/dev.cjs nodestart",
+    "compile-jsc": "node tools/dev.cjs compile-jsc"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,6 @@
     "@types/uuid": "^9.0.6",
     "@types/ws": "^8.5.8",
     "bytenode": "^1.5.3",
-    "cross-env": "^7.0.3",
     "electron": "25.8.1",
     "javascript-obfuscator": "^4.1.0",
     "rollup": "^4.1.4",

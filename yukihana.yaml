@@ -9,3 +9,5 @@ yukihana:
     linux:
       3.2.5-21453:
         sqlite3_stmt: 554157415641554154534883EC184885FF0F84960300004989FC488B074885C0
+  dev:
+    ntqq_path: ./ntqq/QQ.exe
