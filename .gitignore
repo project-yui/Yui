@@ -4,3 +4,5 @@ dist
 event.json
 data
 tmp
+
+*.local.y*ml
