@@ -4,5 +4,5 @@ dist
 event.json
 data
 tmp
-
+yukihana.db
 *.local.y*ml

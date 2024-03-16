@@ -69,7 +69,6 @@ const ActionHandle = {
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
-                            YUKIHANA_ACTION: 'dev',
                             ELECTRON_RUN_AS_NODE: true,
                         }
                     })
