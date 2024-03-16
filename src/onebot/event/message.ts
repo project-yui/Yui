@@ -83,6 +83,9 @@ const onUpdateMsg = () => {
     if (user.uid === undefined || user.uin === undefined)
       throw new Error('can not get user info!')
     for (const msg of msgList) {
+      // 一分钟前的消息不处理
+      if (Date.now() - parseInt(msg.msgTime) > 60) continue
+      
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
       const rMsg = msg.elements.find(e => e.elementType === 8 && e.grayTipElement?.subElementType === 1)
