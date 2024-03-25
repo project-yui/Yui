@@ -135,7 +135,6 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             atNtUid: ""
           }
         }
-        // TODO: 对@的处理
         return text
       }
       break;
@@ -149,12 +148,11 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           textElement: {
             content: `@${msg.data.at.isAll ? '全体成员' : msg.data.at.name}`,
             atType: msg.data.at.isAll ? 1 : 2,
-            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
+            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
             atTinyId: "",
-            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
+            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
           }
         }
-        // TODO: 对@的处理
         return text
       }
       break;
