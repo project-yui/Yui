@@ -17,8 +17,27 @@ const _console = {
   error: console.error,
   trace: console.trace,
 }
-const Styles = ['color: black;', 'color: green;', 'color: orange;', 'color: red;']
-const Methods = ['trace', 'debug', 'info', 'warn', 'error'] as const
+const color = {
+  red: 31,
+  green: 32,
+  yellow: 33,
+  blue: 34,
+  white: 37,
+}
+const Styles = [
+  `\x1b[${color.white}m%s\x1b[0m`,
+  `\x1b[${color.blue}m%s\x1b[0m`,
+  `\x1b[${color.green}m%s\x1b[0m`,
+  `\x1b[${color.yellow}m%s\x1b[0m`,
+  `\x1b[${color.red}m%s\x1b[0m`
+]
+const Methods = [
+  'trace',
+  'debug',
+  'info',
+  'warn',
+  'error'
+] as const
 /**
  * 日志的配置类型
  */
@@ -70,9 +89,9 @@ class Logger {
     if (level < CurrentLogLevel) return
     this.beforeFuncs.forEach(e => e(this.config))
     const now = new Date()
-    const fix = (d: number) => (d + '').padStart(2, '0')
-    const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}.${now.getMilliseconds()}`
-    _console[Methods[level]](`%c[${time}]${this.config.namespace}`, Styles[level], ...args)
+    const fix = (d: number, len = 2) => (d + '').padStart(len, '0')
+    const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}.${fix(now.getMilliseconds(), 3)}`
+    _console[Methods[level]](`[${time}] [${Styles[level]}] ${this.config.namespace}`, Methods[level], ...args)
     this.afterFuncs.forEach(e => e(this.config))
   }
 
