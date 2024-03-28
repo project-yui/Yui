@@ -21,8 +21,11 @@ export const getImageInfo = async (path: string): Promise<ImageInfo | undefined>
     log.info('File does not exists!')
     return undefined
   }
+  log.info('get image size...', path)
   const ret = imageSize(path)
+  log.info('get image md5...')
   const md5 = await getFileMd5(path)
+  log.info('get image info...')
   const stat = fs.statSync(path)
   return {
     width: ret.width || 0,

@@ -311,7 +311,6 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
             atRoleName: '',
             needNotify: 0,
           }
-        // TODO: 对@的处理
       }
       break;
     case 'mention':
@@ -333,7 +332,6 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
             atRoleName: '',
             needNotify: 0,
           }
-        // TODO: 对@的处理
       }
       break;
     case 'image':

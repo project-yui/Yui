@@ -1,11 +1,11 @@
 const enum LogLevel {
   /** 追踪日志 */
   Trace,
+  Debug,
+  /** 警告日志 */
   /** 普通日志 */
   Info,
   /** 调试日志 */
-  Debug,
-  /** 警告日志 */
   Warning,
   /** 错误日志 */
   Error,

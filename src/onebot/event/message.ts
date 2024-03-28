@@ -4,10 +4,11 @@ import { useServer } from "../../server/server"
 import { useStore } from "../../store/store"
 import { getBotAccount, getUserInfoByUid } from "../common/user"
 import { EventDataType, MessageData, RecallMessageData } from "./interfaces"
+import { useLogger } from "../../common/log"
 
 const { registerEventListener } = useStore()
 const { sendMessage } = useServer()
-
+const log = useLogger('event/Message')
 /**
  * 监听新消息
  * 
@@ -19,6 +20,12 @@ const onRecvMsg = () => {
     if (user.uid === undefined || user.uin === undefined)
       throw new Error('can not get user info!')
     for (const msg of msgList) {
+      // 一分钟前的消息不处理
+      if (Date.now()/1000 - parseInt(msg.msgTime) > 60) {
+        log.info('一分钟前的消息不处理')
+        continue
+      }
+      log.info('receive:', JSON.stringify(msg, null, 4))
       // 频道消息暂不处理
       if (msg.chatType === 4) continue
       
@@ -83,8 +90,6 @@ const onUpdateMsg = () => {
     if (user.uid === undefined || user.uin === undefined)
       throw new Error('can not get user info!')
     for (const msg of msgList) {
-      // 一分钟前的消息不处理
-      if (Date.now() - parseInt(msg.msgTime) > 60) continue
       
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
