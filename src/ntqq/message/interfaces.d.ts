@@ -546,7 +546,26 @@ export declare namespace NTReceiveMessageType {
     faceIndex: number
     faceText: string
     faceType: number
-    imageType: number
+    packId: `${number}`
+    stickerId: `${number}`
+    sourceType: 1
+    stickerType: 1
+    resultId: string
+    surpriseId: string
+    randomType: 1
+    imageType: null
+    pokeType: null
+    spokeSummary: null
+    doubleHit: null
+    vaspokeId: null
+    vaspokeName: null
+    vaspokeMinver: null
+    pokeStrength: null
+    msgType: null
+    faceBubbleCount: null
+    oldVersionStr: null
+    pokeFlag: null
+    chainCount: 0
   }
 
   /**

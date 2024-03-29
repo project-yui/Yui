@@ -26,9 +26,13 @@ const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
   if (p.type == 'forward') {
     ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
   }
-  else {
+  else if (p.type == 'singleMsg') {
     const param = p.data
     ret = await msgService.getSingleMsg(param.a, param.b)
+  }
+  else if (p.type == 'sendMsg') {
+    const param = p.data
+    ret = await msgService.sendMsg('0', param.peer, param.b, new Map());
   }
   const resp: BotActionResponse = {
     id: "",
