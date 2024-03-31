@@ -17,8 +17,9 @@ declare namespace NTNativeWrapper {
     const NodeIKernelUnitedConfigService: typeof NTNativeWrapper.NodeIKernelUnitedConfigService
     const NodeIDependsAdapter: typeof NTNativeWrapper.NodeIDependsAdapter
     const NodeIDispatcherAdapter: typeof NTNativeWrapper.NodeIDispatcherAdapter
-    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
     const NodeIKernelBuddyListener: typeof NTNativeWrapper.NodeIKernelBuddyListener
+    const NodeIKernelGroupListener: typeof NTNativeWrapper.NodeIKernelGroupListener
+    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
     const NodeIKernelLoginListener: typeof NTNativeWrapper.NodeIKernelLoginListener
     const NodeIKernelProfileListener: typeof NTNativeWrapper.NodeIKernelProfileListener
   }
@@ -243,6 +244,8 @@ declare namespace NTNativeWrapper {
      * @param ids 要撤回的消息id
      */
     recallMsg(peer: PeerInfo, ids: `${number}`[]): Promise<SimpleResult>
+
+    registerSysMsgNotification(...args: any[]): Promise<any>
     
     /**
      * 发送消息
@@ -502,6 +505,8 @@ declare namespace NTNativeWrapper {
   class NodeIQQNTWrapperEngine {
     constructor()
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: NodeIGlobalAdapter): boolean
+    initWithMobileConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: NodeIGlobalAdapter): boolean
+    getDeviceInfo(): any
   }
 
   class NodeIKernelLoginService {
@@ -740,9 +745,13 @@ declare namespace NodeIQQNTWrapperEngineType {
     /**
      * 形如：V1_WIN_NQ_9.9.7_21357_GW_B
      */
-    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B`
+    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B` | `V1_AND_SQ_${string}_YYB_D`
     global_path_config: {
-      desktopGlobalPath: string
+      desktopGlobalPath?: string
+      mobileGlobalDBPath?: string
+      mobileGlobalDataPath?: string
+      mobileGlobalTempPath?: string
+      base_path_prefix?: string
     }
     thumb_config: ThumbConfig
   }
@@ -1071,8 +1080,9 @@ declare namespace NodeIQQNTWrapperSessionType {
     machineId: string
     /**
      * 3 - Windows
+     * 5 - Linux
      */
-    platform: 3
+    platform: 3 | 5
     /**
      * Widnows 版本
      */
@@ -1086,7 +1096,7 @@ declare namespace NodeIQQNTWrapperSessionType {
       systemId: 0,
       appId: '',
       logicEnvironment: '',
-      platform: 3,
+      platform: 3 | 5,
       language: '',
       sdkVersion: '',
       userId: '',

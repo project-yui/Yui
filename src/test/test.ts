@@ -247,36 +247,23 @@ const nodeModule = async () => {
   }
 }
 const genMarkdown = () => {
-  
-  const open = (process as any).dlopen
-  // 拦截native加载方法
-  ;(process as any).dlopen = function(m: any, file: string){
-    log.info('process.dlopen', m, file)
-    // 调用默认native加载方法
-    const ret = open(m, file)
-    log.info('dlopen result:', ret, m)
-
-    // 修改加载后的native方法
-    if (file.includes('wrapper')){
-      const _exports = m.exports
-      let markdown = ''
-      // 遍历类
-      for (const serviceName in _exports) {
-        const service = _exports[serviceName]
-        const funcs = service.prototype
-        markdown += `## ${serviceName}\n\n`
-        markdown += '| 方法名 | 描述 |\n'
-        markdown += '|-------|-----|\n'
-        // 遍历方法
-        for (const funcName in funcs) {
-          markdown += `| ${funcName} | |\n`
-        }
-        markdown += '\n'
-      }
-      log.info('\n', markdown)
+  const _exports = require('../versions/9.9.7-21453/wrapper.node')
+  let markdown = ''
+  // 遍历类
+  for (const serviceName in _exports) {
+    const service = _exports[serviceName]
+    const funcs = service.prototype
+    markdown += `## ${serviceName}\n\n`
+    markdown += '| 方法名 | 描述 |\n'
+    markdown += '|-------|-----|\n'
+    // 遍历方法
+    for (const funcName in funcs) {
+      markdown += `| ${funcName} | |\n`
     }
-    return ret
+    markdown += '\n'
   }
+  fs.writeFileSync('./docs/function.md', markdown)
+  
 }
 const vmSrcipt = () => {
   global.require = require
@@ -469,6 +456,12 @@ export const test = (m: NodeModule) => {
     // process.exit(1)
     // hookFunction()
     // hookAsync()
+    const { registerEventListener } = useStore()
+    let i = 0
+    registerEventListener('KernelMsgListener/onRecvSysMsg', 'always', (data: number[]) => {
+      log.info('sys msg:', data)
+      fs.writeFileSync(`tmp/test${i++}.bin`, Buffer.from(data))
+    })
   }
   catch(err) {
     log.error('error:', err)

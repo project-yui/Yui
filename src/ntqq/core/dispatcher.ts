@@ -11,12 +11,17 @@ const log = useLogger('Dispatcher')
  */
 export const useNTDispatcher = () => dispatcher
 
+/**
+ * 获取一个监听代理
+ * @param name 监听类型名
+ * @returns 监听代理
+ */
 export const useListenerProxy = (name: string) => {
     const handler = {
         get(obj: any, prop: string) {
             return (...args: any[]) => {
-            log.info(`${name}/${prop}`, ...args)
-            dispatcher.emit(`${name}/${prop}`, ...args)
+                log.info(`${name}/${prop}`, ...args)
+                dispatcher.emit(`${name}/${prop}`, ...args)
             }
         },
     };
