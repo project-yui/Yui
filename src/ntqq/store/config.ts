@@ -4,8 +4,10 @@ import { StoreAppInfo } from "../types/store/config";
 import { NodeQQNTWrapperUtil } from "ntwrapper";
 import { randomUUID } from "crypto";
 import { execSync } from "child_process";
+import { useLogger } from "../../common/log";
 
 const platform: 'win32' | 'linux' = process.platform as 'win32' | 'linux'
+const log = useLogger('NTConfig')
 
 const getOsVersion = (): string => {
     let ret = ''
@@ -19,8 +21,13 @@ const getOsVersion = (): string => {
         break;
       case 'linux':
         {
-          const cmd = 'uname -v'
-          ret = execSync(cmd).toString()
+            try
+            {
+                const cmd = 'uname -v'
+                ret = execSync(cmd).toString()
+            }catch(err) {
+                ret = '#1 SMP Thu Mar 7 03:22:57 UTC 2024'
+            }
         }
         break;
       default:
@@ -39,7 +46,7 @@ const getDeviceInfo = (): NTNativeWrapper.DeviceInfo => {
       buildVer: pkgInfo.version,
       localId: 2052,
       devName: userInfo().username,
-      devType: type(),
+      devType: platform == 'win32' ? 'Windows_NT' : 'Linux',
       vendorName: '',
       osVer: osVersion,
       vendorOsName: platform,
@@ -50,6 +57,7 @@ const getDeviceInfo = (): NTNativeWrapper.DeviceInfo => {
 const getAppInfo = (): StoreAppInfo => {
     const pkgInfo = getNTPackageInfo()
     const devInfo = getDeviceInfo()
+    log.info('deviceInfo:', devInfo)
     return {
         app_id: getAppId(),
         /**
