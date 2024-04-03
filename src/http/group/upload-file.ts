@@ -84,13 +84,17 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
             log.info('fileModelId:', fileInfo.fileModelId)
             let listener: undefined | { remove: () => void } = undefined
             listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
-                listener?.remove()
-                res.json({
-                    path: file.filepath,
-                    md5: info.commonFileInfo.md5,
-                    size: info.commonFileInfo.fileSize,
-                })
-                next();
+                // 同时上传，可能会识别错误，需要判定一下
+                if (info.fileModelId === fileInfo.fileModelId)
+                {
+                    listener?.remove()
+                    res.json({
+                        path: file.filepath,
+                        md5: info.commonFileInfo.md5,
+                        size: info.commonFileInfo.fileSize,
+                    })
+                    next()
+                }
             })
             richMedia.onlyUploadFile(peerInfo, [fileInfo])
         }
