@@ -2,6 +2,9 @@ yukihana:
   ws:
     host: 127.0.0.1
     port: 8080
+  http:
+    host: 127.0.0.1
+    port: 8081
   signature:
     win32:
       9.9.7-21453:

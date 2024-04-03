@@ -18,21 +18,72 @@ const { registerActionHandle } = useStore()
 const log = useLogger('Test')
 
 const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
+  log.info('testSendMsg')
   const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
+  const session = getWrapperSession()
+  const msgService = session.getMsgService()
   let ret = undefined
   // const ret = await msgService.getSingleMsg(p.a, p.b)
   // log.info('ret:', ret)
-  if (p.type == 'forward') {
-    ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
-  }
-  else if (p.type == 'singleMsg') {
-    const param = p.data
-    ret = await msgService.getSingleMsg(param.a, param.b)
-  }
-  else if (p.type == 'sendMsg') {
-    const param = p.data
-    ret = await msgService.sendMsg('0', param.peer, param.b, new Map());
+  switch(p.type)
+  {
+    case 'forward':{
+      ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
+      }break;
+    case 'singleMsg':{
+      const param = p.data
+      ret = await msgService.getSingleMsg(param.a, param.b)
+      }break;
+    case 'sendMsg':{
+      const param = p.data
+      ret = await msgService.sendMsg('0', param.peer, param.b, new Map());
+     } break;
+    case 'addSendMsg':
+      {
+        log.info('addSendMsg',  p.data)
+        try{
+          const param = p.data
+          ret = await msgService.addSendMSg('0', param.peer, param.b, new Map())
+        }catch(err)
+        {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'upload':
+      {
+        log.info('upload',  p.data)
+        try{
+          const param = p.data
+          ret = session.getRichMediaService().uploadRMFileWithoutMsg(param)
+        }catch(err)
+        {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'richfile':
+      {
+        log.info('richfile',  p.data)
+        try{
+          ret = session.getRichMediaService().onlyUploadFile({
+            "chatType": 2,
+            "peerUid": "933286835",
+            "guildId": ""
+          }, [{
+            fileName: 'test.jpg',
+            filePath: "D:/Pictures/壁纸/wallpaper/0new.jpg",
+            fileModelId: '123545665'
+          }])
+        }catch(err)
+        {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
   }
   const resp: BotActionResponse = {
     id: "",
@@ -456,12 +507,12 @@ export const test = (m: NodeModule) => {
     // process.exit(1)
     // hookFunction()
     // hookAsync()
-    const { registerEventListener } = useStore()
-    let i = 0
-    registerEventListener('KernelMsgListener/onRecvSysMsg', 'always', (data: number[]) => {
-      log.info('sys msg:', data)
-      fs.writeFileSync(`tmp/test${i++}.bin`, Buffer.from(data))
-    })
+    // const { registerEventListener } = useStore()
+    // let i = 0
+    // registerEventListener('KernelMsgListener/onRecvSysMsg', 'always', (data: number[]) => {
+    //   log.info('sys msg:', data)
+    //   fs.writeFileSync(`tmp/test${i++}.bin`, Buffer.from(data))
+    // })
   }
   catch(err) {
     log.error('error:', err)

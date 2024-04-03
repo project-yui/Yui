@@ -2,6 +2,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser';
 import { RollupOptions } from "rollup";
 import fs from 'fs'
@@ -56,6 +57,7 @@ const options: RollupOptions[] = [
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
+    json(),
     // 压缩
     // terser(),
     {
@@ -110,6 +112,7 @@ const options: RollupOptions[] = [
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
+    json(),
     // 压缩
     // terser(),
     // // 混淆

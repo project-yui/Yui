@@ -1,12 +1,16 @@
 export interface YukihanaConfig {
     yukihana: {
-        ws: {
+        http: {
             host: string
             port: number
         }
         signature: {
             win32: Record<string, SingatureInfo>
             linux: Record<string, SingatureInfo>
+        }
+        ws: {
+            host: string
+            port: number
         }
     }
 }

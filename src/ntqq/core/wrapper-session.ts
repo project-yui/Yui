@@ -61,7 +61,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     d2: '',
     d2Key: '',
     machineId: '',
-    platform: 5,
+    platform: 3,
     platVer: release(),
     appid: getAppId(),
     rdeliveryConfig: {
@@ -69,7 +69,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       systemId: 0,
       appId: '',
       logicEnvironment: '',
-      platform: 5,
+      platform: 3,
       language: '',
       sdkVersion: '',
       userId: '',

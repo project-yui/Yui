@@ -6,6 +6,7 @@ import { BotMessage } from "../../onebot/common/message";
 import { useLogger } from "../../common/log";
 import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
+import { useNTCore } from "../../ntqq/core/core";
 
 const log = useLogger('Convert')
 

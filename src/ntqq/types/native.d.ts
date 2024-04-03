@@ -31,7 +31,7 @@ declare namespace YukihanaNativeWrapper {
         fromAppid: '0'
         msgTime: number
         msgMeta: '0x'
-        sendStatus: 2
+        sendStatus: 0 | 2
         sendRemarkName: string
         sendMemberName: string
         sendNickName: string

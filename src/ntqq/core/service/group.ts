@@ -13,5 +13,5 @@ export const initGroupService = () => {
   const group = getWrapperSession().getGroupService()
   const p = useListenerProxy('KernelGroupListener')
   const listener = new NodeIKernelGroupListener(p)
-  // group.addKernelGroupListener(listener)
+  group.addKernelGroupListener(listener)
 }

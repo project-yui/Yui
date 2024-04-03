@@ -6,7 +6,9 @@
  * native层
  */
 declare namespace NTNativeWrapper {
-  
+  class NTBaseClass {
+    isNull(): boolean
+  }
   namespace CrossProcessExports {
     const NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
     const NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
@@ -220,6 +222,7 @@ declare namespace NTNativeWrapper {
 
   class NodeIKernelMsgService {
     addKernelMsgListener(listener: NodeIKernelMsgListener): number
+    addSendMSg(...args: any[]): any
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
@@ -434,6 +437,27 @@ declare namespace NTNativeWrapper {
   class NodeIKernelRemotingService {
     addKernelRemotingListener(listener: NodeIKernelRemotingListener): void
   }
+  class NodeIKernelRichMediaService extends NTBaseClass{
+    uploadRMFileWithoutMsg(data: NodeIKernelRichMediaServiceType.UploadRMFileWithoutMsgReq): Promise<NodeIKernelRichMediaServiceType.UploadRMFileWithoutMsgResp>
+    onlyUploadFile(peer: PeerInfo, files: NodeIKernelRichMediaServiceType.FileInfo[]): any
+  }
+  namespace NodeIKernelRichMediaServiceType {
+    interface UploadRMFileWithoutMsgReq {
+      transferId: number
+      bizType: number
+      filePath: string
+      peerUid: `${number}`
+      useNTV2: boolean
+    }
+    interface FileInfo {
+      fileName: string
+      filePath: string
+      fileModelId: `${number}`
+    }
+    interface UploadRMFileWithoutMsgResp {
+      
+    }
+  }
 
   class NodeIKernelRobotService {
     getRobotUinRange(cfg: NodeIKernelRobotServiceType.GetRobotUinRangeReq): Promise<NodeIKernelRobotServiceType.GetRobotUinRangeResp>
@@ -583,7 +607,7 @@ declare namespace NTNativeWrapper {
     onContactUnreadCntUpdate: () => void
     onMsgAbstractUpdate: () => void
     onDraftUpdate: () => void
-    onRichMediaUploadComplete: () => void
+    onRichMediaUploadComplete: (info: RichMediaUploadResult) => void
     onRichMediaDownloadComplete: () => void
     onRichMediaProgerssUpdate: () => void
     onGroupFileInfoUpdate: () => void
@@ -624,6 +648,68 @@ declare namespace NTNativeWrapper {
     onRecvUDCFlag: () => void
     onRecvGroupGuildFlag: () => void
     onUserSecQualityChanged: () => void
+  }
+  interface RichMediaUploadResult {
+    /**
+     * 与上传前提供的一致
+     */
+    fileModelId: `${number}`
+    msgElementId: `${number}`
+    msgId:`${number}`
+    fileId: `/${string}-${string}-${string}-${string}-${string}`
+    fileProgress: `${number}`
+    fileSpeed: `${number}`
+    fileErrCode: `${number}`
+    fileErrMsg: string
+    fileDownType: 1
+    thumbSize: number
+    /**
+     * 文件路径
+     * 
+     * 还是上传前的路径
+     */
+    filePath: string
+    /**
+     * 文件大小
+     */
+    totalSize: `${number}`
+    trasferStatus: 4
+    step: 0
+    commonFileInfo: CommonFileInfo
+    fileSrvErrCode: `${number}`
+    clientMsg: string
+    /**
+     * 102 - ?
+     */
+    businessId: number
+  }
+  interface CommonFileInfo {
+    /**
+     * 与上传前提供的一致
+     */
+    fileModelId: `${number}`
+    msgId: `${number}`
+    elemId: `${number}`
+    uuid: `/${string}-${string}-${string}-${string}-${string}`
+    subId: string
+    fileName: string
+    fileSize: `${number}`
+    msgTime: `${number}`
+    peerUid: `${number}`
+    /**
+     * 2 - 群组
+     */
+    chatType: 2
+    md5: string
+    md510m: string
+    sha: string
+    sha3: string
+    parent: null
+    favId: null
+    /**
+     * 102 - ?
+     */
+    bizType: number
   }
   class NodeIKernelMsgListener {
     constructor(options: NodeIKernelMsgListenerConstructorOptions);
@@ -702,6 +788,7 @@ declare namespace NTNativeWrapper {
     getQQPlayService(): NodeIKernelQQPlayService
     getRecentContactService(): NodeIKernelRecentContactService
     getRemotingService(): NodeIKernelRemotingService
+    getRichMediaService(): NodeIKernelRichMediaService
     getRobotService(): NodeIKernelRobotService
     getSearchService(): NodeIKernelSearchService
     getSettingService(): NodeIKernelSettingService
@@ -911,7 +998,13 @@ interface SimpleResult {
 }
 
 interface PeerInfo {
+  /**
+   * 2 - 群
+   */
   chatType: number,
+  /**
+   * 群号或者用户id
+   */
   peerUid: `${number}` | `u_${string}` | '',
   guildId: string
 }
