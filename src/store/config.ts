@@ -11,6 +11,7 @@ let configCache: YukihanaConfig = {
             host: "127.0.0.1",
             port: 8081
         },
+        'storage-path': './storage',
         ws: {
             host: "127.0.0.1",
             port: 8080
@@ -58,7 +59,11 @@ const getConfig = (update: boolean = false) => {
     if (!inited || update) {
         try {
             inited = true
-            configCache = loadFromFile()
+            // TODO: 深层合并
+            configCache = {
+                ...configCache,
+                ...loadFromFile()
+            }
         }
         catch (ex) {
             log.error('failed to load config!', ex)
@@ -72,7 +77,12 @@ const getSignature = () => {
     if (process.platform === 'linux' || process.platform === 'win32')
         return cfg.yukihana.signature[process.platform][pkg.version]
 }
+const getStoragePath = () => {
+    const cfg = getConfig()
+    return cfg.yukihana['storage-path']
+}
 export const useConfigStore = () => ({
     getConfig,
     getSignature,
+    getStoragePath,
 })

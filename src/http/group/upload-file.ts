@@ -6,6 +6,7 @@ import fs from "fs";
 import { useNTCore } from "../../ntqq/core/core";
 import { useNTDispatcher } from "../../ntqq/core/dispatcher";
 import { useStore } from "../../store/store";
+import { useConfigStore } from "../../store/config";
 
 const log = useLogger('UploadFile')
 const parsePeerInfo = (fields: Fields<"chatType" | "peerUid" | "guildId">): PeerInfo => {
@@ -41,13 +42,19 @@ const parsePeerInfo = (fields: Fields<"chatType" | "peerUid" | "guildId">): Peer
 export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     const { getWrapperSession } = useNTCore()
     const { registerEventListener } = useStore()
+
     const richMedia = getWrapperSession().getRichMediaService()
-    if (richMedia.isNull())
-    {
-      next(new Error('Rich media service is not ready!'));
-      return;
+    if (richMedia.isNull()) {
+        next(new Error('Rich media service is not ready!'));
+        return;
     }
-    const form = formidable({});
+    const { getStoragePath } = useConfigStore()
+    const storagePath = getStoragePath()
+    const form = formidable({
+        uploadDir: storagePath,
+        createDirsFromUploads: true,
+        keepExtensions: true,
+    });
     form.parse<'chatType' | 'peerUid' | 'guildId', "file">(req, (err, fields, files) => {
         if (err) {
             log.error('file parse error:', err)
@@ -75,10 +82,14 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
                 fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
             }
             log.info('fileModelId:', fileInfo.fileModelId)
-            let listener: undefined | { remove: () => void} = undefined
-            listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info) => {
+            let listener: undefined | { remove: () => void } = undefined
+            listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
                 listener?.remove()
-                res.json({result: 'success'})
+                res.json({
+                    path: file.filepath,
+                    md5: info.commonFileInfo.md5,
+                    size: info.commonFileInfo.fileSize,
+                })
                 next();
             })
             richMedia.onlyUploadFile(peerInfo, [fileInfo])

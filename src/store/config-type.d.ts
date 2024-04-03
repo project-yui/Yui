@@ -1,5 +1,6 @@
 export interface YukihanaConfig {
     yukihana: {
+        'storage-path': string
         http: {
             host: string
             port: number
