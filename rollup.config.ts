@@ -46,6 +46,15 @@ const options: RollupOptions[] = [
       return fs.readFileSync('./tools/prepend.js').toString()
     },
   },
+  onwarn: function(warning, handler) {
+    // Skip certain warnings
+
+    // should intercept ... but doesn't in some rollup versions
+    if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
+
+    // console.warn everything else
+    handler( warning );
+  },
   plugins: [
     resolve({
       // 将自定义选项传递给解析插件

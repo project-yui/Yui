@@ -4,6 +4,7 @@ import { useConfigStore } from "../store/config";
 import { useLogger } from "../common/log";
 import router from "../http/route";
 import bodyParser from 'body-parser'
+import fileUpload from 'express-fileupload'
 
 const log = useLogger('HTTP Server')
 /**
@@ -17,6 +18,15 @@ export const startHTTPServer = () => {
     
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded())
+    const { getStoragePath } = useConfigStore()
+    const storagePath = getStoragePath()
+    log.info('storagePath:', storagePath)
+    app.use(fileUpload({
+        createParentPath: true,
+        useTempFiles : true,
+        tempFileDir : storagePath,
+        preserveExtension: true,
+    }))
     app.use((req, res, next) => {
         log.info('before route')
         var oldJson = res.json;

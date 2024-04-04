@@ -656,9 +656,14 @@ declare namespace NTNativeWrapper {
     fileModelId: `${number}`
     msgElementId: `${number}`
     msgId:`${number}`
-    fileId: `/${string}-${string}-${string}-${string}-${string}`
+    fileId: `/${string}-${string}-${string}-${string}-${string}` | ''
     fileProgress: `${number}`
     fileSpeed: `${number}`
+    /**
+     * 0 - ok
+     * 
+     * 2006028 - 非群成员
+     */
     fileErrCode: `${number}`
     fileErrMsg: string
     fileDownType: 1
@@ -690,7 +695,7 @@ declare namespace NTNativeWrapper {
     fileModelId: `${number}`
     msgId: `${number}`
     elemId: `${number}`
-    uuid: `/${string}-${string}-${string}-${string}-${string}`
+    uuid: `/${string}-${string}-${string}-${string}-${string}` | ''
     subId: string
     fileName: string
     fileSize: `${number}`
@@ -709,7 +714,7 @@ declare namespace NTNativeWrapper {
     /**
      * 102 - ?
      */
-    bizType: number
+    bizType: number | null
   }
   class NodeIKernelMsgListener {
     constructor(options: NodeIKernelMsgListenerConstructorOptions);

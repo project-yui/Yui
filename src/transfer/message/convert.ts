@@ -352,28 +352,39 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
-          log.info('获取图片信息')
-          info = await getImageInfo(src.path)
-          if (!info) {
-            log.info('图片信息获取失败')
-            throw new Error('Failed to get information of image')
-            // return undefined
-          }
-          log.info('src path:', src.path)
-          // const fileType = await getFileType(src.path)
-          // log.info('file type:', fileType)
-          // get real storage path
-          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
-          log.info('real path:', realPath)
-          // copy
-          const ret = copyFile(src.path, realPath)
-          // rm temp
-          if (ret) {
-            // 删除图片
-            fs.rmSync(src.path)
-            src.path = realPath
-          }
         }
+        log.info('获取图片信息')
+        info = await getImageInfo(src.path)
+        if (!info) {
+          log.info('图片信息获取失败')
+          throw new Error('Failed to get information of image')
+          // return undefined
+        }
+        log.info('src path:', src.path)
+        // const fileType = await getFileType(src.path)
+        // log.info('file type:', fileType)
+        // get real storage path
+        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+        log.info('real path:', realPath)
+        // copy
+        const ret = copyFile(src.path, realPath)
+        // rm temp
+        if (ret) {
+          // 删除图片
+          // fs.rmSync(src.path)
+          src.path = realPath
+        }
+        const { getWrapperSession } = useNTCore()
+        const session = getWrapperSession()
+        session.getRichMediaService().onlyUploadFile({
+          chatType: 2,
+          peerUid: '933286835',
+          guildId: ''
+        }, [{
+          fileName: `{${info.md5}}.jpg`,
+          filePath: src.path,
+          fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
+        }])
         if (!info) return undefined
         result.elementType = 2
         result.picElement = {
@@ -409,7 +420,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
               peerUid: '1',
               bytesReserveInfo: ''
             },
-            originImageMd5: '',
+            originImageMd5: info.md5,
         
             /**
              * 图片网络地址

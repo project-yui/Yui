@@ -79,7 +79,7 @@ const getSignature = () => {
 }
 const getStoragePath = () => {
     const cfg = getConfig()
-    return cfg.yukihana['storage-path']
+    return resolve(__dirname, cfg.yukihana['storage-path'])
 }
 export const useConfigStore = () => ({
     getConfig,
