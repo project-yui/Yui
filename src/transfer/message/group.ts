@@ -50,8 +50,6 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
     throw new Error('can not get user info!')
   // 2. 存储转发消息的内容
   const forwardData = msg
-  const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
   // 先检查能不能根据msgId获取到消息，获取不到再添加
   /**
    * 转发消息列表的来源对象

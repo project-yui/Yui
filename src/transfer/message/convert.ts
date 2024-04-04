@@ -7,6 +7,7 @@ import { useLogger } from "../../common/log";
 import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
 import { useNTCore } from "../../ntqq/core/core";
+import { useStore } from "../../store/store";
 
 const log = useLogger('Convert')
 
@@ -270,6 +271,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
  */
 export const convertBotMessage2NTInnerMessage = async (elems: BotMessage.SendElement[]): Promise<NTReceiveMessageType.NTMessageElementType[]> => {
   const result: NTReceiveMessageType.NTMessageElementType[] = []
+  log.info('convert inner msg')
   let eleId = Math.floor(Math.random() * 10e15)
   for (const ele of elems) {
     const r = await convertBotMessage2NTInnerMessageSingle(ele, eleId++)
@@ -280,6 +282,28 @@ export const convertBotMessage2NTInnerMessage = async (elems: BotMessage.SendEle
   return result
 }
 
+const uploadFile = (peerInfo: any, fileInfo: any) => {
+  return new Promise((resolve, reject) => {
+
+    const { getWrapperSession } = useNTCore()
+    const session = getWrapperSession()
+    log.info('onlyUploadFile:', peerInfo, fileInfo)
+
+    const { registerEventListener } = useStore()
+    let listener: undefined | { remove: () => void } = undefined
+    listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
+        // 同时上传，可能会识别错误，需要判定一下
+        log.info('upload result:', info)
+        if (info.fileModelId === fileInfo.fileModelId)
+        {
+            listener?.remove()
+            resolve(true)
+        }
+    })
+    session.getRichMediaService().onlyUploadFile(peerInfo, [fileInfo])
+    
+  })
+}
 /**
  * bot消息转NTQQ的消息
  * 
@@ -374,17 +398,17 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
           // fs.rmSync(src.path)
           src.path = realPath
         }
-        const { getWrapperSession } = useNTCore()
-        const session = getWrapperSession()
-        session.getRichMediaService().onlyUploadFile({
-          chatType: 2,
-          peerUid: '933286835',
-          guildId: ''
-        }, [{
-          fileName: `{${info.md5}}.jpg`,
-          filePath: src.path,
-          fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
-        }])
+        // const peerInfo: any = {
+        //   chatType: 2,
+        //   peerUid: '933286835',
+        //   guildId: ''
+        // }
+        // const fileInfo = {
+        //   fileName: `{${info.md5}}.jpg`,
+        //   filePath: src.path,
+        //   fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
+        // }
+        // await uploadFile(peerInfo, fileInfo)
         if (!info) return undefined
         result.elementType = 2
         result.picElement = {

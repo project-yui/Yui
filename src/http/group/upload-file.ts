@@ -7,6 +7,7 @@ import { useNTDispatcher } from "../../ntqq/core/dispatcher";
 import { useStore } from "../../store/store";
 import { useConfigStore } from "../../store/config";
 import fileUpload from 'express-fileupload'
+import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 
 const log = useLogger('UploadFile')
 const parsePeerInfo = (fields: Record<string, string>): PeerInfo => {
@@ -65,14 +66,14 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
         next(new Error('Can not identify name!'));
         return
     }
+    const realPath = getRichMediaFilePathForGuild(file.md5, `${file.md5}.jpg`)
     log.info('onlyUploadFile')
-    fs.renameSync(file.tempFilePath, `${file.tempFilePath}.jpg`)
+    fs.renameSync(file.tempFilePath, realPath)
     const fileInfo = {
-        fileName: `${file.md5}.jpg`,
-        filePath: `${file.tempFilePath}.jpg`,
+        fileName: `{${file.md5}}.jpg`,
+        filePath: realPath,
         fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
     }
-    log.info('fileInfo:', fileInfo)
     let listener: undefined | { remove: () => void } = undefined
     listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
         // 同时上传，可能会识别错误，需要判定一下
@@ -80,12 +81,21 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
         {
             listener?.remove()
             res.json({
-                path: file.tempFilePath,
+                path: realPath,
                 md5: info.commonFileInfo.md5,
                 size: info.commonFileInfo.fileSize,
             })
             next()
         }
     })
+    log.info('onlyUploadFile:', peerInfo, fileInfo)
     richMedia.onlyUploadFile(peerInfo, [fileInfo])
+    const rmUpload = richMedia.uploadRMFileWithoutMsg({
+        transferId: 123456,
+        bizType: 102,
+        filePath: realPath,
+        peerUid: '1690127128',
+        useNTV2: false,
+    })
+    log.info('uploadRMFileWithoutMsg:', rmUpload)
 }
