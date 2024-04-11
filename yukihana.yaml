@@ -16,7 +16,11 @@ yukihana:
         # 获取方法：ida 搜索 DebugGetIPByDomain，所处函数开头
         get_ip_by_domain: 40555356574154415541564157488D6C24D84881EC28010000488B0530FB
     linux:
+      3.2.5-21357:
+        # 获取方法：ida 搜索 DebugGetIPByDomain，所处函数开头
+        get_ip_by_domain: 554157415641554154534881ECB800000048895424584889F3
       3.2.5-21453:
         sqlite3_stmt: 554157415641554154534883EC184885FF0F84960300004989FC488B074885C0
+        get_ip_by_domain: 554157415641554154534881ECB800000048895424584889F3
   dev:
     ntqq_path: .\\ntqq\\QQ.exe

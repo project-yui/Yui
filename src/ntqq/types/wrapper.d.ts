@@ -800,7 +800,7 @@ declare namespace NTNativeWrapper {
 
   class NodeIQQNTWrapperSession {
     init(config: NodeIQQNTWrapperSessionType.Init, depends: NodeIDependsAdapter, dispatcher: NodeIDispatcherAdapter, sessionListener: NodeIKernelSessionListener): void
-    startNT(a: number): string
+    startNT(a?: number): string
     getAvatarService(): NodeIKernelAvatarService
     getAVSDKService(): NodeIKernelAVSDKService
     getBuddyService(): NodeIKernelBuddyService

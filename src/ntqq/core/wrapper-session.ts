@@ -86,5 +86,10 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}'
   }, depends, dispatcherAdapter, sessionListener)
   await sleep(1000)
-  session.startNT(1)
+  try{
+    session.startNT(1)
+  }
+  catch(err) {
+    session.startNT()
+  }
 }
