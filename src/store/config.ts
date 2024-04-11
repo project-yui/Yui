@@ -82,7 +82,20 @@ const getStoragePath = () => {
     return resolve(__dirname, cfg.yukihana['storage-path'])
 }
 export const useConfigStore = () => ({
+    /**
+     * 获取配置
+     */
     getConfig,
+    /**
+     * 获取hook签名
+     * 
+     * 用于native使用
+     */
     getSignature,
+    /**
+     * 存储路径
+     * 
+     * 绝对路径
+     */
     getStoragePath,
 })

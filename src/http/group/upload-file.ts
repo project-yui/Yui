@@ -1,61 +1,30 @@
 import { NextFunction, Request, Response } from "express";
 import { useLogger } from "../../common/log";
-import path from "path";
 import fs from "fs";
-import { useNTCore } from "../../ntqq/core/core";
-import { useNTDispatcher } from "../../ntqq/core/dispatcher";
-import { useStore } from "../../store/store";
-import { useConfigStore } from "../../store/config";
 import fileUpload from 'express-fileupload'
-import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
+import { useConfigStore } from "../../store/config";
+import { resolve } from "path";
 
 const log = useLogger('UploadFile')
-const parsePeerInfo = (fields: Record<string, string>): PeerInfo => {
 
-    const peerInfo: PeerInfo = {
-        chatType: 0,
-        peerUid: '',
-        guildId: ''
+const mimeType2Extension = (type: string) => {
+    const m: Record<string, string> = {
+        'image/jpeg': '.jpg',
+        'image/png': '.png',
     }
-    // 参数检查
-    // chatType
-    if (fields.chatType === undefined) {
-        throw new Error('Parameter "chatType" lost!')
-    }
-    log.info('chatType:', fields.chatType)
-    peerInfo.chatType = parseInt(fields.chatType)
-    // if (peerInfo.chatType != 2) {
-    //     throw new Error('Parameter "chatType" is error!')
-    // }
-    // peerUid
-    if (fields.peerUid === undefined) {
-        throw new Error('Parameter "peerUid" lost!')
-    }
-    log.info('peerUid:', fields.peerUid)
-    peerInfo.peerUid = fields.peerUid as `${number}` | `u_${string}`
-    if (peerInfo.peerUid.length === 0) {
-        throw new Error('Parameter "peerUid" is error!')
-    }
-    // TODO: guildId
-    // 参数检查 end
-    return peerInfo
+    if (m[type] != undefined) return m[type]
+    return 'bin'
 }
-export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
-    const { getWrapperSession } = useNTCore()
-    const { registerEventListener } = useStore()
 
-    const richMedia = getWrapperSession().getRichMediaService()
-    if (richMedia.isNull()) {
-        next(new Error('Rich media service is not ready!'));
-        return;
-    }
+export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
+    const { getStoragePath, getConfig } = useConfigStore()
+    const storage = getStoragePath()
+
     if (!req.files) {
         next(new Error('No file found!'));
         return;
     }
     log.info('req:', req)
-    const peerInfo = parsePeerInfo(req.body)
-    log.info('peer info:', peerInfo)
     const file = req.files.file as fileUpload.UploadedFile
     
     if (!file) {
@@ -66,36 +35,24 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
         next(new Error('Can not identify name!'));
         return
     }
-    const realPath = getRichMediaFilePathForGuild(file.md5, `${file.md5}.jpg`)
+    const now = new Date()
+    const p = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`
+    const realPath = resolve(storage, `./upload/${p}`)
     log.info('onlyUploadFile')
-    fs.renameSync(file.tempFilePath, realPath)
-    const fileInfo = {
-        fileName: `{${file.md5}}.jpg`,
-        filePath: realPath,
-        fileModelId: req.body.fileModelId || `${Math.floor(Math.random() * 10e9)}` as `${number}`
+    try {
+        // 创建文件夹
+        fs.mkdirSync(realPath, { recursive: true})
+    } catch (error) {
+        
     }
-    let listener: undefined | { remove: () => void } = undefined
-    listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
-        // 同时上传，可能会识别错误，需要判定一下
-        if (info.fileModelId === fileInfo.fileModelId)
-        {
-            listener?.remove()
-            res.json({
-                path: realPath,
-                md5: info.commonFileInfo.md5,
-                size: info.commonFileInfo.fileSize,
-            })
-            next()
-        }
+    log.info('mime type:', file.mimetype)
+    const ext = mimeType2Extension(file.mimetype)
+    file.mv(`${realPath}/${file.md5}${ext}`)
+    const cfg = getConfig()
+    res.json({
+        path: `${realPath}/${file.md5}${ext}`,
+        url: `http://${cfg.yukihana.http.host}:${cfg.yukihana.http.port}/static/${p}/${file.md5}${ext}`,
+        md5: file.md5,
+        size: file.size,
     })
-    log.info('onlyUploadFile:', peerInfo, fileInfo)
-    richMedia.onlyUploadFile(peerInfo, [fileInfo])
-    const rmUpload = richMedia.uploadRMFileWithoutMsg({
-        transferId: 123456,
-        bizType: 0,
-        filePath: realPath,
-        peerUid: '933286835',
-        useNTV2: false,
-    })
-    log.info('uploadRMFileWithoutMsg:', rmUpload)
 }

@@ -32,7 +32,7 @@ export const startHTTPServer = () => {
         preserveExtension: true,
     }))
     app.use((req, res, next) => {
-        log.info('before route')
+        log.info('before route', req.url)
         var oldJson = res.json;
 
         res.json = function(body?: any){

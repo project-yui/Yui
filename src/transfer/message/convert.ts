@@ -376,6 +376,8 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
+        }
+        if (src.url){
           log.info('url:', src.url)
           if (!src.url.startsWith('https://gchat.qpic.cn')) {
             src.url = `/external-download?url=${encodeURIComponent(src.url)}`
