@@ -3,6 +3,7 @@
 | 方法名 | 描述 |
 |-------|-----|
 | getMsgBackupService | |
+| getAlbumService | |
 | getTianShuService | |
 | getUnitedConfigService | |
 | getTicketService | |
@@ -64,7 +65,10 @@
 | getRemotingService | |
 | getRobotService | |
 | getGroupTabService | |
+| getGroupSchoolService | |
 | getLiteBusinessService | |
+| getGuildMsgService | |
+| getLockService | |
 | getMSFService | |
 | getNodeMiscService | |
 | getGuildHotUpdateService | |
@@ -81,12 +85,14 @@
 | setMsgBackupLocation | |
 | requestMsgBackup | |
 | requestMsgRestore | |
+| requestMsgMigrate | |
 | getLocalStorageBackup | |
 | deleteLocalBackup | |
 | clearCache | |
 | start | |
 | stop | |
 | pause | |
+| setMsgBackupDataHandlingOption | |
 | isNull | |
 
 ## NodeIKernelMsgBackupListener
@@ -135,6 +141,204 @@
 | ClearAllInput | |
 | UnLoadPwdSafeEdit | |
 | IsSupportSafeEdit | |
+| isNull | |
+
+## NodeIKernelLockListener
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIKernelLockService
+
+| 方法名 | 描述 |
+|-------|-----|
+| addKernelLockListener | |
+| removeKernelLockListener | |
+| unlockDesktopQQToMobile | |
+| lockDesktopQQ | |
+| isNull | |
+
+## NodeIKernelGuildMsgService
+
+| 方法名 | 描述 |
+|-------|-----|
+| setFocusSession | |
+| getAllJoinGuildCnt | |
+| setGroupGuildMsgRead | |
+| getGuildGroupTransData | |
+| setGroupGuildBubbleRead | |
+| getGuildGroupBubble | |
+| fetchGroupGuildUnread | |
+| setGroupGuildFlag | |
+| getUnreadCntInfo | |
+| getGuildUnreadCntInfo | |
+| getGuildUnreadCntTabInfo | |
+| getAllGuildUnreadCntInfo | |
+| getCategoryUnreadCntInfo | |
+| getGuildFeedsUnreadCntInfo | |
+| getAllDirectSessionUnreadCntInfo | |
+| isNull | |
+
+## NodeIAlbumServiceModifyAlbumCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDeleteMediasCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceAddAlbumCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDeleteAlbumCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetMainPageCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetAlbumListCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetAlbumInfoCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceQuoteToQzoneCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetQunFeedsCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetQunFeedDetailCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetQunNoticeListCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetQunCommentCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetQunLikesCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDoQunCommentCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDoQunReplyCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDeleteQunFeedCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceDoQunLikeCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceGetMediaListCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceQuoteToQunAlbumCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceQueryQuoteToQunAlbumStatusCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIReddotReaderServiceGetRedPointsCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIAlbumServiceReportViewQunFeedCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIKernelAlbumService
+
+| 方法名 | 描述 |
+|-------|-----|
+| setAlbumServiceInfo | |
+| getMainPage | |
+| getAlbumList | |
+| getAlbumInfo | |
+| deleteAlbum | |
+| addAlbum | |
+| deleteMedias | |
+| modifyAlbum | |
+| getMediaList | |
+| quoteToQzone | |
+| quoteToQunAlbum | |
+| queryQuoteToQunAlbumStatus | |
+| getQunFeeds | |
+| getQunFeedDetail | |
+| getQunNoticeList | |
+| getQunComment | |
+| getQunLikes | |
+| deleteQunFeed | |
+| doQunComment | |
+| doQunReply | |
+| doQunLike | |
+| getRedPoints | |
+| reportViewQunFeed | |
 | isNull | |
 
 ## NodeIKernelProfileLikeListener
@@ -216,6 +420,56 @@
 | generateLiteActionForTesting | |
 | isNull | |
 
+## NodeIKernelGroupSchoolService
+
+| 方法名 | 描述 |
+|-------|-----|
+| getGroupSchoolNoticeList | |
+| getGroupSchoolNoticeDetail | |
+| publishGroupSchoolNotice | |
+| deleteGroupSchoolNotice | |
+| confirmGroupSchoolNotice | |
+| getGroupSchoolNoticeStatistic | |
+| remindGroupSchoolNotice | |
+| batchGetUserGroupSchoolRole | |
+| isNull | |
+
+## NodeIGetGroupSchoolNoticeListCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGetGroupSchoolNoticeDetailCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIPublishGroupSchoolNoticeCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIConfirmGroupSchoolNoticeCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGetGroupSchoolNoticeStatisticCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIBatchGetUserGroupSchoolRoleCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
 ## NodeIKernelGroupTabService
 
 | 方法名 | 描述 |
@@ -231,6 +485,12 @@
 |-------|-----|
 | New | |
 
+## NodeIKernelRobotListener
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
 ## NodeIKernelRobotService
 
 | 方法名 | 描述 |
@@ -238,6 +498,9 @@
 | getRobotFunctions | |
 | batchGetBotsMenu | |
 | fetchGroupRobotProfile | |
+| getGroupRobotProfile | |
+| fetchGroupRobotProfileWithReq | |
+| updateGroupRobotProfile | |
 | setRobotMessagePush | |
 | setAddRobotToGroup | |
 | setRemoveRobotFromGroup | |
@@ -257,6 +520,12 @@
 | SubscribeMsgTemplateSet | |
 | fetchRecentUsedRobots | |
 | fetchShareArkInfo | |
+| addKernelRobotListener | |
+| removeKernelRobotListener | |
+| getAllRobotFriendsFromCache | |
+| fetchAllRobots | |
+| removeAllRecommendCache | |
+| setRobotPickTts | |
 | isNull | |
 
 ## NodeIRobotCommonCallBack
@@ -386,6 +655,12 @@
 | New | |
 
 ## NodeIShareArkInfoCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIFetchAllRobotsCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -857,6 +1132,9 @@
 | setUserDataSaveDirectory | |
 | hasOtherRunningQQProcess | |
 | quitAllRunningQQProcess | |
+| checkNvidiaConfig | |
+| repairNvidiaConfig | |
+| getNvidiaDriverVersion | |
 | isNull | |
 
 ## NodeIKernelSessionListener
@@ -1327,9 +1605,6 @@
 | voiceSmobaGameQuitRoom | |
 | voiceSmobaGameGetRoomByChannel | |
 | updateAudioLiveChannelTheme | |
-| startPollingYLGameTeamInfo | |
-| stopPollingYLGameTeamInfo | |
-| exitYLGameTeam | |
 | fetchAudioLiveChannelBlockUserState | |
 | fetchRecommendEssenceInfo | |
 | queryGuildEssence | |
@@ -1442,6 +1717,7 @@
 | getCategoryPageGuilds | |
 | doLikeForFeed | |
 | doLikeCommentForFeed | |
+| doPreferForFeed | |
 | fetchSubscribeUserGuide | |
 | checkUserFreeGiftInfo | |
 | fetchActiveChannels | |
@@ -1457,6 +1733,7 @@
 | getNavigation | |
 | getGuildInfoFromCache | |
 | getGuildListFromCache | |
+| getGuildListWithCntFromCache | |
 | getGroupGuildListFromCache | |
 | getEffectGuildIdsFromCache | |
 | getSortedGuildIdsFromCache | |
@@ -1474,6 +1751,9 @@
 | getGuildMainFrameHeaderInfo | |
 | getCategoryChannelInfoListV2 | |
 | deleteFeed | |
+| fetchMVPFeedsFromServer | |
+| decodeMVPFeedsRspPb | |
+| fetchChannelInfoWithUnreadStatus | |
 | isNull | |
 
 ## NodeIKernelGuildListener
@@ -1537,6 +1817,12 @@
 | New | |
 
 ## NodeIGProFetchJumpChannelInfoCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGProFetchJumpChannelInfoSecCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -2946,6 +3232,12 @@
 |-------|-----|
 | New | |
 
+## NodeIGProDoPreferForFeedInGuildCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
 ## NodeIGProFetchSubscribeUserGuideCallback
 
 | 方法名 | 描述 |
@@ -3025,6 +3317,12 @@
 | New | |
 
 ## NodeIGProDeleteFeedCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGProFetchMVPFeedsDataCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -3427,6 +3725,7 @@
 | downloadFeedRichMedia | |
 | downloadFeedUrlFile | |
 | getFeedRichMediaFilePath | |
+| getGuildFeeds | |
 | isNull | |
 
 ## NodeIKernelFeedListener
@@ -3478,6 +3777,12 @@
 | New | |
 
 ## NodeIGProGetChannelDraftCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGProGetGuildFeedsCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -3791,6 +4096,7 @@
 | getUnreadDetailsInfos | |
 | enterOrExitMsgList | |
 | getServiceAssistantRecentContactInfos | |
+| setThirdPartyBusinessInfos | |
 | isNull | |
 
 ## NodeIKernelRecentContactListener
@@ -3842,6 +4148,7 @@
 | addKernelProfileListener | |
 | removeKernelProfileListener | |
 | prepareRegionConfig | |
+| getLocalStrangerRemark | |
 | enumCountryOptions | |
 | enumProvinceOptions | |
 | enumCityOptions | |
@@ -3864,6 +4171,7 @@
 | getSelfStatus | |
 | setdisableEmojiShortCuts | |
 | getProfileQzonePicInfo | |
+| getCoreInfo | |
 | isNull | |
 
 ## NodeIZplanAvatarInfoCallback
@@ -4006,6 +4314,7 @@
 | queryMsgsWithFilterVer2 | |
 | queryMsgsWithFilterEx | |
 | queryFileMsgsDesktop | |
+| setMsgRichInfoFlag | |
 | queryPicOrVideoMsgs | |
 | queryPicOrVideoMsgsDesktop | |
 | queryEmoticonMsgs | |
@@ -4019,6 +4328,7 @@
 | getContactUnreadCnt | |
 | getUnreadCntInfo | |
 | getGuildUnreadCntInfo | |
+| getGuildUnreadCntTabInfo | |
 | getAllGuildUnreadCntInfo | |
 | getAllJoinGuildCnt | |
 | getAllDirectSessionUnreadCntInfo | |
@@ -4046,6 +4356,7 @@
 | setConfigurationServiceData | |
 | setMarkUnreadFlag | |
 | getChannelEventFlow | |
+| getMsgEventFlow | |
 | getRichMediaFilePathForMobileQQSend | |
 | getRichMediaFilePathForGuild | |
 | assembleMobileQQRichMediaFilePath | |
@@ -4060,6 +4371,7 @@
 | fetchMarketEmoticonAioImage | |
 | fetchMarketEmotionJsonFile | |
 | getMarketEmoticonPath | |
+| getMarketEmoticonPathBySync | |
 | fetchMarketEmoticonFaceImages | |
 | fetchMarketEmoticonAuthDetail | |
 | getFavMarketEmoticonInfo | |
@@ -4079,6 +4391,7 @@
 | getMsgAbstracts | |
 | getMsgAbstract | |
 | getMsgAbstractList | |
+| getMsgAbstractListBySeqRange | |
 | refreshMsgAbstracts | |
 | refreshMsgAbstractsByGuildIds | |
 | getRichMediaElement | |
@@ -4093,11 +4406,13 @@
 | getNavigateInfo | |
 | getChannelFreqLimitInfo | |
 | getRecentUseEmojiList | |
+| getRecentEmojiList | |
 | setMsgEmojiLikes | |
 | getMsgEmojiLikesList | |
 | setMsgEmojiLikesForRole | |
 | clickInlineKeyboardButton | |
 | setCurOnScreenMsg | |
+| setCurOnScreenMsgForMsgEvent | |
 | getMiscData | |
 | setMiscData | |
 | getBookmarkData | |
@@ -4141,6 +4456,7 @@
 | getGuestMsgAbstractByRange | |
 | registerSysMsgNotification | |
 | unregisterSysMsgNotification | |
+| sendSsoCmdReqByContend | |
 | enterOrExitAio | |
 | prepareTempChat | |
 | getTempChatInfo | |
@@ -4190,6 +4506,9 @@
 | setFocusOnBase | |
 | queryArkInfo | |
 | queryUserSecQuality | |
+| getGuildMsgAbFlag | |
+| getGroupMsgStorageTime | |
+| likeOrDislikeReportForMsg | |
 | isNull | |
 
 ## NodeIKernelMsgImportToolListener
@@ -4636,12 +4955,25 @@
 |-------|-----|
 | New | |
 
+## NodeIGuildMsgAbFlagCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeISendSsoCmdReqCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
 ## NodeIKernelGroupService
 
 | 方法名 | 描述 |
 |-------|-----|
 | addKernelGroupListener | |
 | removeKernelGroupListener | |
+| getMemberExtInfo | |
 | createMemberListScene | |
 | destroyMemberListScene | |
 | getNextMemberList | |
@@ -4692,11 +5024,15 @@
 | getJoinGroupNoVerifyFlag | |
 | getGroupArkInviteState | |
 | reqToJoinGroup | |
+| setHeader | |
 | setGroupShutUp | |
 | getGroupShutUpMemberList | |
 | setMemberShutUp | |
 | getGroupRecommendContactArkJson | |
 | getJoinGroupLink | |
+| modifyGroupExtInfo | |
+| operateSpecialFocus | |
+| getGroupMemberLevelInfo | |
 | isNull | |
 
 ## NodeIKernelGroupListener
@@ -4712,6 +5048,12 @@
 | New | |
 
 ## NodeIGroupMemberListCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGroupMemberExtCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -4819,6 +5161,12 @@
 | searchFileWithKeywords | |
 | searchMoreFileWithKeywords | |
 | cancelSearchFileWithKeywords | |
+| searchAtMeChats | |
+| searchMoreAtMeChats | |
+| cancelSearchAtMeChats | |
+| searchChatAtMeMsgs | |
+| searchMoreChatAtMeMsgs | |
+| cancelSearchChatAtMeMsgs | |
 | loadSearchHistory | |
 | clearSearchHistory | |
 | addSearchHistory | |
@@ -4977,9 +5325,21 @@
 | isMiniAppAlreadyExist | |
 | downloadMiniApp | |
 | cancelDownloadMiniApp | |
+| setMiniGameVersion | |
+| getMiniGamePath | |
+| isMiniGameExist | |
+| isMiniGameAlreadyExist | |
+| downloadMiniGame | |
+| cancelDownloadMiniGame | |
+| getMiniGameV2EngineConfig | |
 | openFileAndDirSelectDlg | |
+| flashWindowInTaskbar | |
+| stopFlashWindow | |
 | registerSchemes | |
 | writeVersionToRegistry | |
+| setAutoRun | |
+| delAutoRun | |
+| queryAutoRun | |
 | isNull | |
 
 ## NodeIKernelNodeMiscListener
@@ -5045,6 +5405,12 @@
 | New | |
 
 ## NodeIGetAppInfoByLinkCallback
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIGetMiniGameV2EngineConfigCallback
 
 | 方法名 | 描述 |
 |-------|-----|

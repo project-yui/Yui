@@ -5,6 +5,10 @@ import { useLogger } from "../common/log";
 import router from "../http/route";
 import bodyParser from 'body-parser'
 import fileUpload from 'express-fileupload'
+import https from 'https'
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import { createServer } from "http";
 
 const log = useLogger('HTTP Server')
 /**
@@ -59,6 +63,12 @@ export const startHTTPServer = () => {
         })
     })
     
-    app.listen(cfg.yukihana.http.port, cfg.yukihana.http.host)
-    
+    const options = {
+        key: readFileSync(resolve(__dirname, './server.key')),
+        cert: readFileSync(resolve(__dirname, './server.crt'))
+    };
+    const httpServer = createServer(app)
+    httpServer.listen(cfg.yukihana.http.port, cfg.yukihana.http.host)
+    const httpsServer = https.createServer(options, app)
+    httpsServer.listen(443)
 }

@@ -175,27 +175,27 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
-          log.info('获取图片信息')
-          info = await getImageInfo(src.path)
-          if (!info) {
-            log.info('图片信息获取失败')
-            throw new Error('Failed to get information of image')
-            // return undefined
-          }
-          log.info('src path:', src.path)
-          // const fileType = await getFileType(src.path)
-          // log.info('file type:', fileType)
-          // get real storage path
-          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
-          log.info('real path:', realPath)
-          // copy
-          const ret = copyFile(src.path, realPath)
-          // rm temp
-          if (ret) {
-            // 删除图片
-            fs.rmSync(src.path)
-            src.path = realPath
-          }
+        }
+        log.info('获取图片信息')
+        info = await getImageInfo(src.path)
+        if (!info) {
+          log.info('图片信息获取失败')
+          throw new Error('Failed to get information of image')
+          // return undefined
+        }
+        log.info('src path:', src.path)
+        // const fileType = await getFileType(src.path)
+        // log.info('file type:', fileType)
+        // get real storage path
+        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+        log.info('real path:', realPath)
+        // copy
+        const ret = copyFile(src.path, realPath)
+        // rm temp
+        if (ret) {
+          // 删除图片
+          // fs.rmSync(src.path)
+          src.path = realPath
         }
         if (!info) return undefined
 
@@ -376,6 +376,15 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
+          log.info('url:', src.url)
+          if (!src.url.startsWith('https://gchat.qpic.cn')) {
+            src.url = `/external-download?url=${encodeURIComponent(src.url)}`
+          }
+          else
+          {
+            src.url = src.url.replace('https://gchat.qpic.cn', '')
+          }
+          log.info('url:', src.url)
         }
         log.info('获取图片信息')
         info = await getImageInfo(src.path)
@@ -453,7 +462,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
              * 
              * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
              */
-            originImageUrl: '',
+            originImageUrl: src.url ?? '',
             import_rich_media_context: null,
             isFlashPic: false,
             transferStatus: 1,

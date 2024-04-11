@@ -51,6 +51,7 @@ const options: RollupOptions[] = [
 
     // should intercept ... but doesn't in some rollup versions
     if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
+    if ( warning.code === 'CIRCULAR_DEPENDENCY' ) { return; }
 
     // console.warn everything else
     handler( warning );

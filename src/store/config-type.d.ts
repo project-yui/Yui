@@ -17,4 +17,5 @@ export interface YukihanaConfig {
 }
 export interface SingatureInfo {
     sqlite3_stmt: string
+    get_ip_by_domain: string
 }

@@ -59,6 +59,7 @@ const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
           ret = session.getRichMediaService().uploadRMFileWithoutMsg(param)
         }catch(err)
         {
+          ret = err
           log.error('error:', err)
         }
         log.info('ret:', ret)
@@ -79,6 +80,19 @@ const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
           }])
         }catch(err)
         {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'addNewDownloadOrUploadFile':
+      {
+        log.info('addNewDownloadOrUploadFile',  p.data)
+        try{
+          ret = session.getStorageCleanService().addNewDownloadOrUploadFile(p.data)
+        }catch(err)
+        {
+          log.info('exception...')
           log.error('error:', err)
         }
         log.info('ret:', ret)
@@ -298,7 +312,7 @@ const nodeModule = async () => {
   }
 }
 const genMarkdown = () => {
-  const _exports = require('../versions/9.9.7-21453/wrapper.node')
+  const _exports = require('../versions/9.9.9-22741/wrapper.node')
   let markdown = ''
   // 遍历类
   for (const serviceName in _exports) {
@@ -326,6 +340,7 @@ const vmSrcipt = () => {
 import async_hooks from 'node:async_hooks';
 import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
+import { DESTRUCTION } from "dns"
 const hookAsync = () => {
   const { fd } = stdout;
 
@@ -499,7 +514,7 @@ export const test = (m: NodeModule) => {
     // vmSrcipt()
     // nodeModule()
     // useExample()
-    // genMarkdown()
+    genMarkdown()
     // setTimeout(() => {
       // vmTest()
     // }, 30000)

@@ -12,6 +12,7 @@ import { useStore } from "../../store/store"
 import { initGroupService } from "./service/group"
 import { initBuddyService } from "./service/buddy"
 import { useNTConfig } from "../store/config"
+import { initStorageCleanService } from "./service/storage-clean"
 
 const log = useLogger('AfterLogin')
 
@@ -42,6 +43,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       initProfileService()
       initGroupService()
       initBuddyService()
+      initStorageCleanService()
     }
     else {
       log.error('NTWrapperSession init failed!')
@@ -84,5 +86,5 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}'
   }, depends, dispatcherAdapter, sessionListener)
   await sleep(1000)
-  session.startNT()
+  session.startNT(1)
 }

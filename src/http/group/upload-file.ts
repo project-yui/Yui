@@ -22,11 +22,11 @@ const parsePeerInfo = (fields: Record<string, string>): PeerInfo => {
     if (fields.chatType === undefined) {
         throw new Error('Parameter "chatType" lost!')
     }
-    log.info('chatType:', fields.chatType[0])
-    peerInfo.chatType = parseInt(fields.chatType[0])
-    if (peerInfo.chatType != 2) {
-        throw new Error('Parameter "chatType" is error!')
-    }
+    log.info('chatType:', fields.chatType)
+    peerInfo.chatType = parseInt(fields.chatType)
+    // if (peerInfo.chatType != 2) {
+    //     throw new Error('Parameter "chatType" is error!')
+    // }
     // peerUid
     if (fields.peerUid === undefined) {
         throw new Error('Parameter "peerUid" lost!')
@@ -72,7 +72,7 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     const fileInfo = {
         fileName: `{${file.md5}}.jpg`,
         filePath: realPath,
-        fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
+        fileModelId: req.body.fileModelId || `${Math.floor(Math.random() * 10e9)}` as `${number}`
     }
     let listener: undefined | { remove: () => void } = undefined
     listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
@@ -92,9 +92,9 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     richMedia.onlyUploadFile(peerInfo, [fileInfo])
     const rmUpload = richMedia.uploadRMFileWithoutMsg({
         transferId: 123456,
-        bizType: 102,
+        bizType: 0,
         filePath: realPath,
-        peerUid: '1690127128',
+        peerUid: '933286835',
         useNTV2: false,
     })
     log.info('uploadRMFileWithoutMsg:', rmUpload)
