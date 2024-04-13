@@ -50,9 +50,10 @@ const options: RollupOptions[] = [
     // Skip certain warnings
 
     // should intercept ... but doesn't in some rollup versions
-    if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
-    if ( warning.code === 'CIRCULAR_DEPENDENCY' ) { return; }
+    const ignore: string[] = [ 'THIS_IS_UNDEFINED', 'CIRCULAR_DEPENDENCY', 'EVAL' ]
+    if ( ignore.includes(warning.code ?? '') ) { return; }
 
+    console.log('warning:', warning.code)
     // console.warn everything else
     handler( warning );
   },

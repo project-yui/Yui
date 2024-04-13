@@ -228,6 +228,7 @@ declare namespace NTNativeWrapper {
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
+    getLastMessageList(...args: any[]): Promise<any>
     getMsgsByMsgId(peer: PeerInfo, msgId: `${number}`[]): Promise<any>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
@@ -241,7 +242,7 @@ declare namespace NTNativeWrapper {
      * @param attributes 属性
      */
     multiForwardMsgWithComment(forwardList: any[], fromPeer: PeerInfo, toPeer: PeerInfo, comments: any[], attributes: Map<any, any>): Promise<SimpleResult>
-    
+    queryMsgsWithFilterEx(msgId: `${number}`, time: number, a: number, param: NodeIKernelMsgServiceType.QueryMsgsWithFilterExParam): any
     /**
      * 撤回指定消息
      * 
@@ -1103,6 +1104,23 @@ declare namespace NodeIKernelMsgServiceType {
   interface UnreadCnt {
     type: number
     cnt: number
+  }
+  interface QueryMsgsWithFilterExParam {
+    chatInfo: PeerInfo,
+    searchFields: 3,
+    filterMsgType: [],
+    filterSendersUid: [],
+    filterMsgFromTime: `${number}`,
+    filterMsgToTime: `${number}`,
+    pageLimit: number,
+    /**
+     * 默认false
+     */
+    isReverseOrder: boolean,
+    /**
+     * 默认false
+     */
+    isIncludeCurrent: boolean
   }
 }
 

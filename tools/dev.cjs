@@ -39,6 +39,7 @@ const ActionHandle = {
                 ...process.env,
                 YUKIHANA_LOG: true,
                 YUKIHANA_ACTION: 'dev',
+                YUKIHANA_NATIVE: "D:/GitHub/nt-native/build/nt_native.node",
             }
         })
     },

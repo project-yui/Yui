@@ -23,18 +23,18 @@ export const initMsgService = () => {
   log.info('add msg listener')
   msgService.addKernelMsgListener(listener)
   log.info('registerSysMsgNotification')
-  // try
-  // {
-  //   // const t = msgService.registerSysMsgNotification(1, 2, [1])
-  //   // log.info('registerSysMsgNotification:', t)
-  //   // t.then(res => {
-  //   //   log.info('registerSysMsgNotification:', res)
-  //   // })
-  //   // .catch(err => {
-  //   //   log.error('registerSysMsgNotification:', err)
-  //   // })
+  try
+  {
+    const t = msgService.registerSysMsgNotification(1, 2, [1])
+    log.info('registerSysMsgNotification:', t)
+    t.then(res => {
+      log.info('registerSysMsgNotification:', res)
+    })
+    .catch(err => {
+      log.error('registerSysMsgNotification:', err)
+    })
 
-  // }catch (err) {
-  //   log.error('error:', err)
-  // }
+  }catch (err) {
+    log.error('error:', err)
+  }
 }

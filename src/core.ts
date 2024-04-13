@@ -20,12 +20,12 @@ try {
   // 核心事件hook
   if (process.env['YUKIHANA_ACTION'] === 'dev') {
     log.info('hook')
-    // hook()
+    hook()
   }
 
   log.info('initNTQQ')
   initNTQQ()
-  initNative()
+  // initNative()
 
   log.info('initOnebot')
   initOnebot()
@@ -35,10 +35,10 @@ try {
   startServer()
 
   // 测试
-  // test(module)
+  test(module)
 
   // log.info('hookWrapper')
-  // hookWrapper()
+  hookWrapper()
 
   // ntqq/resources/app/app_launcher/index.js 原始代码
   if (process.env['YUKIHANA_ACTION'] === 'dev')

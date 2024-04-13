@@ -1,0 +1,21 @@
+// poke.proto
+syntax = "proto3";
+
+message NTMessage {
+    NTHead head = 1;
+    NTCmdInfo cmdInfo = 2;
+}
+
+message NTHead {
+    int64 fromUin = 1;
+    string fromUid = 2;
+}
+
+message NTCmdInfo {
+    int32 type = 1;
+    int32 subType = 2;
+    int32 subType2 = 3;
+    int64 unknown4 = 4;
+    int64 unknown5 = 5;
+    int64 time = 6;
+}

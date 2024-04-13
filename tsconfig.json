@@ -7,7 +7,7 @@
         "ES6",
         "DOM",
     ],
-    "module": "ES2020",
+    "module": "ES6",
     "moduleResolution": "Bundler"
   },
   "include": [

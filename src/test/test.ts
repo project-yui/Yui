@@ -98,6 +98,33 @@ const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
         log.info('ret:', ret)
       }
       break;
+    case 'sysMsg':
+      {
+        log.info('sysMsg',  p.data)
+        try{
+          ret = await session.getMsgService().registerSysMsgNotification(...p.data)
+        }catch(err)
+        {
+          log.info('exception...')
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'lastMsg':
+      {
+        log.info('lastMsg',  p.data)
+        try{
+          ret = await session.getMsgService().getLastMessageList(...p.data)
+          log.info('getLastMessageList:', ret)
+        }catch(err)
+        {
+          log.info('exception...')
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
   }
   const resp: BotActionResponse = {
     id: "",
@@ -341,6 +368,8 @@ import async_hooks from 'node:async_hooks';
 import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
 import { DESTRUCTION } from "dns"
+import { load } from "protobufjs"
+import { nudgeTest } from "./nudge"
 const hookAsync = () => {
   const { fd } = stdout;
 
@@ -514,7 +543,8 @@ export const test = (m: NodeModule) => {
     // vmSrcipt()
     // nodeModule()
     // useExample()
-    genMarkdown()
+    // genMarkdown()
+    nudgeTest()
     // setTimeout(() => {
       // vmTest()
     // }, 30000)
@@ -523,11 +553,6 @@ export const test = (m: NodeModule) => {
     // hookFunction()
     // hookAsync()
     // const { registerEventListener } = useStore()
-    // let i = 0
-    // registerEventListener('KernelMsgListener/onRecvSysMsg', 'always', (data: number[]) => {
-    //   log.info('sys msg:', data)
-    //   fs.writeFileSync(`tmp/test${i++}.bin`, Buffer.from(data))
-    // })
   }
   catch(err) {
     log.error('error:', err)
