@@ -35,9 +35,9 @@ try {
   startServer()
 
   // 测试
-  test(module)
+  // test(module)
 
-  log.info('hookWrapper')
+  // log.info('hookWrapper')
   // hookWrapper()
 
   // ntqq/resources/app/app_launcher/index.js 原始代码

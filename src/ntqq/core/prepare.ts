@@ -2,11 +2,9 @@ import { useLogger } from "../../common/log"
 import { sleep } from "../../common/utils"
 import path from 'path'
 import { release, userInfo } from "os"
-import { getDeviceInfo, getNTPackageInfo } from "../common/utils"
+import { getNTPackageInfo } from "../common/utils"
 import { useNTCore } from "./core"
-import { initMsgService } from "./service/msg"
-import { NodeIDependsAdapter, NodeIDispatcherAdapter, NodeIKernelSessionListener } from "ntwrapper"
-import { initUnitedConfig } from "./service/united-config"
+import { useNTConfig } from "../store/config"
 
 const log = useLogger('NTCore/init')
 
@@ -15,28 +13,33 @@ const log = useLogger('NTCore/init')
  */
 export const prepareBaseEnvironment = async() => {
   log.info('init start')
-  const { getNTConfigStoreFolder, getAppId, getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTCore()
+  const { getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTCore()
+  const { getNTConfigStoreFolder, getAppId, getAppInfo } = useNTConfig()
   // const wrapper = require('../versions/9.9.7-21357/wrapper.node') as typeof NTNativeWrapper
   const configFolder = getNTConfigStoreFolder()
   log.info('configFolder:', configFolder)
   const globalPath = path.resolve(configFolder, './global')
   const pkgInfo = getNTPackageInfo()
-  const devInfo = getDeviceInfo()
+  const appInfo = getAppInfo()
   const cfg: NodeIQQNTWrapperEngineType.Init = {
     base_path_prefix: '',
     /**
      * 3 - windows
      * 5 - linux
      */
-    platform_type: process.platform === 'win32' ? 3 : 5,
+    platform_type: appInfo.platform_type,
     /**
      * 4 - desktop ?
      */
-    app_type: 4,
-    app_version: pkgInfo.version,
-    os_version: devInfo.osVer,
+    app_type: appInfo.app_type,
+    app_version: appInfo.app_version,
+    os_version: appInfo.os_version,
     use_xlog: true,
-    qua: `V1_${process.platform === 'win32' ? 'WIN' : 'LNX' }_NQ_${pkgInfo.version.replace('-', '_')}_GW_B`,
+    /**
+     * 
+     * V1_AND_SQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_YYB_D
+     */
+    qua: appInfo.qua,
     global_path_config: {
       desktopGlobalPath: globalPath
     },

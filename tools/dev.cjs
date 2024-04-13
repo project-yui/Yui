@@ -70,6 +70,7 @@ const ActionHandle = {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
+                            YUKIHANA_NATIVE: "D:/GitHub/nt-native/build/nt_native.node",
                         }
                     })
                 }

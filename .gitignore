@@ -4,5 +4,10 @@ dist
 event.json
 data
 tmp
+.pnpm-store
+
+*.local.y*ml
 yukihana.db
 *.local.y*ml
+.pnpm-store
+cache

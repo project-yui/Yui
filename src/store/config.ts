@@ -1,4 +1,4 @@
-import { readFileSync } from "fs"
+import { existsSync, readFileSync } from "fs"
 import yaml from 'yaml'
 import { YukihanaConfig } from "./config-type"
 import { getNTPackageInfo } from "../ntqq/common/utils"
@@ -7,9 +7,14 @@ import { resolve } from "path"
 
 let configCache: YukihanaConfig = {
     yukihana: {
+        http: {
+            host: "127.0.0.1",
+            port: 8081
+        },
+        'storage-path': './storage',
         ws: {
             host: "127.0.0.1",
-            port: 5678
+            port: 8080
         },
         signature: {
             win32: {},
@@ -28,9 +33,20 @@ const log = useLogger('Yukihana Config')
 const loadFromFile = () => {
     log.info('loadFromFile')
     const cfg = readFileSync(resolve(__dirname, './yukihana.yaml')).toString()
-    const ret = yaml.parse(cfg) as YukihanaConfig
-    log.info('cfg data:', ret)
-    return ret
+    let defaultConfig = yaml.parse(cfg) as YukihanaConfig
+    log.info('cfg data:', defaultConfig)
+    {
+        const localPath = resolve(__dirname, './yukihana.local.yaml')
+        if (existsSync(localPath)) {
+            const localCfg = readFileSync(localPath).toString()
+            const localConfig = yaml.parse(localCfg) as YukihanaConfig
+            defaultConfig = {
+                ...defaultConfig,
+                ...localConfig,
+            }
+        }
+    }
+    return defaultConfig
 }
 
 /**
@@ -43,7 +59,11 @@ const getConfig = (update: boolean = false) => {
     if (!inited || update) {
         try {
             inited = true
-            configCache = loadFromFile()
+            // TODO: 深层合并
+            configCache = {
+                ...configCache,
+                ...loadFromFile()
+            }
         }
         catch (ex) {
             log.error('failed to load config!', ex)
@@ -57,7 +77,25 @@ const getSignature = () => {
     if (process.platform === 'linux' || process.platform === 'win32')
         return cfg.yukihana.signature[process.platform][pkg.version]
 }
+const getStoragePath = () => {
+    const cfg = getConfig()
+    return resolve(__dirname, cfg.yukihana['storage-path'])
+}
 export const useConfigStore = () => ({
+    /**
+     * 获取配置
+     */
     getConfig,
+    /**
+     * 获取hook签名
+     * 
+     * 用于native使用
+     */
     getSignature,
+    /**
+     * 存储路径
+     * 
+     * 绝对路径
+     */
+    getStoragePath,
 })

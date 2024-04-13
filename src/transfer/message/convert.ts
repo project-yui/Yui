@@ -6,6 +6,8 @@ import { BotMessage } from "../../onebot/common/message";
 import { useLogger } from "../../common/log";
 import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
+import { useNTCore } from "../../ntqq/core/core";
+import { useStore } from "../../store/store";
 
 const log = useLogger('Convert')
 
@@ -135,7 +137,6 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             atNtUid: ""
           }
         }
-        // TODO: 对@的处理
         return text
       }
       break;
@@ -149,12 +150,11 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           textElement: {
             content: `@${msg.data.at.isAll ? '全体成员' : msg.data.at.name}`,
             atType: msg.data.at.isAll ? 1 : 2,
-            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
+            atUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
             atTinyId: "",
-            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uin}`,
+            atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
           }
         }
-        // TODO: 对@的处理
         return text
       }
       break;
@@ -175,27 +175,27 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
-          log.info('获取图片信息')
-          info = await getImageInfo(src.path)
-          if (!info) {
-            log.info('图片信息获取失败')
-            throw new Error('Failed to get information of image')
-            // return undefined
-          }
-          log.info('src path:', src.path)
-          // const fileType = await getFileType(src.path)
-          // log.info('file type:', fileType)
-          // get real storage path
-          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
-          log.info('real path:', realPath)
-          // copy
-          const ret = copyFile(src.path, realPath)
-          // rm temp
-          if (ret) {
-            // 删除图片
-            fs.rmSync(src.path)
-            src.path = realPath
-          }
+        }
+        log.info('获取图片信息')
+        info = await getImageInfo(src.path)
+        if (!info) {
+          log.info('图片信息获取失败')
+          throw new Error('Failed to get information of image')
+          // return undefined
+        }
+        log.info('src path:', src.path)
+        // const fileType = await getFileType(src.path)
+        // log.info('file type:', fileType)
+        // get real storage path
+        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+        log.info('real path:', realPath)
+        // copy
+        const ret = copyFile(src.path, realPath)
+        // rm temp
+        if (ret) {
+          // 删除图片
+          // fs.rmSync(src.path)
+          src.path = realPath
         }
         if (!info) return undefined
 
@@ -271,6 +271,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
  */
 export const convertBotMessage2NTInnerMessage = async (elems: BotMessage.SendElement[]): Promise<NTReceiveMessageType.NTMessageElementType[]> => {
   const result: NTReceiveMessageType.NTMessageElementType[] = []
+  log.info('convert inner msg')
   let eleId = Math.floor(Math.random() * 10e15)
   for (const ele of elems) {
     const r = await convertBotMessage2NTInnerMessageSingle(ele, eleId++)
@@ -281,6 +282,28 @@ export const convertBotMessage2NTInnerMessage = async (elems: BotMessage.SendEle
   return result
 }
 
+const uploadFile = (peerInfo: any, fileInfo: any) => {
+  return new Promise((resolve, reject) => {
+
+    const { getWrapperSession } = useNTCore()
+    const session = getWrapperSession()
+    log.info('onlyUploadFile:', peerInfo, fileInfo)
+
+    const { registerEventListener } = useStore()
+    let listener: undefined | { remove: () => void } = undefined
+    listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
+        // 同时上传，可能会识别错误，需要判定一下
+        log.info('upload result:', info)
+        if (info.fileModelId === fileInfo.fileModelId)
+        {
+            listener?.remove()
+            resolve(true)
+        }
+    })
+    session.getRichMediaService().onlyUploadFile(peerInfo, [fileInfo])
+    
+  })
+}
 /**
  * bot消息转NTQQ的消息
  * 
@@ -313,7 +336,6 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
             atRoleName: '',
             needNotify: 0,
           }
-        // TODO: 对@的处理
       }
       break;
     case 'mention':
@@ -335,7 +357,6 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
             atRoleName: '',
             needNotify: 0,
           }
-        // TODO: 对@的处理
       }
       break;
     case 'image':
@@ -355,28 +376,50 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
           if (!src.url) throw new Error(`File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
-          log.info('获取图片信息')
-          info = await getImageInfo(src.path)
-          if (!info) {
-            log.info('图片信息获取失败')
-            throw new Error('Failed to get information of image')
-            // return undefined
-          }
-          log.info('src path:', src.path)
-          // const fileType = await getFileType(src.path)
-          // log.info('file type:', fileType)
-          // get real storage path
-          const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
-          log.info('real path:', realPath)
-          // copy
-          const ret = copyFile(src.path, realPath)
-          // rm temp
-          if (ret) {
-            // 删除图片
-            fs.rmSync(src.path)
-            src.path = realPath
-          }
         }
+        if (src.url){
+          log.info('url:', src.url)
+          if (!src.url.startsWith('https://gchat.qpic.cn')) {
+            src.url = `/external-download?url=${encodeURIComponent(src.url)}`
+          }
+          else
+          {
+            src.url = src.url.replace('https://gchat.qpic.cn', '')
+          }
+          log.info('url:', src.url)
+        }
+        log.info('获取图片信息')
+        info = await getImageInfo(src.path)
+        if (!info) {
+          log.info('图片信息获取失败')
+          throw new Error('Failed to get information of image')
+          // return undefined
+        }
+        log.info('src path:', src.path)
+        // const fileType = await getFileType(src.path)
+        // log.info('file type:', fileType)
+        // get real storage path
+        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+        log.info('real path:', realPath)
+        // copy
+        const ret = copyFile(src.path, realPath)
+        // rm temp
+        if (ret) {
+          // 删除图片
+          // fs.rmSync(src.path)
+          src.path = realPath
+        }
+        // const peerInfo: any = {
+        //   chatType: 2,
+        //   peerUid: '933286835',
+        //   guildId: ''
+        // }
+        // const fileInfo = {
+        //   fileName: `{${info.md5}}.jpg`,
+        //   filePath: src.path,
+        //   fileModelId: `${Math.floor(Math.random() * 10e9)}` as `${number}`
+        // }
+        // await uploadFile(peerInfo, fileInfo)
         if (!info) return undefined
         result.elementType = 2
         result.picElement = {
@@ -412,7 +455,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
               peerUid: '1',
               bytesReserveInfo: ''
             },
-            originImageMd5: '',
+            originImageMd5: info.md5,
         
             /**
              * 图片网络地址
@@ -421,7 +464,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
              * 
              * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
              */
-            originImageUrl: '',
+            originImageUrl: src.url ?? '',
             import_rich_media_context: null,
             isFlashPic: false,
             transferStatus: 1,

@@ -2,6 +2,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
+import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser';
 import { RollupOptions } from "rollup";
 import fs from 'fs'
@@ -45,6 +46,16 @@ const options: RollupOptions[] = [
       return fs.readFileSync('./tools/prepend.js').toString()
     },
   },
+  onwarn: function(warning, handler) {
+    // Skip certain warnings
+
+    // should intercept ... but doesn't in some rollup versions
+    if ( warning.code === 'THIS_IS_UNDEFINED' ) { return; }
+    if ( warning.code === 'CIRCULAR_DEPENDENCY' ) { return; }
+
+    // console.warn everything else
+    handler( warning );
+  },
   plugins: [
     resolve({
       // 将自定义选项传递给解析插件
@@ -56,6 +67,7 @@ const options: RollupOptions[] = [
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
+    json(),
     // 压缩
     // terser(),
     {
@@ -69,12 +81,16 @@ const options: RollupOptions[] = [
             const fromPath = path.resolve(options.dir, './core.js')
             console.log('compile file:', fromPath)
             // 字节码生成
+            let qqBinaryPath:string = './ntqq/QQ.exe'
+            if (process.platform == 'linux') {
+              qqBinaryPath = '/opt/QQ/qq'
+            }
             bytenode.compileFile({
               filename: fromPath,
               compileAsModule: true,
               electron: true,
               compress: true,
-              electronPath: './ntqq/QQ.exe',
+              electronPath: qqBinaryPath,
               output: `${fromPath}c`,
             })
           }
@@ -106,6 +122,7 @@ const options: RollupOptions[] = [
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
+    json(),
     // 压缩
     // terser(),
     // // 混淆

@@ -7,11 +7,15 @@ declare namespace YukihanaNativeWrapper {
          * 
          * @param signature 函数签名
          */
-        const install: (signature: number[]) => boolean
+        const install: (signature: SignatureType) => Record<string, boolean>
         /**
          * 添加消息
          */
         const addMsg: (msg: AddMsgType) => boolean
+    }
+    interface SignatureType {
+      sqlite3_stmt?: number[]
+      hosts?: number[]
     }
     interface AddMsgType {
         msgId: `${number}`
@@ -31,7 +35,7 @@ declare namespace YukihanaNativeWrapper {
         fromAppid: '0'
         msgTime: number
         msgMeta: '0x'
-        sendStatus: 2
+        sendStatus: 0 | 2
         sendRemarkName: string
         sendMemberName: string
         sendNickName: string

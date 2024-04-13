@@ -36,7 +36,9 @@
       /**  @type {import('path')} */
       const path = orgi_rquire('path')
       let wrapperPath = path.resolve(__dirname, `./native.node`)
-      wrapperPath = "D:/GitHub/nt-native/build/nt_native.node"
+      if (process.env['YUKIHANA_NATIVE']) {
+        wrapperPath = process.env['YUKIHANA_NATIVE']
+      }
       return orgi_rquire.apply(t, [wrapperPath])
     }
   }

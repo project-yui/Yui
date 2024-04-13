@@ -18,17 +18,86 @@ const { registerActionHandle } = useStore()
 const log = useLogger('Test')
 
 const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
+  log.info('testSendMsg')
   const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
+  const session = getWrapperSession()
+  const msgService = session.getMsgService()
   let ret = undefined
   // const ret = await msgService.getSingleMsg(p.a, p.b)
   // log.info('ret:', ret)
-  if (p.type == 'forward') {
-    ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
-  }
-  else {
-    const param = p.data
-    ret = await msgService.getSingleMsg(param.a, param.b)
+  switch(p.type)
+  {
+    case 'forward':{
+      ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
+      }break;
+    case 'singleMsg':{
+      const param = p.data
+      ret = await msgService.getSingleMsg(param.a, param.b)
+      }break;
+    case 'sendMsg':{
+      const param = p.data
+      ret = await msgService.sendMsg('0', param.peer, param.b, new Map());
+     } break;
+    case 'addSendMsg':
+      {
+        log.info('addSendMsg',  p.data)
+        try{
+          const param = p.data
+          ret = await msgService.addSendMSg('0', param.peer, param.b, new Map())
+        }catch(err)
+        {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'upload':
+      {
+        log.info('upload',  p.data)
+        try{
+          const param = p.data
+          ret = session.getRichMediaService().uploadRMFileWithoutMsg(param)
+        }catch(err)
+        {
+          ret = err
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'richfile':
+      {
+        log.info('richfile',  p.data)
+        try{
+          ret = session.getRichMediaService().onlyUploadFile({
+            "chatType": 2,
+            "peerUid": "933286835",
+            "guildId": ""
+          }, [{
+            fileName: 'test.jpg',
+            filePath: "D:/Pictures/壁纸/wallpaper/0new.jpg",
+            fileModelId: '123545665'
+          }])
+        }catch(err)
+        {
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
+    case 'addNewDownloadOrUploadFile':
+      {
+        log.info('addNewDownloadOrUploadFile',  p.data)
+        try{
+          ret = session.getStorageCleanService().addNewDownloadOrUploadFile(p.data)
+        }catch(err)
+        {
+          log.info('exception...')
+          log.error('error:', err)
+        }
+        log.info('ret:', ret)
+      }
+      break;
   }
   const resp: BotActionResponse = {
     id: "",
@@ -243,36 +312,23 @@ const nodeModule = async () => {
   }
 }
 const genMarkdown = () => {
-  
-  const open = (process as any).dlopen
-  // 拦截native加载方法
-  ;(process as any).dlopen = function(m: any, file: string){
-    log.info('process.dlopen', m, file)
-    // 调用默认native加载方法
-    const ret = open(m, file)
-    log.info('dlopen result:', ret, m)
-
-    // 修改加载后的native方法
-    if (file.includes('wrapper')){
-      const _exports = m.exports
-      let markdown = ''
-      // 遍历类
-      for (const serviceName in _exports) {
-        const service = _exports[serviceName]
-        const funcs = service.prototype
-        markdown += `## ${serviceName}\n\n`
-        markdown += '| 方法名 | 描述 |\n'
-        markdown += '|-------|-----|\n'
-        // 遍历方法
-        for (const funcName in funcs) {
-          markdown += `| ${funcName} | |\n`
-        }
-        markdown += '\n'
-      }
-      log.info('\n', markdown)
+  const _exports = require('../versions/9.9.9-22741/wrapper.node')
+  let markdown = ''
+  // 遍历类
+  for (const serviceName in _exports) {
+    const service = _exports[serviceName]
+    const funcs = service.prototype
+    markdown += `## ${serviceName}\n\n`
+    markdown += '| 方法名 | 描述 |\n'
+    markdown += '|-------|-----|\n'
+    // 遍历方法
+    for (const funcName in funcs) {
+      markdown += `| ${funcName} | |\n`
     }
-    return ret
+    markdown += '\n'
   }
+  fs.writeFileSync('./docs/function.md', markdown)
+  
 }
 const vmSrcipt = () => {
   global.require = require
@@ -284,6 +340,7 @@ const vmSrcipt = () => {
 import async_hooks from 'node:async_hooks';
 import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
+import { DESTRUCTION } from "dns"
 const hookAsync = () => {
   const { fd } = stdout;
 
@@ -457,7 +514,7 @@ export const test = (m: NodeModule) => {
     // vmSrcipt()
     // nodeModule()
     // useExample()
-    // genMarkdown()
+    genMarkdown()
     // setTimeout(() => {
       // vmTest()
     // }, 30000)
@@ -465,6 +522,12 @@ export const test = (m: NodeModule) => {
     // process.exit(1)
     // hookFunction()
     // hookAsync()
+    // const { registerEventListener } = useStore()
+    // let i = 0
+    // registerEventListener('KernelMsgListener/onRecvSysMsg', 'always', (data: number[]) => {
+    //   log.info('sys msg:', data)
+    //   fs.writeFileSync(`tmp/test${i++}.bin`, Buffer.from(data))
+    // })
   }
   catch(err) {
     log.error('error:', err)

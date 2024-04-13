@@ -6,7 +6,9 @@
  * native层
  */
 declare namespace NTNativeWrapper {
-  
+  class NTBaseClass {
+    isNull(): boolean
+  }
   namespace CrossProcessExports {
     const NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
     const NodeIKernelLoginService: typeof NTNativeWrapper.NodeIKernelLoginService
@@ -17,10 +19,12 @@ declare namespace NTNativeWrapper {
     const NodeIKernelUnitedConfigService: typeof NTNativeWrapper.NodeIKernelUnitedConfigService
     const NodeIDependsAdapter: typeof NTNativeWrapper.NodeIDependsAdapter
     const NodeIDispatcherAdapter: typeof NTNativeWrapper.NodeIDispatcherAdapter
-    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
     const NodeIKernelBuddyListener: typeof NTNativeWrapper.NodeIKernelBuddyListener
+    const NodeIKernelGroupListener: typeof NTNativeWrapper.NodeIKernelGroupListener
+    const NodeIKernelSessionListener: typeof NTNativeWrapper.NodeIKernelSessionListener
     const NodeIKernelLoginListener: typeof NTNativeWrapper.NodeIKernelLoginListener
     const NodeIKernelProfileListener: typeof NTNativeWrapper.NodeIKernelProfileListener
+    const NodeIKernelStorageCleanListener: typeof NTNativeWrapper.NodeIKernelStorageCleanListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof NTNativeWrapper.NodeIGlobalAdapter
@@ -219,6 +223,8 @@ declare namespace NTNativeWrapper {
 
   class NodeIKernelMsgService {
     addKernelMsgListener(listener: NodeIKernelMsgListener): number
+    addSendMSg(...args: any[]): any
+    downloadRichMedia(info: NodeIKernelMsgServiceType.DownloadRichMediaReq): any
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
@@ -243,6 +249,8 @@ declare namespace NTNativeWrapper {
      * @param ids 要撤回的消息id
      */
     recallMsg(peer: PeerInfo, ids: `${number}`[]): Promise<SimpleResult>
+
+    registerSysMsgNotification(...args: any[]): Promise<any>
     
     /**
      * 发送消息
@@ -431,6 +439,49 @@ declare namespace NTNativeWrapper {
   class NodeIKernelRemotingService {
     addKernelRemotingListener(listener: NodeIKernelRemotingListener): void
   }
+  class NodeIKernelRichMediaService extends NTBaseClass{
+    downloadFile(a1: {
+      fileModelId: `${number}`
+      msgId: `${number}`
+      elemId: `${number}`
+      uuid: `${number}`
+      subId: `${number}`
+      fileName: string
+      fileSize: `${number}`
+      msgTime: `${number}`
+      peerUid: string
+      chatType: number
+      md510m: string
+      sha: string
+      sha3: string
+      parent: string
+      favId: string
+      bizType: number
+    }, a2: number, a3: number, a4: string): any
+    downloadFileByUrlList(a1: number, a2: string[]): any
+    downloadFileForFileInfo(): any
+    downloadFileForFileUuid(): any
+    downloadFileForModelId(): any
+    uploadRMFileWithoutMsg(data: NodeIKernelRichMediaServiceType.UploadRMFileWithoutMsgReq): Promise<NodeIKernelRichMediaServiceType.UploadRMFileWithoutMsgResp>
+    onlyUploadFile(peer: PeerInfo, files: NodeIKernelRichMediaServiceType.FileInfo[]): any
+  }
+  namespace NodeIKernelRichMediaServiceType {
+    interface UploadRMFileWithoutMsgReq {
+      transferId: number
+      bizType: number
+      filePath: string
+      peerUid: `${number}`
+      useNTV2: boolean
+    }
+    interface FileInfo {
+      fileName: string
+      filePath: string
+      fileModelId: `${number}`
+    }
+    interface UploadRMFileWithoutMsgResp {
+      
+    }
+  }
 
   class NodeIKernelRobotService {
     getRobotUinRange(cfg: NodeIKernelRobotServiceType.GetRobotUinRangeReq): Promise<NodeIKernelRobotServiceType.GetRobotUinRangeResp>
@@ -497,11 +548,14 @@ declare namespace NTNativeWrapper {
   }
   class NodeIKernelStorageCleanService {
     addKernelStorageCleanListener(listener: NodeIKernelStorageCleanListener): number
+    addNewDownloadOrUploadFile(info: NodeIKernelStorageCleanServiceType.AddNewDownloadOrUploadFileReq): any
   }
 
   class NodeIQQNTWrapperEngine {
     constructor()
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: NodeIGlobalAdapter): boolean
+    initWithMobileConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: NodeIGlobalAdapter): boolean
+    getDeviceInfo(): any
   }
 
   class NodeIKernelLoginService {
@@ -578,7 +632,7 @@ declare namespace NTNativeWrapper {
     onContactUnreadCntUpdate: () => void
     onMsgAbstractUpdate: () => void
     onDraftUpdate: () => void
-    onRichMediaUploadComplete: () => void
+    onRichMediaUploadComplete: (info: RichMediaUploadResult) => void
     onRichMediaDownloadComplete: () => void
     onRichMediaProgerssUpdate: () => void
     onGroupFileInfoUpdate: () => void
@@ -619,6 +673,73 @@ declare namespace NTNativeWrapper {
     onRecvUDCFlag: () => void
     onRecvGroupGuildFlag: () => void
     onUserSecQualityChanged: () => void
+  }
+  interface RichMediaUploadResult {
+    /**
+     * 与上传前提供的一致
+     */
+    fileModelId: `${number}`
+    msgElementId: `${number}`
+    msgId:`${number}`
+    fileId: `/${string}-${string}-${string}-${string}-${string}` | ''
+    fileProgress: `${number}`
+    fileSpeed: `${number}`
+    /**
+     * 0 - ok
+     * 
+     * 2006028 - 非群成员
+     */
+    fileErrCode: `${number}`
+    fileErrMsg: string
+    fileDownType: 1
+    thumbSize: number
+    /**
+     * 文件路径
+     * 
+     * 还是上传前的路径
+     */
+    filePath: string
+    /**
+     * 文件大小
+     */
+    totalSize: `${number}`
+    trasferStatus: 4
+    step: 0
+    commonFileInfo: CommonFileInfo
+    fileSrvErrCode: `${number}`
+    clientMsg: string
+    /**
+     * 102 - ?
+     */
+    businessId: number
+  }
+  interface CommonFileInfo {
+    /**
+     * 与上传前提供的一致
+     */
+    fileModelId: `${number}`
+    msgId: `${number}`
+    elemId: `${number}`
+    uuid: `/${string}-${string}-${string}-${string}-${string}` | ''
+    subId: string
+    fileName: string
+    fileSize: `${number}`
+    msgTime: `${number}`
+    peerUid: `${number}`
+    /**
+     * 2 - 群组
+     */
+    chatType: 2
+    md5: string
+    md510m: string
+    sha: string
+    sha3: string
+    parent: null
+    favId: null
+    /**
+     * 102 - ?
+     */
+    bizType: number | null
   }
   class NodeIKernelMsgListener {
     constructor(options: NodeIKernelMsgListenerConstructorOptions);
@@ -679,7 +800,7 @@ declare namespace NTNativeWrapper {
 
   class NodeIQQNTWrapperSession {
     init(config: NodeIQQNTWrapperSessionType.Init, depends: NodeIDependsAdapter, dispatcher: NodeIDispatcherAdapter, sessionListener: NodeIKernelSessionListener): void
-    startNT(): string
+    startNT(a?: number): string
     getAvatarService(): NodeIKernelAvatarService
     getAVSDKService(): NodeIKernelAVSDKService
     getBuddyService(): NodeIKernelBuddyService
@@ -697,6 +818,7 @@ declare namespace NTNativeWrapper {
     getQQPlayService(): NodeIKernelQQPlayService
     getRecentContactService(): NodeIKernelRecentContactService
     getRemotingService(): NodeIKernelRemotingService
+    getRichMediaService(): NodeIKernelRichMediaService
     getRobotService(): NodeIKernelRobotService
     getSearchService(): NodeIKernelSearchService
     getSettingService(): NodeIKernelSettingService
@@ -740,9 +862,13 @@ declare namespace NodeIQQNTWrapperEngineType {
     /**
      * 形如：V1_WIN_NQ_9.9.7_21357_GW_B
      */
-    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B`
+    qua: `V1_WIN_NQ_${string}_GW_B` | `V1_LNX_NQ_${string}_GW_B` | `V1_AND_SQ_${string}_YYB_D`
     global_path_config: {
-      desktopGlobalPath: string
+      desktopGlobalPath?: string
+      mobileGlobalDBPath?: string
+      mobileGlobalDataPath?: string
+      mobileGlobalTempPath?: string
+      base_path_prefix?: string
     }
     thumb_config: ThumbConfig
   }
@@ -883,6 +1009,20 @@ declare namespace NodeIKernelLoginServiceType {
   }
 }
 
+declare namespace NodeIKernelStorageCleanServiceType {
+  interface AddNewDownloadOrUploadFileReq {
+    msgId: `${number}`
+    forwardSubMsgId: `${number}`
+    peerUid: string
+    chatType: number
+    fileTime: string
+    fileName: string
+    fileSize: string
+    filePath: string
+    wildFile: boolean
+  }
+}
+
 /**
  * 简单响应体
  * 
@@ -902,11 +1042,29 @@ interface SimpleResult {
 }
 
 interface PeerInfo {
+  /**
+   * 2 - 群
+   */
   chatType: number,
+  /**
+   * 群号或者用户id
+   */
   peerUid: `${number}` | `u_${string}` | '',
   guildId: string
 }
 declare namespace NodeIKernelMsgServiceType {
+  interface DownloadRichMediaReq {
+    msgId: `${number}`
+    peerUid: string
+    chatType: number
+    elementId: `${number}`
+    downloadType: number
+    thumbSize: number
+    filePath: string
+    fileModelId: `${number}`
+    downSourceType: number
+    triggerType: number
+  }
   interface FetchStatusMgrInfoResp extends SimpleResult {
     content: string
   }
@@ -1071,8 +1229,9 @@ declare namespace NodeIQQNTWrapperSessionType {
     machineId: string
     /**
      * 3 - Windows
+     * 5 - Linux
      */
-    platform: 3
+    platform: 3 | 5
     /**
      * Widnows 版本
      */
@@ -1086,7 +1245,7 @@ declare namespace NodeIQQNTWrapperSessionType {
       systemId: 0,
       appId: '',
       logicEnvironment: '',
-      platform: 3,
+      platform: 3 | 5,
       language: '',
       sdkVersion: '',
       userId: '',

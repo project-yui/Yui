@@ -1,6 +1,7 @@
 export interface YukihanaConfig {
     yukihana: {
-        ws: {
+        'storage-path': string
+        http: {
             host: string
             port: number
         }
@@ -8,8 +9,13 @@ export interface YukihanaConfig {
             win32: Record<string, SingatureInfo>
             linux: Record<string, SingatureInfo>
         }
+        ws: {
+            host: string
+            port: number
+        }
     }
 }
 export interface SingatureInfo {
     sqlite3_stmt: string
+    get_ip_by_domain: string
 }
