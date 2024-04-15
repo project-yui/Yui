@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "rollup -c --configPlugin @rollup/plugin-typescript -w",
-    "build": "rollup -c --configPlugin @rollup/plugin-typescript",
+    "dev": "node tools/dev.cjs dev",
+    "build": "node tools/dev.cjs build",
     "start": "node tools/dev.cjs start",
     "start-log-file": "node tools/dev.cjs start-log-file",
     "nodestart": "node tools/dev.cjs nodestart",

@@ -24,9 +24,39 @@ if (fs.existsSync(path.resolve(__dirname, '../telecord.local.yaml'))) {
 
 const args = process.argv.slice(2)
 
+// console.log(process.env.PATH)
+
 /////////////////////////配置处理完毕////////////////////////////////////
 
 const ActionHandle = {
+    /**
+     * 
+     * @param {string[]} args 参数
+     */
+    dev: (args) => {
+        // rollup -c --configPlugin @rollup/plugin-typescript -w
+        spawn('node_modules\\.bin\\rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript', '-w'], {
+            stdio: 'inherit',
+            env: {
+                ...process.env,
+                PROGRAM_PATH: devConfig.program_path
+            }
+        })
+    },
+    /**
+     * 
+     * @param {string[]} args 参数
+     */
+    build: (args) => {
+        // rollup -c --configPlugin @rollup/plugin-typescript -w
+        spawn('node_modules\\.bin\\rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript'], {
+            stdio: 'inherit',
+            env: {
+                ...process.env,
+                PROGRAM_PATH: devConfig.program_path
+            }
+        })
+    },
     /**
      * 
      * @param {string[]} args 参数
