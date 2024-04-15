@@ -1,12 +1,12 @@
 import { existsSync, readFileSync } from "fs"
 import yaml from 'yaml'
-import { YukihanaConfig } from "./config-type"
+import { TelecordConfig } from "./config-type"
 import { getNTPackageInfo } from "../ntqq/common/utils"
 import { useLogger } from "../common/log"
 import { resolve } from "path"
 
-let configCache: YukihanaConfig = {
-    yukihana: {
+let configCache: TelecordConfig = {
+    telecord: {
         http: {
             host: "127.0.0.1",
             port: 8081
@@ -23,7 +23,7 @@ let configCache: YukihanaConfig = {
     }
 }
 let inited: boolean = false
-const log = useLogger('Yukihana Config')
+const log = useLogger('Telecord Config')
 
 /**
  * 从文件加载配置
@@ -32,14 +32,14 @@ const log = useLogger('Yukihana Config')
  */
 const loadFromFile = () => {
     log.info('loadFromFile')
-    const cfg = readFileSync(resolve(__dirname, './yukihana.yaml')).toString()
-    let defaultConfig = yaml.parse(cfg) as YukihanaConfig
+    const cfg = readFileSync(resolve(__dirname, './telecord.yaml')).toString()
+    let defaultConfig = yaml.parse(cfg) as TelecordConfig
     log.info('cfg data:', defaultConfig)
     {
-        const localPath = resolve(__dirname, './yukihana.local.yaml')
+        const localPath = resolve(__dirname, './telecord.local.yaml')
         if (existsSync(localPath)) {
             const localCfg = readFileSync(localPath).toString()
-            const localConfig = yaml.parse(localCfg) as YukihanaConfig
+            const localConfig = yaml.parse(localCfg) as TelecordConfig
             defaultConfig = {
                 ...defaultConfig,
                 ...localConfig,
@@ -75,11 +75,11 @@ const getSignature = () => {
     const pkg = getNTPackageInfo()
     const cfg = getConfig()
     if (process.platform === 'linux' || process.platform === 'win32')
-        return cfg.yukihana.signature[process.platform][pkg.version]
+        return cfg.telecord.signature[process.platform][pkg.version]
 }
 const getStoragePath = () => {
     const cfg = getConfig()
-    return resolve(__dirname, cfg.yukihana['storage-path'])
+    return resolve(__dirname, cfg.telecord['storage-path'])
 }
 export const useConfigStore = () => ({
     /**

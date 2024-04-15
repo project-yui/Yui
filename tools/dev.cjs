@@ -6,20 +6,20 @@ const path = require('path')
 const yaml = require('yaml')
 
 // 先读默认
-const ymlData = fs.readFileSync(path.resolve(__dirname, '../yukihana.yaml')).toString()
+const ymlData = fs.readFileSync(path.resolve(__dirname, '../telecord.yaml')).toString()
 
-/** @type {import('./types/dev').YukihanaDevConfig} */
+/** @type {import('./types/dev').TelecordDevConfig} */
 const cfg = yaml.parse(ymlData)
-const devConfig = cfg.yukihana.dev
+const devConfig = cfg.telecord.dev
 
 // 再读local，并覆盖
-if (fs.existsSync(path.resolve(__dirname, '../yukihana.local.yaml'))) {
+if (fs.existsSync(path.resolve(__dirname, '../telecord.local.yaml'))) {
     
-    const ymlData = fs.readFileSync(path.resolve(__dirname, '../yukihana.local.yaml')).toString()
+    const ymlData = fs.readFileSync(path.resolve(__dirname, '../telecord.local.yaml')).toString()
 
-    /** @type {import('./types/dev').YukihanaDevConfig} */
+    /** @type {import('./types/dev').TelecordDevConfig} */
     const cfg = yaml.parse(ymlData)
-    devConfig.ntqq_path = cfg.yukihana.dev.ntqq_path ?? devConfig.ntqq_path
+    devConfig.ntqq_path = cfg.telecord.dev.ntqq_path ?? devConfig.ntqq_path
 }
 
 const args = process.argv.slice(2)

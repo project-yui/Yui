@@ -32,7 +32,7 @@
       }
       return orgi_rquire.apply(t, [wrapperPath])
     },
-    'yukihana-native': (t) => {
+    'telecord-native': (t) => {
       /**  @type {import('path')} */
       const path = orgi_rquire('path')
       let wrapperPath = path.resolve(__dirname, `./native.node`)

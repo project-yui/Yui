@@ -1,5 +1,5 @@
-export interface YukihanaConfig {
-    yukihana: {
+export interface TelecordConfig {
+    telecord: {
         'storage-path': string
         http: {
             host: string

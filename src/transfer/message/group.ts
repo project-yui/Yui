@@ -5,7 +5,7 @@ import { convertBotMessage2NTInnerMessage, convertBotMessage2NTMessage } from ".
 import { BotMessage, BotMessageSendElements } from "../../onebot/common/message"
 import { useNTCore } from "../../ntqq/core/core"
 import { getBotAccount } from "../../onebot/common/user"
-import { addMsg } from "yukihana-native"
+import { addMsg } from "telecord-native"
 
 const log = useLogger('Group')
 
@@ -81,7 +81,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
     log.info('use random msgId:', msgId)
     // 转换为可添加的消息
     try {
-      const msgContent: YukihanaNativeWrapper.AddMsgType = {
+      const msgContent: TelecordNativeWrapper.AddMsgType = {
         msgId: msgId,
         msgRandom: Math.floor(Math.random() * 10e5),
         msgSeq: 10000 + i,

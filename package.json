@@ -1,6 +1,6 @@
 {
-  "name": "ntqq-bot",
-  "version": "1.1.0",
+  "name": "telecord",
+  "version": "1.2.0",
   "description": "",
   "type": "module",
   "main": "index.js",

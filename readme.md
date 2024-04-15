@@ -1,6 +1,6 @@
-# Yukihana
+# Telecord
 
-基于NTQQ的机器人框架
+基于 Telecord 的机器人框架
 
 ## 实现的功能
 

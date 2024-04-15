@@ -17,7 +17,7 @@
 
       大致结构如下：
       ```
-      Yukihana
+      Telecord
       ├─ntqq
       │  ├─lib
       │  ├─locales

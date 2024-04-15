@@ -103,7 +103,7 @@ const options: RollupOptions[] = [
     // }),
   ],
   // 指出哪些模块应该视为外部模块
-  external: ['electron', 'module', 'ntwrapper', 'yukihana-native'],
+  external: ['electron', 'module', 'ntwrapper', 'telecord-native'],
 },
 {
   input: 'src/index.ts',

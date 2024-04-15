@@ -7,7 +7,7 @@ import { sendForwardMessageToGroup, sendMessageToGroup } from "../../../transfer
 import { BotMessage } from "../../common/message"
 import { getBotAccount } from "../../common/user"
 import { BotActionResponse } from "../interfaces"
-import { addMsg } from 'yukihana-native'
+import { addMsg } from 'telecord-native'
 
 const { registerActionHandle } = useStore()
 const log = useLogger('ActionGroup')

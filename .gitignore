@@ -7,7 +7,7 @@ tmp
 .pnpm-store
 
 *.local.y*ml
-yukihana.db
+telecord.db
 *.local.y*ml
 .pnpm-store
 cache
