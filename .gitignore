@@ -7,5 +7,5 @@ tmp
 .pnpm-store
 
 *.*.y*ml
-telecord.db
+*.db
 cache
