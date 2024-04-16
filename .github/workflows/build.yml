@@ -103,6 +103,7 @@ jobs:
           chmod +x pyuploadtool-x86_64.AppImage
           ./pyuploadtool-x86_64.AppImage \
           **build/*.js \
+          **build/*.yaml \
           **build/*.jsc
 
       - name: Release
@@ -115,4 +116,5 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           files: |
             **build/*.js
+            **build/*.yaml
             **build/*.jsc
