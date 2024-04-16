@@ -1,25 +1,57 @@
 const { execSync, exec, spawn } = require('child_process')
 const fs = require('fs')
 const path = require('path')
-
 /** @type {import('yaml')} */
 const yaml = require('yaml')
+
+
+/**
+ * Simple object check.
+ * @param item
+ * @returns {boolean}
+ */
+function isObject(item) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+/**
+ * Deep merge two objects.
+ * @param target
+ * @param ...sources
+ */
+function mergeDeep(target, ...sources) {
+    if (!sources.length) return target;
+    const source = sources.shift();
+
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+        if (isObject(source[key])) {
+            if (!target[key]) Object.assign(target, { [key]: {} });
+            mergeDeep(target[key], source[key]);
+        } else {
+            Object.assign(target, { [key]: source[key] });
+        }
+        }
+    }
+
+    return mergeDeep(target, ...sources);
+}
 
 // 先读默认
 const ymlData = fs.readFileSync(path.resolve(__dirname, '../telecord.yaml')).toString()
 
 /** @type {import('./types/dev').TelecordDevConfig} */
 const cfg = yaml.parse(ymlData)
-const devConfig = cfg.telecord.dev
+let devConfig = cfg.telecord.dev
 
-// 再读local，并覆盖
-if (fs.existsSync(path.resolve(__dirname, '../telecord.local.yaml'))) {
-    
-    const ymlData = fs.readFileSync(path.resolve(__dirname, '../telecord.local.yaml')).toString()
+const externalCfg = path.resolve(__dirname, `../telecord.${cfg.telecord.profiles.active}.yaml`)
+// 再读自定义配置，并覆盖
+if (fs.existsSync(externalCfg)) {
+    const ymlData = fs.readFileSync(externalCfg).toString()
 
     /** @type {import('./types/dev').TelecordDevConfig} */
     const cfg = yaml.parse(ymlData)
-    devConfig.ntqq_path = cfg.telecord.dev.ntqq_path ?? devConfig.ntqq_path
+    devConfig = mergeDeep(devConfig, cfg)
 }
 
 const args = process.argv.slice(2)
@@ -35,7 +67,7 @@ const ActionHandle = {
      */
     dev: (args) => {
         // rollup -c --configPlugin @rollup/plugin-typescript -w
-        spawn('node_modules\\.bin\\rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript', '-w'], {
+        spawn('rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript', '-w'], {
             stdio: 'inherit',
             env: {
                 ...process.env,
@@ -49,7 +81,7 @@ const ActionHandle = {
      */
     build: (args) => {
         // rollup -c --configPlugin @rollup/plugin-typescript -w
-        spawn('node_modules\\.bin\\rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript'], {
+        spawn('rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript'], {
             stdio: 'inherit',
             env: {
                 ...process.env,
@@ -77,7 +109,7 @@ const ActionHandle = {
             case 'win32':
                 {
                     // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"
-                    spawn('cmd.exe', ['/C', `${devConfig.ntqq_path} > tmp\\output.log 2>&1`], {
+                    spawn('cmd.exe', ['/C', `${devConfig.program_path} > tmp\\output.log 2>&1`], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
@@ -94,7 +126,7 @@ const ActionHandle = {
             case 'win32':
                 {
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-                    spawn(devConfig.ntqq_path, ['./ntqq/resources/app/app_launcher/index.js'], {
+                    spawn(devConfig.program_path, ['./ntqq/resources/app/app_launcher/index.js'], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
@@ -112,7 +144,7 @@ const ActionHandle = {
             case 'win32':
                 {
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\compile.js
-                    spawn(devConfig.ntqq_path, ['./ntqq/resources/app/app_launcher/compile.js'], {
+                    spawn(devConfig.program_path, ['./ntqq/resources/app/app_launcher/compile.js'], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,

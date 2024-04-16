@@ -1,13 +1,10 @@
 node_modules
 dist
 /ntqq
-event.json
 data
 tmp
 .pnpm-store
 
-*.local.y*ml
+*.*.y*ml
 telecord.db
-*.local.y*ml
-.pnpm-store
 cache
