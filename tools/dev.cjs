@@ -60,6 +60,9 @@ const args = process.argv.slice(2)
 
 const copyConfiguration = () => 
 {
+    try {
+        fs.mkdirSync(path.resolve(__dirname, '../program/resources/app/app_launcher'))
+    } catch(_){}
     fs.copyFileSync(path.resolve(__dirname, '../telecord.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/telecord.yaml'))
 }
 copyConfiguration()
