@@ -70,6 +70,18 @@ export const startHTTPServer = () => {
     const httpServer = createServer(app)
     httpServer.listen(cfg.telecord.http.port, cfg.telecord.http.host)
     const httpsServer = https.createServer(options, app)
+    log.info('Try to listen on 443.')
     httpsServer.listen(443)
-    // sudo iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to-port 8443
+    httpsServer.on('error', function (err: any) {
+        log.error('err:', err)
+        if (err.code === 'EACCES' && err.port === 443) {
+            log.warn('Failed to listen on 443, try to listen on 8443.');
+            httpsServer.listen(8443);
+            log.warn('Please forward it to 443: sudo iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to-port 8443');
+        } else {
+            // 处理其他类型的错误或者在其他端口上的错误
+            log.error(err);
+            process.exit(1); // 或者你可以选择其他的错误处理方式
+        }
+    });
 }

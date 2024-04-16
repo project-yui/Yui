@@ -64,6 +64,8 @@ const copyConfiguration = () =>
         fs.mkdirSync(path.resolve(__dirname, '../program/resources/app/app_launcher'), {recursive: true})
     } catch(_){}
     fs.copyFileSync(path.resolve(__dirname, '../telecord.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/telecord.yaml'))
+    fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.crt'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.crt'))
+    fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.key'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.key'))
 }
 copyConfiguration()
 
