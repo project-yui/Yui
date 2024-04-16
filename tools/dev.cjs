@@ -148,6 +148,20 @@ const ActionHandle = {
                     })
                 }
                 break
+            case 'linux':
+                {
+                    // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
+                    spawn(devConfig.program_path, ['./program/resources/app/app_launcher/index.js'], {
+                        stdio: 'inherit',
+                        env: {
+                            ...process.env,
+                            YUKIHANA_LOG: true,
+                            ELECTRON_RUN_AS_NODE: true,
+                            YUKIHANA_NATIVE: "/home/msojocs/github/nt-native/build/nt_native.node",
+                        }
+                    })
+                }
+                break
         }
     },
     'compile-jsc': (args) => {
