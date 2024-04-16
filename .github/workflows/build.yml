@@ -35,7 +35,7 @@ jobs:
 
       - name: Prepare
         run: |
-          apt install wget
+          sudo apt install wget -y
           wget -c https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_amd64_01.deb
           dpkg -i QQ_3.2.7_240412_amd64_01.deb
 
