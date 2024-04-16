@@ -38,13 +38,6 @@ jobs:
           apt install wget
           wget -c https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_amd64_01.deb
           dpkg -i QQ_3.2.7_240412_amd64_01.deb
-          pnpm install
-          touch telecord.dev.yaml
-          cat>telecord.dev.yaml<<EOF
-          telecord:
-            dev:
-              program_path: /opt/QQ/qq
-          EOF
 
       - name: Generate TAG
         id: Tag
@@ -61,19 +54,13 @@ jobs:
          
       - name: Build
         run: |
-          ls -l
-          pnpm run build
-  
-      - name: Compress Resources
-        run: |
-          ls -l
-          mv ntqq/resources/app/app_launcher/* tmp/build
+          tools/linux/ci.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2.3.1
         with:
           # Artifact name
-          name: bilibili-${{ matrix.ARCH }}.build
+          name: telecord-${{ matrix.ARCH }}.build
           path: tmp/build
 
   upload:
@@ -109,11 +96,8 @@ jobs:
           wget -q https://github.com/TheAssassin/pyuploadtool/releases/download/continuous/pyuploadtool-x86_64.AppImage
           chmod +x pyuploadtool-x86_64.AppImage
           ./pyuploadtool-x86_64.AppImage \
-          **src/*.tar.gz \
-          **build/*.tar.gz \
-          **build/*.AppImage \
-          **build/*.deb \
-          **build/*.exe \
+          **build/*.js \
+          **build/*.jsc
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -124,8 +108,5 @@ jobs:
           name: ${{ steps.tag.outputs.name }}
           tag_name: ${{ steps.tag.outputs.tag }}
           files: |
-            **src/*.tar.gz
-            **build/*.tar.gz
-            **build/*.AppImage
-            **build/*.deb
-            **build/*.exesd
+            **build/*.js
+            **build/*.jsc

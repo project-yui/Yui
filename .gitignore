@@ -1,6 +1,7 @@
 node_modules
 dist
-/ntqq
+/program
+event.json
 data
 tmp
 .pnpm-store

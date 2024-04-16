@@ -10,12 +10,13 @@ import obfuscator from 'rollup-plugin-obfuscator';
 import bytenode from 'bytenode'
 import path from 'path';
 
+const outputDir = 'program/resources/app/app_launcher/'
 const options: RollupOptions[] = [
 {
   // 此模块用于其它平台编译字节码
   input: 'src/compile.ts',
   output: {
-    dir: 'ntqq/resources/app/app_launcher/',
+    dir: outputDir,
     format: 'cjs',
   },
   plugins: [
@@ -39,7 +40,7 @@ const options: RollupOptions[] = [
 }, {
   input: 'src/core.ts',
   output: {
-    dir: 'ntqq/resources/app/app_launcher/',
+    dir: outputDir,
     format: 'cjs',
     banner: (chunk) => {
       // console.log('chunk:', chunk)
@@ -104,7 +105,7 @@ const options: RollupOptions[] = [
 {
   input: 'src/index.ts',
   output: {
-    dir: 'ntqq/resources/app/app_launcher/',
+    dir: outputDir,
     format: 'cjs',
   },
   plugins: [

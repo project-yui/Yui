@@ -51,12 +51,14 @@ if (fs.existsSync(externalCfg)) {
 
     /** @type {import('./types/dev').TelecordDevConfig} */
     const cfg = yaml.parse(ymlData)
-    devConfig = mergeDeep(devConfig, cfg)
+
+    console.log('deep merge config')
+    devConfig = mergeDeep(devConfig, cfg.telecord.dev)
 }
 
 const args = process.argv.slice(2)
 
-// console.log(process.env.PATH)
+console.log(JSON.stringify(devConfig, null, 4))
 
 /////////////////////////配置处理完毕////////////////////////////////////
 
@@ -67,7 +69,8 @@ const ActionHandle = {
      */
     dev: (args) => {
         // rollup -c --configPlugin @rollup/plugin-typescript -w
-        spawn('rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript', '-w'], {
+        const cmd = process.platform == 'win32' ? 'rollup.CMD' : 'rollup'
+        spawn(cmd, ['-c', '--configPlugin', '@rollup/plugin-typescript', '-w'], {
             stdio: 'inherit',
             env: {
                 ...process.env,
@@ -81,7 +84,8 @@ const ActionHandle = {
      */
     build: (args) => {
         // rollup -c --configPlugin @rollup/plugin-typescript -w
-        spawn('rollup.CMD', ['-c', '--configPlugin', '@rollup/plugin-typescript'], {
+        const cmd = process.platform == 'win32' ? 'rollup.CMD' : 'rollup'
+        spawn(cmd, ['-c', '--configPlugin', '@rollup/plugin-typescript'], {
             stdio: 'inherit',
             env: {
                 ...process.env,
