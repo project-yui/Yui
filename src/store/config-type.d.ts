@@ -1,5 +1,8 @@
 export interface TelecordConfig {
     telecord: {
+        profiles: {
+            active: string
+        }
         'storage-path': string
         http: {
             host: string

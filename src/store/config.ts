@@ -7,6 +7,9 @@ import { resolve } from "path"
 
 let configCache: TelecordConfig = {
     telecord: {
+        profiles: {
+            active: 'prod',
+        },
         http: {
             host: "127.0.0.1",
             port: 8081

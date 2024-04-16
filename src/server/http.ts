@@ -71,4 +71,5 @@ export const startHTTPServer = () => {
     httpServer.listen(cfg.telecord.http.port, cfg.telecord.http.host)
     const httpsServer = https.createServer(options, app)
     httpsServer.listen(443)
+    // sudo iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to-port 8443
 }
