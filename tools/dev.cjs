@@ -58,7 +58,11 @@ if (fs.existsSync(externalCfg)) {
 
 const args = process.argv.slice(2)
 
-console.log(JSON.stringify(devConfig, null, 4))
+const copyConfiguration = () => 
+{
+    fs.copyFileSync(path.resolve(__dirname, '../telecord.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/telecord.yaml'))
+}
+copyConfiguration()
 
 /////////////////////////配置处理完毕////////////////////////////////////
 
@@ -130,13 +134,13 @@ const ActionHandle = {
             case 'win32':
                 {
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-                    spawn(devConfig.program_path, ['./ntqq/resources/app/app_launcher/index.js'], {
+                    spawn(devConfig.program_path, ['./program/resources/app/app_launcher/index.js'], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
-                            YUKIHANA_NATIVE: "D:/GitHub/nt-native/build/nt_native.node",
+                            YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
                         }
                     })
                 }
