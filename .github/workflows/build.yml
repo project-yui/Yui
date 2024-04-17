@@ -104,7 +104,8 @@ jobs:
           ./pyuploadtool-x86_64.AppImage \
           **build/*.js \
           **build/*.yaml \
-          **build/*.jsc
+          **build/*.jsc \
+          **build/server.*
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -118,3 +119,4 @@ jobs:
             **build/*.js
             **build/*.yaml
             **build/*.jsc
+            **build/server.*
