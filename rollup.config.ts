@@ -30,10 +30,10 @@ const options: RollupOptions[] = [
       requireReturnsDefault: 'auto', // <---- this solves default issue
     }),
     typescript(),
-    // terser(),
-    // obfuscator({
-    //   global: true,
-    // }),
+    terser(),
+    obfuscator({
+      global: true,
+    }),
   ],
   // 指出哪些模块应该视为外部模块
   external: ['electron', 'module', 'ntwrapper']
@@ -70,7 +70,11 @@ const options: RollupOptions[] = [
     typescript(),
     json(),
     // 压缩
-    // terser(),
+    terser(),
+    // 混淆
+    obfuscator({
+      global: true,
+    }),
     {
       name: 'jsc',
       writeBundle: (options, bundle) => {
@@ -94,10 +98,6 @@ const options: RollupOptions[] = [
         }
       }
     },
-    // 混淆
-    // obfuscator({
-    //   global: true,
-    // }),
   ],
   // 指出哪些模块应该视为外部模块
   external: ['electron', 'module', 'ntwrapper', 'telecord-native'],
@@ -121,11 +121,11 @@ const options: RollupOptions[] = [
     typescript(),
     json(),
     // 压缩
-    // terser(),
-    // // 混淆
-    // obfuscator({
-    //   global: true,
-    // }),
+    terser(),
+    // 混淆
+    obfuscator({
+      global: true,
+    }),
   ],
   // 指出哪些模块应该视为外部模块
   external: ['electron', 'module', 'ntwrapper']
