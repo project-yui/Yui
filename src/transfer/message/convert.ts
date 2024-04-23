@@ -25,6 +25,36 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
         // 纯文本
         {
           if (ele.textElement) {
+            const cur = ele.textElement
+            if (cur.atType === 2) {
+              // at 特定成员
+              const mention: BotMessage.ReceiveElement = {
+                type: 'mention',
+                data: {
+                  at: {
+                    isAll: false,
+                    uid: cur.atNtUid as `u_${string}`,
+                    name: cur.content,
+                  }
+                }
+              }
+              result.push(mention)
+              continue
+            }else if (cur.atType === 1) {
+              // at 所有
+              const mention: BotMessage.ReceiveElement = {
+                type: 'mention',
+                data: {
+                  at: {
+                    isAll: true,
+                    uid: 'all',
+                    name: cur.content,
+                  }
+                }
+              }
+              result.push(mention)
+              continue
+            }
             const text: BotMessage.ReceiveElement = {
               type: 'text',
               data: {

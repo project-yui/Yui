@@ -414,8 +414,10 @@ export declare namespace NTReceiveMessageType {
     content: string
     /**
      * 0 - 没有@
+     * 
      * 1 - @ 全体成员
-     * 2 - 有@
+     * 
+     * 2 - @ 特定成员
      */
     atType: 0 | 1 | 2
     atUid: `${number}` | 'all' | ''

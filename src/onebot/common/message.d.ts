@@ -395,7 +395,7 @@ declare namespace BotMessageReceiveElements {
      * 
      * 
      */
-    uid: string
+    uid: `u_${string}` | 'all'
     name?: string
   }
 
