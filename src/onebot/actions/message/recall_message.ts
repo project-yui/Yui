@@ -28,7 +28,7 @@ const recallMessage = async (p: BotMessage.DeleteMsg): Promise<any> => {
     else {
         throw new CustomError(1, 'detail_type is not supported!')
     }
-    const ret = msgService.recallMsg(peerInfo, [p.message_id])
+    const ret = msgService.recallMsg(peerInfo, p.message_id)
     return ret
 }
 export const initRecallMessage = () => {

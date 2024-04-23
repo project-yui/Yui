@@ -21,7 +21,7 @@ export declare namespace BotMessage {
     detail_type: 'private' | 'group'
     group_id?: number
     user_id?: `u_${string}`
-    message_id: `${number}`
+    message_id: `${number}`[]
   }
 
   /**

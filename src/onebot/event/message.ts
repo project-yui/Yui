@@ -79,7 +79,68 @@ const onRecvMsg = () => {
     }
   })
 }
-
+/**
+ * 监听新发送的消息
+ * 
+ */
+const onAddSendMsg = () => {
+  registerEventListener('KernelMsgListener/onAddSendMsg', 'always', async (payload: NTReceiveMessageType.NTMessageItemType) => {
+    const msg = payload
+    const user = getBotAccount()
+    if (user.uid === undefined || user.uin === undefined)
+      throw new Error('can not get user info!')
+    // 一分钟前的消息不处理
+    if (Date.now()/1000 - parseInt(msg.msgTime) > 60) {
+      log.info('一分钟前的消息不处理')
+      return;
+    }
+    log.info('receive:', JSON.stringify(msg, null, 4))
+    // 频道消息暂不处理
+    if (msg.chatType === 4) return
+    
+    const senderUserInfo = await getUserInfoByUid(msg.senderUid)
+    const ret: EventDataType<MessageData> = {
+      self: {
+        id: parseInt(user.uin),
+        uid: user.uid
+      },
+      time: parseInt(msg.msgTime),
+      type: "notice",
+      detail_type: "group_message_post_send",
+      sub_type: "",
+      data: {
+        message_id: msg.msgId,
+        message_seq: msg.msgSeq,
+        group_id: 0,
+        sender_id: parseInt(senderUserInfo.uin),
+        sender_uid: msg.senderUid,
+        sender_member_name: msg.sendMemberName,
+        time: parseInt(msg.msgTime),
+        elements: [],
+        records: [],
+      }
+    }
+    switch (msg.chatType) {
+      case 2:
+        // 群聊消息
+        ret.data.group_id = parseInt(msg.peerUid)
+        break
+    }
+    ret.data.elements = convertNTMessage2BotMessage(msg.elements)
+    ret.data.records = msg.records.map(e => ({
+      message_id: e.msgId,
+      message_seq: e.msgSeq,
+      group_id: 0,
+      sender_id: parseInt(senderUserInfo.uin),
+      sender_uid: e.senderUid,
+      sender_member_name: e.sendMemberName,
+      time: parseInt(e.msgTime),
+      elements: convertNTMessage2BotMessage(e.elements),
+      records: [],
+    }))
+    sendMessage(JSON.stringify(ret))
+  })
+}
 /**
  * 监听消息更新
  */
@@ -138,5 +199,6 @@ const onUpdateMsg = () => {
  */
 export const listenMessage = () => {
   onRecvMsg()
+  onAddSendMsg()
   onUpdateMsg()
 }
