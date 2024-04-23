@@ -1,4 +1,3 @@
-import { ImageInfo } from "../../common/interface/file"
 import { BotActionParams } from "../actions/interfaces"
 
 export declare namespace BotMessage {
@@ -18,8 +17,11 @@ export declare namespace BotMessage {
   /**
    * 撤回消息
    */
-  export interface DeleteMsg {
-    message_id: string
+  export interface DeleteMsg extends BotActionParams {
+    detail_type: 'private' | 'group'
+    group_id?: number
+    user_id?: `u_${string}`
+    message_id: `${number}`
   }
 
   /**

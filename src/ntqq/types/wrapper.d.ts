@@ -1043,7 +1043,12 @@ interface SimpleResult {
 
 interface PeerInfo {
   /**
-   * 2 - 群
+   * 1 - 好友
+   * 
+   * 2 - 群聊消息
+   * 
+   * 4 - 频道
+   * 
    */
   chatType: number,
   /**
