@@ -30,7 +30,7 @@ const registerActionHandle = <T extends BotActionParams>(name: string, handle: (
 /**
  * NT事件监听器类型
  */
-export type NTEventListenerHandle = (payload: any) => void
+export type NTEventListenerHandle = (...payload: any[]) => void
 
 /**
  * 事件分发

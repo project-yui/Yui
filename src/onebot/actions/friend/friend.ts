@@ -3,6 +3,8 @@ import { BotActionResponse } from "../interfaces"
 import { NTGetFriendList, NTSendLikeFriend } from "../../../ntqq/friend/friend"
 import { LikeUserReq, UserInfoReq, UserInfoResp } from "./interfaces"
 import { useLogger } from "../../../common/log"
+import { useNTCore } from "../../../ntqq/core/core"
+import { getUserInfoByUid } from "../../common/user"
 
 const { registerActionHandle } = useStore()
 const log = useLogger('Action/Friend')
@@ -42,13 +44,19 @@ const sendLikeFriend = async (p: LikeUserReq): Promise<any> => {
 
 const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
   const resp: UserInfoResp = {
-    user_id: "",
-    user_name: "",
+    user_uid: "u_",
+    user_uin: 0,
+    nick: "",
     user_displayname: "",
     user_remark: "",
     avatar_url: ''
   }
-
+  const ret = await getUserInfoByUid(p.user_uid)
+  log.info('getUserDetailInfo:', ret)
+  resp.user_uid = ret.uid
+  resp.user_uin = parseInt(ret.uin)
+  resp.nick = ret.nick
+  resp.avatar_url = `http://q1.qlogo.cn/g?b=qq&nk=${resp.user_uin}&s=640`
   return resp
 }
 /**
@@ -58,4 +66,5 @@ export const initFriend = () => {
   // 注册获取好友列表
   registerActionHandle('get_friend_list', getFriendList)
   registerActionHandle('send_like_friend', sendLikeFriend)
+  registerActionHandle('get_user_info', getUserInfo)
 }

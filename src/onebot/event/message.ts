@@ -43,6 +43,7 @@ const onRecvMsg = () => {
           message_id: msg.msgId,
           message_seq: msg.msgSeq,
           group_id: 0,
+          group_name: '',
           sender_id: parseInt(senderUserInfo.uin),
           sender_uid: msg.senderUid,
           sender_member_name: msg.sendMemberName,
@@ -61,6 +62,7 @@ const onRecvMsg = () => {
           // 群聊消息
           ret.detail_type = 'group'
           ret.data.group_id = parseInt(msg.peerUid)
+          ret.data.group_name = msg.peerName
           break
       }
       ret.data.elements = convertNTMessage2BotMessage(msg.elements)
@@ -68,6 +70,7 @@ const onRecvMsg = () => {
         message_id: e.msgId,
         message_seq: e.msgSeq,
         group_id: 0,
+        group_name: e.peerName,
         sender_id: parseInt(senderUserInfo.uin),
         sender_uid: e.senderUid,
         sender_member_name: e.sendMemberName,
@@ -112,6 +115,7 @@ const onAddSendMsg = () => {
         message_id: msg.msgId,
         message_seq: msg.msgSeq,
         group_id: 0,
+        group_name: '',
         sender_id: parseInt(senderUserInfo.uin),
         sender_uid: msg.senderUid,
         sender_member_name: msg.sendMemberName,
@@ -131,6 +135,7 @@ const onAddSendMsg = () => {
       message_id: e.msgId,
       message_seq: e.msgSeq,
       group_id: 0,
+      group_name: e.peerName,
       sender_id: parseInt(senderUserInfo.uin),
       sender_uid: e.senderUid,
       sender_member_name: e.sendMemberName,

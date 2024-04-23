@@ -18,9 +18,11 @@ try {
   })
 
   // 核心事件hook
-  if (process.env['YUKIHANA_ACTION'] === 'dev') {
+  if (process.env['YUKIHANA_ACTION'] === 'ui') {
     log.info('hook')
-    // hook()
+    hook()
+    log.info('hookWrapper')
+    hookWrapper()
   }
 
   log.info('initNTQQ')
@@ -37,11 +39,9 @@ try {
   // 测试
   // test(module)
 
-  // log.info('hookWrapper')
-  // hookWrapper()
 
   // ntqq/resources/app/app_launcher/index.js 原始代码
-  if (process.env['YUKIHANA_ACTION'] === 'dev')
+  if (process.env['YUKIHANA_ACTION'] === 'ui')
     require('./launcher.node').load('external_index', module);
 }
 catch(err) {

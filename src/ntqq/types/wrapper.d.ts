@@ -159,6 +159,7 @@ declare namespace NTNativeWrapper {
   }
   class NodeIKernelBuddyService {
     addKernelBuddyListener(listener: NodeIKernelBuddyListener): number
+    getAvatarUrl(a: any, b: any): any
   }
 
   interface NodeIKernelCollectionListenerConstructorOptions {
@@ -219,6 +220,15 @@ declare namespace NTNativeWrapper {
   }
   class NodeIKernelGroupService {
     addKernelGroupListener(listener: NodeIKernelGroupListener): number
+    getGroupDetailInfo(groupId: `${number}`, b: number): Promise<SimpleResult>
+    /**
+     * 获取群成员信息
+     * 
+     * @param groupId 群号
+     * @param uidList 用户id列表
+     * @param c true
+     */
+    getMemberInfo(groupId: `${number}`, uidList: `u_${string}`[], c: boolean): Promise<SimpleResult>
   }
 
   class NodeIKernelMsgService {
@@ -386,6 +396,7 @@ declare namespace NTNativeWrapper {
     addKernelProfileListener(listener: NodeIKernelProfileListener): number
     getUserSimpleInfo(a: boolean, uid: `u_${string}`[]): Promise<NodeIKernelProfileServiceType.UserSimpleInfoResp>
     getUserDetailInfo(uid: `u_${string}`): Promise<SimpleResult>
+    getUserDetailInfoWithBizInfo(uid: `u_${string}`, keys: number[]): Promise<SimpleResult>
   }
 
   interface NodeIKernelQiDianListenerConstructorOptions {
@@ -1131,9 +1142,7 @@ declare namespace NodeIKernelProfileLikeServiceType {
 }
 
 declare namespace NodeIKernelProfileServiceType {
-  interface UserSimpleInfoResp {
-    result: number
-    errMsg: string
+  interface UserSimpleInfoResp extends SimpleResult{
   }
 }
 

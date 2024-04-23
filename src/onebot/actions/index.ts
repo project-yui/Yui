@@ -1,5 +1,7 @@
 import { initBot } from "./bot/bot"
 import { initFriend } from "./friend/friend"
+import { initGroup } from "./group/group"
+import { initGroupMember } from "./group/member"
 import { initRecallMessage } from "./message/recall_message"
 import { initSendMessage } from "./message/send_message"
 
@@ -10,5 +12,7 @@ export const initAction = () => {
   initBot()
   initSendMessage()
   initRecallMessage()
+  initGroup()
+  initGroupMember()
   initFriend()
 }

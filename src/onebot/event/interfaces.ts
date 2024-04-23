@@ -37,6 +37,7 @@ export interface MessageData {
   message_id: string
   message_seq: string
   group_id: number
+  group_name: string
 
   /**
    * 发送者uid

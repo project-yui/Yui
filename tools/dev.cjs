@@ -1,4 +1,4 @@
-const { execSync, exec, spawn } = require('child_process')
+const { execSync, exec, spawn, ChildProcess } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 /** @type {import('yaml')} */
@@ -108,12 +108,13 @@ const ActionHandle = {
      */
     start: (args) => {
         // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev .\\ntqq\\QQ.exe
-        spawn(devConfig.ntqq_path, {
+        spawn(devConfig.program_path, {
             stdio: 'inherit',
             env: {
                 ...process.env,
                 YUKIHANA_LOG: true,
-                YUKIHANA_ACTION: 'dev',
+                YUKIHANA_ACTION: 'ui',
+                YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
             }
         })
     },
@@ -127,7 +128,8 @@ const ActionHandle = {
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
-                            YUKIHANA_ACTION: 'dev',
+                            YUKIHANA_ACTION: 'ui',
+                            YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
                         }
                     })
                 }
