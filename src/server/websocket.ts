@@ -6,6 +6,7 @@ import { checkBaseRequestField } from '../common/action';
 import { useLogger } from '../common/log';
 import { useServer } from './server';
 import { useConfigStore } from '../store/config';
+import { CustomError } from './error/custom-error';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -61,21 +62,35 @@ export const startWebsocketServer = () => {
       log.info('request action:', msg.action)
       const handle = getActionHandle(msg.action)
       if (handle != undefined) {
-        let resp: BotActionResponse
+        let resp: BotActionResponse = {
+          id: msg.id,
+          status: 'ok',
+          retcode: 0,
+          data: undefined,
+          message: ''
+        }
         try {
           log.info('start handle for ', msg.action)
-          resp = await handle(msg.params)
+          resp.data = await handle(msg.params)
           log.info('end handle for ', msg.action)
-          resp.id = msg.id
         }
         catch (e) {
           log.error('内部错误:', e)
-          resp = {
-            id: msg.id,
-            status: 'failed',
-            retcode: 20002,
-            data: null,
-            message: 'Internal Handler Error'
+          // TODO: 支持Error和CustomError处理
+          if (e instanceof CustomError)
+          {
+            resp.status = 'failed'
+            resp.retcode = e.code
+            resp.message = e.message
+          }
+          else{
+            resp = {
+              id: msg.id,
+              status: 'failed',
+              retcode: 20002,
+              data: null,
+              message: 'Internal Handler Error'
+            }
           }
         }
         log.info(`reply ${resp.id}:`, JSON.stringify(resp))

@@ -59,3 +59,19 @@ export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Pr
   log.info('send like result:', likeResult)
   return likeResult
 }
+
+/**
+ * 为好友点赞
+ * 
+ * @param userId 好友Id
+ * @param count 点赞次数
+ * @returns 好友列表
+ */
+// export const NTGetUserInfo = async (userId: `u_${string}`, count: number): Promise<NTFriend.LikeRespType> => {
+//   log.info('send like:', userId, count)
+//   const { getWrapperSession } = useNTCore()
+//   const profileService = getWrapperSession().getProfileService()
+//   const likeResult = await profileService.getUserSimpleInfo()
+//   log.info('send like result:', likeResult)
+//   return likeResult
+// }

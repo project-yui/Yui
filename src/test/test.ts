@@ -11,7 +11,6 @@ import vm from 'vm'
 import v8 from 'v8'
 import events from 'events'
 import { app } from 'electron'
-import { NodeQQNTWrapperUtil } from 'ntwrapper'
 
 
 const { registerActionHandle } = useStore()

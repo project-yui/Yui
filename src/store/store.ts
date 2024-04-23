@@ -1,11 +1,10 @@
 import { useLogger } from "../common/log"
 import { useNTDispatcher } from "../ntqq/core/dispatcher"
 import { BotActionParams } from "../onebot/actions/interfaces"
-import { BotActionResponse } from "../onebot/actions/interfaces"
 
 const log = useLogger('Store')
 
-const ActionMap: Record<string, (p: any) => Promise<BotActionResponse>> = {}
+const ActionMap: Record<string, (p: any) => Promise<any>> = {}
 
 /**
  * 获取动作处理函数
@@ -21,7 +20,7 @@ const getActionHandle = (action: string) => {
  * @param name 动作名称
  * @param handle 动作处理函数
  */
-const registerActionHandle = <T extends BotActionParams>(name: string, handle: (p: T) => Promise<BotActionResponse>) => {
+const registerActionHandle = <T extends BotActionParams>(name: string, handle: (p: T) => Promise<any>) => {
   if (ActionMap[name]) {
     log.warn('Action: %s已经被注册，将覆盖旧的处理函数', name)
   }

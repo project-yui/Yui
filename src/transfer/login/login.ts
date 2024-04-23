@@ -4,6 +4,7 @@ import { NTGetLoginQrCode } from "../../ntqq/login/qrcode"
 import { BotLogin } from "../../onebot/actions/bot/interfaces"
 import { BotActionResponse, BotActionParams } from "../../onebot/actions/interfaces"
 import { useLogger } from "../../common/log"
+import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('Login')
 
@@ -15,20 +16,10 @@ const log = useLogger('Login')
  * @param p 账户信息
  * @returns 登录结果
  */
-export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<BotActionResponse<any>> => {
+export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any> => {
   log.info("req param from client:", JSON.stringify(p))
-  const ret: BotActionResponse = {
-    id: "",
-    status: "ok",
-    retcode: 0,
-    data: {},
-    message: ""
-  }
   if (p.id === undefined || p.id == null || typeof p.id !== 'number') {
-    ret.status = 'failed'
-    ret.retcode = 10003
-    ret.message = 'id参数不正确'
-    return ret
+    throw new CustomError(10003, 'id参数不正确')
   }
   const ntLogin: NTLogin.AccountLoginRequest = {
     loginInfo: {
@@ -44,12 +35,10 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<BotA
   log.info("req to nt:", JSON.stringify(ntLogin))
   try {
     const resp = await NTLoginByAccountInfo(ntLogin)
-    ret.data = resp
-    return ret
+    return resp
   }
   catch(e) {
-    ret.data = e
-    return ret
+    return e
   }
 
 }
