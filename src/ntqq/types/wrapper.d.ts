@@ -768,6 +768,28 @@ declare namespace NTNativeWrapper {
     constructor(options: NodeIKernelSessionListenerConstructorOptions)
   }
 
+  // #region UixConvertService
+  class NodeIKernelUixConvertService extends NTBaseClass {
+    /**
+     * 根据QQ号获取用户id
+     * 
+     * 已测试
+     * @param uin QQ号
+     */
+    getUid(uin: `${number}`[]): Promise<UidInfo>
+    /**
+     * 根据用户id获取QQ号
+     * 
+     * 未测试
+     * @param uin QQ号
+     */
+    getUin(uid: `u_${string}`[]): Promise<Map<`u_${string}`, `${number}`>>
+  }
+  interface UidInfo {
+    uidInfo: Map<`${number}`, `u_${string}`>
+  }
+  // #endregion
+
   interface NodeIKernelUnitedConfigListenerConstructorOptions {
     onUnitedConfigUpdate: () => void
   }
@@ -835,6 +857,7 @@ declare namespace NTNativeWrapper {
     getSettingService(): NodeIKernelSettingService
     getSkinService(): NodeIKernelSkinService
     getStorageCleanService(): NodeIKernelStorageCleanService
+    getUixConvertService(): NodeIKernelUixConvertService
     getUnitedConfigService(): NodeIKernelUnitedConfigService
     offLine(info: NodeIQQNTWrapperSessionType.OfflineReq): Promise<SimpleResult>
   }

@@ -64,6 +64,7 @@ export interface GroupInfoResp {
  */
 export interface GroupMemberInfoReq extends BotActionParams {
   group_id: number
+  user_uin: number
   user_uid: `u_${string}`
 }
 

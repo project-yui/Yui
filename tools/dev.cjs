@@ -147,6 +147,7 @@ const ActionHandle = {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
+                            YUKIHANA_ACTION: 'dev',
                             YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
                         }
                     })
@@ -161,6 +162,7 @@ const ActionHandle = {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
+                            YUKIHANA_ACTION: 'dev',
                             YUKIHANA_NATIVE: "/home/msojocs/github/nt-native/build/nt_native.node",
                         }
                     })

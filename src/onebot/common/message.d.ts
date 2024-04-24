@@ -396,6 +396,10 @@ declare namespace BotMessageReceiveElements {
      * 
      */
     uid: `u_${string}` | 'all'
+    /**
+     * QQ号
+     */
+    uin: number
     name?: string
   }
 

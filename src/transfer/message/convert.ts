@@ -8,6 +8,7 @@ import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
 import { useNTCore } from "../../ntqq/core/core";
 import { useStore } from "../../store/store";
+import { getGroupMemberInfoByUid } from "../../onebot/common/group";
 
 const log = useLogger('Convert')
 
@@ -34,6 +35,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
                   at: {
                     isAll: false,
                     uid: cur.atNtUid as `u_${string}`,
+                    uin: parseInt(cur.atTinyId),
                     name: cur.content,
                   }
                 }
@@ -48,6 +50,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
                   at: {
                     isAll: true,
                     uid: 'all',
+                    uin: 0,
                     name: cur.content,
                   }
                 }

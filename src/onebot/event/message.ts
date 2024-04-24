@@ -5,6 +5,7 @@ import { useStore } from "../../store/store"
 import { getBotAccount, getUserInfoByUid } from "../common/user"
 import { EventDataType, MessageData, RecallMessageData } from "./interfaces"
 import { useLogger } from "../../common/log"
+import { getGroupMemberInfoByUid } from "../common/group"
 
 const { registerEventListener } = useStore()
 const { sendMessage } = useServer()
@@ -66,6 +67,15 @@ const onRecvMsg = () => {
           break
       }
       ret.data.elements = convertNTMessage2BotMessage(msg.elements)
+      for (const ele of ret.data.elements) {
+        if (ele.type === 'mention') {
+          if(false === ele.data.at?.isAll) {
+            // at特定成员，获取QQ号
+            const info = await getGroupMemberInfoByUid(ret.data.group_id, ele.data.at.uid as `u_${string}`)
+            ele.data.at.uin = parseInt(info.uin)
+          }
+        }
+      }
       ret.data.records = msg.records.map(e => ({
         message_id: e.msgId,
         message_seq: e.msgSeq,

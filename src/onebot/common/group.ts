@@ -35,19 +35,38 @@ export const getGroupInfoById = (gid: number): Promise<GroupDetailInfoType> => {
 
 /**
  * 
- * @param gid NodeIKernelGroupService[undefined]/getMemberInfo/eca95e2a-f434-436e-a8da-cf2fcbb3bcbf 
-arguments: 933286835 [ 'u_EbxBsO-JLi3oxEYabJ0umg' ] true 
-JSON arguments: ["933286835",["u_EbxBsO-JLi3oxEYabJ0umg"],true]
+ * @param gid 群号
+ * @param uid 用户id
  * @returns 
  */
-export const getGroupMemberInfoById = (gid: number, uid: `u_${string}`): Promise<GroupMemberDetailInfoType> => {
+export const getGroupMemberInfoByUin = async (gid: number, uin: number): Promise<GroupMemberDetailInfoType> => {
+  log.info('getGroupMemberInfoByUin', gid, uin)
+  const { getWrapperSession } = useNTCore()
+  const session = getWrapperSession()
+  const convert = session.getUixConvertService()
+  const info = await convert.getUid([`${uin}`])
+  log.info('get uid:', info)
+  const uid = info?.uidInfo?.get(`${uin}`)
+  if (!uid) {
+    throw new CustomError(1, 'Failed to get uid by uin!')
+  }
+  return await getGroupMemberInfoByUid(gid, uid)
+}
+/**
+ * 
+ * @param gid 群号
+ * @param uid 用户id
+ * @returns 
+ */
+export const getGroupMemberInfoByUid = (gid: number, uid: `u_${string}`): Promise<GroupMemberDetailInfoType> => {
+  log.info('getGroupMemberInfoByUid', gid, uid)
   return new Promise(async (resolve, reject) => {
     let remover: { remove: () => void } | null = null
     // 超时拒绝
     let time = setTimeout(() => {
       if (remover)
         remover?.remove()
-      reject('getGroupMemberInfoById timeout')
+      reject('getGroupMemberInfoByUid timeout')
     }, 30000)
     remover = registerEventListener(`KernelGroupListener/onMemberInfoChange`, 'always', (groupId: `${number}`, b: number, payload: Map<`u_${string}`, GroupMemberDetailInfoType>) => {
       if (groupId !== `${gid}`) return
@@ -57,7 +76,8 @@ export const getGroupMemberInfoById = (gid: number, uid: `u_${string}`): Promise
       clearTimeout(time)
       const result = payload.get(uid)
       if (!result) {
-        throw new CustomError(1, 'failed to get member info!')
+        log.error('info:', result, 'payload:', payload)
+        throw new CustomError(1, 'Failed to get member info!')
       }
       resolve(result)
     })
@@ -65,6 +85,6 @@ export const getGroupMemberInfoById = (gid: number, uid: `u_${string}`): Promise
     const session = getWrapperSession()
     const service = session.getGroupService()
     const result = await service.getMemberInfo(`${gid}`, [uid], true)
-    log.info(`getGroupMemberInfoById[${gid}]:`, result)
+    log.info(`getGroupMemberInfoByUid[${gid}]:`, result)
   })
 }

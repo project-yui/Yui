@@ -1,6 +1,8 @@
 import { useLogger } from "../../../common/log"
+import { CustomError } from "../../../server/error/custom-error"
 import { useStore } from "../../../store/store"
-import { getGroupMemberInfoById } from "../../common/group"
+import { getGroupMemberInfoByUid, getGroupMemberInfoByUin } from "../../common/group"
+import { GroupMemberDetailInfoType } from "../../common/interfaces"
 import { getUserInfoByUid } from "../../common/user"
 import { GroupMemberInfoReq, GroupMemberInfoResp, UserInfoReq, UserInfoResp } from "../friend/interfaces"
 
@@ -18,7 +20,21 @@ const getGroupMemberInfo = async (p: GroupMemberInfoReq): Promise<GroupMemberInf
       card_name: "",
       avatar_url: ''
     }
-    const ret = await getGroupMemberInfoById(p.group_id, p.user_uid)
+    // 检查uid是否可用
+    let ret: GroupMemberDetailInfoType | undefined = undefined
+    if (p.user_uid === undefined || p.user_uid === null || p.user_uid.length === 0) {
+      if (p.user_uin <= 0) {
+        throw new CustomError(1, 'uid or uin is error!');
+      }
+      ret = await getGroupMemberInfoByUin(p.group_id, p.user_uin)
+    }
+    else
+    {
+      ret = await getGroupMemberInfoByUid(p.group_id, p.user_uid)
+    }
+    if (ret === undefined) {
+      throw new CustomError(1, 'Failed to get member info!');
+    }
     log.info('getGroupMemberInfoById:', ret)
     resp.user_uid = ret.uid
     resp.user_uin = parseInt(ret.uin)
