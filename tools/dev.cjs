@@ -38,22 +38,22 @@ function mergeDeep(target, ...sources) {
 }
 
 // 先读默认
-const ymlData = fs.readFileSync(path.resolve(__dirname, '../telecord.yaml')).toString()
+const ymlData = fs.readFileSync(path.resolve(__dirname, '../yukihana.yaml')).toString()
 
-/** @type {import('./types/dev').TelecordDevConfig} */
+/** @type {import('./types/dev').YukihanaDevConfig} */
 const cfg = yaml.parse(ymlData)
-let devConfig = cfg.telecord.dev
+let devConfig = cfg.yukihana.dev
 
-const externalCfg = path.resolve(__dirname, `../telecord.${cfg.telecord.profiles.active}.yaml`)
+const externalCfg = path.resolve(__dirname, `../yukihana.${cfg.yukihana.profiles.active}.yaml`)
 // 再读自定义配置，并覆盖
 if (fs.existsSync(externalCfg)) {
     const ymlData = fs.readFileSync(externalCfg).toString()
 
-    /** @type {import('./types/dev').TelecordDevConfig} */
+    /** @type {import('./types/dev').YukihanaDevConfig} */
     const cfg = yaml.parse(ymlData)
 
     console.log('deep merge config')
-    devConfig = mergeDeep(devConfig, cfg.telecord.dev)
+    devConfig = mergeDeep(devConfig, cfg.yukihana.dev)
 }
 
 const args = process.argv.slice(2)
@@ -63,7 +63,7 @@ const copyConfiguration = () =>
     try {
         fs.mkdirSync(path.resolve(__dirname, '../program/resources/app/app_launcher'), {recursive: true})
     } catch(_){}
-    fs.copyFileSync(path.resolve(__dirname, '../telecord.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/telecord.yaml'))
+    fs.copyFileSync(path.resolve(__dirname, '../yukihana.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/yukihana.yaml'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.crt'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.crt'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.key'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.key'))
 }
@@ -114,7 +114,7 @@ const ActionHandle = {
                 ...process.env,
                 YUKIHANA_LOG: true,
                 YUKIHANA_ACTION: 'ui',
-                YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
+                YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
             }
         })
     },
@@ -129,7 +129,7 @@ const ActionHandle = {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             YUKIHANA_ACTION: 'ui',
-                            YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
+                            YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
                         }
                     })
                 }
@@ -148,7 +148,7 @@ const ActionHandle = {
                             YUKIHANA_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
                             YUKIHANA_ACTION: 'dev',
-                            YUKIHANA_NATIVE: "D:/GitHub/Telecord-native/build/nt_native.node",
+                            YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
                         }
                     })
                 }

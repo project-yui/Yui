@@ -1,11 +1,11 @@
-import { TelecordConfig } from "../../src/store/config-type"
+import { YukihanaConfig } from "../../src/store/config-type"
 
-interface TelecordConfigDev {
-    telecord: {
+interface YukihanaConfigDev {
+    yukihana: {
         dev: {
             program_path?: string
         }
     }
 }
 
-export type TelecordDevConfig = TelecordConfigDev & TelecordConfig
+export type YukihanaDevConfig = YukihanaConfigDev & YukihanaConfig

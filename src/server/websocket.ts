@@ -20,8 +20,8 @@ export const startWebsocketServer = () => {
   const { getConfig } = useConfigStore()
   const cfg = getConfig()
   const wss = new WebSocketServer({
-    host: cfg.telecord.ws.host,
-    port: cfg.telecord.ws.port,
+    host: cfg.yukihana.ws.host,
+    port: cfg.yukihana.ws.port,
   });
 
   wss.on('connection', function connection(ws) {

@@ -70,37 +70,37 @@ const options: RollupOptions[] = [
     typescript(),
     json(),
     // 压缩
-    // terser(),
-    // // 混淆
-    // obfuscator({
-    //   global: true,
-    // }),
-    // {
-    //   name: 'jsc',
-    //   writeBundle: (options, bundle) => {
-    //     console.log('generate jsc...')
-    //     if (bundle['core.js']) {
-    //       const core = bundle['core.js']
-    //       // console.log(options)
-    //       if (core.type === 'chunk' && options.dir) {
-    //         const fromPath = path.resolve(options.dir, './core.js')
-    //         console.log('compile file:', fromPath)
-    //         // 字节码生成
-    //         bytenode.compileFile({
-    //           filename: fromPath,
-    //           compileAsModule: true,
-    //           electron: true,
-    //           compress: true,
-    //           electronPath: process.env['PROGRAM_PATH'],
-    //           output: `${fromPath}c`,
-    //         })
-    //       }
-    //     }
-    //   }
-    // },
+    terser(),
+    // 混淆
+    obfuscator({
+      global: true,
+    }),
+    {
+      name: 'jsc',
+      writeBundle: (options, bundle) => {
+        console.log('generate jsc...')
+        if (bundle['core.js']) {
+          const core = bundle['core.js']
+          // console.log(options)
+          if (core.type === 'chunk' && options.dir) {
+            const fromPath = path.resolve(options.dir, './core.js')
+            console.log('compile file:', fromPath)
+            // 字节码生成
+            bytenode.compileFile({
+              filename: fromPath,
+              compileAsModule: true,
+              electron: true,
+              compress: true,
+              electronPath: process.env['PROGRAM_PATH'],
+              output: `${fromPath}c`,
+            })
+          }
+        }
+      }
+    },
   ],
   // 指出哪些模块应该视为外部模块
-  external: ['electron', 'module', 'ntwrapper', 'telecord-native'],
+  external: ['electron', 'module', 'ntwrapper', 'yukihana-native'],
 },
 {
   input: 'src/index.ts',

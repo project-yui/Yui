@@ -1,4 +1,4 @@
-import { install } from 'telecord-native'
+import { install } from 'yukihana-native'
 import { useConfigStore } from '../store/config'
 import { useLogger } from '../common/log'
 
@@ -7,7 +7,7 @@ export const initNative = () => {
     // 获取函数签名
     const { getSignature } = useConfigStore()
     const sig = getSignature()
-    const sigData: TelecordNativeWrapper.SignatureType = {}
+    const sigData: YukihanaNativeWrapper.SignatureType = {}
 
     if (sig?.sqlite3_stmt) {
         const signature = sig?.sqlite3_stmt

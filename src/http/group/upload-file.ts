@@ -48,13 +48,13 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     const ext = mimeType2Extension(file.mimetype)
     file.mv(`${realPath}/${file.md5}${ext}`)
     const cfg = getConfig()
-    let host = cfg.telecord.http.host
+    let host = cfg.yukihana.http.host
     if (host === '0.0.0.0') {
         host = '127.0.0.1'
     }
     res.json({
         path: `${realPath}/${file.md5}${ext}`,
-        url: `http://${host}:${cfg.telecord.http.port}/static/${p}/${file.md5}${ext}`,
+        url: `http://${host}:${cfg.yukihana.http.port}/static/${p}/${file.md5}${ext}`,
         md5: file.md5,
         size: file.size,
     })

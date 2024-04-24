@@ -18,9 +18,9 @@ fail() {
 }
 
 cd $root_dir
-touch telecord.dev.yaml
-cat > telecord.dev.yaml <<EOF
-telecord:
+touch yukihana.dev.yaml
+cat > yukihana.dev.yaml <<EOF
+yukihana:
   dev:
     program_path: /opt/QQ/qq
 EOF
@@ -28,6 +28,6 @@ pnpm install
 pnpm run build
 mkdir -p tmp/build
 mv program/resources/app/app_launcher/* tmp/build
-cp telecord.yaml tmp/build
+cp yukihana.yaml tmp/build
 cp resources/ssl/* tmp/build
 rm tmp/build/core.js

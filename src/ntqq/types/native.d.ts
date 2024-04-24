@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-declare namespace TelecordNativeWrapper {
+declare namespace YukihanaNativeWrapper {
     namespace CrossProcessExports {
         /**
          * 模块安装
@@ -93,7 +93,7 @@ declare namespace TelecordNativeWrapper {
     }
 }
 
-declare module 'telecord-native' {
-    export = TelecordNativeWrapper.CrossProcessExports
+declare module 'yukihana-native' {
+    export = YukihanaNativeWrapper.CrossProcessExports
   }
   

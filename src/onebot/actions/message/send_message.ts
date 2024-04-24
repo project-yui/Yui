@@ -8,7 +8,7 @@ import { sendForwardMessageToGroup, sendMessageToGroup } from "../../../transfer
 import { BotMessage } from "../../common/message"
 import { getBotAccount } from "../../common/user"
 import { BotActionResponse } from "../interfaces"
-import { addMsg } from 'telecord-native'
+import { addMsg } from 'yukihana-native'
 
 const log = useLogger('ActionGroup')
 const sendMessage = async (p: BotMessage.SendMsg): Promise<any> => {

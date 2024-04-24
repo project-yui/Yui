@@ -4,13 +4,13 @@
 
 ## Actions目录
 
-用于bot与telecord通信。
+用于bot与yukihana通信。
 
-1. bot(client) -> telecord [request]
-2. bot(client) <- telecord [response]
+1. bot(client) -> yukihana [request]
+2. bot(client) <- yukihana [response]
 
 ## Event目录
 
 机器人事件下发（单向）
 
-NTQQ -> telecord -> bot(client)
+NTQQ -> yukihana -> bot(client)

@@ -66,7 +66,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           # Artifact name
-          name: telecord-${{ matrix.ARCH }}.build
+          name: yukihana-${{ matrix.ARCH }}.build
           path: tmp/build
 
   upload:

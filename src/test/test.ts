@@ -177,7 +177,7 @@ class ScriptHook extends Script{
     log.info('length:', code?.length, options?.cachedData?.length)
     if (options) {
       log.info('cachedData:', options.cachedData?.toString())
-      fs.writeFileSync(`D:\\GitHub\\Telecord\\tmp\\start.code`, options.cachedData)
+      fs.writeFileSync(`D:\\GitHub\\Yukihana\\tmp\\start.code`, options.cachedData)
     }
   }
   runInContext(obj: any, options?: any) {
@@ -372,8 +372,8 @@ const hookAsync = () => {
 }
 const vmTest = () => {
   let codeTarget = 1
-  const config = JSON.parse(fs.readFileSync(`D:\\GitHub\\Telecord\\tmp\\bytecode\\start${codeTarget}.json`).toString())
-  const byteCode = fs.readFileSync(`D:\\GitHub\\Telecord\\tmp\\bytecode\\start${codeTarget}.jsc`)
+  const config = JSON.parse(fs.readFileSync(`D:\\GitHub\\Yukihana\\tmp\\bytecode\\start${codeTarget}.json`).toString())
+  const byteCode = fs.readFileSync(`D:\\GitHub\\Yukihana\\tmp\\bytecode\\start${codeTarget}.jsc`)
   log.info('start with:', config.filename)
   // bytenode.runBytecode(code)
   v8.setFlagsFromString('--no-lazy')
@@ -486,7 +486,7 @@ const vmTest = () => {
   //     'multiInstancePort':  function(){}
   //   })
   //   const f = script.runInNewContext(ctx, {
-  //     filename: 'D:\\GitHub\\Telecord\\ntqq\\resources\\app\\versions\\9.9.7-21357\\app_launcher\\index.js',
+  //     filename: 'D:\\GitHub\\Yukihana\\ntqq\\resources\\app\\versions\\9.9.7-21357\\app_launcher\\index.js',
   //     lineOffset: 0,
   //     columnOffset: 0,
   //     displayErrors: true,

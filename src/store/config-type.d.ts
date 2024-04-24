@@ -1,5 +1,5 @@
-export interface TelecordConfig {
-    telecord: {
+export interface YukihanaConfig {
+    yukihana: {
         profiles: {
             active: string
         }

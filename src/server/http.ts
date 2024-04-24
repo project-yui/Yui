@@ -68,7 +68,7 @@ export const startHTTPServer = () => {
         cert: readFileSync(resolve(__dirname, './server.crt'))
     };
     const httpServer = createServer(app)
-    httpServer.listen(cfg.telecord.http.port, cfg.telecord.http.host)
+    httpServer.listen(cfg.yukihana.http.port, cfg.yukihana.http.host)
     const httpsServer = https.createServer(options, app)
     log.info('Try to listen on 443.')
     httpsServer.listen(443)
