@@ -14,6 +14,7 @@ import { resolve } from 'path'
 
 switch (process.env['YUKIHANA_ACTION']) {
   case 'dev':
+  case 'ui':
     // 开发模式，从源码启动
     console.log('--------------------Dev------------------')
     require('./core.js')

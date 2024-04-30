@@ -256,8 +256,53 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         return pic
       }
       break;
-    case 'video':
-      // 视频
+    case 'file':
+      // 文件
+      {
+        log.info('element type: file')
+        if (!msg.data.file) break
+
+        const v = msg.data.file
+        // getFileSize
+        const stat = fs.statSync(v.path)
+        const size = stat.size
+        // getFileType
+        const fileType = getFileType(v.path)
+
+        // if (fileType?.ext === 'mp4'){
+        //   // generateThumb --- NodeIKernelMsgService/getFileThumbSavePathForSend(750, true)
+        //   const { getWrapperSession } = useNTCore()
+        //   const msgService = getWrapperSession().getMsgService()
+        //   const thumbPath = msgService.getFileThumbSavePathForSend(750, true)
+        //   // 获取视频大小
+        //   // NodeIKernelNodeMiscService/getVideoSize -> onVideoSizeChanged
+        //   const miscService = getWrapperSession().getNodeMiscService()
+        // }
+
+        const pic: NTSendMessageType.MsgElement = {
+          elementType: 3,
+          elementId: "",
+          fileElement: {
+            fileMd5: '',
+            fileName: v.name,
+            filePath: v.path,
+            fileSize: `${size}`,
+            picHeight: 0,
+            picWidth: 0,
+            picThumbPath: new Map(),
+            file10MMd5: '',
+            fileSha: '',
+            fileSha3: '',
+            fileUuid: '',
+            fileSubId: '',
+            fileBizId: undefined,
+            thumbFileSize: 750,
+            folderId: undefined
+          },
+          extBufForUI: '',
+        }
+        return pic
+      }
       break;
     // case '':
     //   // 表情

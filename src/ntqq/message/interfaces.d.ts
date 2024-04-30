@@ -101,6 +101,8 @@ export declare namespace NTSendMessageType {
      * 
      * 2 - 图片 picElement
      * 
+     * 3 - 文件 fileElement
+     * 
      * 6 - 表情 faceElement
      * 
      * 7 - 引用回复 replyElement
@@ -108,18 +110,23 @@ export declare namespace NTSendMessageType {
      * 11 - 商城表情 marketFaceElement
      * 
      */
-    elementType: 1 | 2 | 6 | 7 | 11
+    elementType: 1 | 2 | 3 | 6 | 7 | 11
     elementId: string
 
     /**
-     * 纯文本元素
+     * 1 - 纯文本元素
      */
     textElement?: TextElement
 
     /**
-     * 图片元素
+     * 2 - 图片元素
      */
     picElement?: PicElement
+
+    /**
+     * 3 - 文件元素
+     */
+    fileElement?: FileElement
 
     /**
      * 引用回复元素
@@ -221,6 +228,45 @@ export declare namespace NTSendMessageType {
     fileSubId: ''
     thumbFileSize: 0
     summary: string
+  }
+
+  /**
+   * 文件元素
+   */
+  interface FileElement {
+    fileMd5: '',
+    /**
+     * 文件名
+     */
+    fileName: string
+    /**
+     * 文件路径
+     */
+    filePath: string
+    /**
+     * 文件大小
+     */
+    fileSize: `${number}`,
+    /**
+     * 高度
+     */
+    picHeight: number
+    /**
+     * 宽度
+     */
+    picWidth: number
+    picThumbPath: Map<string, string>
+    file10MMd5: '',
+    fileSha: '',
+    fileSha3: '',
+    fileUuid: '',
+    fileSubId: '',
+    fileBizId: undefined,
+    /**
+     * 缩略图大小
+     */
+    thumbFileSize: number
+    folderId: undefined
   }
 
 }

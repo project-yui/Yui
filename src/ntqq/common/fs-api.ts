@@ -2,6 +2,8 @@ import { randomUUID } from "crypto"
 import { FileType, ImageSizeInfo } from "./fsapi"
 import { useNTCore } from "../core/core"
 import { useLogger } from "../../common/log"
+import { parse } from 'file-type-mime'
+import { readFileSync } from "fs"
 
 const log = useLogger('FsApi')
 
@@ -34,21 +36,9 @@ export const getFileMd5 = async (path: string) => {
  * @param path 文件路径
  * @returns 文件类型
  */
-export const getFileType = async (path: string) => {
-  const uuid = randomUUID()
-  // const reqInfo: IpcUpInfo = {
-  //   type: 'request',
-  //   callbackId: uuid,
-  //   eventName: 'ns-FsApi-2'
-  // }
-  // const reqData: [string, string, any] = [
-  //   'nodeIKernelMsgService/getRichMediaFilePathForGuild',
-  //   path,
-  //   undefined,
-  // ]
-  // const sendResult = await sendEvent<string, FileType>('IPC_UP_2', reqInfo, reqData)
-  // return sendResult.data
-  return ''
+export const getFileType = (path: string) => {
+  const f = readFileSync(path)
+  return parse(f)
 }
 
 /**
@@ -87,26 +77,4 @@ export const copyFile = (from: string, to: string) => {
   const ret = util.copyFile(from, to)
   log.info('copyFile:', ret)
   return ret
-  // const uuid = randomUUID()
-  // const reqInfo: IpcUpInfo = {
-  //   type: 'request',
-  //   callbackId: uuid,
-  //   eventName: 'ns-FsApi-2'
-  // }
-  // const reqData: [string, {
-  //   fromPath: string
-  //   toPath: string
-  // }, any] = [
-  //   'copyFile',
-  //   {
-  //     fromPath: from,
-  //     toPath: to,
-  //   },
-  //   null,
-  // ]
-  // const sendResult = await sendEvent<{
-  //   fromPath: string
-  //   toPath: string
-  // }, boolean>('IPC_UP_2', reqInfo, reqData)
-  // return sendResult.data
 }

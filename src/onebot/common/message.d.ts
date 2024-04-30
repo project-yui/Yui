@@ -65,6 +65,11 @@ export declare namespace BotMessage {
       pic?: BotMessageSendElements.PicElement
 
       /**
+       * 文件
+       */
+      file?: BotMessageSendElements.FileElement
+
+      /**
        * 图像等的文件ID
        * 
        * 待定
@@ -329,6 +334,25 @@ declare namespace BotMessageSendElements {
     path: string
   }
 
+  /**
+   * 文件
+   * 
+   * bot -> framework
+   */
+  interface FileElement {
+
+    /**
+     * 文件名称
+     * 
+     */
+    name: string
+
+    /**
+     * 视频文件路径
+     * 
+     */
+    path: string
+  }
 
   /**
    * 位置消息

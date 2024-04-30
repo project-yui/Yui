@@ -14,6 +14,9 @@ dependencies:
   express-fileupload:
     specifier: ^1.5.0
     version: 1.5.0
+  file-type-mime:
+    specifier: ^0.3.10
+    version: 0.3.10
   http-proxy-middleware:
     specifier: ^3.0.0
     version: 3.0.0
@@ -1069,6 +1072,10 @@ packages:
     dependencies:
       pend: 1.2.0
     dev: true
+
+  /file-type-mime@0.3.10:
+    resolution: {integrity: sha512-VzzSOoRehn8M9c5ckYrlurv7GxJBA7lvetMJ1sP9AHlwv1+1ZwREZhta7ndtg1QNR1HiuX2656Dq3okfG3qI4w==}
+    dev: false
 
   /fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
