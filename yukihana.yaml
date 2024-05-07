@@ -26,7 +26,7 @@ yukihana:
         # ida 搜索 65F883，找有for循环的
         sqlite3_stmt: 48895C2420564883EC20488BD933F6E8EC
         # 获取方法：ida 搜索 DebugGetIPByDomain，所处函数开头
-        get_ip_by_domain: 40555356574154415541564157488D6C24D84881EC28010000488B0510F3
+        get_ip_by_domain: 40555356574154415541564157488D6C24D84881EC28010000488B05F021
     linux:
       3.2.5-21357:
         # 获取方法：ida 搜索 DebugGetIPByDomain，所处函数开头
