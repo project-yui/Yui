@@ -15,7 +15,10 @@ router.use('/static', static_(resolve(storage, './upload')))
 router.get('/download', createProxyMiddleware({
   target: 'https://gchat.qpic.cn',
   changeOrigin: true,
-  ssl: true,
+}))
+router.get('/gchatpic_new/*', createProxyMiddleware({
+  target: 'https://gchat.qpic.cn',
+  changeOrigin: true,
 }))
 router.post('/group/uploadFile', uploadFile)
 router.get('/external-download', externalDownload)

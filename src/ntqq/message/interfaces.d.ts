@@ -223,7 +223,7 @@ export declare namespace NTSendMessageType {
     picSubType: 0 | 1
     sourcePath: string
     thumbPath: string | undefined
-    picType: 1000 | 1001
+    picType: 1000 | 1001 | 2000
     fileUuid: ''
     fileSubId: ''
     thumbFileSize: 0

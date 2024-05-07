@@ -217,6 +217,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           throw new Error('Failed to get information of image')
           // return undefined
         }
+        log.info('image info:', info)
         log.info('src path:', src.path)
         // const fileType = await getFileType(src.path)
         // log.info('file type:', fileType)
@@ -246,7 +247,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             picSubType: 0,
             sourcePath: src.path,
             thumbPath: undefined,
-            picType: 1001,
+            picType: info.ext == 'gif' ? 2000 : 1000,
             fileUuid: "",
             fileSubId: "",
             thumbFileSize: 0,
