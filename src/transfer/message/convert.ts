@@ -202,6 +202,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
           height: src.height,
           md5: src.md5,
           size: src.size,
+          ext: 'jpg',
         } : undefined
         if (src.path == null || !fs.existsSync(src.path)) {
           // 文件路径有问题，检查是否有网络地址
@@ -220,7 +221,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         // const fileType = await getFileType(src.path)
         // log.info('file type:', fileType)
         // get real storage path
-        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.jpg`)
+        const realPath = getRichMediaFilePathForGuild(info.md5, `${info.md5}.${info.ext}`)
         log.info('real path:', realPath)
         // copy
         const ret = copyFile(src.path, realPath)
@@ -239,7 +240,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
             md5HexStr: info.md5,
             picWidth: info.width,
             picHeight: info.height,
-            fileName: `${info.md5}.jpg`,
+            fileName: `${info.md5}.${info.ext}`,
             fileSize: `${info.size}`,
             original: true,
             picSubType: 0,

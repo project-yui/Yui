@@ -6,13 +6,13 @@ import http from 'http'
 import https from 'https'
 import path from 'path'
 import { useLogger } from './log'
+import { getFileType } from '../ntqq/common/fs-api'
 
 const log = useLogger('File')
 
 /**
  * 获取图像信息
  * 
- * TODO: 使用NTQQ自带方法获取
  * @param path 图片路径
  * @returns 取图像信息
  */
@@ -27,11 +27,13 @@ export const getImageInfo = async (path: string): Promise<ImageInfo | undefined>
   const md5 = await getFileMd5(path)
   log.info('get image info...')
   const stat = fs.statSync(path)
+  const type = getFileType(path)
   return {
     width: ret.width || 0,
     height: ret.height || 0,
     md5: md5,
-    size: stat.size
+    size: stat.size,
+    ext: type?.ext ?? 'jpg'
   }
 }
 

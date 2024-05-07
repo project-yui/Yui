@@ -6,4 +6,5 @@ export interface ImageInfo {
   height: number
   size: number
   md5: string
+  ext: string
 }
