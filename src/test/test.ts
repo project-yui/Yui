@@ -311,7 +311,7 @@ const nodeModule = async () => {
   }
 }
 const genMarkdown = () => {
-  const _exports = require('../versions/9.9.9-22741/wrapper.node')
+  const _exports = require('../versions/9.9.9-23159/wrapper.node')
   let markdown = ''
   // 遍历类
   for (const serviceName in _exports) {

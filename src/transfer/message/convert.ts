@@ -9,6 +9,7 @@ import { copyFile, getFileType } from "../../ntqq/common/fs-api";
 import { useNTCore } from "../../ntqq/core/core";
 import { useStore } from "../../store/store";
 import { getGroupMemberInfoByUid } from "../../onebot/common/group";
+import { RichMediaUploadResult } from "../../ntqq/types/services/NodeIKernelMsgService";
 
 const log = useLogger('Convert')
 
@@ -371,7 +372,7 @@ const uploadFile = (peerInfo: any, fileInfo: any) => {
 
     const { registerEventListener } = useStore()
     let listener: undefined | { remove: () => void } = undefined
-    listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: NTNativeWrapper.RichMediaUploadResult) => {
+    listener = registerEventListener('KernelMsgListener/onRichMediaUploadComplete', 'always', (info: RichMediaUploadResult) => {
         // 同时上传，可能会识别错误，需要判定一下
         log.info('upload result:', info)
         if (info.fileModelId === fileInfo.fileModelId)
