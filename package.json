@@ -30,6 +30,7 @@
     "bytenode": "^1.5.3",
     "electron": "25.8.1",
     "javascript-obfuscator": "^4.1.0",
+    "nodejs-file-downloader": "^4.13.0",
     "rollup": "^4.13.2",
     "rollup-plugin-obfuscator": "^1.1.0",
     "tslib": "^2.6.2",
