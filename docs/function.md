@@ -676,9 +676,16 @@
 | reportCameraToO3 | |
 | reportAmgomWeather | |
 | setAmgomDataPiece | |
+| passthroughO3Data | |
 | isNull | |
 
 ## NodeIO3MiscListener
+
+| 方法名 | 描述 |
+|-------|-----|
+| New | |
+
+## NodeIO3DataCallback
 
 | 方法名 | 描述 |
 |-------|-----|
@@ -776,13 +783,7 @@
 |-------|-----|
 | init | |
 | uninit | |
-| launchSimulator | |
-| closeSimulator | |
-| install | |
-| run | |
-| uninstall | |
 | createLnkShortcut | |
-| setSimulatorMsgReceiver | |
 | getDesktopPath | |
 | getSimulatorProcStatus | |
 | getSystemRegValue | |
@@ -791,12 +792,6 @@
 | sendMsg2Simulator | |
 | setSystemRegValue | |
 | isNull | |
-
-## NodeIQPlaySimulatorCallback
-
-| 方法名 | 描述 |
-|-------|-----|
-| New | |
 
 ## NodeIKernelQQPlayListener
 
@@ -5530,6 +5525,7 @@
 | resetLoginInfo | |
 | quickLoginWithUin | |
 | getMachineGuid | |
+| loginUnusualDevice | |
 | isNull | |
 
 ## NodeIKernelLoginListener

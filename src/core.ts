@@ -21,8 +21,8 @@ try {
   if (process.env['YUKIHANA_ACTION'] === 'ui') {
     // log.info('hook')
     // hook()
-    // log.info('hookWrapper')
-    // hookWrapper()
+    log.info('hookWrapper')
+    hookWrapper()
   }
 
   log.info('initNTQQ')

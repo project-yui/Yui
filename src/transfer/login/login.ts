@@ -49,23 +49,11 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
  * @param p 
  * @returns 登录的二维码
  */
-export const loginByQrCode = async (p: BotActionParams): Promise<BotActionResponse<BotLogin.QrCodeResponse>> => {
-  const ret: BotActionResponse<BotLogin.QrCodeResponse> = {
-    id: "",
-    status: "ok",
-    retcode: 0,
-    data: {
-      qrCodeImage: "",
-      qrCodeUrl: "",
-      expireTime: 0
-    },
-    message: ""
-  }
+export const loginByQrCode = async (p: BotActionParams): Promise<BotLogin.QrCodeResponse> => {
   const resp = await NTGetLoginQrCode()
-  ret.data = {
+  return {
     qrCodeImage: resp.pngBase64QrcodeData,
     qrCodeUrl: resp.qrcodeUrl,
     expireTime: resp.pollTimeInterval
   }
-  return ret
 }
