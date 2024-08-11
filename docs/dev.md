@@ -4,21 +4,20 @@
 
 ## 1.获取项目源码及初始化
 
-  1. 命令行执行：`https://github.com/cuit-edu-cn/ntqq-bot.git`
-  2. 进入项目：`cd ntqq-bot`
+  1. 命令行执行：`https://github.com/project-yukihana/Yukihana.git`
+  2. 进入项目：`cd Yukihana`
   3. 安装包：`pnpm install`
 
 ## 2. 获取QQ
 
-  1. 打开一个Release页面
-  2. 根据页面中完整包的链接，下载完整包
-  3. 下载Release中的`skip_file_check`文件
-  4. ***解压完整包*** 到任意文件夹，移动其中的Files目录中的文件到 **项目** 的`ntqq`目录下（注意，**不能**将文件夹下的文件加入git版本控制）
+  1. 进入官网：https://im.qq.com/index/
+  2. 下载对应平台的安装包
+  3. ***解压*** 到任意文件夹，移动其中的Files目录中的文件到 **项目** 的`program`目录下（注意，**不能**将文件夹下的文件加入git版本控制）
 
       大致结构如下：
       ```
       Yukihana
-      ├─ntqq
+      ├─program
       │  ├─lib
       │  ├─locales
       │  ├─obj
@@ -27,24 +26,22 @@
       ├─tools
       ....
       ```
-  5. 删除`ntqq/QQ.exe`，将`skip_file_check`复制到ntqq文件夹中并重命名为`QQ.exe`。（就是替换QQ.exe）
+      
+## 3. 跳过启动验证
 
-## 3. 验证QQ启动文件替换的结果
-
-  1. 打开文件`ntqq/resources/app/app_launcher/index.js`
-  2. 在文件结尾加上注释符号`//`
-  3. 启动QQ.exe
-  4. 正常启动说明准备工作完成；否则会提示“资源损坏”。
+  1. 打开地址: https://github.com/project-yukihana/Yukihana-patch
+  2. 下载 release 中的 `dbghelp.dll` 文件，放置于 pragram 文件夹下。
 
 # 二、开发介绍
 
 ## 1. 运行
 
   1. 执行命令 `pnpm run dev`，开始编译ts文件
-  2. 生成的文件在 `ntqq/resources/app/app_launcher/index.js`
-  3. 启动QQ，执行`ntqq/QQ.exe`
+  2. 生成的文件在 `program/resources/app/app_launcher/index.js`
+  3. 启动无UI界面的Yukihana，执行`pnpm nodestart`
+  4. 启动有UI界面的Yukihana，执行`pnpm start`
 
-## 2. 后续开发
+## 2. 关于后续开发
 
   1. 修改ts代码会自动编译
   2. 要应用更新需要关闭QQ，重新启动

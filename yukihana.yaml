@@ -38,4 +38,4 @@ yukihana:
         sqlite3_stmt: 554157415641554154534883EC184885FF0F84960300004989FC488B074885C0
         get_ip_by_domain: 554157415641554154534881ECB800000048895424584889F3
   dev:
-    program_path: .\\program\\QQ.exe
+    program_path: .\\QQ.exe

@@ -66,6 +66,7 @@ const copyConfiguration = () =>
     fs.copyFileSync(path.resolve(__dirname, '../yukihana.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/yukihana.yaml'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.crt'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.crt'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.key'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.key'))
+    fs.copyFileSync(path.resolve(__dirname, '../resources/hack/patch.json'), path.resolve(__dirname, '../program/patch.json'))
 }
 copyConfiguration()
 
@@ -115,22 +116,25 @@ const ActionHandle = {
                 YUKIHANA_LOG: true,
                 YUKIHANA_ACTION: 'ui',
                 YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
-            }
+            },
+            cwd: path.resolve(__dirname, '../program'),
         })
     },
     'start-log-file': (args) => {
         switch(process.platform) {
             case 'win32':
                 {
+                    console.log('write log to tmp/output.log')
                     // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"
-                    spawn('cmd.exe', ['/C', `${devConfig.program_path} > tmp\\output.log 2>&1`], {
+                    spawn('cmd.exe', ['/C', `${devConfig.program_path} > ..\\tmp\\output.log 2>&1`], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
                             YUKIHANA_ACTION: 'ui',
                             YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
-                        }
+                        },
+                        cwd: path.resolve(__dirname, '../program'),
                     })
                 }
                 break
