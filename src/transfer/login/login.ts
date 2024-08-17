@@ -54,6 +54,6 @@ export const loginByQrCode = async (p: BotActionParams): Promise<BotLogin.QrCode
   return {
     qrCodeImage: resp.pngBase64QrcodeData,
     qrCodeUrl: resp.qrcodeUrl,
-    expireTime: resp.pollTimeInterval
+    expireTime: resp.expireTime
   }
 }

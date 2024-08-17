@@ -1,6 +1,6 @@
 const path = require("path");
 const { Downloader } = require("nodejs-file-downloader");
-const { existsSync, renameSync, rmSync } = require("fs");
+const { existsSync, rmSync } = require("fs");
 const { execSync } = require("child_process");
 
 // 安装QQ
@@ -38,7 +38,7 @@ const windows = async () => {
   {
     const _7zUrl = "https://www.7-zip.org/a/7zr.exe";
     const filepath = path.resolve(cachePath, "7zr.exe");
-    if (!existsSync(filepath)) {
+    if (!existsSync(filepath) && !path.resolve(cachePath, "7z/7z.exe")) {
       console.log("download 7z console......");
       const downloader = new Downloader({
         url: _7zUrl, // If the file name already exists, a new file with the name 200MB1.zip is created.
@@ -62,7 +62,7 @@ const windows = async () => {
   {
     const _7zUrl = "https://www.7-zip.org/a/7z2407-x64.exe";
     const filepath = path.resolve(cachePath, "7z.exe");
-    if (!existsSync(filepath)) {
+    if (!existsSync(filepath) && !path.resolve(cachePath, "7z/7z.exe")) {
       console.log("download 7z......");
       const downloader = new Downloader({
         url: _7zUrl, // If the file name already exists, a new file with the name 200MB1.zip is created.
@@ -109,11 +109,17 @@ const windows = async () => {
       }
       moveFilesAndDeleteDir(path.resolve(programPath, './Files'), programPath);
     }
-    console.log('done.')
   }
   // 清理
   {
-    
+    console.log('clean......')
+    try {
+      rmSync(path.resolve(cachePath, '7zr.exe'))
+    }catch{}
+    try {
+      rmSync(path.resolve(cachePath, '7z.exe'))
+    }catch{}
+    console.log('done.')
   }
 };
 // 移动文件的函数

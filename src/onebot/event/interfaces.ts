@@ -4,7 +4,6 @@ import { BotMessage } from "../common/message"
  * 事件数据
  */
 export interface EventDataType<T> {
-  id?: string
   time: number
   self: BotUserInfo
   /**

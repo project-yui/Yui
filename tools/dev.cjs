@@ -144,6 +144,7 @@ const ActionHandle = {
         switch(process.platform) {
             case 'win32':
                 {
+                    console.log('nodestart')
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
                     spawn(devConfig.program_path, ['./program/resources/app/app_launcher/index.js'], {
                         stdio: 'inherit',
@@ -153,7 +154,8 @@ const ActionHandle = {
                             ELECTRON_RUN_AS_NODE: true,
                             YUKIHANA_ACTION: 'dev',
                             YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
-                        }
+                        },
+                        cwd: path.resolve(__dirname, '../program')
                     })
                 }
                 break

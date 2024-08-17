@@ -5,7 +5,7 @@ import { startWebsocketServer } from "./websocket"
 import { SendHandleType } from "./interfacces"
 
 const log = useLogger('Server')
-const sendHandleList: SendHandleType[] = []
+const clientHandleList: SendHandleType[] = []
 
 /**
  * 添加发送消息的监听器
@@ -13,7 +13,7 @@ const sendHandleList: SendHandleType[] = []
  * @param h 发送消息的监听器
  */
 const addSendHandle = (h: SendHandleType) => {
-  sendHandleList.push(h)
+  clientHandleList.push(h)
 }
 
 /**
@@ -22,12 +22,12 @@ const addSendHandle = (h: SendHandleType) => {
  * @param h 发送消息的监听器
  */
 const removeSendHandle = (h: SendHandleType) => {
-  const i = sendHandleList.indexOf(h)
+  const i = clientHandleList.indexOf(h)
   if (i < 0) {
     log.warn('事件处理器移除失败，未找到该处理器')
     return
   }
-  sendHandleList.splice(i, 1)
+  clientHandleList.splice(i, 1)
 }
 
 /**
@@ -38,12 +38,12 @@ const removeSendHandle = (h: SendHandleType) => {
  * @param msg 消息内容
  */
 const sendMessage = (msg: string) => {
-  for (let i = 0; i < sendHandleList.length; i++) {
-    const handle = sendHandleList[i];
+  for (let i = 0; i < clientHandleList.length; i++) {
+    const clientHandle = clientHandleList[i];
     try {
-      handle(msg)
+      clientHandle(msg)
     } catch (error) {
-      sendHandleList.splice(i, 1)
+      clientHandleList.splice(i, 1)
       i--
     }
   }
