@@ -50,6 +50,7 @@ export const prepareBaseEnvironment = async() => {
       density: 2
     }
   }
+  log.info('cfg:', cfg)
   const globalAdapter = getGlobalAdapter()
   const wrapperEngine = getWrapperEngine()
   const initResult = wrapperEngine.initWithDeskTopConfig(cfg, globalAdapter)

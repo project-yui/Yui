@@ -209,31 +209,6 @@ const onUpdateMsg = () => {
 }
 
 /**
- * 获取登录二维码
- * @returns 二维码信息
- */
-export const qrCodeFailed = () => {
-  const { sendMessage } = useServer()
-  const getQrCode = registerEventListener('KernelLoginListener/onQRCodeSessionFailed', 'always', (p1: number, p2: number) => {
-
-    const ret: EventDataType<any> = {
-      self: {
-        id: 0,
-        uid: 'u_0'
-      },
-      time: new Date().getTime(),
-      type: "notice",
-      detail_type: "qrcode_error",
-      sub_type: "",
-      data: {
-        p1,
-        p2,
-      }
-    }
-    sendMessage(JSON.stringify(ret))
-  })
-}
-/**
  * 监听消息事件
  * 
  * 每收到一条新消息就会触发事件
@@ -242,5 +217,4 @@ export const listenMessage = () => {
   onRecvMsg()
   onAddSendMsg()
   onUpdateMsg()
-  qrCodeFailed();
 }

@@ -5,6 +5,7 @@ import { BotLogin } from "../../onebot/actions/bot/interfaces"
 import { BotActionResponse, BotActionParams } from "../../onebot/actions/interfaces"
 import { useLogger } from "../../common/log"
 import { CustomError } from "../../server/error/custom-error"
+import { listenLoginEvent } from "../../onebot/event/login"
 
 const log = useLogger('Login')
 
@@ -51,6 +52,7 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
  */
 export const loginByQrCode = async (p: BotActionParams): Promise<BotLogin.QrCodeResponse> => {
   const resp = await NTGetLoginQrCode()
+  listenLoginEvent();
   return {
     qrCodeImage: resp.pngBase64QrcodeData,
     qrCodeUrl: resp.qrcodeUrl,

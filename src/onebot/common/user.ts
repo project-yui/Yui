@@ -14,7 +14,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     // 超时拒绝
     let time = setTimeout(() => {
       if (userInfoListener)
-        removeEventListener('KernelProfileListener/onProfileDetailInfoChanged', userInfoListener)
+        removeEventListener('KernelProfileListener/onUserDetailInfoChanged', userInfoListener)
       reject('getUserInfoByUid timeout')
     }, 30000)
     userInfoListener = (payload: UserDetailInfoType) => {
@@ -23,7 +23,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
       clearTimeout(time)
       resolve(payload)
     }
-    registerEventListener(`KernelProfileListener/onProfileDetailInfoChanged`, 'once', userInfoListener)
+    registerEventListener(`KernelProfileListener/onUserDetailInfoChanged`, 'once', userInfoListener)
     const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()
     const service = session.getProfileService()

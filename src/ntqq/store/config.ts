@@ -80,7 +80,7 @@ const getAppInfo = (): StoreAppInfo => {
     }
 }
 const getAppId = () => {
-    return platform === 'win32' ? '537207183' : '537207207'
+    return platform === 'win32' ? '537237802' : '537207207'
  }
  const getNTConfigStoreFolder = (): string => {
     const wrapperUtil = new NodeQQNTWrapperUtil()

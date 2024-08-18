@@ -55,7 +55,7 @@ const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
   log.info('getUserDetailInfo:', ret)
   resp.user_uid = ret.uid
   resp.user_uin = parseInt(ret.uin)
-  resp.nick = ret.nick
+  resp.nick = ret.simpleInfo.coreInfo.nick
   resp.avatar_url = `http://q1.qlogo.cn/g?b=qq&nk=${resp.user_uin}&s=640`
   return resp
 }

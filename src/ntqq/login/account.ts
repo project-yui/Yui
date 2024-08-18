@@ -129,3 +129,19 @@ export const NTLoginByAccountInfo = (ntLogin: NTLogin.AccountLoginRequest): Prom
 
   })
 }
+
+export const NTGetQuickLoginList = async () => {
+  const { getLoginService } = useNTCore()
+  await sleep(2000)
+  const loginService = getLoginService()
+  const loginList = await loginService.getLoginList()
+  return loginList.LocalLoginInfoList
+}
+
+export const NTQuickLoginByUin = async (uin: `${number}`) => {
+  const { getLoginService } = useNTCore()
+  await sleep(2000)
+  const loginService = getLoginService()
+  const loginResult = await loginService.quickLoginWithUin(uin)
+  return loginResult
+}

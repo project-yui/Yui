@@ -18,7 +18,7 @@ export const initLogin = () => {
   const listener = new NodeIKernelLoginListener(p)
   const { registerEventListener } = useStore()
   log.info('add handle after login success.')
-  registerEventListener('KernelLoginListener/onQRCodeLoginSucceed', 'once', (info) => {
+  registerEventListener('KernelLoginListener/onQRCodeLoginSucceed', 'always', (info) => {
     const { userInfo } = useNTUserStore()
     userInfo.uid = info.uid
     userInfo.uin = info.uin
