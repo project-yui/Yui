@@ -15,17 +15,21 @@ const log = useLogger('Action/Friend')
  * @param p 空参数
  * @returns 好友列表
  */
-const getFriendList = async (p: {}): Promise<BotActionResponse<any>> => {
-  const ret: BotActionResponse = {
-    id: "",
-    status: "ok",
-    retcode: 0,
-    data: undefined,
-    message: ""
-  }
+const getFriendList = async (p: {}): Promise<any> => {
   const list = await NTGetFriendList()
-  ret.data = list
-  return ret
+  const result = list.map(e => ({
+    id: e.categoryId,
+    name: e.categroyName,
+    count: e.categroyMbCount,
+    friend_list: e.buddyList.map(f => ({
+      uin: f.uin,
+      nick: f.nick,
+      avatar_url: f.avatarUrl,
+      remark: f.remark,
+      long_nick: f.longNick,
+    }))
+  }))
+  return result
 }
 
 /**

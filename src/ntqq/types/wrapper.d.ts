@@ -340,12 +340,13 @@ declare namespace NodeIKernelStorageCleanServiceType {
  * }
  * ```
  */
-interface SimpleResult {
+interface SimpleResult<T = any> {
   /**
    * 0 - 成功
    */
   result: number
   errMsg: string
+  data?: T
 }
 
 interface PeerInfo {

@@ -4,8 +4,10 @@ export declare namespace NTFriend {
   }
   export interface FriendGroupType {
     categoryId: number
+    categorySortId: number
     categroyName: string
     categroyMbCount: number
+    onlineCount: number
     buddyList: FriendType[]
   }
   export interface FriendType {
@@ -22,40 +24,19 @@ export declare namespace NTFriend {
      * QQ昵称
      */
     nick: string
+    /**
+     * 头像
+     */
+    avatarUrl: string
+    /**
+     * 备注
+     */
     remark: string
     /**
      * 个性签名
      */
     longNick: string
-    /**
-     * 头像链接
-     * 
-     * 但实际上是空的
-     */
-    avatarUrl: string
-    birthday_year: number
-    birthday_month: number
-    birthday_day: number
-    /**
-     * 性别
-     */
-    sex: number
-    topTime: `${number}`
-    isBlock: boolean
-    isMsgDisturb: boolean
-    isSpecialCareOpen: boolean
-    isSpecialCareZone: boolean
-    ringId: string
-    status: number
-    extStatus: number
-    categoryId: number
-    onlyChat: boolean
-    qzoneNotWatch: boolean
-    qzoneNotWatched: boolean
-    vipFlag: boolean
-    yearVipFlag: boolean
-    svipFlag: boolean
-    vipLevel: number
+    richTime: number
   }
 
   /**

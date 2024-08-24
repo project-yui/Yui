@@ -3,6 +3,7 @@ import { useStore } from "../../store/store"
 import { NTFriend } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { useNTCore } from "../core/core"
+import { CustomError } from "../../server/error/custom-error"
 
 
 const { registerEventListener } = useStore()
@@ -13,30 +14,43 @@ const log = useLogger('NTQQ/Friend')
  * 
  * @returns 好友列表
  */
-export const NTGetFriendList = (): Promise<NTFriend.FriendGroupType[]> => {
-  return new Promise(async (resolve, reject) => {
-
-    // 超时拒绝
-    let time = setTimeout(() => {
-      reject(new Error('NTGetFriendList timeout'))
-    }, 30000)
-
-    registerEventListener(`KernelBuddyListener/onBuddyListChange`, 'once', (payload: NTFriend.PayloadBuddyList) => {
-
-      // 清除超时计时
-      clearTimeout(time)
-      resolve(payload.data)
-    })
+export const NTGetFriendList = async (): Promise<NTFriend.FriendGroupType[]> => {
+  
     const { getWrapperSession } = useNTCore()
     const buddyService = getWrapperSession().getBuddyService()
-    // buddyService.
-    // const reqResult = await sendEvent('IPC_UP_2', {
-    //   type: 'request',
-    //   callbackId: randomUUID(),
-    //   eventName: 'ns-NodeStoreApi-2'
-    // }, ['getBuddyList', null, null])
+    const profileService = getWrapperSession().getProfileService();
+    const groupList = await buddyService.getBuddyListV2(true, 0);
     
-  })
+    const result: NTFriend.FriendGroupType[] = []
+    if (!groupList.data) throw new CustomError(500, '好友分组获取失败')
+
+    for (const group of groupList.data) {
+      const infos = profileService.getCoreAndBaseInfo('nodeStore', group.buddyUids)
+      const fs: NTFriend.FriendType[] = []
+      for( const id of group.buddyUids) {
+        const info = infos.get(id)
+        if (!info) continue
+        fs.push({
+          uid: info.uid,
+          qid: "",
+          uin: info.uin,
+          nick: info.coreInfo.nick,
+          remark: info.coreInfo.remark,
+          longNick: info.baseInfo.loongNick,
+          richTime: info.baseInfo.richTime,
+          avatarUrl: `https://q1.qlogo.cn/g?b=qq&nk=${info.uin}&s=100`
+        })
+      }
+      result.push({
+        categoryId: group.categoryId,
+        categorySortId: group.categorySortId,
+        categroyName: group.categroyName,
+        categroyMbCount: group.categroyMbCount,
+        onlineCount: group.onlineCount,
+        buddyList: fs
+      })
+    }
+    return result
 }
 
 /**
