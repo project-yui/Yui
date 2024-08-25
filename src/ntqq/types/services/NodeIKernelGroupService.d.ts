@@ -30,6 +30,7 @@ export class NodeIKernelGroupListener {
 export class NodeIKernelGroupService {
     addKernelGroupListener(listener: NodeIKernelGroupListener): number
     getGroupDetailInfo(groupId: `${number}`, b: number): Promise<SimpleResult>
+    getGroupList(a: boolean): Promise<SimpleResult>
     /**
      * 获取群成员信息
      * 
