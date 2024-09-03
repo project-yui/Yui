@@ -365,59 +365,6 @@ interface PeerInfo {
   peerUid: `${number}` | `u_${string}` | '',
   guildId: string
 }
-declare namespace NodeIKernelMsgServiceType {
-  interface DownloadRichMediaReq {
-    msgId: `${number}`
-    peerUid: string
-    chatType: number
-    elementId: `${number}`
-    downloadType: number
-    thumbSize: number
-    filePath: string
-    fileModelId: `${number}`
-    downSourceType: number
-    triggerType: number
-  }
-  interface FetchStatusMgrInfoResp extends SimpleResult {
-    content: string
-  }
-  interface ResourcePathResp extends SimpleResult {
-    resourcePath: string
-  }
-  interface GetRichMediaFilePathForGuildReq {
-    md5HexStr: string
-    fileName: string
-    elementType: number,
-    elementSubType: number,
-    thumbSize: number,
-    needCreate: boolean,
-    downloadType: number,
-    file_uuid: ''
-  }
-  interface BasePathResp extends SimpleResult {
-    content: string
-  }
-  interface GuildUnreadCntInfoResp extends SimpleResult {
-    unreadCntInfos: GuildUnreadCntInfo[]
-  }
-  interface GuildUnreadCntInfo {
-    show_unread_cnt: UnreadCnt
-    all_unread_cnt: UnreadCnt
-    atme_unread_cnt: UnreadCnt
-    atall_unread_cnt: UnreadCnt
-    peer: PeerInfo
-    related_to_me_string: string
-    related_to_me_cnt: number
-    last_related_to_me_type: number
-    related_to_me_string_time: `${number}`
-    last_related_to_feed_type: number
-    header_url: '0x'
-  }
-  interface UnreadCnt {
-    type: number
-    cnt: number
-  }
-}
 
 declare namespace NodeIKernelNodeMiscServiceType {
   interface GetFullScreenInfoResp {

@@ -8,8 +8,8 @@ import { getRichMediaFilePathForGuild } from "../../ntqq/common/nt-api";
 import { copyFile, getFileType } from "../../ntqq/common/fs-api";
 import { useNTCore } from "../../ntqq/core/core";
 import { useStore } from "../../store/store";
-import { getGroupMemberInfoByUid } from "../../onebot/common/group";
 import { RichMediaUploadResult } from "../../ntqq/types/services/NodeIKernelMsgService";
+import { useConfigStore } from "../../store/config";
 
 const log = useLogger('Convert')
 
@@ -19,7 +19,7 @@ const log = useLogger('Convert')
  * @param elems 来自NTQQ的消息
  * @returns 给bot的消息
  */
-export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.ReceiveElement[] => {
+export const convertNTMessage2BotMessage = (peer: PeerInfo, msgId: `${number}`, elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.ReceiveElement[] => {
   const result: BotMessage.ReceiveElement[] = []
   for (const ele of elems) {
     switch (ele.elementType) {
@@ -75,6 +75,17 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
         {
           const p = ele.picElement
           if (p) {
+            let url = p.originImageUrl
+            if (url.startsWith('/gchatpic_new'))
+            {
+              url = `https://gchat.qpic.cn${url}`
+            }
+            else if (url.startsWith('/download'))
+            {
+              const { getConfig } = useConfigStore()
+              const cfg = getConfig()
+              url = `http://${cfg.yukihana.http.host}:${cfg.yukihana.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${ele.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
+            }
             const pic: BotMessage.ReceiveElement = {
               type: 'image',
               data: {
@@ -85,7 +96,7 @@ export const convertNTMessage2BotMessage = (elems: NTReceiveMessageType.NTMessag
                   size: parseInt(p.fileSize),
                   md5: p.md5HexStr,
                   uuid: p.fileUuid,
-                  url: `https://gchat.qpic.cn${p.originImageUrl}`,
+                  url: url,
                   path: p.sourcePath,
                 }
               }

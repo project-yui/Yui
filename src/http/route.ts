@@ -5,6 +5,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
 import { externalDownload } from './gchat/external-download'
 import { useConfigStore } from '../store/config'
 import { resolve } from 'path'
+import { downloadRichMedia } from './common/download-rich-media'
 
 const log = useLogger('HTTP Route')
 
@@ -12,6 +13,7 @@ const { getStoragePath } = useConfigStore()
 const router = Router()
 const storage = getStoragePath()
 router.use('/static', static_(resolve(storage, './upload')))
+router.get('/downloadRichMedia', downloadRichMedia)
 router.get('/download', createProxyMiddleware({
   target: 'https://gchat.qpic.cn',
   changeOrigin: true,

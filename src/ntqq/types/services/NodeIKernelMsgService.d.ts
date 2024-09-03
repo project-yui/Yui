@@ -1,5 +1,4 @@
 
-
 interface CommonFileInfo {
     /**
      * 与上传前提供的一致
@@ -144,12 +143,15 @@ export default class NodeIKernelMsgService {
     downloadRichMedia(info: NodeIKernelMsgServiceType.DownloadRichMediaReq): any
     fetchStatusMgrInfo(): Promise<NodeIKernelMsgServiceType.FetchStatusMgrInfoResp>
     getAllGuildUnreadCntInfo(): Promise<NodeIKernelMsgServiceType.GuildUnreadCntInfoResp>
+    getDraft(peer: PeerInfo): Promise<NodeIKernelMsgServiceType.DraftResp>
     getEmojiResourcePath(a: number): Promise<NodeIKernelMsgServiceType.ResourcePathResp>
     getFileThumbSavePathForSend(thumbSize: number, needCreate: boolean): string
     getMsgsByMsgId(peer: PeerInfo, msgId: `${number}`[]): Promise<any>
+    getMsgsIncludeSelf(peer: PeerInfo, startMsgId: `${number}`, cnt: number, queryOrder: boolean): Promise<NodeIKernelMsgServiceType.MsgListResult>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
     getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
     getSingleMsg(peer: PeerInfo, msgSeq: `${number}`): Promise<any>
+    getSourceOfReplyMsg(peer: PeerInfo, msgId: `${number}`, sourceMsgSeq: `${number}`): Promise<NodeIKernelMsgServiceType.MsgListResult>
     /**
      * 合转发并消息
      * 
@@ -181,4 +183,96 @@ export default class NodeIKernelMsgService {
      */
     sendMsg(msgId: `${number}`, peer: PeerInfo, msg: any[], attributes: Map<any, any>): Promise<SimpleResult>
     IsExistOldDb(): boolean
+}
+
+declare namespace NodeIKernelMsgServiceType {
+    interface DownloadRichMediaReq {
+        /**
+         * 群号
+         */
+        peerUid: string
+        /**
+         * 2 - 群聊
+         */
+        chatType: number
+        /**
+         * 消息ID
+         */
+        msgId: `${number}`
+        /**
+         * 元素ID
+         */
+        elementId: `${number}`
+        /**
+         * 2
+         */
+        downloadType: number
+        /**
+         * 0
+         */
+        thumbSize: number
+        /**
+         * 保存路径
+         */
+        filePath: string
+        /**
+         * '0'
+         */
+        fileModelId: `${number}`
+        /**
+         * 0
+         */
+        downSourceType: number
+        /**
+         * 1
+         */
+        triggerType: number
+    }
+    interface FetchStatusMgrInfoResp extends SimpleResult {
+        content: string
+    }
+    interface ResourcePathResp extends SimpleResult {
+        resourcePath: string
+    }
+    interface GetRichMediaFilePathForGuildReq {
+        md5HexStr: string
+        fileName: string
+        elementType: number,
+        elementSubType: number,
+        thumbSize: number,
+        needCreate: boolean,
+        downloadType: number,
+        file_uuid: ''
+    }
+    interface BasePathResp extends SimpleResult {
+        content: string
+    }
+    interface GuildUnreadCntInfoResp extends SimpleResult {
+        unreadCntInfos: GuildUnreadCntInfo[]
+    }
+    interface GuildUnreadCntInfo {
+        show_unread_cnt: UnreadCnt
+        all_unread_cnt: UnreadCnt
+        atme_unread_cnt: UnreadCnt
+        atall_unread_cnt: UnreadCnt
+        peer: PeerInfo
+        related_to_me_string: string
+        related_to_me_cnt: number
+        last_related_to_me_type: number
+        related_to_me_string_time: `${number}`
+        last_related_to_feed_type: number
+        header_url: '0x'
+    }
+    interface UnreadCnt {
+        type: number
+        cnt: number
+    }
+    interface DraftResp {
+
+    }
+    interface MsgListResult {
+        result: number
+        errMsg: string
+        msgList: import("../../message/interfaces").NTReceiveMessageType.NTMessageItemType[]
+    }
 }

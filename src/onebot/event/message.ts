@@ -66,7 +66,11 @@ const onRecvMsg = () => {
           ret.data.group_name = msg.peerName
           break
       }
-      ret.data.elements = convertNTMessage2BotMessage(msg.elements)
+      ret.data.elements = convertNTMessage2BotMessage({
+        chatType: msg.chatType,
+        peerUid: msg.peerUid,
+        guildId: ''
+      }, msg.msgId, msg.elements)
       for (const ele of ret.data.elements) {
         if (ele.type === 'mention') {
           if(false === ele.data.at?.isAll) {
@@ -85,7 +89,11 @@ const onRecvMsg = () => {
         sender_uid: e.senderUid,
         sender_member_name: e.sendMemberName,
         time: parseInt(e.msgTime),
-        elements: convertNTMessage2BotMessage(e.elements),
+        elements: convertNTMessage2BotMessage({
+          chatType: msg.chatType,
+          peerUid: msg.peerUid,
+          guildId: ''
+        }, msg.msgId, e.elements),
         records: [],
       }))
       sendMessage(JSON.stringify(ret))
@@ -140,7 +148,11 @@ const onAddSendMsg = () => {
         ret.data.group_id = parseInt(msg.peerUid)
         break
     }
-    ret.data.elements = convertNTMessage2BotMessage(msg.elements)
+    ret.data.elements = convertNTMessage2BotMessage({
+      chatType: msg.chatType,
+      peerUid: msg.peerUid,
+      guildId: ''
+    }, msg.msgId, msg.elements)
     ret.data.records = msg.records.map(e => ({
       message_id: e.msgId,
       message_seq: e.msgSeq,
@@ -150,7 +162,11 @@ const onAddSendMsg = () => {
       sender_uid: e.senderUid,
       sender_member_name: e.sendMemberName,
       time: parseInt(e.msgTime),
-      elements: convertNTMessage2BotMessage(e.elements),
+      elements: convertNTMessage2BotMessage({
+        chatType: msg.chatType,
+        peerUid: msg.peerUid,
+        guildId: ''
+      }, msg.msgId, e.elements),
       records: [],
     }))
     sendMessage(JSON.stringify(ret))

@@ -86,7 +86,7 @@ const getAppId = () => {
     const wrapperUtil = new NodeQQNTWrapperUtil()
    switch(platform) {
      case 'win32':
-       return wrapperUtil.getNTUserDataInfoConfig() + '/nt_qq'
+       return wrapperUtil.getNTUserDataInfoConfig() + ''
      case 'linux':
        return `${homedir()}/.config/QQ`
        break

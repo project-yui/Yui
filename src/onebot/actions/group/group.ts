@@ -3,6 +3,7 @@ import { NTGetGroupList } from "../../../ntqq/group/list"
 import { useStore } from "../../../store/store"
 import { getGroupInfoById } from "../../common/group"
 import { GroupInfoReq, GroupInfoResp } from "../friend/interfaces"
+import { getGroupMsgList } from "./msg"
 import { GroupDetailInfoResp } from "./types"
 
 const log = useLogger('Group/Member')
@@ -47,4 +48,5 @@ export const initGroup = () => {
   const { registerActionHandle } = useStore()
   registerActionHandle('get_group_list', getGroupList)
   registerActionHandle('get_group_info', getGroupInfo)
+  registerActionHandle('get_group_msg', getGroupMsgList)
 }
