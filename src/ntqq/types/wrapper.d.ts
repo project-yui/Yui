@@ -109,6 +109,7 @@ declare namespace NTNativeWrapper {
     startNT(a?: number): string
     getAvatarService(): import("./services/NodeIKernelAvatarService").NodeIKernelAvatarService
     getAVSDKService(): import("./services/NodeIKernelAVSDKService").NodeIKernelAVSDKService
+    getBaseEmojiService(): import('./services/NodeIKernelBaseEmojiService').NodeIKernelBaseEmojiService
     getBuddyService(): import("./services/NodeIKernelBuddyService").NodeIKernelBuddyService
     getCollectionService(): import("./services/NodeIKernelCollectionService").NodeIKernelCollectionService
     getFileAssistantService(): import("./services/NodeIKernelFileAssistantService").NodeIKernelFileAssistantService

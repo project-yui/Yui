@@ -46,7 +46,13 @@ export const hookWrapper = ()=> {
               const uuid = randomUUID()
               log.info(`wrapper/${serviceName}[${this.id}]/${funcName}`, uuid, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', r)
               return r.then((res) => {
-                log.info(`wrapper/${serviceName}[${this.id}]/${funcName}/${uuid}`, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', res)
+                let l = ''
+                try {
+                  l = JSON.stringify(res, null, 4)
+                } catch (error) {
+                  
+                }
+                log.info(`wrapper/${serviceName}[${this.id}]/${funcName}/${uuid}`, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', l)
                 return Promise.resolve(res)
               })
             }

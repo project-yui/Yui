@@ -149,6 +149,11 @@ export default class NodeIKernelMsgService {
     getMsgsByMsgId(peer: PeerInfo, msgId: `${number}`[]): Promise<any>
     getMsgsIncludeSelf(peer: PeerInfo, startMsgId: `${number}`, cnt: number, queryOrder: boolean): Promise<NodeIKernelMsgServiceType.MsgListResult>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
+    /**
+     * 获取最近使用的表情列表
+     * @param a 22
+     */
+    getRecentUsedFaceList(a: number): Promise<NodeIKernelMsgServiceType.FaceListResp>
     getRichMediaFilePathForGuild(fileInfo: NodeIKernelMsgServiceType.GetRichMediaFilePathForGuildReq): string
     getSingleMsg(peer: PeerInfo, msgSeq: `${number}`): Promise<any>
     getSourceOfReplyMsg(peer: PeerInfo, msgId: `${number}`, sourceMsgSeq: `${number}`): Promise<NodeIKernelMsgServiceType.MsgListResult>
@@ -243,6 +248,15 @@ declare namespace NodeIKernelMsgServiceType {
         needCreate: boolean,
         downloadType: number,
         file_uuid: ''
+    }
+    interface FaceListResp {
+        result: number
+        errMsg: string
+        recentUsedFaceList: {
+            isEmojiFace: boolean
+            faceIndex: number
+            emojiStr: string
+        }[]
     }
     interface BasePathResp extends SimpleResult {
         content: string

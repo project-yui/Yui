@@ -3,6 +3,7 @@ import { useNTCore } from "../../ntqq/core/core"
 import { existsSync } from "fs"
 import { useStore } from "../../store/store"
 import { useLogger } from "../../common/log"
+import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('DownloadRichMedia')
 export const downloadRichMedia = (req: Request, res: Response, next: NextFunction) => {
@@ -23,11 +24,17 @@ export const downloadRichMedia = (req: Request, res: Response, next: NextFunctio
     }
     log.info('need download...')
     const { registerEventListener } = useStore()
-    registerEventListener('KernelMsgListener/onRichMediaDownloadComplete', 'once', (a) => {
+    const rm = registerEventListener('KernelMsgListener/onRichMediaDownloadComplete', 'always', (a) => {
+        if (a.msgId !== p['msg_id'] || a.msgElementId !== p['element_id']) return;
+        rm.remove()
         log.info('result:', a)
         // download 结果的path和请求的会不一致
         res.download(a.filePath)
     })
+    setTimeout(() => {
+        rm.remove()
+        next(new CustomError(10201, 'timeout'))
+    }, 30000)
     // 不存在，下载
     msgService.downloadRichMedia({
         peerUid: p['peer_uid'] as string,
