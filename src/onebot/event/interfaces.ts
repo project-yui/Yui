@@ -13,11 +13,11 @@ export interface EventDataType<T> {
   /**
    * 事件详细类型
    */
-  detail_type: string
+  detailType: string
   /**
    * 事件子类型（详细类型的下一级类型）
    */
-  sub_type: string
+  subType: string
   data: T
 }
 
@@ -30,24 +30,24 @@ export interface BotUserInfo {
 }
 
 /**
- * 回给对面ws的
+ * 框架回给对面ws的
  */
 export interface MessageData {
-  message_id: string
-  message_seq: string
-  group_id: number
-  group_name: string
+  messageId: string
+  messageSeq: string
+  groupId: number
+  groupName: string
 
   /**
    * 发送者uid
    */
-  sender_uid: `u_${string}`
+  senderUid: `u_${string}`
 
   /**
    * 发送者QQ
    */
-  sender_id: number
-  sender_member_name: string
+  senderId: number
+  senderMemberName: string
 
   /**
    * 消息的发送时间
@@ -71,12 +71,12 @@ export interface MessageData {
  * 回给对面ws的
  */
 export interface RecallMessageData {
-  message_id: string
-  message_seq: string
-  group_id: number
-  sender_uid: string
-  sender_id: number
-  sender_member_name: string
+  messageId: string
+  messageSeq: string
+  groupId: number
+  senderUid: string
+  senderId: number
+  senderMemberName: string
 
   /**
    * 撤回消息的时间

@@ -16,7 +16,7 @@ export const getGroupInfoById = (gid: number): Promise<GroupDetailInfoType> => {
     let time = setTimeout(() => {
       if (remover)
         remover?.remove()
-      reject('getUserInfoByUid timeout')
+      reject('getGroupInfoByUid timeout')
     }, 30000)
     remover = registerEventListener(`KernelGroupListener/onGroupDetailInfoChange`, 'always', (payload: GroupDetailInfoType) => {
       if (payload.groupCode !== `${gid}`) return

@@ -11,24 +11,24 @@ const recallMessage = async (p: BotMessage.DeleteMsg): Promise<any> => {
         peerUid: "",
         guildId: ""
     }
-    if (p.detail_type == 'group') {
+    if (p.detailType == 'group') {
         peerInfo.chatType = 2
-        if (!p.group_id) {
+        if (!p.groupId) {
             throw new CustomError(1, 'group_id is not supported!')
         }
-        peerInfo.peerUid = `${p.group_id}`
+        peerInfo.peerUid = `${p.groupId}`
     }
-    else if (p.detail_type == 'private') {
+    else if (p.detailType == 'private') {
         peerInfo.chatType = 1
-        if (!p.user_id) {
+        if (!p.userId) {
             throw new CustomError(1, 'user_id is not supported!')
         }
-        peerInfo.peerUid = `${p.user_id}`
+        peerInfo.peerUid = `${p.userId}`
     }
     else {
         throw new CustomError(1, 'detail_type is not supported!')
     }
-    const ret = msgService.recallMsg(peerInfo, p.message_id)
+    const ret = msgService.recallMsg(peerInfo, p.messageId)
     return ret
 }
 export const initRecallMessage = () => {

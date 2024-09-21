@@ -19,25 +19,25 @@ const getGroupList = async (p: GroupInfoReq): Promise<GroupDetailInfoResp[]> => 
   const resp: GroupDetailInfoResp[] = ret.map<GroupDetailInfoResp>(e => ({
     code: e.groupCode,
     name: e.groupName,
-    avatar_url: `https://p.qlogo.cn/gh/${e.groupCode}/${e.groupCode}/640/`,
+    avatarUrl: `https://p.qlogo.cn/gh/${e.groupCode}/${e.groupCode}/640/`,
     role: code2role[e.memberRole],
     top: e.isTop,
-    topped_timestamp: parseInt(e.toppedTimestamp),
-    is_conf: e.isConf,
+    toppedTimestamp: parseInt(e.toppedTimestamp),
+    isConf: e.isConf,
   }))
   return resp
 }
 
 const getGroupInfo = async (p: GroupInfoReq): Promise<GroupInfoResp> => {
   const resp: GroupInfoResp = {
-    group_name: '',
-    avatar_url: '',
-    group_id: p.group_id
+    groupName: '',
+    avatarUrl: '',
+    groupId: p.groupId
   }
-  const ret = await getGroupInfoById(p.group_id)
+  const ret = await getGroupInfoById(p.groupId)
   log.info('getGroupInfoById:', ret)
-  resp.group_name = ret.groupName
-  resp.avatar_url = `https://p.qlogo.cn/gh/${p.group_id}/${p.group_id}/640`
+  resp.groupName = ret.groupName
+  resp.avatarUrl = `https://p.qlogo.cn/gh/${p.groupId}/${p.groupId}/640`
   return resp
 }
 

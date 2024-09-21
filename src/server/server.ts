@@ -3,6 +3,7 @@ import { useLogger } from "../common/log"
 import { startHTTPServer } from "./http"
 import { startWebsocketServer } from "./websocket"
 import { SendHandleType } from "./interfacces"
+import { convertToSnakeCase } from "../common/utils"
 
 const log = useLogger('Server')
 const clientHandleList: SendHandleType[] = []
@@ -37,11 +38,11 @@ const removeSendHandle = (h: SendHandleType) => {
  * 
  * @param msg 消息内容
  */
-const sendMessage = (msg: string) => {
+const sendMessage = (msg: any) => {
   for (let i = 0; i < clientHandleList.length; i++) {
     const clientHandle = clientHandleList[i];
     try {
-      clientHandle(msg)
+      clientHandle(JSON.stringify(convertToSnakeCase(msg)))
     } catch (error) {
       clientHandleList.splice(i, 1)
       i--

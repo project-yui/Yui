@@ -367,12 +367,6 @@ interface PeerInfo {
   guildId: string
 }
 
-declare namespace NodeIKernelNodeMiscServiceType {
-  interface GetFullScreenInfoResp {
-    in_full_screen: boolean
-    is_self: boolean
-  }
-}
 
 declare namespace NodeIKernelProfileLikeServiceType {
   interface LikeReq {

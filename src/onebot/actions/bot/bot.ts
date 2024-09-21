@@ -13,22 +13,22 @@ const log = useLogger('Bot')
 const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
   const { userInfo } = useNTUserStore()
   const resp: UserInfoResp = {
-    user_uid: "u_",
-    user_uin: 0,
+    userUid: "u_",
+    userUin: 0,
     nick: "",
-    user_displayname: "",
-    user_remark: "",
-    avatar_url: ''
+    userDisplayname: "",
+    userRemark: "",
+    avatarUrl: ''
   }
   if (!userInfo.uid) {
     throw new CustomError(1, 'user info error!')
   }
   const ret = await getUserInfoByUid(userInfo.uid)
   log.info('getUserDetailInfo:', ret)
-  resp.user_uid = ret.uid
-  resp.user_uin = parseInt(ret.uin)
+  resp.userUid = ret.uid
+  resp.userUin = parseInt(ret.uin)
   resp.nick = ret.simpleInfo.coreInfo.nick
-  resp.avatar_url = `http://q1.qlogo.cn/g?b=qq&nk=${resp.user_uin}&s=640`
+  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.userUin}&s=640`
   return resp
 }
 const getQuickLoginList = async (p: {}) => {

@@ -5,7 +5,7 @@ import { BotActionParams } from "../interfaces"
  * 获取用户信息动作的数据
  */
 export interface UserInfoReq extends BotActionParams {
-  user_uid: `u_${string}`
+  userUid: `u_${string}`
 }
 
 /**
@@ -15,18 +15,18 @@ export interface UserInfoResp {
   /**
    * 用户id
    */
-  user_uid: `u_${string}`
+  userUid: `u_${string}`
   /**
    * 用户QQ号
    */
-  user_uin: number
+  userUin: number
   /**
    * 用户昵称
    */
   nick: string
-  user_displayname: string
-  user_remark: string
-  avatar_url: string
+  userDisplayname: string
+  userRemark: string
+  avatarUrl: string
 }
 
 //#endregion
@@ -36,7 +36,7 @@ export interface UserInfoResp {
  * 获取用户信息动作的数据
  */
 export interface GroupInfoReq extends BotActionParams {
-  group_id: number
+  groupId: number
 }
 
 /**
@@ -46,15 +46,15 @@ export interface GroupInfoResp {
   /**
    * 群号
    */
-  group_id: number
+  groupId: number
   /**
    * 群名称
    */
-  group_name: string
+  groupName: string
   /**
    * 群头像
    */
-  avatar_url: string
+  avatarUrl: string
 }
 
 //#endregion
@@ -63,9 +63,9 @@ export interface GroupInfoResp {
  * 获取用户信息动作的数据
  */
 export interface GroupMemberInfoReq extends BotActionParams {
-  group_id: number
-  user_uin: number
-  user_uid: `u_${string}`
+  groupId: number
+  userUin: number
+  userUid: `u_${string}`
 }
 
 /**
@@ -75,11 +75,11 @@ export interface GroupMemberInfoResp {
   /**
    * 用户id
    */
-  user_uid: `u_${string}`
+  userUid: `u_${string}`
   /**
    * 用户QQ号
    */
-  user_uin: number
+  userUin: number
   /**
    * 用户昵称
    */
@@ -87,12 +87,12 @@ export interface GroupMemberInfoResp {
   /**
    * 群昵称
    */
-  card_name: string
-  avatar_url: string
+  cardName: string
+  avatarUrl: string
 }
 
 //#endregion
 export interface LikeUserReq extends BotActionParams {
-  user_id: `u_${string}`
+  userId: `u_${string}`
   count: number
 }

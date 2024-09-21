@@ -38,16 +38,16 @@ const onRecvMsg = () => {
         },
         time: parseInt(msg.msgTime),
         type: "message",
-        detail_type: "",
-        sub_type: "",
+        detailType: "",
+        subType: "",
         data: {
-          message_id: msg.msgId,
-          message_seq: msg.msgSeq,
-          group_id: 0,
-          group_name: '',
-          sender_id: parseInt(senderUserInfo.uin),
-          sender_uid: msg.senderUid,
-          sender_member_name: msg.sendMemberName,
+          messageId: msg.msgId,
+          messageSeq: msg.msgSeq,
+          groupId: 0,
+          groupName: '',
+          senderId: parseInt(senderUserInfo.uin),
+          senderUid: msg.senderUid,
+          senderMemberName: msg.sendMemberName,
           time: parseInt(msg.msgTime),
           elements: [],
           records: [],
@@ -56,14 +56,14 @@ const onRecvMsg = () => {
       switch (msg.chatType) {
         case 1:
           // 好友消息
-          ret.detail_type = 'private'
+          ret.detailType = 'private'
 
           break
         case 2:
           // 群聊消息
-          ret.detail_type = 'group'
-          ret.data.group_id = parseInt(msg.peerUid)
-          ret.data.group_name = msg.peerName
+          ret.detailType = 'group'
+          ret.data.groupId = parseInt(msg.peerUid)
+          ret.data.groupName = msg.peerName
           break
       }
       ret.data.elements = convertNTMessage2BotMessage({
@@ -75,19 +75,19 @@ const onRecvMsg = () => {
         if (ele.type === 'mention') {
           if(false === ele.data.at?.isAll) {
             // at特定成员，获取QQ号
-            const info = await getGroupMemberInfoByUid(ret.data.group_id, ele.data.at.uid as `u_${string}`)
+            const info = await getGroupMemberInfoByUid(ret.data.groupId, ele.data.at.uid as `u_${string}`)
             ele.data.at.uin = parseInt(info.uin)
           }
         }
       }
       ret.data.records = msg.records.map(e => ({
-        message_id: e.msgId,
-        message_seq: e.msgSeq,
-        group_id: 0,
-        group_name: e.peerName,
-        sender_id: parseInt(senderUserInfo.uin),
-        sender_uid: e.senderUid,
-        sender_member_name: e.sendMemberName,
+        messageId: e.msgId,
+        messageSeq: e.msgSeq,
+        groupId: 0,
+        groupName: e.peerName,
+        senderId: parseInt(senderUserInfo.uin),
+        senderUid: e.senderUid,
+        senderMemberName: e.sendMemberName,
         time: parseInt(e.msgTime),
         elements: convertNTMessage2BotMessage({
           chatType: msg.chatType,
@@ -127,16 +127,16 @@ const onAddSendMsg = () => {
       },
       time: parseInt(msg.msgTime),
       type: "notice",
-      detail_type: "group_message_post_send",
-      sub_type: "",
+      detailType: "group_message_post_send",
+      subType: "",
       data: {
-        message_id: msg.msgId,
-        message_seq: msg.msgSeq,
-        group_id: 0,
-        group_name: '',
-        sender_id: parseInt(senderUserInfo.uin),
-        sender_uid: msg.senderUid,
-        sender_member_name: msg.sendMemberName,
+        messageId: msg.msgId,
+        messageSeq: msg.msgSeq,
+        groupId: 0,
+        groupName: '',
+        senderId: parseInt(senderUserInfo.uin),
+        senderUid: msg.senderUid,
+        senderMemberName: msg.sendMemberName,
         time: parseInt(msg.msgTime),
         elements: [],
         records: [],
@@ -145,7 +145,7 @@ const onAddSendMsg = () => {
     switch (msg.chatType) {
       case 2:
         // 群聊消息
-        ret.data.group_id = parseInt(msg.peerUid)
+        ret.data.groupId = parseInt(msg.peerUid)
         break
     }
     ret.data.elements = convertNTMessage2BotMessage({
@@ -154,13 +154,13 @@ const onAddSendMsg = () => {
       guildId: ''
     }, msg.msgId, msg.elements)
     ret.data.records = msg.records.map(e => ({
-      message_id: e.msgId,
-      message_seq: e.msgSeq,
-      group_id: 0,
-      group_name: e.peerName,
-      sender_id: parseInt(senderUserInfo.uin),
-      sender_uid: e.senderUid,
-      sender_member_name: e.sendMemberName,
+      messageId: e.msgId,
+      messageSeq: e.msgSeq,
+      groupId: 0,
+      groupName: e.peerName,
+      senderId: parseInt(senderUserInfo.uin),
+      senderUid: e.senderUid,
+      senderMemberName: e.sendMemberName,
       time: parseInt(e.msgTime),
       elements: convertNTMessage2BotMessage({
         chatType: msg.chatType,
@@ -195,27 +195,27 @@ const onUpdateMsg = () => {
           },
           time: parseInt(msg.msgTime),
           type: "notice",
-          detail_type: "group_message_delete",
-          sub_type: "recall",
+          detailType: "group_message_delete",
+          subType: "recall",
           data: {
-            message_id: msg.msgId,
-            message_seq: msg.msgSeq,
-            group_id: 0,
-            sender_id: parseInt(senderUserInfo.uin),
-            sender_uid: msg.senderUid,
-            sender_member_name: msg.sendMemberName || msg.sendNickName,
+            messageId: msg.msgId,
+            messageSeq: msg.msgSeq,
+            groupId: 0,
+            senderId: parseInt(senderUserInfo.uin),
+            senderUid: msg.senderUid,
+            senderMemberName: msg.sendMemberName || msg.sendNickName,
             time: parseInt(msg.recallTime),
           }
         }
         switch (msg.chatType) {
           case 1:
             // 好友消息
-            ret.detail_type = 'private_message_delete'
+            ret.detailType = 'private_message_delete'
             break
           case 2:
             // 群聊消息
-            ret.detail_type = 'group_message_delete'
-            ret.data.group_id = parseInt(msg.peerUid)
+            ret.detailType = 'group_message_delete'
+            ret.data.groupId = parseInt(msg.peerUid)
             break
         }
         sendMessage(JSON.stringify(ret))

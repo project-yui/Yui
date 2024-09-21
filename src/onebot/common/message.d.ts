@@ -8,8 +8,8 @@ export declare namespace BotMessage {
    * bot -> framework
    */
   export interface SendMsg extends BotActionParams {
-    detail_type: 'private' | 'group'
-    group_id?: number
+    detailType: 'private' | 'group'
+    groupId?: number
     user_id?: string
     message: SendElement[]
   }
@@ -18,10 +18,10 @@ export declare namespace BotMessage {
    * 撤回消息
    */
   export interface DeleteMsg extends BotActionParams {
-    detail_type: 'private' | 'group'
-    group_id?: number
-    user_id?: `u_${string}`
-    message_id: `${number}`[]
+    detailType: 'private' | 'group'
+    groupId?: number
+    userId?: `u_${string}`
+    messageId: `${number}`[]
   }
 
   /**
@@ -142,7 +142,7 @@ export declare namespace BotMessage {
        * 
        * 待定
        */
-      file_id?: string
+      fileId?: string
 
       /**
        * At时的对象ID

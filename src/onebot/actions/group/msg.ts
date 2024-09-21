@@ -5,24 +5,24 @@ import { GroupMsgReq } from "./types"
 const log = useLogger('GroupMsg')
 
 export const getGroupMsgList = async (p: GroupMsgReq) => {
-    const ret = await NTGroupMsgList(p.code, p.msg_id, p.cnt)
-    log.info('group msg list:', JSON.stringify(ret, null, 4))
-    let resp = ret.map(msg => ({
-        message_id: msg.msgId,
-        message_seq: msg.msgSeq,
-        group_id: 0,
-        group_name: '',
-        sender_id: parseInt(msg.senderUin),
-        sender_uid: msg.senderUid,
-        sender_member_name: msg.sendMemberName,
-        time: parseInt(msg.msgTime),
-        elements: convertNTMessage2BotMessage({
-          chatType: msg.chatType,
-          peerUid: msg.peerUid,
-          guildId: ''
-        }, msg.msgId, msg.elements),
-        records: [],
-      }))
-    
-    return resp
-  }
+  const ret = await NTGroupMsgList(p.code, p.msgId, p.cnt)
+  log.info('group msg list:', JSON.stringify(ret, null, 4))
+  let resp = ret.map(msg => ({
+    messageId: msg.msgId,
+    messageSeq: msg.msgSeq,
+    groupId: 0,
+    groupName: '',
+    senderId: parseInt(msg.senderUin),
+    senderUid: msg.senderUid,
+    senderMemberName: msg.sendMemberName,
+    time: parseInt(msg.msgTime),
+    elements: convertNTMessage2BotMessage({
+      chatType: msg.chatType,
+      peerUid: msg.peerUid,
+      guildId: ''
+    }, msg.msgId, msg.elements),
+    records: [],
+  }))
+
+  return resp
+}

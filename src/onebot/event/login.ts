@@ -21,14 +21,14 @@ const qrCodeFailed = () => {
             },
             time: new Date().getTime(),
             type: "notice",
-            detail_type: "qrcode_error",
-            sub_type: "",
+            detailType: "qrcode_error",
+            subType: "",
             data: {
                 p1,
                 p2,
             }
         }
-        sendMessage(JSON.stringify(ret))
+        sendMessage(ret)
     })
 }
 /**
@@ -47,14 +47,14 @@ const qrCodeScaned = () => {
             },
             time: new Date().getTime(),
             type: "notice",
-            detail_type: "qrcode_scaned",
-            sub_type: "",
+            detailType: "qrcode_scaned",
+            subType: "",
             data: {
                 p1,
-                avatar_url: avatarUrl,
+                avatarUrl: avatarUrl,
             }
         }
-        sendMessage(JSON.stringify(ret))
+        sendMessage(ret)
     })
 }
 
@@ -74,8 +74,8 @@ const qrCodeSuccess = () => {
             },
             time: new Date().getTime(),
             type: "notice",
-            detail_type: "qrcode_success",
-            sub_type: "",
+            detailType: "qrcode_success",
+            subType: "",
             data: {
                 account: userInfo.account,
                 uin: userInfo.uin,
@@ -84,7 +84,7 @@ const qrCodeSuccess = () => {
                 face_url: userInfo.faceUrl,
             }
         }
-        sendMessage(JSON.stringify(ret))
+        sendMessage(ret)
     })
 }
 
@@ -104,13 +104,13 @@ const alreadyLogin = () => {
             },
             time: new Date().getTime(),
             type: "notice",
-            detail_type: "qrcode_userLogged",
-            sub_type: "",
+            detailType: "qrcode_userLogged",
+            subType: "",
             data: {
                 uin: uin,
             }
         }
-        sendMessage(JSON.stringify(ret))
+        sendMessage(ret)
     })
 }
 

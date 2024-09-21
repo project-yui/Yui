@@ -14,33 +14,33 @@ const log = useLogger('Group/Member')
  */
 const getGroupMemberInfo = async (p: GroupMemberInfoReq): Promise<GroupMemberInfoResp> => {
     const resp: GroupMemberInfoResp = {
-      user_uid: "u_",
-      user_uin: 0,
+      userUid: "u_",
+      userUin: 0,
       nick: "",
-      card_name: "",
-      avatar_url: ''
+      cardName: "",
+      avatarUrl: ''
     }
     // 检查uid是否可用
     let ret: GroupMemberDetailInfoType | undefined = undefined
-    if (p.user_uid === undefined || p.user_uid === null || p.user_uid.length === 0) {
-      if (p.user_uin <= 0) {
+    if (p.userUid === undefined || p.userUid === null || p.userUid.length === 0) {
+      if (p.userUin <= 0) {
         throw new CustomError(1, 'uid or uin is error!');
       }
-      ret = await getGroupMemberInfoByUin(p.group_id, p.user_uin)
+      ret = await getGroupMemberInfoByUin(p.groupId, p.userUin)
     }
     else
     {
-      ret = await getGroupMemberInfoByUid(p.group_id, p.user_uid)
+      ret = await getGroupMemberInfoByUid(p.groupId, p.userUid)
     }
     if (ret === undefined) {
       throw new CustomError(1, 'Failed to get member info!');
     }
     log.info('getGroupMemberInfoById:', ret)
-    resp.user_uid = ret.uid
-    resp.user_uin = parseInt(ret.uin)
+    resp.userUid = ret.uid
+    resp.userUin = parseInt(ret.uin)
     resp.nick = ret.nick
-    resp.card_name = ret.cardName
-    resp.avatar_url = `http://q1.qlogo.cn/g?b=qq&nk=${resp.user_uin}&s=640`
+    resp.cardName = ret.cardName
+    resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.userUin}&s=640`
     return resp
   }
   /**

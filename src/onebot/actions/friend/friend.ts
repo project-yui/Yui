@@ -40,7 +40,7 @@ const getFriendList = async (p: {}): Promise<any> => {
  */
 const sendLikeFriend = async (p: LikeUserReq): Promise<any> => {
   log.info('sendLikeFriend')
-  const r = await NTSendLikeFriend(p.user_id, p.count)
+  const r = await NTSendLikeFriend(p.userId, p.count)
   log.info('sendLikeFriend end')
   // TODO: 错误码处理
   return r
@@ -48,19 +48,19 @@ const sendLikeFriend = async (p: LikeUserReq): Promise<any> => {
 
 const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
   const resp: UserInfoResp = {
-    user_uid: "u_",
-    user_uin: 0,
+    userUid: "u_",
+    userUin: 0,
     nick: "",
-    user_displayname: "",
-    user_remark: "",
-    avatar_url: ''
+    userDisplayname: "",
+    userRemark: "",
+    avatarUrl: ''
   }
-  const ret = await getUserInfoByUid(p.user_uid)
+  const ret = await getUserInfoByUid(p.userUid)
   log.info('getUserDetailInfo:', ret)
-  resp.user_uid = ret.uid
-  resp.user_uin = parseInt(ret.uin)
+  resp.userUid = ret.uid
+  resp.userUin = parseInt(ret.uin)
   resp.nick = ret.simpleInfo.coreInfo.nick
-  resp.avatar_url = `http://q1.qlogo.cn/g?b=qq&nk=${resp.user_uin}&s=640`
+  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.userUin}&s=640`
   return resp
 }
 /**

@@ -12,8 +12,8 @@ import { addMsg } from 'yukihana-native'
 
 const log = useLogger('ActionGroup')
 const sendMessage = async (p: BotMessage.SendMsg): Promise<any> => {
-  if (p.detail_type === 'group' && p.group_id) {
-    const result = await sendMessageToGroup(`${p.group_id}`, p.message)
+  if (p.detailType === 'group' && p.groupId) {
+    const result = await sendMessageToGroup(`${p.groupId}`, p.message)
     return result
   }
   else {
@@ -30,7 +30,7 @@ const sendMessage = async (p: BotMessage.SendMsg): Promise<any> => {
  * @returns 发送结果
  */
 const sendForwardMessage = async (p: BotMessage.SendMsg): Promise<any> => {
-  if (p.detail_type === 'group' && p.group_id) {
+  if (p.detailType === 'group' && p.groupId) {
     /**
      * 1. 检查是否为转发消息
      * 2. 存储转发消息的内容
@@ -39,7 +39,7 @@ const sendForwardMessage = async (p: BotMessage.SendMsg): Promise<any> => {
     const msg = p.message[0]
     if (msg.type == 'multiforward') {
       if (msg.data.forward_data) {
-        const result = await sendForwardMessageToGroup(`${p.group_id}`, msg.data.forward_data)
+        const result = await sendForwardMessageToGroup(`${p.groupId}`, msg.data.forward_data)
         return result
       }
     }

@@ -7,6 +7,7 @@ import { useLogger } from '../common/log';
 import { useServer } from './server';
 import { useConfigStore } from '../store/config';
 import { CustomError } from './error/custom-error';
+import { convertToCamelCase } from '../common/utils';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -71,7 +72,7 @@ export const startWebsocketServer = () => {
         }
         try {
           log.info('start handle for ', msg.action)
-          resp.data = await handle(msg.params)
+          resp.data = await handle(convertToCamelCase(msg.params))
           log.info('end handle for ', msg.action)
         }
         catch (e) {
