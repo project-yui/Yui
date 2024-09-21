@@ -76,15 +76,18 @@ export const convertNTMessage2BotMessage = (peer: PeerInfo, msgId: `${number}`, 
           const p = ele.picElement
           if (p) {
             let url = p.originImageUrl
-            if (url.startsWith('/gchatpic_new'))
+            if (url)
             {
-              url = `https://gchat.qpic.cn${url}`
-            }
-            else if (url.startsWith('/download'))
-            {
-              const { getConfig } = useConfigStore()
-              const cfg = getConfig()
-              url = `http://${cfg.yukihana.http.host}:${cfg.yukihana.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${ele.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
+              if (url.startsWith('/gchatpic_new'))
+              {
+                url = `https://gchat.qpic.cn${url}`
+              }
+              else if (url.startsWith('/download'))
+              {
+                const { getConfig } = useConfigStore()
+                const cfg = getConfig()
+                url = `http://${cfg.yukihana.http.host}:${cfg.yukihana.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${ele.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
+              }
             }
             const pic: BotMessage.ReceiveElement = {
               type: 'image',

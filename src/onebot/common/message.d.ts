@@ -473,7 +473,7 @@ declare namespace BotMessageReceiveElements {
      * 
      * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
      */
-    url: string
+    url: string | null
 
     /**
      * 图片路径

@@ -566,8 +566,10 @@ export declare namespace NTReceiveMessageType {
      * 没有host, https://gchat.qpic.cn/
      * 
      * /gchatpic_new/发送者QQ/群号-uuid-MD5/0
+     * 
+     * 从剪贴板获取的时候，是空的
      */
-    originImageUrl: string
+    originImageUrl: string | null
     import_rich_media_context: null,
     isFlashPic: boolean
   }

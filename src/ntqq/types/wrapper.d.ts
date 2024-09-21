@@ -363,8 +363,8 @@ interface PeerInfo {
   /**
    * 群号或者用户id
    */
-  peerUid: `${number}` | `u_${string}` | '',
-  guildId: string
+  peerUid?: `${number}` | `u_${string}` | '',
+  guildId?: string
 }
 
 

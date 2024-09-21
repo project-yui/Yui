@@ -40,6 +40,7 @@ declare namespace NodeIKernelNodeMiscServiceType {
   }
   interface ParseClipboardResp {
     /**
+     * 0 - 没有可解析的消息（纯文本）
      * 1 - ok
      */
     result: number
@@ -91,6 +92,6 @@ export default class NodeIKernelNodeMiscService {
     /**
      * 解析剪贴板内容为消息元素
      */
-    wantParseClipboard(): NodeIKernelNodeMiscServiceType.ParseClipboardResp
+    wantParseClipboard(): Promise<NodeIKernelNodeMiscServiceType.ParseClipboardResp>
     writeClipboard(msgElements: NTReceiveMessageType.NTMessageElementType[]): NodeIKernelNodeMiscServiceType.WriteClipboardResp
 }

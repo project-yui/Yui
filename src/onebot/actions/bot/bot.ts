@@ -7,6 +7,7 @@ import { loginByAccount, loginByQrCode } from "../../../transfer/login/login"
 import { getUserInfoByUid } from "../../common/user"
 import { UserInfoReq, UserInfoResp } from "../friend/interfaces"
 import { BotActionParams } from "../interfaces"
+import { getClipboardMsg } from "./clipboard"
 import { QuickLoginItem } from "./types"
 
 const log = useLogger('Bot')
@@ -64,4 +65,5 @@ export const initBot = () => {
   registerActionHandle('get_self_info', getBotInfo)
   registerActionHandle('get_quick_login_list', getQuickLoginList)
   registerActionHandle('quick_login_by_uin', QuickLoginByUin)
+  registerActionHandle('get_clipboard_msg', getClipboardMsg)
 }
