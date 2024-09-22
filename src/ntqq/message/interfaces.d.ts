@@ -13,8 +13,8 @@ interface NTMsgPeer {
    * 好友 - 好友的UID
    * 频道 - ？
    */
-  peerUid: `${number}` | `u_${string}` | ''
-  guildId: string
+  peerUid?: `${number}` | `u_${string}` | ''
+  guildId?: string
 }
 
 /**

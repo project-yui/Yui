@@ -10,16 +10,37 @@ import { useNTCore } from "../../ntqq/core/core";
 import { useStore } from "../../store/store";
 import { RichMediaUploadResult } from "../../ntqq/types/services/NodeIKernelMsgService";
 import { useConfigStore } from "../../store/config";
+import { BotMessageData } from "../../onebot/event/interfaces";
 
 const log = useLogger('Convert')
 
+export const convertNTMsg2BotMsg = (msg: NTReceiveMessageType.NTMessageItemType): BotMessageData => {
+  const ret: BotMessageData = {
+    messageId: msg.msgId,
+    messageSeq: msg.msgSeq,
+    groupId: 0,
+    groupName: '',
+    senderId: parseInt(msg.senderUin),
+    senderUid: msg.senderUid,
+    senderMemberName: msg.sendMemberName,
+    time: parseInt(msg.msgTime),
+    elements: convertNTMsgElement2BotMsgElement({
+      chatType: msg.chatType,
+      peerUid: msg.peerUid,
+      guildId: ''
+    }, msg.msgId, msg.elements),
+    records: [],
+  }
+  ret.records = msg.records.map(e => convertNTMsg2BotMsg(e))
+  return ret
+}
 /**
- * NTQQ的消息转bot消息
+ * NTQQ的消息元素转bot消息元素
  * 
  * @param elems 来自NTQQ的消息
  * @returns 给bot的消息
  */
-export const convertNTMessage2BotMessage = (peer: PeerInfo, msgId: `${number}`, elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.ReceiveElement[] => {
+export const convertNTMsgElement2BotMsgElement = (peer: PeerInfo, msgId: `${number}`, elems: NTReceiveMessageType.NTMessageElementType[]): BotMessage.ReceiveElement[] => {
   const result: BotMessage.ReceiveElement[] = []
   for (const ele of elems) {
     switch (ele.elementType) {
@@ -122,10 +143,11 @@ export const convertNTMessage2BotMessage = (peer: PeerInfo, msgId: `${number}`, 
               type: 'reply',
               data: {
                 reply: {
-                  msgId: ele.replyElement.replayMsgId,
+                  srcMsgId: ele.replyElement.sourceMsgIdInRecords,
                   msgSeq: ele.replyElement.replayMsgSeq,
                   text: ele.replyElement.sourceMsgText,
-                  uid: ele.replyElement.senderUidStr,
+                  senderUin: ele.replyElement.senderUid,
+                  senderUid: ele.replyElement.senderUidStr,
                 }
               }
             }

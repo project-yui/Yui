@@ -32,7 +32,7 @@ export interface BotUserInfo {
 /**
  * 框架回给对面ws的
  */
-export interface MessageData {
+export interface BotMessageData {
   messageId: string
   messageSeq: string
   groupId: number
@@ -62,7 +62,7 @@ export interface MessageData {
   /**
    * 被引用的消息
    */
-  records: MessageData[]
+  records: BotMessageData[]
 }
 
 /**

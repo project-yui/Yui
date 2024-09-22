@@ -1,9 +1,9 @@
-import { convertNTMessage2BotMessage } from "../../transfer/message/convert"
+import { convertNTMsg2BotMsg, convertNTMsgElement2BotMsgElement } from "../../transfer/message/convert"
 import { NTReceiveMessageType } from "../../ntqq/message/interfaces"
 import { useServer } from "../../server/server"
 import { useStore } from "../../store/store"
 import { getBotAccount, getUserInfoByUid } from "../common/user"
-import { EventDataType, MessageData, RecallMessageData } from "./interfaces"
+import { EventDataType, BotMessageData, RecallMessageData } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { getGroupMemberInfoByUid } from "../common/group"
 
@@ -31,7 +31,7 @@ const onRecvMsg = () => {
       if (msg.chatType === 4) continue
       
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
-      const ret: EventDataType<MessageData> = {
+      const ret: EventDataType<BotMessageData> = {
         self: {
           id: parseInt(user.uin),
           uid: user.uid
@@ -66,7 +66,7 @@ const onRecvMsg = () => {
           ret.data.groupName = msg.peerName
           break
       }
-      ret.data.elements = convertNTMessage2BotMessage({
+      ret.data.elements = convertNTMsgElement2BotMsgElement({
         chatType: msg.chatType,
         peerUid: msg.peerUid,
         guildId: ''
@@ -80,23 +80,8 @@ const onRecvMsg = () => {
           }
         }
       }
-      ret.data.records = msg.records.map(e => ({
-        messageId: e.msgId,
-        messageSeq: e.msgSeq,
-        groupId: 0,
-        groupName: e.peerName,
-        senderId: parseInt(senderUserInfo.uin),
-        senderUid: e.senderUid,
-        senderMemberName: e.sendMemberName,
-        time: parseInt(e.msgTime),
-        elements: convertNTMessage2BotMessage({
-          chatType: msg.chatType,
-          peerUid: msg.peerUid,
-          guildId: ''
-        }, msg.msgId, e.elements),
-        records: [],
-      }))
-      sendMessage(JSON.stringify(ret))
+      ret.data.records = msg.records.map(e => convertNTMsg2BotMsg(e))
+      sendMessage(ret)
     }
   })
 }
@@ -120,7 +105,7 @@ const onAddSendMsg = () => {
     if (msg.chatType === 4) return
     
     const senderUserInfo = await getUserInfoByUid(msg.senderUid)
-    const ret: EventDataType<MessageData> = {
+    const ret: EventDataType<BotMessageData> = {
       self: {
         id: parseInt(user.uin),
         uid: user.uid
@@ -148,28 +133,13 @@ const onAddSendMsg = () => {
         ret.data.groupId = parseInt(msg.peerUid)
         break
     }
-    ret.data.elements = convertNTMessage2BotMessage({
+    ret.data.elements = convertNTMsgElement2BotMsgElement({
       chatType: msg.chatType,
       peerUid: msg.peerUid,
       guildId: ''
     }, msg.msgId, msg.elements)
-    ret.data.records = msg.records.map(e => ({
-      messageId: e.msgId,
-      messageSeq: e.msgSeq,
-      groupId: 0,
-      groupName: e.peerName,
-      senderId: parseInt(senderUserInfo.uin),
-      senderUid: e.senderUid,
-      senderMemberName: e.sendMemberName,
-      time: parseInt(e.msgTime),
-      elements: convertNTMessage2BotMessage({
-        chatType: msg.chatType,
-        peerUid: msg.peerUid,
-        guildId: ''
-      }, msg.msgId, e.elements),
-      records: [],
-    }))
-    sendMessage(JSON.stringify(ret))
+    ret.data.records = msg.records.map(e => convertNTMsg2BotMsg(e))
+    sendMessage(ret)
   })
 }
 /**

@@ -389,7 +389,7 @@ declare namespace BotMessageReceiveElements {
     /**
      * 消息ID
      */
-    msgId: `${number}`
+    srcMsgId: `${number}`
     /**
      * 消息序列
      */
@@ -399,9 +399,13 @@ declare namespace BotMessageReceiveElements {
      */
     text: string
     /**
+     * 源消息发送者的QQ号
+     */
+    senderUin: `${number}`
+    /**
      * 源消息发送者的id
      */
-    uid: `u_${string}`
+    senderUid: `u_${string}`
   }
 
   /**
