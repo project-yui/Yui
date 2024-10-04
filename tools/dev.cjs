@@ -64,8 +64,6 @@ const copyConfiguration = () =>
         fs.mkdirSync(path.resolve(__dirname, '../program/resources/app/app_launcher'), {recursive: true})
     } catch(_){}
     fs.copyFileSync(path.resolve(__dirname, '../yukihana.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/yukihana.yaml'))
-    fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.crt'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.crt'))
-    fs.copyFileSync(path.resolve(__dirname, '../resources/ssl/server.key'), path.resolve(__dirname, '../program/resources/app/app_launcher/server.key'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/hack/patch.json'), path.resolve(__dirname, '../program/patch.json'))
 }
 copyConfiguration()
@@ -85,7 +83,8 @@ const ActionHandle = {
             env: {
                 ...process.env,
                 PROGRAM_PATH: devConfig.program_path
-            }
+            },
+            shell: true
         })
     },
     /**
@@ -100,7 +99,8 @@ const ActionHandle = {
             env: {
                 ...process.env,
                 PROGRAM_PATH: devConfig.program_path
-            }
+            },
+            shell: true
         })
     },
     /**
@@ -133,6 +133,7 @@ const ActionHandle = {
                             YUKIHANA_LOG: true,
                             YUKIHANA_ACTION: 'ui',
                             YUKIHANA_NATIVE: "D:/GitHub/Yukihana-native/build/nt_native.node",
+                            QQV8BytecodeDebug: '1'
                         },
                         cwd: path.resolve(__dirname, '../program'),
                     })

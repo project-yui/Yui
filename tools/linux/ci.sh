@@ -30,5 +30,4 @@ export outputDir="tmp/build"
 pnpm run build
 # mv program/resources/app/app_launcher/* tmp/build
 cp yukihana.yaml tmp/build
-cp resources/ssl/* tmp/build
 # rm tmp/build/core.js
