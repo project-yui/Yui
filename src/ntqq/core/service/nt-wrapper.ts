@@ -5,7 +5,6 @@ import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
 
 const log = useLogger('NTWrapper')
-let globalModuleIndex = 1;
 export const useNTWrapper = () => {
     // QQ号索引处理
     const asyncStore = useAsyncStore()
@@ -18,8 +17,9 @@ export const useNTWrapper = () => {
     const userStore = useNTUserStore().getAllAccountData()
     if (!userStore[id])
     {
-        const idx = globalModuleIndex++
-        log.info('wrapper index:', id, idx)
+        const ids = Object.keys(userStore)
+        const idx = ids.length + 1
+        log.info('wrapper index:', id, idx, ids)
         const wrapper = useWrapper(idx)
         userStore[id] = {
             moduleIndex: idx,
