@@ -1,15 +1,15 @@
-import { useWrapper } from "ntwrapper"
 import { useNTDispatcher } from "./dispatcher"
 import { useLogger } from "../../common/log"
 import { NodeIKernelLoginService } from "../types/services/NodeIKernelLoginService"
 import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
+import { useNTWrapper } from "./service/nt-wrapper"
 
 const log = useLogger('NTStore')
 
 export const useNTCore = () => ({
   getWrapperUtil: () => {
-    const wrapper = useWrapper()
+    const wrapper = useNTWrapper()
     return new wrapper.NodeQQNTWrapperUtil()
   },
   /**
@@ -18,7 +18,7 @@ export const useNTCore = () => ({
    */
   getGlobalAdapter: () => {
     const dispatcher = useNTDispatcher()
-    const wrapper = useWrapper()
+    const wrapper = useNTWrapper()
     return new wrapper.NodeIGlobalAdapter({
       onLog(...args) {
         log.info('GlobalAdapter/onLog', ...args)
@@ -59,7 +59,7 @@ export const useNTCore = () => ({
    * @returns 
    */
   getWrapperEngine: () => {
-    const wrapper = useWrapper()
+    const wrapper = useNTWrapper()
     return new wrapper.NodeIQQNTWrapperEngine()
   },
   /**
@@ -67,7 +67,7 @@ export const useNTCore = () => ({
    * @returns 
    */
   getLoginService: (): NodeIKernelLoginService => {
-    const wrapper = useWrapper()
+    const wrapper = useNTWrapper()
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
     const id = s?.get('id')
@@ -75,27 +75,15 @@ export const useNTCore = () => ({
       throw new Error('id error')
     }
     const userStore = useNTUserStore()
-    const accountNTData = userStore.getAllAccountData()
-    if (!accountNTData[id])
-    {
-      accountNTData[id] = {
-        loginService: new wrapper.NodeIKernelLoginService(),
-        wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
-        info: {
-          uin: undefined,
-          uid: undefined,
-          userNick: ""
-        }
-      }
-    }
-    return accountNTData[id].loginService
+    const accountNTData = userStore.getCurrentAccountData()
+    return accountNTData.loginService
   },
   /**
    * 频繁调用
    * @returns 
    */
   getWrapperSession: (): NTNativeWrapper.NodeIQQNTWrapperSession => {
-    const wrapper = useWrapper()
+    const wrapper = useNTWrapper()
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
     const id = s?.get('id')
@@ -103,19 +91,7 @@ export const useNTCore = () => ({
       throw new Error('id error')
     }
     const userStore = useNTUserStore()
-    const accountNTData = userStore.getAllAccountData()
-    if (!accountNTData[id])
-    {
-      accountNTData[id] = {
-        loginService: new wrapper.NodeIKernelLoginService(),
-        wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
-        info: {
-          uin: undefined,
-          uid: undefined,
-          userNick: ""
-        }
-      }
-    }
-    return accountNTData[id].wrapperSession
+    const accountNTData = userStore.getCurrentAccountData()
+    return accountNTData.wrapperSession
   },
 })

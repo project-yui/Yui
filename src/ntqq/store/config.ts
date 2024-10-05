@@ -1,10 +1,10 @@
-import { homedir, type, userInfo } from "os";
+import { homedir, userInfo } from "os";
 import { getNTPackageInfo } from "../common/utils";
 import { StoreAppInfo } from "../types/store/config";
-import { useWrapper } from "ntwrapper";
 import { randomUUID } from "crypto";
 import { execSync } from "child_process";
 import { useLogger } from "../../common/log";
+import { useNTWrapper } from "../core/service/nt-wrapper";
 
 const platform: 'win32' | 'linux' = process.platform as 'win32' | 'linux'
 const log = useLogger('NTConfig')
@@ -83,7 +83,7 @@ const getAppId = () => {
     return platform === 'win32' ? '537237802' : '537207207'
  }
 const getNTConfigStoreFolder = (): string => {
-  const wrapper = useWrapper()
+  const wrapper = useNTWrapper()
   const wrapperUtil = new wrapper.NodeQQNTWrapperUtil()
   switch(platform) {
     case 'win32':

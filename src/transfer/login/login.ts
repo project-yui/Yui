@@ -51,6 +51,7 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
  * @returns 登录的二维码
  */
 export const loginByQrCode = async (p: BotActionParams): Promise<BotLogin.QrCodeResponse> => {
+  log.info('loginByQrCode', p);
   const resp = await NTGetLoginQrCode()
   listenLoginEvent();
   return {

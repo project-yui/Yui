@@ -1,7 +1,7 @@
-import { useWrapper } from "ntwrapper"
 import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
 import { useListenerProxy, useNTDispatcher } from "../dispatcher"
+import { useNTWrapper } from "./nt-wrapper"
 
 const log = useLogger('service/profile')
 
@@ -10,7 +10,7 @@ const log = useLogger('service/profile')
  */
 export const initProfileService = () => {
   const { getWrapperSession } = useNTCore()
-  const wrapper = useWrapper()
+  const wrapper = useNTWrapper()
   const profileService = getWrapperSession().getProfileService()
   const p = useListenerProxy('KernelProfileListener')
   const listener = new wrapper.NodeIKernelProfileListener(p)
