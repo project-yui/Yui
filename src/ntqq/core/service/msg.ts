@@ -1,7 +1,7 @@
-import { useWrapper } from "ntwrapper"
 import { useListenerProxy, useNTDispatcher } from "../dispatcher"
 import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
+import { useNTWrapper } from "./nt-wrapper"
 
 const log = useLogger('Service/msg')
 /**
@@ -11,7 +11,7 @@ const log = useLogger('Service/msg')
  */
 export const initMsgService = () => {
   log.info('initMsgService')
-  const wrapper = useWrapper()
+  const wrapper = useNTWrapper()
   const { getWrapperSession } = useNTCore()
   const session = getWrapperSession()
   log.info('getMsgService')

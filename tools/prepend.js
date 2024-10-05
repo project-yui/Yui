@@ -36,14 +36,17 @@ global.asyncLocalStorage = asyncLocalStorage;
         wrapperPath = path.resolve(__dirname, `../wrapper.node`)
       }
       return {
-        useWrapper: () => {
-          // 用户QQ号
-          const id = asyncLocalStorage.getStore().get('id')
-          if (!id)
+        /**
+         * 载入特定模块
+         * @param {number} idx 模块索引
+         * @returns 
+         */
+        useWrapper: (idx) => {
+          if (!idx)
           {
-            throw new Error('id error')
+            throw new Error('use wrapper: idx error')
           }
-          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${id}.node`)
+          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
           if (!fs.existsSync(targetPath))
           {
             fs.cpSync(wrapperPath, targetPath)

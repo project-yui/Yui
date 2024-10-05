@@ -11,6 +11,7 @@ import { convertToCamelCase } from '../common/utils';
 import { NTInitialize } from '../ntqq';
 import { useAsyncStore } from '../store/async-store';
 import { listenMessage } from '../onebot/event/message';
+import { useNTUserStore } from '../ntqq/store/user';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -28,7 +29,6 @@ export const startWebsocketServer = () => {
     port: cfg.yukihana.ws.port,
   });
 
-  const init: Record<string, boolean> = {}
   wss.on('connection', function connection(ws, req) {
     log.info('receive connection.');
     const asyncStore = useAsyncStore()
@@ -56,8 +56,6 @@ export const startWebsocketServer = () => {
           let msg: BotActionRequest
           try {
             log.info('server: received: ', message.toString());
-            log.info('async store:', asyncStore.getStore())
-            log.info('async id:', asyncStore.getStore()?.get('id'))
             // 此处解析可能会失败
             msg = JSON.parse(message.toString())
             const ret = checkBaseRequestField(msg)
@@ -67,10 +65,19 @@ export const startWebsocketServer = () => {
             }
             log.info('id:', msg.user.qid)
             asyncStore.getStore()?.set('id', msg.user.qid)
-            if (!init[msg.user.qid]) {
-              NTInitialize()
-              listenMessage()
-              init[msg.user.qid] = true
+            const { getUserInfo } = useNTUserStore()
+            let u = getUserInfo()
+            if (!u) {
+              const defaultId: `${number}` = '1234567890'
+              log.info(`user info not exists, check default user(${defaultId})...`)
+              u = getUserInfo(defaultId)
+              asyncStore.getStore()?.set('id', defaultId)
+              if (!u)
+              {
+                log.info(`default user(${defaultId}) has not been initialized, start to initialize...`)
+                NTInitialize()
+                listenMessage()
+              }
             }
           }
           catch (e) {

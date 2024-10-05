@@ -24,6 +24,7 @@ const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
     avatarUrl: ''
   }
   if (!userInfo || !userInfo.uid) {
+    log.error('user info:', userInfo)
     throw new CustomError(1, 'user info error!')
   }
   const ret = await getUserInfoByUid(userInfo.uid)

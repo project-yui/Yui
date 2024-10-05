@@ -10,7 +10,7 @@ declare namespace NTNativeWrapper {
     isNull(): boolean
   }
   namespace CrossProcessExports2 {
-    const useWrapper: () => typeof CrossProcessExports
+    const useWrapper: (idx: number) => typeof CrossProcessExports
   }
   namespace CrossProcessExports {
     const NodeIGlobalAdapter: typeof import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter

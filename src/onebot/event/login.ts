@@ -1,8 +1,11 @@
+import { useLogger } from "../../common/log"
 import { useServer } from "../../server/server"
+import { useAsyncStore } from "../../store/async-store"
 import { useStore } from "../../store/store"
 import { EventDataType } from "./interfaces"
 
 const { registerEventListener } = useStore()
+const log = useLogger('Event/Login')
 /**
  * 获取登录二维码
  * @returns 二维码信息
@@ -118,6 +121,7 @@ const alreadyLogin = () => {
  * 请求二维码的时候才会调用
  */
 export const listenLoginEvent = () => {
+    log.info('listenLoginEvent')
     qrCodeFailed();
     qrCodeScaned();
     qrCodeSuccess();
