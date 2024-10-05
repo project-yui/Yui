@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from "node:async_hooks"
 import { useLogger } from "../common/log"
 import { useNTDispatcher } from "../ntqq/core/dispatcher"
 import { BotActionParams } from "../onebot/actions/interfaces"
@@ -33,10 +34,6 @@ const registerActionHandle = <T extends BotActionParams>(name: string, handle: (
 export type NTEventListenerHandle = (...payload: any[]) => void
 
 /**
- * 事件分发
- */
-const dispatcher = useNTDispatcher()
-/**
  * Service/action
  */
 type EventFullNameType = `${string}/${string}`
@@ -48,6 +45,7 @@ type EventFullNameType = `${string}/${string}`
  * @param listener 事件监听器
  */
 const registerEventListener = (eventFullName: EventFullNameType, type: 'always' | 'once', listener: NTEventListenerHandle) => {
+  const dispatcher = useNTDispatcher()
   if (type === 'once') {
     // 一次性监听
     dispatcher.once(eventFullName, listener);
@@ -73,6 +71,7 @@ const registerEventListener = (eventFullName: EventFullNameType, type: 'always' 
  * @param listener 事件监听器
  */
 const removeEventListener = (eventFullName: EventFullNameType, listener: NTEventListenerHandle) => {
+  const dispatcher = useNTDispatcher()
   dispatcher.removeListener(eventFullName, listener)
 }
 

@@ -9,6 +9,9 @@ declare namespace NTNativeWrapper {
   class NTBaseClass {
     isNull(): boolean
   }
+  namespace CrossProcessExports2 {
+    const useWrapper: () => typeof CrossProcessExports
+  }
   namespace CrossProcessExports {
     const NodeIGlobalAdapter: typeof import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter
     const NodeIKernelLoginService: typeof import("./services/NodeIKernelLoginService").NodeIKernelLoginService
@@ -568,5 +571,5 @@ declare namespace NodeIQQNTWrapperSessionType {
 
 
 declare module 'ntwrapper' {
-  export = NTNativeWrapper.CrossProcessExports
+  export = NTNativeWrapper.CrossProcessExports2
 }

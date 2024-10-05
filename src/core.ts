@@ -1,7 +1,7 @@
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
 import { initNative } from "./native/init";
-import { initNTQQ } from "./ntqq";
+import { NTInitialize } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
 import { test } from "./test/test";
@@ -31,7 +31,6 @@ try {
   }
 
   log.info('initNTQQ')
-  initNTQQ()
   initNative()
 
   log.info('initOnebot')

@@ -1,9 +1,7 @@
-import { NodeIKernelBuddyListener } from "ntwrapper"
+import { useWrapper } from "ntwrapper"
 import { useNTCore } from "../core"
 import { useListenerProxy, useNTDispatcher } from "../dispatcher"
 import { useLogger } from "../../../common/log"
-
-const dispatcher = useNTDispatcher()
 const log = useLogger('BuddyService')
 
 /**
@@ -15,6 +13,7 @@ export const initBuddyService = () => {
   const { getWrapperSession } = useNTCore()
   const buddy = getWrapperSession().getBuddyService()
   const p = useListenerProxy('KernelBuddyListener')
-  const listener = new NodeIKernelBuddyListener(p)
+  const wrapper = useWrapper()
+  const listener = new wrapper.NodeIKernelBuddyListener(p)
   buddy.addKernelBuddyListener(listener)
 }

@@ -7,6 +7,9 @@ export interface BotActionRequest<T = any> {
    * 唯一标识uuid
    */
   id: string
+  user: {
+    qid: `${number}`
+  }
   /**
    * 动作名称
    */

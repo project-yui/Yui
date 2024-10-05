@@ -3,8 +3,10 @@ import { initService } from "./core/service"
 
 /**
  * 初始化NTQQ
+ * 
+ * @param id QQ号
  */
-export const initNTQQ = () => {
+export const NTInitialize = () => {
   prepareBaseEnvironment()
   initService()
 }

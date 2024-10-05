@@ -13,7 +13,7 @@ const log = useLogger('NTCore/init')
  */
 export const prepareBaseEnvironment = async() => {
   log.info('init start')
-  const { getGlobalAdapter, getWrapperEngine, getLoginService, getWrapperSession } = useNTCore()
+  const { getGlobalAdapter, getWrapperEngine, getLoginService } = useNTCore()
   const { getNTConfigStoreFolder, getAppId, getAppInfo } = useNTConfig()
   // const wrapper = require('../versions/9.9.7-21357/wrapper.node') as typeof NTNativeWrapper
   const configFolder = getNTConfigStoreFolder()

@@ -1,9 +1,8 @@
-import { NodeIKernelMsgListener } from "ntwrapper"
+import { useWrapper } from "ntwrapper"
 import { useListenerProxy, useNTDispatcher } from "../dispatcher"
 import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
 
-const dispatcher = useNTDispatcher()
 const log = useLogger('Service/msg')
 /**
  * 初始化消息服务
@@ -12,13 +11,14 @@ const log = useLogger('Service/msg')
  */
 export const initMsgService = () => {
   log.info('initMsgService')
+  const wrapper = useWrapper()
   const { getWrapperSession } = useNTCore()
   const session = getWrapperSession()
   log.info('getMsgService')
   const msgService = session.getMsgService()
   log.info('create listener')
   const p = useListenerProxy('KernelMsgListener')
-  const listener = new NodeIKernelMsgListener(p)
+  const listener = new wrapper.NodeIKernelMsgListener(p)
   // 添加事件监听器
   log.info('add msg listener')
   msgService.addKernelMsgListener(listener)

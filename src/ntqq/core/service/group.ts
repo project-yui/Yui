@@ -1,4 +1,4 @@
-import { NodeIKernelGroupListener } from "ntwrapper"
+import { useWrapper } from "ntwrapper"
 import { useNTCore } from "../core"
 import { useListenerProxy, useNTDispatcher } from "../dispatcher"
 import { useLogger } from "../../../common/log"
@@ -12,6 +12,7 @@ export const initGroupService = () => {
   const { getWrapperSession } = useNTCore()
   const group = getWrapperSession().getGroupService()
   const p = useListenerProxy('KernelGroupListener')
-  const listener = new NodeIKernelGroupListener(p)
+  const wrapper = useWrapper()
+  const listener = new wrapper.NodeIKernelGroupListener(p)
   group.addKernelGroupListener(listener)
 }

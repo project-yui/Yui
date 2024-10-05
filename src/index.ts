@@ -12,6 +12,7 @@ import { resolve } from 'path'
 //   }, 2000)
 // }
 
+console.log('action:', process.env['YUKIHANA_ACTION'])
 switch (process.env['YUKIHANA_ACTION']) {
   case 'dev':
   case 'ui':
