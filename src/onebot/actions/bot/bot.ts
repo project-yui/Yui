@@ -60,6 +60,11 @@ const QuickLoginByUin = async (p: QuickLoginReq) => {
   }
   return {}
 }
+const getAccountList = (p: BotActionParams): any => {
+  const { getAllAccountData } = useNTUserStore()
+  const allAccount = getAllAccountData()
+  return Object.keys(allAccount).filter(e => e !== '1234567890')
+}
 export const initBot = () => {
   const { registerActionHandle } = useStore()
   // 登录
@@ -69,4 +74,5 @@ export const initBot = () => {
   registerActionHandle('get_quick_login_list', getQuickLoginList)
   registerActionHandle('quick_login_by_uin', QuickLoginByUin)
   registerActionHandle('get_clipboard_msg', getClipboardMsg)
+  registerActionHandle('get_account_list', getAccountList)
 }
