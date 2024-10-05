@@ -38,6 +38,11 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
  * @returns 
  */
 export const getBotAccount = () => {
-  const { userInfo } = useNTUserStore()
-  return userInfo
+  const { getUserInfo } = useNTUserStore()
+  const info = getUserInfo()
+  if (!info)
+  {
+    throw new Error('Failed to get user info')
+  }
+  return info
 }

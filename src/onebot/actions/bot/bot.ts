@@ -1,4 +1,5 @@
 import { useLogger } from "../../../common/log"
+import { NTInitialize } from "../../../ntqq"
 import { NTGetQuickLoginList, NTQuickLoginByUin } from "../../../ntqq/login/account"
 import { useNTUserStore } from "../../../ntqq/store/user"
 import { CustomError } from "../../../server/error/custom-error"
@@ -12,7 +13,8 @@ import { QuickLoginItem } from "./types"
 
 const log = useLogger('Bot')
 const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
-  const { userInfo } = useNTUserStore()
+  const { getUserInfo } = useNTUserStore()
+  const userInfo = getUserInfo()
   const resp: UserInfoResp = {
     userUid: "u_",
     userUin: 0,
@@ -21,7 +23,7 @@ const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
     userRemark: "",
     avatarUrl: ''
   }
-  if (!userInfo.uid) {
+  if (!userInfo || !userInfo.uid) {
     throw new CustomError(1, 'user info error!')
   }
   const ret = await getUserInfoByUid(userInfo.uid)

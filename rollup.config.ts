@@ -40,8 +40,8 @@ const options: RollupOptions[] = [
   }, {
     input: 'src/core.ts',
     output: {
-      dir: outputDir,
-      // file: 'D:/GitHub/Yukihana-vscode/dist/program/resources/app/app_launcher/index.js',
+      // dir: outputDir,
+      file: 'D:/GitHub/Yukihana-vscode/dist/program/resources/app/app_launcher/index.js',
       format: 'cjs',
       banner: (chunk) => {
         // console.log('chunk:', chunk)

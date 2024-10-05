@@ -1,7 +1,7 @@
 import { homedir, type, userInfo } from "os";
 import { getNTPackageInfo } from "../common/utils";
 import { StoreAppInfo } from "../types/store/config";
-import { NodeQQNTWrapperUtil } from "ntwrapper";
+import { useWrapper } from "ntwrapper";
 import { randomUUID } from "crypto";
 import { execSync } from "child_process";
 import { useLogger } from "../../common/log";
@@ -82,19 +82,20 @@ const getAppInfo = (): StoreAppInfo => {
 const getAppId = () => {
     return platform === 'win32' ? '537237802' : '537207207'
  }
- const getNTConfigStoreFolder = (): string => {
-    const wrapperUtil = new NodeQQNTWrapperUtil()
-   switch(platform) {
-     case 'win32':
-       return wrapperUtil.getNTUserDataInfoConfig() + ''
-     case 'linux':
-       return `${homedir()}/.config/QQ`
-       break
-     default:
-       return './nt_qq'
-       break
-   }
- }
+const getNTConfigStoreFolder = (): string => {
+  const wrapper = useWrapper()
+  const wrapperUtil = new wrapper.NodeQQNTWrapperUtil()
+  switch(platform) {
+    case 'win32':
+      return wrapperUtil.getNTUserDataInfoConfig() + ''
+    case 'linux':
+      return `${homedir()}/.config/QQ`
+      break
+    default:
+      return './nt_qq'
+      break
+  }
+}
 export const useNTConfig = () => ({
     getNTConfigStoreFolder,
     getAppId,

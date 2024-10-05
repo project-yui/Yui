@@ -1,4 +1,4 @@
-import { NodeIKernelStorageCleanListener } from "ntwrapper"
+import { useWrapper } from "ntwrapper"
 import { useLogger } from "../../../common/log"
 import { useNTCore } from "../core"
 import { useListenerProxy } from "../dispatcher"
@@ -9,5 +9,6 @@ export const initStorageCleanService = () => {
     const { getWrapperSession } = useNTCore()
     const storageClean = getWrapperSession().getStorageCleanService()
     const p = useListenerProxy('KernelMsgListener')
-    storageClean.addKernelStorageCleanListener(new NodeIKernelStorageCleanListener(p))
+    const wrapper = useWrapper()
+    storageClean.addKernelStorageCleanListener(new wrapper.NodeIKernelStorageCleanListener(p))
 }

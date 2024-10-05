@@ -1,13 +1,18 @@
-(() => {
-  const orgi_rquire = module.require
+const { AsyncLocalStorage } = require('async_hooks');
+
+/** @type {import('async_hooks').AsyncLocalStorage<Map>} */
+const asyncLocalStorage = new AsyncLocalStorage();
+global.asyncLocalStorage = asyncLocalStorage;
+;(() => {
+  const orgi_require = module.require
   const log = (...a) => {
     console.log('[prepend]', ...a)
   }
   const handle = {
     ntwrapper: (t) => {
       /**  @type {import('fs')} */
-      const fs = orgi_rquire('fs')
-      const path = orgi_rquire('path')
+      const fs = orgi_require('fs')
+      const path = orgi_require('path')
       const packagePath = path.resolve(__dirname, '../package.json')
       if (!fs.existsSync(packagePath)) {
         log('config not exists!')
@@ -30,22 +35,37 @@
       else {
         wrapperPath = path.resolve(__dirname, `../wrapper.node`)
       }
-      return orgi_rquire.apply(t, [wrapperPath])
+      return {
+        useWrapper: () => {
+          // 用户QQ号
+          const id = asyncLocalStorage.getStore().get('id')
+          if (!id)
+          {
+            throw new Error('id error')
+          }
+          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${id}.node`)
+          if (!fs.existsSync(targetPath))
+          {
+            fs.cpSync(wrapperPath, targetPath)
+          }
+          return orgi_require.apply(t, [targetPath])
+        }
+      }
     },
     'yukihana-native': (t) => {
       /**  @type {import('path')} */
-      const path = orgi_rquire('path')
+      const path = orgi_require('path')
       let wrapperPath = path.resolve(__dirname, `./native.node`)
       if (process.env['YUKIHANA_NATIVE']) {
         wrapperPath = process.env['YUKIHANA_NATIVE']
       }
-      return orgi_rquire.apply(t, [wrapperPath])
+      return orgi_require.apply(t, [wrapperPath])
     }
   }
   module.require = function (...args) {
     if (handle[args[0]]) {
       return handle[args[0]](this)
     }
-    return orgi_rquire.apply(this, args)
+    return orgi_require.apply(this, args)
   }
 })();

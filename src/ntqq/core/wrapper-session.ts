@@ -1,4 +1,4 @@
-import { NodeIDependsAdapter, NodeIDispatcherAdapter, NodeIKernelSessionListener } from "ntwrapper"
+import { useWrapper } from "ntwrapper"
 import { useLogger } from "../../common/log"
 import { useNTCore } from "./core"
 import { sleep } from "../../common/utils"
@@ -17,6 +17,7 @@ import { initStorageCleanService } from "./service/storage-clean"
 const log = useLogger('AfterLogin')
 
 export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) => {
+  const wrapper = useWrapper()
   log.info('start to init wrapper session')
   const { getWrapperSession } = useNTCore()
   const { getDeviceInfo } = useNTConfig()
@@ -29,27 +30,33 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
   // 登陆后初始化
   // wrapperUtil.emptyWorkingSet(61444);
   const p1 = useListenerProxy('DependsAdapter')
-  const depends = new NodeIDependsAdapter(p1)
+  const depends = new wrapper.NodeIDependsAdapter(p1)
 
   const p2 = useListenerProxy('DispatcherAdapter')
-  const dispatcherAdapter = new NodeIDispatcherAdapter(p2)
+  const dispatcherAdapter = new wrapper.NodeIDispatcherAdapter(p2)
 
   const p = useListenerProxy('KernelSessionListener')
   registerEventListener('KernelSessionListener/onOpentelemetryInit', 'always', (result) => {
     if (result.is_init) {
       log.info('NTWrapperSession init successful!')
+      log.info('initUnitedConfig start')
       initUnitedConfig()
+      log.info('initMsgService start')
       initMsgService()
+      log.info('initProfileService start')
       initProfileService()
+      log.info('initGroupService start')
       initGroupService()
+      log.info('initBuddyService start')
       initBuddyService()
+      log.info('initStorageCleanService start')
       initStorageCleanService()
     }
     else {
       log.error('NTWrapperSession init failed!')
     }
   })
-  const sessionListener = new NodeIKernelSessionListener(p)
+  const sessionListener = new wrapper.NodeIKernelSessionListener(p)
   const configFolder = getNTConfigStoreFolder()
   const pkgInfo = getNTPackageInfo()
   session.init({
