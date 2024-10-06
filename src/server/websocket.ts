@@ -63,8 +63,8 @@ export const startWebsocketServer = () => {
               ws.send(JSON.stringify(ret));
               return
             }
-            log.info('id:', msg.user.qid)
-            asyncStore.getStore()?.set('id', msg.user.qid)
+            log.info('uin:', msg.user.uin)
+            asyncStore.getStore()?.set('id', msg.user.uin)
             const { getUserInfo } = useNTUserStore()
             let u = getUserInfo()
             if (!u) {

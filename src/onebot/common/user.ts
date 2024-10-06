@@ -5,7 +5,7 @@ import { useNTCore } from "../../ntqq/core/core"
 import { useNTUserStore } from "../../ntqq/store/user"
 import { useLogger } from "../../common/log"
 
-const { registerEventListener, removeEventListener } = useStore()
+const { registerEventListener } = useStore()
 const log = useLogger('Common/User')
 
 export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType> => {

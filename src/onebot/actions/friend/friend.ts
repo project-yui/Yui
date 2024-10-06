@@ -22,7 +22,7 @@ const getFriendList = async (p: {}): Promise<any> => {
     name: e.categroyName,
     count: e.categroyMbCount,
     friend_list: e.buddyList.map(f => ({
-      uin: f.uin,
+      uin: parseInt(f.uin),
       nick: f.nick,
       avatar_url: f.avatarUrl,
       remark: f.remark,
@@ -69,6 +69,7 @@ const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
 export const initFriend = () => {
   // 注册获取好友列表
   registerActionHandle('get_friend_list', getFriendList)
+  registerActionHandle('get_friend_list_with_group', getFriendList)
   registerActionHandle('send_like_friend', sendLikeFriend)
   registerActionHandle('get_user_info', getUserInfo)
 }
