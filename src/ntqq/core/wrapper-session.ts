@@ -59,15 +59,15 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       const account = userStore.getAllAccountData()
       const asyncStore = useAsyncStore()
       const s = asyncStore.getStore()
-      const id = s?.get('id') as string
-      const t = account[id]
+      const uin = s?.get('uin') as number
+      const t = account[uin]
       log.info('account data:', t)
       if (!t.info.uin) {
         throw new CustomError(20302, 'uin error')
       }
-      log.info(`变更模块${id}所属为${t.info.uin}`)
-      s?.set('id', t.info.uin)
-      delete account[id]
+      log.info(`变更模块${uin}所属为${t.info.uin}`)
+      s?.set('uin', t.info.uin)
+      delete account[uin]
       account[t.info.uin] = t
       const userInfo = useNTUserStore()
       log.info('current user info:', userInfo.getUserInfo())

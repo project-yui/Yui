@@ -70,8 +70,8 @@ export const useNTCore = () => ({
     const wrapper = useNTWrapper()
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
-    const id = s?.get('id')
-    if (!id) {
+    const uin: number = s?.get('uin')
+    if (!uin) {
       throw new Error('id error')
     }
     const userStore = useNTUserStore()
@@ -86,8 +86,8 @@ export const useNTCore = () => ({
     const wrapper = useNTWrapper()
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
-    const id = s?.get('id')
-    if (!id) {
+    const uin: number = s?.get('uin')
+    if (!uin) {
       throw new Error('id error')
     }
     const userStore = useNTUserStore()

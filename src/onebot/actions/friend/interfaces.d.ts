@@ -15,11 +15,11 @@ export interface UserInfoResp {
   /**
    * 用户id
    */
-  userUid: `u_${string}`
+  uid: `u_${string}`
   /**
    * 用户QQ号
    */
-  userUin: number
+  uin: number
   /**
    * 用户昵称
    */

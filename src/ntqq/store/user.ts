@@ -13,34 +13,34 @@ interface CoreData {
 }
 const accountNTData: Record<string, CoreData> = {}
 export const useNTUserStore = () => ({
-  getUserInfo: (uin?: `${number}`) => {
-    let id: `${number}`
+  getUserInfo: (uin?: number) => {
+    let resultUin: number
     if (!uin)
     {
       const asyncStore = useAsyncStore()
       const s = asyncStore.getStore()
-      id = s?.get('id')
-      if (!id)
+      resultUin = s?.get('uin')
+      if (!resultUin)
       {
         throw new Error('useNTUserStore -> getUserInfo id error.')
       }
     }
     else
     {
-      id = uin
+      resultUin = uin
     }
-    log.info('useNTUserStore -> getUserInfo', id, accountNTData)
-    return accountNTData[id]?.info
+    log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
+    return accountNTData[resultUin]?.info
   },
   getAllAccountData: () => accountNTData,
   getCurrentAccountData: () => {
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
-    const id = s?.get('id')
-    if (!id)
+    const uin: number = s?.get('uin')
+    if (!uin)
     {
       throw new Error('useNTUserStore -> getCurrentAccountData id error.')
     }
-    return accountNTData[id]
+    return accountNTData[uin]
   }
 })

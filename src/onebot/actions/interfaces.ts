@@ -8,7 +8,7 @@ export interface BotActionRequest<T = any> {
    */
   id: string
   user: {
-    uin: `${number}`
+    uin: number
   }
   /**
    * 动作名称

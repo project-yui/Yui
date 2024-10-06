@@ -16,8 +16,8 @@ const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
   const { getUserInfo } = useNTUserStore()
   const userInfo = getUserInfo()
   const resp: UserInfoResp = {
-    userUid: "u_",
-    userUin: 0,
+    uid: "u_",
+    uin: 0,
     nick: "",
     userDisplayname: "",
     userRemark: "",
@@ -29,10 +29,10 @@ const getBotInfo = async (p: {}): Promise<UserInfoResp> => {
   }
   const ret = await getUserInfoByUid(userInfo.uid)
   log.info('getUserDetailInfo:', ret)
-  resp.userUid = ret.uid
-  resp.userUin = parseInt(ret.uin)
+  resp.uid = ret.uid
+  resp.uin = parseInt(ret.uin)
   resp.nick = ret.simpleInfo.coreInfo.nick
-  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.userUin}&s=640`
+  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.uin}&s=640`
   return resp
 }
 const getQuickLoginList = async (p: {}) => {

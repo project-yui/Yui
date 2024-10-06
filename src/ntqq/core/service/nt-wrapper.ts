@@ -9,19 +9,19 @@ export const useNTWrapper = () => {
     // QQ号索引处理
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
-    const id = s?.get('id')
-    if (!id)
+    const uin: number = s?.get('uin')
+    if (!uin)
     {
         throw new Error('useNTWrapper id error.')
     }
     const userStore = useNTUserStore().getAllAccountData()
-    if (!userStore[id])
+    if (!userStore[uin])
     {
         const ids = Object.keys(userStore)
         const idx = ids.length + 1
-        log.info('wrapper index:', id, idx, ids)
+        log.info('wrapper index:', uin, idx, ids)
         const wrapper = useWrapper(idx)
-        userStore[id] = {
+        userStore[uin] = {
             moduleIndex: idx,
             info: {
                 uin: undefined,
@@ -33,5 +33,5 @@ export const useNTWrapper = () => {
             wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
         }
     }
-    return useWrapper(userStore[id].moduleIndex)
+    return useWrapper(userStore[uin].moduleIndex)
 }

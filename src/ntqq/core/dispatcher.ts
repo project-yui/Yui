@@ -14,10 +14,10 @@ export const useNTDispatcher = () => {
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
     log.info('useNTDispatcher async store:', s)
-    const id = s?.get('id')
-    if (!id)
+    const uin: number = s?.get('uin')
+    if (!uin)
     {
-        throw new Error('id error')
+        throw new Error('uin error')
     }
     const { getCurrentAccountData } = useNTUserStore()
     const dispatcher = getCurrentAccountData().dispatcher
@@ -35,8 +35,8 @@ export const useListenerProxy = (name: string) => {
     log.info('useListenerProxy async store:', name, s)
     const handler = {
         get(obj: any, prop: string) {
-            const id = s?.get('id')
-            if (!id)
+            const uin: number = s?.get('uin')
+            if (!uin)
             {
                 throw new Error('id error')
             }
@@ -48,12 +48,12 @@ export const useListenerProxy = (name: string) => {
                 asyncStore.run(s, () => {
                     const s = asyncStore.getStore()
                     log.info(name, 'useListenerProxy call async store:', s)
-                    s?.set('id', id)
+                    s?.set('uin', uin)
                     log.info(`${name}/${prop}`, ...args)
                     const { getCurrentAccountData } = useNTUserStore()
                     const dispatcher = getCurrentAccountData().dispatcher
                     if (!dispatcher){
-                        throw new Error(`dispatcher of ${id} does not exists.`)
+                        throw new Error(`dispatcher of ${uin} does not exists.`)
                     }
                     dispatcher.emit(`${name}/${prop}`, ...args)
                 })

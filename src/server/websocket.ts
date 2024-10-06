@@ -64,14 +64,14 @@ export const startWebsocketServer = () => {
               return
             }
             log.info('uin:', msg.user.uin)
-            asyncStore.getStore()?.set('id', msg.user.uin)
+            asyncStore.getStore()?.set('uin', msg.user.uin)
             const { getUserInfo } = useNTUserStore()
             let u = getUserInfo()
             if (!u) {
-              const defaultId: `${number}` = '1234567890'
+              const defaultId: number = 1234567890
               log.info(`user info not exists, check default user(${defaultId})...`)
               u = getUserInfo(defaultId)
-              asyncStore.getStore()?.set('id', defaultId)
+              asyncStore.getStore()?.set('uin', defaultId)
               if (!u)
               {
                 log.info(`default user(${defaultId}) has not been initialized, start to initialize...`)
@@ -85,7 +85,7 @@ export const startWebsocketServer = () => {
             const result: BotActionResponse = {
               id: NIL_UUID,
               status: 'failed',
-              retcode: 10002,
+              retcode: 10004,
               data: null,
               message: 'Bad Request'
             }

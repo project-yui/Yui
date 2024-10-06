@@ -48,8 +48,8 @@ const sendLikeFriend = async (p: LikeUserReq): Promise<any> => {
 
 const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
   const resp: UserInfoResp = {
-    userUid: "u_",
-    userUin: 0,
+    uid: "u_",
+    uin: 0,
     nick: "",
     userDisplayname: "",
     userRemark: "",
@@ -57,10 +57,10 @@ const getUserInfo = async (p: UserInfoReq): Promise<UserInfoResp> => {
   }
   const ret = await getUserInfoByUid(p.userUid)
   log.info('getUserDetailInfo:', ret)
-  resp.userUid = ret.uid
-  resp.userUin = parseInt(ret.uin)
+  resp.uid = ret.uid
+  resp.uin = parseInt(ret.uin)
   resp.nick = ret.simpleInfo.coreInfo.nick
-  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.userUin}&s=640`
+  resp.avatarUrl = `http://q1.qlogo.cn/g?b=qq&nk=${resp.uin}&s=640`
   return resp
 }
 /**
