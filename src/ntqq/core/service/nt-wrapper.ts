@@ -3,6 +3,7 @@ import { useAsyncStore } from "../../../store/async-store"
 import { useNTUserStore } from "../../store/user"
 import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
+import { CustomError } from "../../../server/error/custom-error";
 
 const log = useLogger('NTWrapper')
 export const useNTWrapper = () => {
@@ -12,7 +13,7 @@ export const useNTWrapper = () => {
     const uin: number = s?.get('uin')
     if (!uin)
     {
-        throw new Error('useNTWrapper id error.')
+        throw new CustomError(500, 'useNTWrapper id error.')
     }
     const userStore = useNTUserStore().getAllAccountData()
     if (!userStore[uin])

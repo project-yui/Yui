@@ -42,7 +42,7 @@ global.asyncLocalStorage = asyncLocalStorage;
          * @returns 
          */
         useWrapper: (idx) => {
-          if (!idx)
+          if (idx === undefined || idx === null)
           {
             throw new Error('use wrapper: idx error')
           }

@@ -6,6 +6,7 @@ import { getBotAccount, getUserInfoByUid } from "../common/user"
 import { EventDataType, BotMessageData, RecallMessageData } from "./interfaces"
 import { useLogger } from "../../common/log"
 import { getGroupMemberInfoByUid } from "../common/group"
+import { CustomError } from "../../server/error/custom-error"
 
 const { registerEventListener } = useStore()
 const { sendMessage } = useServer()
@@ -19,7 +20,7 @@ const onRecvMsg = () => {
     const msgList = payload
     const user = getBotAccount()
     if (user.uid === undefined || user.uin === undefined)
-      throw new Error('can not get user info!')
+      throw new CustomError(500, 'can not get user info!')
     for (const msg of msgList) {
       // 一分钟前的消息不处理
       if (Date.now()/1000 - parseInt(msg.msgTime) > 60) {
@@ -94,7 +95,7 @@ const onAddSendMsg = () => {
     const msg = payload
     const user = getBotAccount()
     if (user.uid === undefined || user.uin === undefined)
-      throw new Error('can not get user info!')
+      throw new CustomError(500, 'can not get user info!')
     // 一分钟前的消息不处理
     if (Date.now()/1000 - parseInt(msg.msgTime) > 60) {
       log.info('一分钟前的消息不处理')
@@ -150,7 +151,7 @@ const onUpdateMsg = () => {
     const msgList = payload
     const user = getBotAccount()
     if (user.uid === undefined || user.uin === undefined)
-      throw new Error('can not get user info!')
+      throw new CustomError(500, 'can not get user info!')
     for (const msg of msgList) {
       
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)

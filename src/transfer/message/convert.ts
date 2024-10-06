@@ -11,6 +11,7 @@ import { useStore } from "../../store/store";
 import { RichMediaUploadResult } from "../../ntqq/types/services/NodeIKernelMsgService";
 import { useConfigStore } from "../../store/config";
 import { BotMessageData } from "../../onebot/event/interfaces";
+import { CustomError } from "../../server/error/custom-error";
 
 const log = useLogger('Convert')
 
@@ -243,7 +244,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         } : undefined
         if (src.path == null || !fs.existsSync(src.path)) {
           // 文件路径有问题，检查是否有网络地址
-          if (!src.url) throw new Error(`File does not exists! ${src.path}`)
+          if (!src.url) throw new CustomError(500, `File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
         }
@@ -251,7 +252,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         info = await getImageInfo(src.path)
         if (!info) {
           log.info('图片信息获取失败')
-          throw new Error('Failed to get information of image')
+          throw new CustomError(500, 'Failed to get information of image')
           // return undefined
         }
         log.info('image info:', info)
@@ -490,7 +491,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
         } : undefined
         if (src.path == null || !fs.existsSync(src.path)) {
           // 文件路径有问题，检查是否有网络地址
-          if (!src.url) throw new Error(`File does not exists! ${src.path}`)
+          if (!src.url) throw new CustomError(500, `File does not exists! ${src.path}`)
           log.info(`开始从网络地址下载图片：${src.url}`)
           src.path = await downloadFile(src.url)
         }
@@ -509,7 +510,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
         info = await getImageInfo(src.path)
         if (!info) {
           log.info('图片信息获取失败')
-          throw new Error('Failed to get information of image')
+          throw new CustomError(500, 'Failed to get information of image')
           // return undefined
         }
         log.info('src path:', src.path)

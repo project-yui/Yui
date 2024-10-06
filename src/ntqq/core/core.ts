@@ -4,6 +4,7 @@ import { NodeIKernelLoginService } from "../types/services/NodeIKernelLoginServi
 import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
 import { useNTWrapper } from "./service/nt-wrapper"
+import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('NTStore')
 
@@ -72,7 +73,7 @@ export const useNTCore = () => ({
     const s = asyncStore.getStore()
     const uin: number = s?.get('uin')
     if (!uin) {
-      throw new Error('id error')
+      throw new CustomError(500, 'id error')
     }
     const userStore = useNTUserStore()
     const accountNTData = userStore.getCurrentAccountData()
@@ -88,7 +89,7 @@ export const useNTCore = () => ({
     const s = asyncStore.getStore()
     const uin: number = s?.get('uin')
     if (!uin) {
-      throw new Error('id error')
+      throw new CustomError(500, 'id error')
     }
     const userStore = useNTUserStore()
     const accountNTData = userStore.getCurrentAccountData()

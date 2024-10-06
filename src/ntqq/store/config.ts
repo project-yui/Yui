@@ -5,6 +5,7 @@ import { randomUUID } from "crypto";
 import { execSync } from "child_process";
 import { useLogger } from "../../common/log";
 import { useNTWrapper } from "../core/service/nt-wrapper";
+import { CustomError } from "../../server/error/custom-error";
 
 const platform: 'win32' | 'linux' = process.platform as 'win32' | 'linux'
 const log = useLogger('NTConfig')
@@ -31,7 +32,7 @@ const getOsVersion = (): string => {
         }
         break;
       default:
-        throw new Error(`Current platform ${platform} is not supported !`)
+        throw new CustomError(500, `Current platform ${platform} is not supported !`)
         break
     }
     return ret

@@ -4,6 +4,7 @@ import { CurrentAccountInfo, UserDetailInfoType } from "./interfaces"
 import { useNTCore } from "../../ntqq/core/core"
 import { useNTUserStore } from "../../ntqq/store/user"
 import { useLogger } from "../../common/log"
+import { CustomError } from "../../server/error/custom-error"
 
 const { registerEventListener } = useStore()
 const log = useLogger('Common/User')
@@ -40,7 +41,7 @@ export const getBotAccount = () => {
   const info = getUserInfo()
   if (!info)
   {
-    throw new Error('Failed to get user info')
+    throw new CustomError(500, 'Failed to get user info')
   }
   return info
 }

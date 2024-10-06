@@ -2,6 +2,7 @@ import EventEmitter from "events"
 import { useLogger } from "../../common/log"
 import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
+import { CustomError } from "../../server/error/custom-error"
 
 
 const log = useLogger('Dispatcher')
@@ -17,7 +18,7 @@ export const useNTDispatcher = () => {
     const uin: number = s?.get('uin')
     if (!uin)
     {
-        throw new Error('uin error')
+        throw new CustomError(500, 'uin error')
     }
     const { getCurrentAccountData } = useNTUserStore()
     const dispatcher = getCurrentAccountData().dispatcher
@@ -38,12 +39,12 @@ export const useListenerProxy = (name: string) => {
             const uin: number = s?.get('uin')
             if (!uin)
             {
-                throw new Error('id error')
+                throw new CustomError(500, 'id error')
             }
             return (...args: any[]) => {
                 const asyncStore = useAsyncStore()
                 if (!s) {
-                    throw  new Error('Async store error!')
+                    throw  new CustomError(500, 'Async store error!')
                 }
                 asyncStore.run(s, () => {
                     const s = asyncStore.getStore()
@@ -53,7 +54,7 @@ export const useListenerProxy = (name: string) => {
                     const { getCurrentAccountData } = useNTUserStore()
                     const dispatcher = getCurrentAccountData().dispatcher
                     if (!dispatcher){
-                        throw new Error(`dispatcher of ${uin} does not exists.`)
+                        throw new CustomError(500, `dispatcher of ${uin} does not exists.`)
                     }
                     dispatcher.emit(`${name}/${prop}`, ...args)
                 })

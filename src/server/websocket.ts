@@ -82,12 +82,18 @@ export const startWebsocketServer = () => {
           }
           catch (e) {
             // 消息json格式不正确
+            
             const result: BotActionResponse = {
               id: NIL_UUID,
               status: 'failed',
               retcode: 10004,
               data: null,
               message: 'Bad Request'
+            }
+            if (e instanceof CustomError) {
+              result.status = 'failed'
+              result.retcode = e.code
+              result.message = e.message
             }
             ws.send(JSON.stringify(result));
             return

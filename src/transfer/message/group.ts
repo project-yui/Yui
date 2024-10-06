@@ -6,6 +6,7 @@ import { BotMessage, BotMessageSendElements } from "../../onebot/common/message"
 import { useNTCore } from "../../ntqq/core/core"
 import { getBotAccount } from "../../onebot/common/user"
 import { addMsg } from "yukihana-native"
+import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('Group')
 
@@ -20,7 +21,7 @@ export const sendMessageToGroup = async (targetId: `${number}`, msg: BotMessage.
   log.info(`sendMessage to ${targetId} with:`, JSON.stringify(msg))
   const elements: NTSendMessageType.MsgElement[] = await convertBotMessage2NTMessage(msg)
   
-  if (elements.length == 0) throw new Error('Try to send msg, but size of elements is zero!')
+  if (elements.length == 0) throw new CustomError(500, 'Try to send msg, but size of elements is zero!')
   
   return await NTSendMessage({
     "msgId": "0",
@@ -47,7 +48,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
   const user = getBotAccount()
   
   if (user.uid === undefined || user.uin === undefined)
-    throw new Error('can not get user info!')
+    throw new CustomError(500, 'can not get user info!')
   // 2. 存储转发消息的内容
   const forwardData = msg
   // 先检查能不能根据msgId获取到消息，获取不到再添加
@@ -171,7 +172,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
     }
   }
   // 3. 创建并发送转发消息
-  if (msgList.length === 0) throw new Error('forward list is empty!')
+  if (msgList.length === 0) throw new CustomError(400, 'forward list is empty!')
   log.info(`sendForwardMessage to ${targetId} with:`, JSON.stringify(msg))
   return await NTSendForwardMessage({
     msgInfos: msgList,
