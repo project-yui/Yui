@@ -10,20 +10,18 @@ const log = useLogger('Common/User')
 
 export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType> => {
   return new Promise(async (resolve, reject) => {
-    let userInfoListener: NTEventListenerHandle | null = null
+    let userInfoListener: {remove: () => void} | null = null
     // 超时拒绝
     let time = setTimeout(() => {
-      if (userInfoListener)
-        removeEventListener('KernelProfileListener/onUserDetailInfoChanged', userInfoListener)
+      userInfoListener?.remove()
       reject('getUserInfoByUid timeout')
     }, 30000)
-    userInfoListener = (payload: UserDetailInfoType) => {
-
+    userInfoListener = registerEventListener(`KernelProfileListener/onUserDetailInfoChanged`, 'always', (payload: UserDetailInfoType) => {
+      if (payload.uid !== uid) return;
       // 清除超时计时
       clearTimeout(time)
       resolve(payload)
-    }
-    registerEventListener(`KernelProfileListener/onUserDetailInfoChanged`, 'once', userInfoListener)
+    })
     const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()
     const service = session.getProfileService()
