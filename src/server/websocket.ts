@@ -7,7 +7,7 @@ import { useLogger } from '../common/log';
 import { useServer } from './server';
 import { useConfigStore } from '../store/config';
 import { CustomError } from './error/custom-error';
-import { convertToCamelCase } from '../common/utils';
+import { convertToCamelCase, convertToSnakeCase } from '../common/utils';
 import { NTInitialize } from '../ntqq';
 import { useAsyncStore } from '../store/async-store';
 import { listenMessage } from '../onebot/event/message';
@@ -112,7 +112,7 @@ export const startWebsocketServer = () => {
             }
             try {
               log.info('start handle for ', msg.action)
-              resp.data = await handle(convertToCamelCase(msg.params))
+              resp.data = convertToSnakeCase(await handle(convertToCamelCase(msg.params)))
               log.info('end handle for ', msg.action)
             }
             catch (e) {

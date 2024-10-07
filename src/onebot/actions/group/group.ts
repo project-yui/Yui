@@ -8,7 +8,7 @@ import { GroupDetailInfoResp } from "./types"
 
 const log = useLogger('Group/Member')
 
-const getGroupList = async (p: GroupInfoReq): Promise<GroupDetailInfoResp[]> => {
+const getGroupList = async (p: any): Promise<GroupDetailInfoResp[]> => {
   const ret = await NTGetGroupList()
   log.info('getGroupList:', ret)
   const code2role: Record<number, 'owner' | 'member' | 'manager'> = {
@@ -17,7 +17,7 @@ const getGroupList = async (p: GroupInfoReq): Promise<GroupDetailInfoResp[]> => 
     4: 'owner'
   }
   const resp: GroupDetailInfoResp[] = ret.map<GroupDetailInfoResp>(e => ({
-    code: e.groupCode,
+    code: parseInt(e.groupCode),
     name: e.groupName,
     avatarUrl: `https://p.qlogo.cn/gh/${e.groupCode}/${e.groupCode}/640/`,
     role: code2role[e.memberRole],
@@ -30,13 +30,13 @@ const getGroupList = async (p: GroupInfoReq): Promise<GroupDetailInfoResp[]> => 
 
 const getGroupInfo = async (p: GroupInfoReq): Promise<GroupInfoResp> => {
   const resp: GroupInfoResp = {
-    groupName: '',
+    name: '',
     avatarUrl: '',
-    groupId: p.groupId
+    id: p.groupId
   }
   const ret = await getGroupInfoById(p.groupId)
   log.info('getGroupInfoById:', ret)
-  resp.groupName = ret.groupName
+  resp.name = ret.groupName
   resp.avatarUrl = `https://p.qlogo.cn/gh/${p.groupId}/${p.groupId}/640`
   return resp
 }

@@ -46,11 +46,11 @@ export interface GroupInfoResp {
   /**
    * 群号
    */
-  groupId: number
+  id: number
   /**
    * 群名称
    */
-  groupName: string
+  name: string
   /**
    * 群头像
    */

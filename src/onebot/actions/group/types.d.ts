@@ -7,7 +7,7 @@ export interface GroupDetailInfoResp {
     /**
      * 群号
      */
-    code: `${number}`
+    code: number
     name: string
     avatarUrl: string
     role: 'owner' | 'member' | 'manager'
