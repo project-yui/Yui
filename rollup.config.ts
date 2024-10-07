@@ -41,7 +41,7 @@ const options: RollupOptions[] = [
     input: 'src/core.ts',
     output: {
       dir: outputDir,
-      // file: 'D:/GitHub/Yukihana-vscode/dist/program/resources/app/app_launcher/index.js',
+      // file: 'D:/GitHub/Yui-vscode/dist/program/resources/app/app_launcher/index.js',
       format: 'cjs',
       banner: (chunk) => {
         // console.log('chunk:', chunk)
@@ -101,7 +101,7 @@ const options: RollupOptions[] = [
       // }
     ],
     // 指出哪些模块应该视为外部模块
-    external: ['electron', 'module', 'ntwrapper', 'yukihana-native'],
+    external: ['electron', 'module', 'ntwrapper', 'yui-native'],
   },
   {
     input: 'src/index.ts',

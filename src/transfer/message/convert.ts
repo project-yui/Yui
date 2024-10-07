@@ -12,6 +12,7 @@ import { RichMediaUploadResult } from "../../ntqq/types/services/NodeIKernelMsgS
 import { useConfigStore } from "../../store/config";
 import { BotMessageData } from "../../onebot/event/interfaces";
 import { CustomError } from "../../server/error/custom-error";
+import { ImageInfo } from "../../common/interface/file";
 
 const log = useLogger('Convert')
 
@@ -108,7 +109,7 @@ export const convertNTMsgElement2BotMsgElement = (peer: PeerInfo, msgId: `${numb
               {
                 const { getConfig } = useConfigStore()
                 const cfg = getConfig()
-                url = `http://${cfg.yukihana.http.host}:${cfg.yukihana.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${ele.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
+                url = `http://${cfg.yui.http.host}:${cfg.yui.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${ele.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
               }
             }
             const pic: BotMessage.ReceiveElement = {
@@ -235,13 +236,7 @@ export const convertBotMessage2NTMessageSingle = async (msg: BotMessage.SendElem
         if (!msg.data.pic) break
         // 获取图片基本信息
         const src = msg.data.pic
-        let info = src.md5 ? {
-          width: src.width,
-          height: src.height,
-          md5: src.md5,
-          size: src.size,
-          ext: 'jpg',
-        } : undefined
+        let info: ImageInfo | undefined = undefined
         if (src.path == null || !fs.existsSync(src.path)) {
           // 文件路径有问题，检查是否有网络地址
           if (!src.url) throw new CustomError(500, `File does not exists! ${src.path}`)
@@ -464,7 +459,7 @@ export const convertBotMessage2NTInnerMessageSingle = async (msg: BotMessage.Sen
         result.textElement = {
             content: `@${msg.data.at.isAll ? '全体成员' : msg.data.at.name}`,
             atType: msg.data.at.isAll ? 1 : 2,
-            atUid: msg.data.at.isAll ? 'all' : msg.data.at.uin,
+            atUid: msg.data.at.isAll ? 'all' : `${msg.data.at.uin}`,
             atTinyId: "",
             atNtUid: `${msg.data.at.isAll ? 'all' : msg.data.at.uid}`,
             subElementType: 0,

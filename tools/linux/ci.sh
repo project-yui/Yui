@@ -18,9 +18,9 @@ fail() {
 }
 
 cd $root_dir
-touch yukihana.dev.yaml
-cat > yukihana.dev.yaml <<EOF
-yukihana:
+touch yui.dev.yaml
+cat > yui.dev.yaml <<EOF
+yui:
   dev:
     program_path: /opt/QQ/qq
 EOF
@@ -29,5 +29,5 @@ mkdir -p tmp/build
 export outputDir="tmp/build"
 pnpm run build
 # mv program/resources/app/app_launcher/* tmp/build
-cp yukihana.yaml tmp/build
+cp yui.yaml tmp/build
 # rm tmp/build/core.js

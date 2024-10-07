@@ -277,7 +277,7 @@ declare namespace BotMessageSendElements {
      * 用户QQ
      * 
      */
-    uin: `${number}`
+    uin: number
     /**
      * 用户ID
      * 

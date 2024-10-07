@@ -4,8 +4,8 @@
 
 ## 1.获取项目源码及初始化
 
-  1. 命令行执行：`https://github.com/project-yukihana/Yukihana.git`
-  2. 进入项目：`cd Yukihana`
+  1. 命令行执行：`https://github.com/project-yui/Yui.git`
+  2. 进入项目：`cd Yui`
   3. 安装包：`pnpm install`
 
 ## 2. 获取QQ
@@ -16,7 +16,7 @@
 
       大致结构如下：
       ```
-      Yukihana
+      Yui
       ├─program
       │  ├─lib
       │  ├─locales
@@ -29,7 +29,7 @@
       
 ## 3. 跳过启动验证
 
-  1. 打开地址: https://github.com/project-yukihana/Yukihana-patch
+  1. 打开地址: https://github.com/project-yui/Yui-patch
   2. 下载 release 中的 `dbghelp.dll` 文件，放置于 pragram 文件夹下。
 
 # 二、开发介绍
@@ -38,8 +38,8 @@
 
   1. 执行命令 `pnpm run dev`，开始编译ts文件
   2. 生成的文件在 `program/resources/app/app_launcher/index.js`
-  3. 启动无UI界面的Yukihana，执行`pnpm nodestart`
-  4. 启动有UI界面的Yukihana，执行`pnpm start`
+  3. 启动无UI界面的Yui，执行`pnpm nodestart`
+  4. 启动有UI界面的Yui，执行`pnpm start`
 
 ## 2. 关于后续开发
 

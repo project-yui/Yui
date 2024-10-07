@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           # Artifact name
-          name: yukihana-${{ matrix.ARCH }}.build
+          name: yui-${{ matrix.ARCH }}.build
           path: tmp/build
 
   upload:

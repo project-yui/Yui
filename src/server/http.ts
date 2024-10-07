@@ -68,7 +68,7 @@ export const startHTTPServer = () => {
         cert: '-----BEGIN CERTIFICATE-----\nMIICnjCCAgegAwIBAgIUKH3zxmPYVVfEmWxBZNZ4zol+hTYwDQYJKoZIhvcNAQEL\nBQAwYTELMAkGA1UEBhMCQ04xDjAMBgNVBAgMBW15a2V5MQ4wDAYDVQQHDAVteWtl\neTEOMAwGA1UECgwFbXlrZXkxDjAMBgNVBAsMBW15a2V5MRIwEAYDVQQDDAkqLnFw\naWMuY24wHhcNMjQwNDE2MDYwNzAxWhcNMzQwNDE0MDYwNzAxWjBhMQswCQYDVQQG\nEwJDTjEOMAwGA1UECAwFbXlrZXkxDjAMBgNVBAcMBW15a2V5MQ4wDAYDVQQKDAVt\neWtleTEOMAwGA1UECwwFbXlrZXkxEjAQBgNVBAMMCSoucXBpYy5jbjCBnzANBgkq\nhkiG9w0BAQEFAAOBjQAwgYkCgYEAoDj5cyk1Tl7FiJ9HO612/kFBnBM6tX0JAKue\naO2CerVDuHeGZr6eBDMJx/fq6sB2KzCsLmp1T9807kx8xrxqC+cLv4t8+HgyacbU\nhMPD8ueh3yitLsW3xiQfjcmThApNAnmH/zK4i8hj4OU+pyUitQpCeQQ4q516zwYE\nBti+T7UCAwEAAaNTMFEwHQYDVR0OBBYEFFtGEtCepxMPTOJkw+QzLxabYY3bMB8G\nA1UdIwQYMBaAFFtGEtCepxMPTOJkw+QzLxabYY3bMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADgYEAHe/4WLXpVvOplqd7kN52xlzL0pkTgpkn8/L8m2xY\njAsVjqRhPIYuTeasGDtzM8f+I/iG4vD1wzYMBCda6Qmuz79JE99rqMXmmdYREhVF\nHZUUuvnaCA7ysHBkfb//n9GeNov7rViNjUiTtQGresoAxRrnjtl5hnyT+cxNhZmJ\n4M4=\n-----END CERTIFICATE-----\n'
     };
     const httpServer = createServer(app)
-    httpServer.listen(cfg.yukihana.http.port, cfg.yukihana.http.host)
+    httpServer.listen(cfg.yui.http.port, cfg.yui.http.host)
     const httpsServer = https.createServer(options, app)
     log.info('Try to listen on 443.')
     httpsServer.listen(443)

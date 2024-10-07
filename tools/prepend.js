@@ -55,7 +55,7 @@ global.asyncLocalStorage = asyncLocalStorage;
         }
       }
     },
-    'yukihana-native': (t) => {
+    'yui-native': (t) => {
       /**  @type {import('path')} */
       const path = orgi_require('path')
       let wrapperPath = path.resolve(__dirname, `./native.node`)

@@ -4,13 +4,13 @@
 
 ## Actions目录
 
-用于bot与yukihana通信。
+用于bot与yui通信。
 
-1. bot(client) -> yukihana [request]
-2. bot(client) <- yukihana [response]
+1. bot(client) -> yui [request]
+2. bot(client) <- yui [response]
 
 ## Event目录
 
 机器人事件下发（单向）
 
-NTQQ -> yukihana -> bot(client)
+NTQQ -> yui -> bot(client)

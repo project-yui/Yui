@@ -25,8 +25,8 @@ export const startWebsocketServer = () => {
   const { getConfig } = useConfigStore()
   const cfg = getConfig()
   const wss = new WebSocketServer({
-    host: cfg.yukihana.ws.host,
-    port: cfg.yukihana.ws.port,
+    host: cfg.yui.ws.host,
+    port: cfg.yui.ws.port,
   });
 
   wss.on('connection', function connection(ws, req) {

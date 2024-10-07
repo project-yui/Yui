@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-declare namespace YukihanaNativeWrapper {
+declare namespace YuiNativeWrapper {
     namespace CrossProcessExports {
         /**
          * 模块安装
@@ -93,7 +93,7 @@ declare namespace YukihanaNativeWrapper {
     }
 }
 
-declare module 'yukihana-native' {
-    export = YukihanaNativeWrapper.CrossProcessExports
+declare module 'yui-native' {
+    export = YuiNativeWrapper.CrossProcessExports
   }
   

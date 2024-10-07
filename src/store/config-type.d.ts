@@ -1,5 +1,5 @@
-export interface YukihanaConfig {
-    yukihana: {
+export interface YuiConfig {
+    yui: {
         profiles: {
             active: string
         }

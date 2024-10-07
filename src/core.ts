@@ -12,7 +12,7 @@ const log = useLogger('Index')
 try {
   log.info('hi ntqq bot!! v0.0.2')
   console.log(process.version)
-  const rust = module.require('D:/GitHub/Yukihana-rust/index.node')
+  const rust = module.require('D:/GitHub/Yui-rust/index.node')
   console.log(global.module)
   console.log('rust test:', rust.test(module))
   // process.exit(1)

@@ -2,12 +2,12 @@
 
   <img src="./resources/artworks/ntqq-bot.png" height="100px" width="100px"/>
 
-  <h3>Yukihana 机器人</h3>
+  <h3>Yui 机器人</h3>
   <br>
 
 ----
 
-  这是适用于Telecord的Yukihana机器人
+  这是适用于Telecord的Yui机器人
   
 
   <br>
@@ -15,7 +15,7 @@
 
 ## 介绍
 
-基于 Yukihana 的机器人框架
+基于 Yui 的机器人框架
 
 ## 实现的功能
 

@@ -1,11 +1,11 @@
-import { YukihanaConfig } from "../../src/store/config-type"
+import { YuiConfig } from "../../src/store/config-type"
 
-interface YukihanaConfigDev {
-    yukihana: {
+interface YuiConfigDev {
+    yui: {
         dev: {
             program_path?: string
         }
     }
 }
 
-export type YukihanaDevConfig = YukihanaConfigDev & YukihanaConfig
+export type YuiDevConfig = YuiConfigDev & YuiConfig

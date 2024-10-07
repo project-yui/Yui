@@ -1,12 +1,12 @@
 import { existsSync, readFileSync } from "fs"
 import yaml from 'yaml'
-import { YukihanaConfig } from "./config-type"
+import { YuiConfig } from "./config-type"
 import { getNTPackageInfo } from "../ntqq/common/utils"
 import { useLogger } from "../common/log"
 import { resolve } from "path"
 
-let configCache: YukihanaConfig = {
-    yukihana: {
+let configCache: YuiConfig = {
+    yui: {
         profiles: {
             active: 'prod',
         },
@@ -26,7 +26,7 @@ let configCache: YukihanaConfig = {
     }
 }
 let inited: boolean = false
-const log = useLogger('Yukihana Config')
+const log = useLogger('Yui Config')
 
 /**
  * 从文件加载配置
@@ -35,14 +35,14 @@ const log = useLogger('Yukihana Config')
  */
 const loadFromFile = () => {
     log.info('loadFromFile')
-    const cfg = readFileSync(resolve(__dirname, './yukihana.yaml')).toString()
-    let defaultConfig = yaml.parse(cfg) as YukihanaConfig
+    const cfg = readFileSync(resolve(__dirname, './yui.yaml')).toString()
+    let defaultConfig = yaml.parse(cfg) as YuiConfig
     log.info('cfg data:', defaultConfig)
     {
-        const localPath = resolve(__dirname, './yukihana.local.yaml')
+        const localPath = resolve(__dirname, './yui.local.yaml')
         if (existsSync(localPath)) {
             const localCfg = readFileSync(localPath).toString()
-            const localConfig = yaml.parse(localCfg) as YukihanaConfig
+            const localConfig = yaml.parse(localCfg) as YuiConfig
             defaultConfig = {
                 ...defaultConfig,
                 ...localConfig,
@@ -78,11 +78,11 @@ const getSignature = () => {
     const pkg = getNTPackageInfo()
     const cfg = getConfig()
     if (process.platform === 'linux' || process.platform === 'win32')
-        return cfg.yukihana.signature[process.platform][pkg.version]
+        return cfg.yui.signature[process.platform][pkg.version]
 }
 const getStoragePath = () => {
     const cfg = getConfig()
-    return resolve(__dirname, cfg.yukihana['storage-path'])
+    return resolve(__dirname, cfg.yui['storage-path'])
 }
 export const useConfigStore = () => ({
     /**
