@@ -31,21 +31,19 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
   const { registerEventListener } = useStore()
   
   // 登陆后初始化
-  // wrapperUtil.emptyWorkingSet(61444);
+  wrapper.NodeQQNTWrapperUtil.emptyWorkingSet(61444);
   const p1 = useListenerProxy('DependsAdapter')
-  const depends = new wrapper.NodeIDependsAdapter(p1)
 
   const p2 = useListenerProxy('DispatcherAdapter')
-  const dispatcherAdapter = new wrapper.NodeIDispatcherAdapter(p2)
 
   const p = useListenerProxy('KernelSessionListener')
-  registerEventListener('KernelSessionListener/onOpentelemetryInit', 'always', (result) => {
+  registerEventListener('KernelSessionListener/onOpentelemetryInit', 'always', async (result) => {
     if (result.is_init) {
       log.info('NTWrapperSession init successful!')
       log.info('initUnitedConfig start')
       initUnitedConfig()
       log.info('initMsgService start')
-      initMsgService()
+      await initMsgService()
       log.info('initProfileService start')
       initProfileService()
       log.info('initGroupService start')
@@ -76,7 +74,6 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       log.error('NTWrapperSession init failed!')
     }
   })
-  const sessionListener = new wrapper.NodeIKernelSessionListener(p)
   const configFolder = getNTConfigStoreFolder()
   const pkgInfo = getNTPackageInfo()
   session.init({
@@ -111,7 +108,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     defaultFileDownloadPath: 'C:\\Users\\jiyec\\Downloads',
     deviceInfo: getDeviceInfo(),
     deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}'
-  }, depends, dispatcherAdapter, sessionListener)
+  }, p1, p2, p)
   await sleep(1000)
   try{
     session.startNT(1)

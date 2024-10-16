@@ -11,7 +11,7 @@ const log = useLogger('NTCore/init')
 /**
  * 准备NT环境
  */
-export const prepareBaseEnvironment = async() => {
+export const prepareBaseEnvironment = async () => {
   log.info('init start')
   const { getGlobalAdapter, getWrapperEngine, getLoginService } = useNTCore()
   const { getNTConfigStoreFolder, getAppId, getAppInfo } = useNTConfig()
@@ -50,9 +50,10 @@ export const prepareBaseEnvironment = async() => {
       density: 2
     }
   }
-  log.info('cfg:', cfg)
   const globalAdapter = getGlobalAdapter()
   const wrapperEngine = getWrapperEngine()
+  log.info('cfg:', cfg)
+  log.info('globalAdapter:', globalAdapter)
   const initResult = wrapperEngine.initWithDeskTopConfig(cfg, globalAdapter)
   log.info('initResult:', initResult)
   const login = getLoginService()

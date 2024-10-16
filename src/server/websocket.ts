@@ -65,6 +65,7 @@ export const startWebsocketServer = () => {
             }
             log.info('uin:', msg.user.uin)
             asyncStore.getStore()?.set('uin', msg.user.uin)
+            asyncStore.getStore()?.set('traceId', msg.id)
             const { getUserInfo } = useNTUserStore()
             let u = getUserInfo()
             if (!u) {
@@ -75,14 +76,14 @@ export const startWebsocketServer = () => {
               if (!u)
               {
                 log.info(`default user(${defaultId}) has not been initialized, start to initialize...`)
-                NTInitialize()
+                await NTInitialize()
                 listenMessage()
               }
             }
           }
           catch (e) {
             // 消息json格式不正确
-            
+            log.error(e)
             const result: BotActionResponse = {
               id: NIL_UUID,
               status: 'failed',

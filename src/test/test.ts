@@ -4,7 +4,7 @@ import { NTSendForwardMessage, NTSendMessage } from "../ntqq/message/message"
 import { BotActionResponse } from "../onebot/actions/interfaces"
 import { useStore } from "../store/store"
 import { sendForwardMessageToGroup, sendMessageToGroup } from "../transfer/message/group"
-import fs from 'fs'
+import fs, { readFileSync } from 'fs'
 import { Script } from 'vm'
 import { randomUUID } from "crypto"
 import vm from 'vm'
@@ -18,91 +18,15 @@ const log = useLogger('Test')
 
 const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
   log.info('testSendMsg')
-  const { getWrapperSession } = useNTCore()
-  const session = getWrapperSession()
-  const msgService = session.getMsgService()
-  let ret = undefined
-  // const ret = await msgService.getSingleMsg(p.a, p.b)
-  // log.info('ret:', ret)
-  switch(p.type)
-  {
-    case 'forward':{
-      ret = await msgService.multiForwardMsgWithComment(p.param, { chatType: 2, peerUid: '933286835', guildId: '' }, { chatType: 1, peerUid: 'u_K54_tDilsiaIV_m0q4XgCg', guildId: '' }, [], new Map())
-      }break;
-    case 'singleMsg':{
-      const param = p.data
-      ret = await msgService.getSingleMsg(param.a, param.b)
-      }break;
-    case 'sendMsg':{
-      const param = p.data
-      ret = await msgService.sendMsg('0', param.peer, param.b, new Map());
-     } break;
-    case 'addSendMsg':
-      {
-        log.info('addSendMsg',  p.data)
-        try{
-          const param = p.data
-          ret = await msgService.addSendMSg('0', param.peer, param.b, new Map())
-        }catch(err)
-        {
-          log.error('error:', err)
-        }
-        log.info('ret:', ret)
-      }
-      break;
-    case 'upload':
-      {
-        log.info('upload',  p.data)
-        try{
-          const param = p.data
-          ret = session.getRichMediaService().uploadRMFileWithoutMsg(param)
-        }catch(err)
-        {
-          ret = err
-          log.error('error:', err)
-        }
-        log.info('ret:', ret)
-      }
-      break;
-    case 'richfile':
-      {
-        log.info('richfile',  p.data)
-        try{
-          ret = session.getRichMediaService().onlyUploadFile({
-            "chatType": 2,
-            "peerUid": "933286835",
-            "guildId": ""
-          }, [{
-            fileName: 'test.jpg',
-            filePath: "D:/Pictures/壁纸/wallpaper/0new.jpg",
-            fileModelId: '123545665'
-          }])
-        }catch(err)
-        {
-          log.error('error:', err)
-        }
-        log.info('ret:', ret)
-      }
-      break;
-    case 'addNewDownloadOrUploadFile':
-      {
-        log.info('addNewDownloadOrUploadFile',  p.data)
-        try{
-          ret = session.getStorageCleanService().addNewDownloadOrUploadFile(p.data)
-        }catch(err)
-        {
-          log.info('exception...')
-          log.error('error:', err)
-        }
-        log.info('ret:', ret)
-      }
-      break;
-  }
+  const { getWrapperEngine } = useNTCore()
+  const engine = getWrapperEngine()
+  const ecdh = engine.getECDHService()
+  // ecdh.sendSSORequest()
   const resp: BotActionResponse = {
     id: "",
     status: "ok",
     retcode: 0,
-    data: ret,
+    data: {},
     message: ""
   }
   return Promise.resolve(resp)
@@ -311,11 +235,16 @@ const nodeModule = async () => {
   }
 }
 const genMarkdown = () => {
-  const _exports = require('../versions/9.9.9-23159/wrapper.node')
+  const _exports = require('../wrapper.node')
   let markdown = ''
   // 遍历类
   for (const serviceName in _exports) {
+    log.info('serviceName:', serviceName)
     const service = _exports[serviceName]
+    const obj = service.get?.()
+    if (obj)
+      log.info(Object.keys(obj))
+    log.info('service:', service.prototype)
     const funcs = service.prototype
     markdown += `## ${serviceName}\n\n`
     markdown += '| 方法名 | 描述 |\n'
@@ -326,8 +255,10 @@ const genMarkdown = () => {
     }
     markdown += '\n'
   }
-  fs.writeFileSync('./docs/function.md', markdown)
+  // log.info('markdown:', markdown)
+  fs.writeFileSync(path.resolve(__dirname, '../../../../docs/function.md'), markdown)
   
+  // process.exit(1)
 }
 const vmSrcipt = () => {
   global.require = require
@@ -513,7 +444,9 @@ export const test = (m: NodeModule) => {
     // vmSrcipt()
     // nodeModule()
     // useExample()
-    genMarkdown()
+    // setTimeout(() => {
+      // genMarkdown()
+    // }, 5000)
     // setTimeout(() => {
       // vmTest()
     // }, 30000)

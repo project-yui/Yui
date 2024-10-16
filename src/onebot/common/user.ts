@@ -10,6 +10,7 @@ const { registerEventListener } = useStore()
 const log = useLogger('Common/User')
 
 export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType> => {
+  log.info('getUserInfoByUid start')
   return new Promise(async (resolve, reject) => {
     let userInfoListener: {remove: () => void} | null = null
     // 超时拒绝
@@ -26,8 +27,9 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
     const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()
     const service = session.getProfileService()
-    const result = await service.getUserDetailInfo(uid)
-    log.info(`getUserDetailInfo[${uid}]:`, result)
+    log.info('getUserInfoByUid call', service)
+    const result = await service.fetchUserDetailInfo('BuddyProfileStore', [uid], 1, [0])
+    log.info(`getUserInfoByUid[${uid}]:`, result)
   })
 }
 

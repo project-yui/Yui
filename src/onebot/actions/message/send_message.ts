@@ -1,14 +1,8 @@
 import { useLogger } from "../../../common/log"
-import { useNTCore } from "../../../ntqq/core/core"
 import { CustomError } from "../../../server/error/custom-error"
 import { useStore } from "../../../store/store"
-import { convertBotMessage2NTInnerMessage, convertBotMessage2NTMessage } from "../../../transfer/message/convert"
-import { sendMessageToFriend } from "../../../transfer/message/friend"
 import { sendForwardMessageToGroup, sendMessageToGroup } from "../../../transfer/message/group"
 import { BotMessage } from "../../common/message"
-import { getBotAccount } from "../../common/user"
-import { BotActionResponse } from "../interfaces"
-import { addMsg } from 'yui-native'
 
 const log = useLogger('ActionGroup')
 const sendMessage = async (p: BotMessage.SendMsg): Promise<any> => {

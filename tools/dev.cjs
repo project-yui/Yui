@@ -1,4 +1,4 @@
-const { execSync, exec, spawn, ChildProcess } = require('child_process')
+const { spawn } = require('child_process')
 const fs = require('fs')
 const path = require('path')
 /** @type {import('yaml')} */
@@ -131,6 +131,8 @@ const ActionHandle = {
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
+                            // ELECTRON_RUN_AS_NODE: '1',
+                            // ELECTRON_ATTACH_CONSOLE: '1',
                             YUKIHANA_ACTION: 'ui',
                             YUKIHANA_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
                             QQV8BytecodeDebug: '1'
@@ -147,14 +149,16 @@ const ActionHandle = {
                 {
                     console.log('nodestart')
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-                    spawn(devConfig.program_path, ['./program/resources/app/app_launcher/index.js'], {
+                    const pro = spawn(devConfig.program_path, [], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
                             YUKIHANA_LOG: true,
-                            ELECTRON_RUN_AS_NODE: true,
+                            // ELECTRON_RUN_AS_NODE: true,
                             YUKIHANA_ACTION: 'dev',
+                            ELECTRON_ATTACH_CONSOLE: '1',
                             YUKIHANA_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
+                            QQV8BytecodeDebug: '1',
                         },
                         cwd: path.resolve(__dirname, '../program')
                     })

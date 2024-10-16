@@ -189,7 +189,7 @@ const onUpdateMsg = () => {
             ret.data.groupId = parseInt(msg.peerUid)
             break
         }
-        sendMessage(JSON.stringify(ret))
+        sendMessage(ret)
       }
     }
   })

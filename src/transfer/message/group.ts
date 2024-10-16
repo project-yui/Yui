@@ -158,7 +158,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
       }
       log.debug('msgContent:', JSON.stringify(msgContent, null, 4))
       log.info('start to add')
-      const addResult = addMsg(msgContent)
+      const addResult = false; //addMsg(msgContent)
       log.info('add result:')
       log.info('add result:', addResult)
       if (addResult) {

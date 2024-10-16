@@ -16,18 +16,11 @@ declare namespace NTNativeWrapper {
     const NodeIGlobalAdapter: typeof import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter
     const NodeIKernelLoginService: typeof import("./services/NodeIKernelLoginService").NodeIKernelLoginService
     const NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
-    const NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+    const NodeQQNTWrapperUtil: NTNativeWrapper.NodeQQNTWrapperUtil
     const NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
-    const NodeIKernelMsgListener: typeof import("./services/NodeIKernelMsgService").NodeIKernelMsgListener
     const NodeIKernelUnitedConfigService: typeof import("./services/NodeIKernelUnitedConfigService").NodeIKernelUnitedConfigService
     const NodeIDependsAdapter: typeof import("./adapters/NodeIDependsAdapter").NodeIDependsAdapter
     const NodeIDispatcherAdapter: typeof import("./adapters/NodeIDispatcherAdapter").NodeIDispatcherAdapter
-    const NodeIKernelBuddyListener: typeof import("./services/NodeIKernelBuddyService").NodeIKernelBuddyListener
-    const NodeIKernelGroupListener: typeof import("./services/NodeIKernelGroupService").NodeIKernelGroupListener
-    const NodeIKernelSessionListener: typeof import("./services/NodeIKernelUixConvertService").NodeIKernelSessionListener
-    const NodeIKernelLoginListener: typeof import("./services/NodeIKernelLoginService").NodeIKernelLoginListener
-    const NodeIKernelProfileListener: typeof import("./services/NodeIKernelProfileService").NodeIKernelProfileListener
-    const NodeIKernelStorageCleanListener: typeof import("./services/NodeIKernelStorageCleanService").NodeIKernelStorageCleanListener
   }
   interface CrossProcessExportsInterface {
     NodeIGlobalAdapter: typeof import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter
@@ -79,9 +72,11 @@ declare namespace NTNativeWrapper {
 
   class NodeIQQNTWrapperEngine {
     constructor()
+    getDeviceInfo(): any
+    getECDHService(): import('./services/NodeIKernelECDHService').NodeIKernelECDHService
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
     initWithMobileConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
-    getDeviceInfo(): any
+    // onSendSSOReply(cb: NodeISendECDHRequestCallback): void
   }
 
   // #endregion
@@ -383,11 +378,6 @@ declare namespace NodeIKernelProfileLikeServiceType {
   }
 }
 
-declare namespace NodeIKernelProfileServiceType {
-  interface UserSimpleInfoResp extends SimpleResult{
-  }
-}
-
 declare namespace NodeIKernelRecentContactServiceType {
   interface FetchAndSubscribeReq {
     listType: number
@@ -469,6 +459,9 @@ declare namespace NodeIQQNTWrapperSessionType {
   interface Init {
     selfUin: `${number}`
     selfUid: `u_${string}`
+    // sysPath: string
+    // userPath: string
+    // gproDBName: string
     desktopPathConfig: {
       account_path: string
     }

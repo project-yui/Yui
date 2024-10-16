@@ -33,10 +33,25 @@ interface CoreAndBaseInfo {
         richTime: number
     }
 }
+interface UserDetailInfoResult extends SimpleResult{
+    source: number
+    detail: Record<string, string>
+}
+declare namespace NodeIKernelProfileServiceType {
+  interface UserSimpleInfoResp extends SimpleResult{
+  }
+}
 export class NodeIKernelProfileService {
     addKernelProfileListener(listener: NodeIKernelProfileListener): number
     getUserSimpleInfo(a: boolean, uid: `u_${string}`[]): Promise<NodeIKernelProfileServiceType.UserSimpleInfoResp>
-    getUserDetailInfo(uid: `u_${string}`): Promise<SimpleResult>
+    /**
+     * 
+     * @param callFrom BuddyProfileStore
+     * @param uid uid列表
+     * @param source 1
+     * @param bizList [0]
+     */
+    fetchUserDetailInfo(callFrom: string, uid: `u_${string}`[], source: number, bizList: number[]): Promise<SimpleResult>
     getUserDetailInfoWithBizInfo(uid: `u_${string}`, keys: number[]): Promise<SimpleResult>
     getCoreAndBaseInfo(src: string, ids: `u_${string}`[]): Map<`u_${string}`, CoreAndBaseInfo>
 }

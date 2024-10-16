@@ -6,6 +6,10 @@ import EventEmitter from "events";
 import { CustomError } from "../../../server/error/custom-error";
 
 const log = useLogger('NTWrapper')
+const wrapper = useWrapper(1)
+const loginService = new wrapper.NodeIKernelLoginService()
+const wrapperSession = new wrapper.NodeIQQNTWrapperSession()
+const wrapperEngine = new wrapper.NodeIQQNTWrapperEngine()
 export const useNTWrapper = () => {
     // QQ号索引处理
     const asyncStore = useAsyncStore()
@@ -30,8 +34,9 @@ export const useNTWrapper = () => {
                 userNick: ""
             },
             dispatcher: new EventEmitter(),
-            loginService: new wrapper.NodeIKernelLoginService(),
-            wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
+            loginService,
+            wrapperSession,
+            wrapperEngine,
         }
     }
     return useWrapper(userStore[uin].moduleIndex)

@@ -36,29 +36,39 @@ export const useListenerProxy = (name: string) => {
     log.info('useListenerProxy async store:', name, s)
     const handler = {
         get(obj: any, prop: string) {
+            log.info('handle get', obj, prop)
             const uin: number = s?.get('uin')
             if (!uin)
             {
                 throw new CustomError(500, 'id error')
             }
             return (...args: any[]) => {
+                log.info('get async store')
                 const asyncStore = useAsyncStore()
                 if (!s) {
+                    log.error('Async store error!')
                     throw  new CustomError(500, 'Async store error!')
                 }
                 asyncStore.run(s, () => {
+                    log.info(name, 'useListenerProxy call')
                     const s = asyncStore.getStore()
                     log.info(name, 'useListenerProxy call async store:', s)
                     s?.set('uin', uin)
                     log.info(`${name}/${prop}`, ...args)
+                    log.info(`${name}/${prop}`, JSON.stringify(args, null, 4))
                     const { getCurrentAccountData } = useNTUserStore()
                     const dispatcher = getCurrentAccountData().dispatcher
                     if (!dispatcher){
+                        log.error(`dispatcher of ${uin} does not exists.`)
                         throw new CustomError(500, `dispatcher of ${uin} does not exists.`)
                     }
                     dispatcher.emit(`${name}/${prop}`, ...args)
                 })
             }
+        },
+        set(obj: any, prop: string, nv: any, rec: any) {
+            log.info('handle set', obj, prop)
+            return true;
         },
     };
     

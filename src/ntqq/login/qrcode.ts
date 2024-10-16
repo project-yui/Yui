@@ -21,7 +21,7 @@ export const NTGetLoginQrCode = (): Promise<NTLogin.GetQRCodeResponse> => {
     const { getLoginService } = useNTCore()
     await sleep(2000)
     const login = getLoginService()
-    login.getQRCodePicture()
+    log.info('get qrcode:', login.getQRCodePicture())
 
   })
 }

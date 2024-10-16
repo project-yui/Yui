@@ -1,3 +1,5 @@
+import { useAsyncStore } from "../store/async-store"
+
 const enum LogLevel {
   /** 追踪日志 */
   Trace,
@@ -84,6 +86,8 @@ class Logger {
   }
 
   private _log (level: LogLevel, args: unknown[]) {
+    const asyncStore = useAsyncStore()
+    let traceId = asyncStore.getStore()?.get('traceId')
     if (!isLogEnabled) return
     // 优先级小的不显示
     if (level < CurrentLogLevel) return
@@ -91,7 +95,7 @@ class Logger {
     const now = new Date()
     const fix = (d: number, len = 2) => (d + '').padStart(len, '0')
     const time = `${now.getFullYear()}-${fix(now.getMonth() + 1)}-${fix(now.getDate())} ${fix(now.getHours())}:${fix(now.getMinutes())}:${fix(now.getSeconds())}.${fix(now.getMilliseconds(), 3)}`
-    _console[Methods[level]](`[${time}] [${Styles[level]}] ${this.config.namespace}`, Methods[level], ...args)
+    _console[Methods[level]](`[${time}] [${Styles[level]}] [${traceId}] ${this.config.namespace}`, Methods[level], ...args)
     this.afterFuncs.forEach(e => e(this.config))
   }
 

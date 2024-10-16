@@ -81,14 +81,13 @@ const getAppInfo = (): StoreAppInfo => {
     }
 }
 const getAppId = () => {
-    return platform === 'win32' ? '537237802' : '537207207'
+    return platform === 'win32' ? '537249321' : '537207207'
  }
 const getNTConfigStoreFolder = (): string => {
   const wrapper = useNTWrapper()
-  const wrapperUtil = new wrapper.NodeQQNTWrapperUtil()
   switch(platform) {
     case 'win32':
-      return wrapperUtil.getNTUserDataInfoConfig() + ''
+      return wrapper.NodeQQNTWrapperUtil.getNTUserDataInfoConfig() + ''
     case 'linux':
       return `${homedir()}/.config/QQ`
       break

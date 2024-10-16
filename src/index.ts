@@ -1,40 +1,51 @@
-import bytenode from 'bytenode'
-import { existsSync } from 'fs'
-import { resolve } from 'path'
+import { useLogger } from "./common/log"
+import { hook } from "./hook";
+import { initNative } from "./native/init";
+import { NTInitialize } from "./ntqq";
+import { initOnebot } from "./onebot/onebot";
+import { startServer } from "./server";
+import { useAsyncStore } from "./store/async-store";
+import { test } from "./test/test";
+import { hookWrapper } from "./wrapper/hook";
 
-// const nativeModule = require('D:/GitHub/nt-native/build/Debug/nt_native.node')
-// const signature = '48895C2420564883EC20488BD933F6E8DC'
-// const sigArr = signature.match(/[a-zA-Z0-9]{2}/g)?.map(e=>parseInt(`0x${e}`))
-// if (sigArr !== null) {
-//   setTimeout(() => {
-//     const result = nativeModule.install(sigArr)
-//     console.log('install result:', result)
-//   }, 2000)
-// }
+global.module = module
+const log = useLogger('Index')
+try {
+  log.info('hi ntqq bot!! v0.0.2')
+  console.log(process.version)
 
-console.log('action:', process.env['YUKIHANA_ACTION'])
-switch (process.env['YUKIHANA_ACTION']) {
-  case 'dev':
-  case 'ui':
-    // 开发模式，从源码启动
-    console.log('--------------------Dev------------------')
-    require('./core.js')
-    break
-  case 'compile':
-    // 调用编译模块
-    /**
-     * 用途：
-     * 快速生成Linux平台字节码
-     */
-    if (existsSync(resolve(__dirname, './compile.js')))
-      require('./compile.js')
-    break
-  default: {
-      // 不能删除，否则bytenode会被rollup移除
-      // bytenode内部添加了对.jsc文件加载的支持
-      bytenode
-      // 从字节码启动
-      require('./core.jsc')
-    }
-    break
+  process.on('unhandledRejection', (err) => {
+    log.error('unhandledRejection:', err)
+    // process.exit(1)
+  })
+
+  // 核心事件hook
+  if (process.env['YUKIHANA_ACTION'] === 'ui') {
+    // log.info('hook')
+    hook()
+    log.info('hookWrapper')
+    hookWrapper()
+  }
+                
+  log.info('initNTQQ')
+  // initNative()
+
+  log.info('initOnebot')
+  initOnebot()
+
+  log.info('startServer')
+  // 启动服务器
+  startServer()
+
+  // 测试
+  test(module)
+
+  // ntqq/resources/app/app_launcher/index.js 原始代码
+  if (process.env['YUKIHANA_ACTION'] === 'ui')
+    console.log(require('../major.node').load('internal_index', module));
+  console.log('end....')
+}
+catch(err) {
+  log.error('Error:', err)
+  process.exit(1)
 }

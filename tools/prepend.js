@@ -20,7 +20,7 @@ global.asyncLocalStorage = asyncLocalStorage;
       }
       const config = JSON.parse(fs.readFileSync(packagePath).toString())
       const version = config.version
-      let wrapperPath = path.resolve(__dirname, `../versions/${version}/wrapper.node`)
+      let wrapperPath = path.resolve(__dirname, `../wrapper.node`)
       if (process.platform === 'win32') {
         if (!fs.existsSync(wrapperPath)) {
           log('wrapper.node not exists!')
@@ -46,7 +46,7 @@ global.asyncLocalStorage = asyncLocalStorage;
           {
             throw new Error('use wrapper: idx error')
           }
-          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
+          const targetPath = wrapperPath //.replace('wrapper.node', `wrapper-${idx}.node`)
           if (!fs.existsSync(targetPath))
           {
             fs.cpSync(wrapperPath, targetPath)

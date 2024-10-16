@@ -1,9 +1,9 @@
 {
-    "resources\\app\\app_launcher\\index.js": {
-        "target": "resources\\app\\app_launcher\\index.original.js",
-        "content": "require('./launcher.node').load('external_index', module);",
+    "resources\\app\\package.json": {
+        "target": "resources\\app\\package.original.json",
+        "content": "",
         "cur": 0,
-        "start": 0,
-        "end": 1
+        "start": 3,
+        "end": 4
     }
 }

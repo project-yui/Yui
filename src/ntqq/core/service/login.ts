@@ -19,9 +19,8 @@ export const initLogin = () => {
   log.info('initLogin async store:', s)
   const { getLoginService } = useNTCore()
   const login = getLoginService()
-  const wrapper = useNTWrapper()
   const p = useListenerProxy('KernelLoginListener')
-  const listener = new wrapper.NodeIKernelLoginListener(p)
+  log.info('create listener')
   const { registerEventListener } = useStore()
   log.info('add handle after login success.')
   registerEventListener('KernelLoginListener/onQRCodeLoginSucceed', 'always', (info) => {
@@ -34,5 +33,5 @@ export const initLogin = () => {
     // start to init session
     initWrapperSession(info.uin, info.uid)
   })
-  login.addKernelLoginListener(listener)
+  login.addKernelLoginListener(p)
 }

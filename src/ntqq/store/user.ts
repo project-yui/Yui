@@ -9,6 +9,7 @@ interface CoreData {
   moduleIndex: number
   loginService: NodeIKernelLoginService
   wrapperSession: NTNativeWrapper.NodeIQQNTWrapperSession
+  wrapperEngine: NTNativeWrapper.NodeIQQNTWrapperEngine
   dispatcher: EventEmitter
   info: UserInfo
 }

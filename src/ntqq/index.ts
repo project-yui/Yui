@@ -6,7 +6,7 @@ import { initService } from "./core/service"
  * 
  * @param id QQ号
  */
-export const NTInitialize = () => {
-  prepareBaseEnvironment()
+export const NTInitialize = async () => {
+  await prepareBaseEnvironment()
   initService()
 }

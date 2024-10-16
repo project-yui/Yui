@@ -1,8 +1,13 @@
 import { randomUUID } from "crypto";
 import { useLogger } from "../common/log";
+import { readFileSync } from "fs";
 
 const log = useLogger('Wrapper/hook')
 
+const readFile = (path: string) => {
+  const data = readFileSync(path).toString()
+  log.info(path, 'content:\n', data)
+}
 /**
  * 底层 wrapper.node hook
  */
@@ -18,51 +23,43 @@ export const hookWrapper = ()=> {
 
     // 修改加载后的native方法
     if (file.includes('wrapper')){
-      const _exports = m.exports
-      for (const serviceName in _exports) {
-        const service = _exports[serviceName]
-        
-        // 修改构造方法
-        const ori = service
-        const temp = function (...args: any) {
-          const id = randomUUID()
-          log.info(`wrapper/${serviceName}[${id}]/constructor`, ...args)
-          const r = new ori(...args)
-          r.id = id
-          return r
+      const genProxyForObject = (name: string | symbol, o: any) => {
+        log.info('type:', typeof o)
+        if (o === undefined)
+        {
+          return undefined
         }
-        temp.prototype.constructor = Object.create(ori.prototype)
-        temp.prototype.constructor = temp
-        Object.setPrototypeOf(temp, ori);
-        _exports[serviceName] = temp
-
-        const funcs = service.prototype
-        for (const funcName in funcs) {
-          const func = funcs[funcName]
-          // 修改方法
-          funcs[funcName] = function(...args: any) {
-            let r = func.apply(this, args)
-            if (r instanceof Promise) {
-              const uuid = randomUUID()
-              log.info(`wrapper/${serviceName}[${this.id}]/${funcName}`, uuid, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', r)
-              return r.then((res) => {
-                let l = ''
-                try {
-                  l = JSON.stringify(res, null, 4)
-                } catch (error) {
-                  
-                }
-                log.info(`wrapper/${serviceName}[${this.id}]/${funcName}/${uuid}`, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', l)
-                return Promise.resolve(res)
-              })
+        return new Proxy(o, {
+          construct(target, argArray, newTarget) {
+            log.info(`construct from ${String(name)}:`, target, argArray, newTarget)
+            return o(...argArray)
+          },
+          get(obj, p, recv){
+            log.info(`get from ${String(name)}:`, obj, p, recv)
+            if (p == 'get') {
+              log.info('get ---->', o.get())
+              log.info('get ---->', o.get().prototype)
+              log.info('get ---->', o.prototype)
+              log.info('get ---->', Object.keys(o.prototype))
+              return o.get
             }
-            else {
-              log.info(`wrapper/${serviceName}[${this.id}]/${funcName}`, '\narguments:', ...args, '\nJSON arguments:', JSON.stringify(args), '\n----\nresponse:\n', r)
-            }
-            return r
+            return o[p]
           }
-        }
+        })
       }
+      const _exports = m.exports
+      m.exports = new Proxy({}, {
+        get(obj, p, recv) {
+          log.info('get from export:', obj, p, recv)
+          return genProxyForObject(p, _exports[p])
+        }
+      })
+      // for (const serviceName in _exports) {
+      //   const service = _exports[serviceName]
+      //   log.info('service:', service)
+      //   log.info('function:', service.prototype)
+      //   _exports[serviceName] = new Proxy
+      // }
     }
     return ret
   }

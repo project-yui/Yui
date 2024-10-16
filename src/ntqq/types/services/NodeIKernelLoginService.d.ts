@@ -39,7 +39,7 @@ export class NodeIKernelLoginService {
      * 
      * 响应数据在监听器里面触发
      */
-    getQRCodePicture(): void
+    getQRCodePicture(): boolean
     initConfig(config: NodeIKernelLoginServiceType.LoginInitConfig): void
     passwordLogin(login: NodeIKernelLoginServiceType.PasswordLoginReq): Promise<NodeIKernelLoginServiceType.PasswordLoginResp>
     quickLoginWithUin(uin: `${number}`): Promise<NodeIKernelLoginServiceType.QuickLoginResp>

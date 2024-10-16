@@ -149,6 +149,7 @@ export default class NodeIKernelMsgService {
     getMsgsByMsgId(peer: PeerInfo, msgId: `${number}`[]): Promise<any>
     getMsgsIncludeSelf(peer: PeerInfo, startMsgId: `${number}`, cnt: number, queryOrder: boolean): Promise<NodeIKernelMsgServiceType.MsgListResult>
     getOnlineStatusSmallIconBasePath(): Promise<NodeIKernelMsgServiceType.BasePathResp>
+    getOnLineDev(): Promise<any>
     /**
      * 获取最近使用的表情列表
      * @param a 22

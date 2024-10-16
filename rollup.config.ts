@@ -12,33 +12,34 @@ import path from 'path';
 
 const outputDir = process.env['outputDir'] || 'program/resources/app/app_launcher/'
 const options: RollupOptions[] = [
+  // {
+  //   // 此模块用于其它平台编译字节码
+  //   input: 'src/compile.ts',
+  //   output: {
+  //     dir: outputDir,
+  //     format: 'cjs',
+  //   },
+  //   plugins: [
+  //     resolve({
+  //       // 将自定义选项传递给解析插件
+  //       moduleDirectories: ['node_modules'],
+  //       preferBuiltins: true,
+  //     }),
+  //     commonjs({
+  //       include: /node_modules/,
+  //       requireReturnsDefault: 'auto', // <---- this solves default issue
+  //     }),
+  //     typescript(),
+  //     // terser(),
+  //     // obfuscator({
+  //     //   global: true,
+  //     // }),
+  //   ],
+  //   // 指出哪些模块应该视为外部模块
+  //   external: ['electron', 'module', 'ntwrapper']
+  // },
   {
-    // 此模块用于其它平台编译字节码
-    input: 'src/compile.ts',
-    output: {
-      dir: outputDir,
-      format: 'cjs',
-    },
-    plugins: [
-      resolve({
-        // 将自定义选项传递给解析插件
-        moduleDirectories: ['node_modules'],
-        preferBuiltins: true,
-      }),
-      commonjs({
-        include: /node_modules/,
-        requireReturnsDefault: 'auto', // <---- this solves default issue
-      }),
-      typescript(),
-      // terser(),
-      // obfuscator({
-      //   global: true,
-      // }),
-    ],
-    // 指出哪些模块应该视为外部模块
-    external: ['electron', 'module', 'ntwrapper']
-  }, {
-    input: 'src/core.ts',
+    input: 'src/index.ts',
     output: {
       dir: outputDir,
       // file: 'D:/GitHub/Yui-vscode/dist/program/resources/app/app_launcher/index.js',
@@ -103,33 +104,33 @@ const options: RollupOptions[] = [
     // 指出哪些模块应该视为外部模块
     external: ['electron', 'module', 'ntwrapper', 'yui-native'],
   },
-  {
-    input: 'src/index.ts',
-    output: {
-      dir: outputDir,
-      format: 'cjs',
-    },
-    plugins: [
-      resolve({
-        // 将自定义选项传递给解析插件
-        moduleDirectories: ['node_modules'],
-        preferBuiltins: true,
-      }),
-      commonjs({
-        include: /node_modules/,
-        requireReturnsDefault: 'auto', // <---- this solves default issue
-      }),
-      typescript(),
-      json(),
-      // 压缩
-      // terser(),
-      // 混淆
-      // obfuscator({
-      //   global: true,
-      // }),
-    ],
-    // 指出哪些模块应该视为外部模块
-    external: ['electron', 'module', 'ntwrapper']
-  },
+  // {
+  //   input: 'src/start.ts',
+  //   output: {
+  //     dir: outputDir,
+  //     format: 'cjs',
+  //   },
+  //   plugins: [
+  //     resolve({
+  //       // 将自定义选项传递给解析插件
+  //       moduleDirectories: ['node_modules'],
+  //       preferBuiltins: true,
+  //     }),
+  //     commonjs({
+  //       include: /node_modules/,
+  //       requireReturnsDefault: 'auto', // <---- this solves default issue
+  //     }),
+  //     typescript(),
+  //     json(),
+  //     // 压缩
+  //     // terser(),
+  //     // 混淆
+  //     // obfuscator({
+  //     //   global: true,
+  //     // }),
+  //   ],
+  //   // 指出哪些模块应该视为外部模块
+  //   external: ['electron', 'module', 'ntwrapper']
+  // },
 ];
 export default options
