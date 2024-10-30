@@ -70,13 +70,24 @@ declare namespace NTNativeWrapper {
     vendorType: 0
   }
 
+  interface SSOFilter {
+    ssoRetCode: number
+    trpcRetCode: number
+    trpcFuncCode: number
+    errorMsg: string
+    pbBuffer: string
+    rpcMap: {
+      entries: () => void
+      next: () => void
+    }
+  }
   class NodeIQQNTWrapperEngine {
     constructor()
     getDeviceInfo(): any
     getECDHService(): import('./services/NodeIKernelECDHService').NodeIKernelECDHService
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
     initWithMobileConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
-    // onSendSSOReply(cb: NodeISendECDHRequestCallback): void
+    onSendSSOReply(a: number, a2: number, a3: number, a4: number, a5: SSOFilter): void
   }
 
   // #endregion

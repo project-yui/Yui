@@ -1,6 +1,5 @@
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
-import { initNative } from "./native/init";
 import { NTInitialize } from "./ntqq";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
@@ -26,9 +25,6 @@ try {
     log.info('hookWrapper')
     hookWrapper()
   }
-                
-  log.info('initNTQQ')
-  // initNative()
 
   log.info('initOnebot')
   initOnebot()

@@ -130,11 +130,11 @@ const ActionHandle = {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
-                            YUKIHANA_LOG: true,
+                            YUI_LOG: true,
                             // ELECTRON_RUN_AS_NODE: '1',
                             // ELECTRON_ATTACH_CONSOLE: '1',
-                            YUKIHANA_ACTION: 'ui',
-                            YUKIHANA_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
+                            YUI_ACTION: 'ui',
+                            YUI_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
                             QQV8BytecodeDebug: '1'
                         },
                         cwd: path.resolve(__dirname, '../program'),
@@ -153,11 +153,11 @@ const ActionHandle = {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
-                            YUKIHANA_LOG: true,
+                            YUI_LOG: true,
                             // ELECTRON_RUN_AS_NODE: true,
-                            YUKIHANA_ACTION: 'dev',
+                            YUI_ACTION: 'dev',
                             ELECTRON_ATTACH_CONSOLE: '1',
-                            YUKIHANA_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
+                            YUI_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
                             QQV8BytecodeDebug: '1',
                         },
                         cwd: path.resolve(__dirname, '../program')

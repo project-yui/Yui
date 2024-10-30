@@ -7,15 +7,18 @@ declare namespace YuiNativeWrapper {
          * 
          * @param signature 函数签名
          */
-        const install: (signature: SignatureType) => Record<string, boolean>
+        const install: (name: string, signature: SignatureType) => Record<string, boolean>
         /**
          * 添加消息
          */
         const addMsg: (msg: AddMsgType) => boolean
+        const test: () => boolean
     }
     interface SignatureType {
       sqlite3_stmt?: number[]
       hosts?: number[]
+      msf?: number[]
+      msf_resp?: number[]
     }
     interface AddMsgType {
         msgId: `${number}`

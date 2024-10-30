@@ -4,12 +4,9 @@ import { useNTUserStore } from "../../store/user"
 import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
 import { CustomError } from "../../../server/error/custom-error";
+import { initNative } from "../../../native/init";
 
 const log = useLogger('NTWrapper')
-const wrapper = useWrapper(1)
-const loginService = new wrapper.NodeIKernelLoginService()
-const wrapperSession = new wrapper.NodeIQQNTWrapperSession()
-const wrapperEngine = new wrapper.NodeIQQNTWrapperEngine()
 export const useNTWrapper = () => {
     // QQ号索引处理
     const asyncStore = useAsyncStore()
@@ -34,10 +31,11 @@ export const useNTWrapper = () => {
                 userNick: ""
             },
             dispatcher: new EventEmitter(),
-            loginService,
-            wrapperSession,
-            wrapperEngine,
+            loginService: new wrapper.NodeIKernelLoginService(),
+            wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
+            wrapperEngine: new wrapper.NodeIQQNTWrapperEngine(),
         }
+        initNative(`wrapper-${idx}.node`)
     }
     return useWrapper(userStore[uin].moduleIndex)
 }

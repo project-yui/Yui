@@ -52,7 +52,7 @@ interface LoggerConfigType {
  */
 type InterceptorFuncType = (config: LoggerConfigType) => void
 
-const isLogEnabled = process.env['YUKIHANA_LOG'] === 'true'
+const isLogEnabled = process.env['YUI_LOG'] === 'true'
 
 if (!isLogEnabled) {
   _console.info('================================日志打印已关闭！=======================================')

@@ -21,4 +21,6 @@ export interface YuiConfig {
 export interface SingatureInfo {
     sqlite3_stmt: string
     get_ip_by_domain: string
+    msf_task: string
+    msf_resp: string
 }

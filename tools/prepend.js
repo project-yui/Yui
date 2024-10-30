@@ -46,7 +46,7 @@ global.asyncLocalStorage = asyncLocalStorage;
           {
             throw new Error('use wrapper: idx error')
           }
-          const targetPath = wrapperPath //.replace('wrapper.node', `wrapper-${idx}.node`)
+          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
           if (!fs.existsSync(targetPath))
           {
             fs.cpSync(wrapperPath, targetPath)
@@ -58,9 +58,9 @@ global.asyncLocalStorage = asyncLocalStorage;
     'yui-native': (t) => {
       /**  @type {import('path')} */
       const path = orgi_require('path')
-      let wrapperPath = path.resolve(__dirname, `./native.node`)
-      if (process.env['YUKIHANA_NATIVE']) {
-        wrapperPath = process.env['YUKIHANA_NATIVE']
+      let wrapperPath = path.resolve(__dirname, `./nt_native.node`)
+      if (process.env['YUI_NATIVE']) {
+        wrapperPath = process.env['YUI_NATIVE']
       }
       return orgi_require.apply(t, [wrapperPath])
     }

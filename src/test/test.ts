@@ -11,25 +11,23 @@ import vm from 'vm'
 import v8 from 'v8'
 import events from 'events'
 import { app } from 'electron'
+import { test as ttt} from 'yui-native'
 
 
 const { registerActionHandle } = useStore()
 const log = useLogger('Test')
 
-const testSendMsg = async (p: any): Promise<BotActionResponse<any>> => {
+const testSendMsg = async (p: any): Promise<any> => {
   log.info('testSendMsg')
   const { getWrapperEngine } = useNTCore()
   const engine = getWrapperEngine()
   const ecdh = engine.getECDHService()
-  // ecdh.sendSSORequest()
-  const resp: BotActionResponse = {
-    id: "",
-    status: "ok",
-    retcode: 0,
-    data: {},
-    message: ""
-  }
-  return Promise.resolve(resp)
+  
+  log.info('test:', p)
+  const ret = await (ecdh as any)[p.method](...p.args)
+  // if (p.test)
+  //   ttt()
+  return ret
 }
 
 class ScriptHook extends Script{
@@ -271,6 +269,7 @@ import async_hooks from 'node:async_hooks';
 import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
 import { DESTRUCTION } from "dns"
+import { useNTWrapper } from "../ntqq/core/service/nt-wrapper"
 const hookAsync = () => {
   const { fd } = stdout;
 
@@ -465,5 +464,7 @@ export const test = (m: NodeModule) => {
     log.error('error:', err)
     process.exit(1)
   }
+  const wrapper = useNTCore()
+  // wrapper.getWrapperEngine().onSendSSOReply
   registerActionHandle('test', testSendMsg)
 }

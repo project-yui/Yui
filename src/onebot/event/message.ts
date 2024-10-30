@@ -31,7 +31,12 @@ const onRecvMsg = () => {
       // 频道消息暂不处理
       if (msg.chatType === 4) continue
       
-      const senderUserInfo = await getUserInfoByUid(msg.senderUid)
+      let uin: number = 0
+      if (msg.senderUid)
+      {
+        const senderUserInfo = await getUserInfoByUid(msg.senderUid)
+        uin = parseInt(senderUserInfo.uin)
+      }
       const ret: EventDataType<BotMessageData> = {
         self: {
           id: parseInt(user.uin),
@@ -46,7 +51,7 @@ const onRecvMsg = () => {
           messageSeq: msg.msgSeq,
           groupId: 0,
           groupName: '',
-          senderId: parseInt(senderUserInfo.uin),
+          senderId: uin,
           senderUid: msg.senderUid,
           senderMemberName: msg.sendMemberName,
           time: parseInt(msg.msgTime),
