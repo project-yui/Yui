@@ -4,7 +4,7 @@ import { useNTUserStore } from "../../store/user"
 import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
 import { CustomError } from "../../../server/error/custom-error";
-import { initNative } from "../../../native/init";
+import { initNative } from "../../../native/native";
 
 const log = useLogger('NTWrapper')
 export const useNTWrapper = () => {
@@ -26,7 +26,7 @@ export const useNTWrapper = () => {
         userStore[uin] = {
             moduleIndex: idx,
             info: {
-                uin: undefined,
+                uin: 0,
                 uid: undefined,
                 userNick: ""
             },

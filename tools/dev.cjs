@@ -1,9 +1,8 @@
-const { spawn } = require('child_process')
-const fs = require('fs')
-const path = require('path')
-/** @type {import('yaml')} */
 const yaml = require('yaml')
-
+const fs = require('fs')
+const path = require('path');
+const { windows } = require('./windows/install.cjs');
+const { spawn } = require('child_process');
 
 /**
  * Simple object check.
@@ -65,12 +64,28 @@ const copyConfiguration = () =>
     } catch(_){}
     fs.copyFileSync(path.resolve(__dirname, '../yui.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/yui.yaml'))
     fs.copyFileSync(path.resolve(__dirname, '../resources/hack/patch.json'), path.resolve(__dirname, '../program/patch.json'))
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../program/resources/app/package.json')).toString())
+    pkg.main = './app_launcher/index.js'
+    fs.writeFileSync(path.resolve(__dirname, '../program/resources/app/package.patch.json'), JSON.stringify(pkg, null, 2))
 }
-copyConfiguration()
 
 /////////////////////////配置处理完毕////////////////////////////////////
 
 const ActionHandle = {
+    install: async (args) => {
+        switch (process.platform) {
+            case 'win32':
+                await windows();
+                break;
+                
+            case 'linux':
+                break;
+        
+            default:
+                throw new Error(`platform ${process.platform} not supported!`);
+                break;
+        }
+    },
     /**
      * 
      * @param {string[]} args 参数
@@ -108,6 +123,7 @@ const ActionHandle = {
      * @param {string[]} args 参数
      */
     start: (args) => {
+        copyConfiguration()
         // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev .\\ntqq\\QQ.exe
         spawn(devConfig.program_path, {
             stdio: 'inherit',
@@ -121,6 +137,7 @@ const ActionHandle = {
         })
     },
     'start-log-file': (args) => {
+        copyConfiguration()
         switch(process.platform) {
             case 'win32':
                 {
@@ -144,6 +161,7 @@ const ActionHandle = {
         }
     },
     nodestart: (args) => {
+        copyConfiguration()
         switch(process.platform) {
             case 'win32':
                 {

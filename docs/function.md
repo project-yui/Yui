@@ -93,7 +93,9 @@
 |-------|-----|
 | getVoiceChannelMaxPeopleCount | 0 |
 | loadSideBarConfig | 0 |
+| addKernelConfigMgrListener | 1 |
 | getConfigMgrInfo | 1 |
+| removeKernelConfigMgrListener | 1 |
 | saveSideBarConfig | 1 |
 | getConfigMgrInfoTaskId | 2 |
 | updateConfigMgrInfoTaskId | 2 |
@@ -139,6 +141,7 @@
 | downloadFile | 1 |
 | getFileAssistantList | 1 |
 | getMoreFileAssistantList | 1 |
+| modifyFileInfo | 1 |
 | removeKernelFileAssistantListener | 1 |
 | retryFileAction | 1 |
 | searchMoreFile | 1 |
@@ -902,9 +905,11 @@
 | getLoginMiscData | 1 |
 | initConfig | 1 |
 | isHasLoginInfo | 1 |
+| loadNoLoginUnitedConfig | 1 |
 | loginUnusualDevice | 1 |
 | passwordLogin | 1 |
 | quickLoginWithUin | 1 |
+| registerUnitedConfigPushGroupList | 1 |
 | removeKernelLoginListener | 1 |
 | resetLoginInfo | 1 |
 | setLoginMiscData | 2 |
@@ -1267,6 +1272,7 @@
 | checkIsSupportAutoDetect | 0 |
 | cleanWindowsInfo | 0 |
 | delAutoRun | 0 |
+| endScreenCapture | 0 |
 | getDisplayInfo | 0 |
 | getGetFullScreenInfo | 0 |
 | getMiniAppPath | 0 |
@@ -1277,11 +1283,13 @@
 | getUserDataDir | 0 |
 | getWindowsInfo | 0 |
 | initScreenShotPlugin | 0 |
+| isDwmCompositionEnabled | 0 |
 | isMiniAppAlreadyExist | 0 |
 | isMiniAppExist | 0 |
 | isMiniGameAlreadyExist | 0 |
 | isMiniGameExist | 0 |
 | isScreenCaptureOrRecording | 0 |
+| listenMouseMoveOnDisplays | 0 |
 | mainWindowInitComplete | 0 |
 | notifyGuildHasHiddenDock | 0 |
 | queryAutoRun | 0 |
@@ -1289,6 +1297,7 @@
 | setScreenShotSetting | 0 |
 | startNewAppInstance | 0 |
 | startScreenShotInstance | 0 |
+| unlistenMouseMoveOnDisplays | 0 |
 | wantParseClipboard | 0 |
 | wantScreenRecording | 0 |
 | wantScreenShot | 0 |
@@ -1300,6 +1309,7 @@
 | downloadMiniApp | 1 |
 | downloadMiniGame | 1 |
 | getCurWindowInfo | 1 |
+| getGroupOpenID | 1 |
 | getMiniGameV2EngineConfig | 1 |
 | isAppInstalled | 1 |
 | isOldQQRunning | 1 |
@@ -1312,6 +1322,7 @@
 | registerScreenCaptureShortcutWithKeycode | 1 |
 | registerScreenRecordShortcutWithKeycode | 1 |
 | removeKernelNodeMiscListener | 1 |
+| scanQBar | 1 |
 | sendRequestToApiGateway | 1 |
 | setCurWindowsStatus | 1 |
 | setMiniAppVersion | 1 |
@@ -1331,11 +1342,15 @@
 | getAppInfoByLink | 2 |
 | getOpenAuth | 2 |
 | installApp | 2 |
+| setBackgroudWindowLevel | 2 |
 | setCurActiveGuildAndChannel | 2 |
 | setWindowLevelNT | 2 |
 | startNewMiniApp | 2 |
+| startScreenCapture | 2 |
 | writeClipboard | 2 |
+| getGroupMemberOpenID | 3 |
 | getOpenAuthDelegateCode | 3 |
+| getRelationUinToOpenID | 3 |
 | sendLog | 3 |
 | sendMiniAppMsg | 3 |
 | startScreenCaptureDetectByBuf | 3 |
@@ -1584,6 +1599,7 @@
 | getSettingForNum | 1 |
 | getSettingForStr | 1 |
 | modifyAccount | 1 |
+| openUrlInIM | 1 |
 | openUrlWithQQBrowser | 1 |
 | removeKernelSettingListener | 1 |
 | setAutoLoginSwitch | 1 |

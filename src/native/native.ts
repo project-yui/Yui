@@ -1,8 +1,12 @@
-import { install } from 'yui-native'
+import { addPkg, install } from 'yui-native'
 import { useConfigStore } from '../store/config'
 import { useLogger } from '../common/log'
+import { useNTCore } from '../ntqq/core/core'
+import { CommunicationPkg } from '../ntqq/protobuf/communication'
+import { useNTConfig } from '../ntqq/store/config'
+import { useNTUserStore } from '../ntqq/store/user'
 
-const log = useLogger('NativeInit')
+const log = useLogger('Native')
 export const initNative = (name: string) => {
     // 获取函数签名
     const { getSignature } = useConfigStore()
@@ -40,4 +44,30 @@ export const initNative = (name: string) => {
     log.info('install:', sigData)
     const result = install(name, sigData)
     log.info('install result:', result)
+}
+export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
+    const { getWrapperSession } = useNTCore()
+    const session = getWrapperSession()
+    const search = session.getSearchService()
+    const { getCurrentAccountData } = useNTUserStore()
+    const info = getCurrentAccountData()
+    const send = addPkg({
+        data: data,
+        uin: info.info.uin,
+        cmd,
+    })
+    log.debug('emit start ...')
+    const t = search.searchStranger('565656556', {
+      keyWords: '1145141919810', // 触发关键字
+      forceUpdate: true
+    }, {
+      businessMask: [],
+      cookie: new Uint8Array(),
+      pageSize: 1
+    })
+    log.debug('emit over, await ...')
+    const result = await send
+    log.debug('decode ...', result)
+    const resp = CommunicationPkg.decode(result, result.byteLength)
+    return resp
 }

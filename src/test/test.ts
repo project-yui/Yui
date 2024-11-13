@@ -11,7 +11,7 @@ import vm from 'vm'
 import v8 from 'v8'
 import events from 'events'
 import { app } from 'electron'
-import { test as ttt} from 'yui-native'
+import { addPkg } from 'yui-native'
 
 
 const { registerActionHandle } = useStore()
@@ -19,15 +19,18 @@ const log = useLogger('Test')
 
 const testSendMsg = async (p: any): Promise<any> => {
   log.info('testSendMsg')
-  const { getWrapperEngine } = useNTCore()
-  const engine = getWrapperEngine()
-  const ecdh = engine.getECDHService()
-  
-  log.info('test:', p)
-  const ret = await (ecdh as any)[p.method](...p.args)
-  // if (p.test)
-  //   ttt()
-  return ret
+
+  const result = await sendCustomPkg(p.pkg.cmd, CommunicationPkg.encode({
+        uint32Command: 0xed3,
+        uint32ServiceType: 1,
+        bytesBodybuffer: PaiYiPaiReq.encode({
+          uint64ToUin: p.uin,
+          uint64GroupCode: p.groupCode,
+          uint32NudgeType: 0
+        }).finish(),
+        trpcTransInfo: [],
+    }).finish())
+  return result
 }
 
 class ScriptHook extends Script{
@@ -270,6 +273,8 @@ import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
 import { DESTRUCTION } from "dns"
 import { useNTWrapper } from "../ntqq/core/service/nt-wrapper"
+import { PaiYiPaiReq, CommunicationPkg } from "../ntqq/protobuf/communication"
+import { sendCustomPkg } from "../native/native"
 const hookAsync = () => {
   const { fd } = stdout;
 

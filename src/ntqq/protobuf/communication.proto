@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package nt.communication;
+
+/** 
+ * from hap\resources\rawfile\oidb\oidb.proto
+ *
+ * 小圈子闹麻了，数据定义找官方拿。
+ */
+message CommunicationPkg {
+    optional uint32 uint32_command = 1;         //主命令号, 即协议号
+    optional uint32 uint32_service_type = 2;    //子命令号, 即在oidb.server.com门户上申请的业务类型
+    optional uint32 uint32_result = 3;          //返回值: oidb包头返回值
+    optional bytes  bytes_bodybuffer = 4;       //对应命令的包体
+    optional string str_error_msg = 5;            //出错信息
+    optional string str_client_version = 6;    //客户端的协议版本号
+    //optional LoginSig msg_login_sig = 7;    //客户端上传的登录态, 没填则使用SSO包头的A2
+    // optional uint32 account_type = 9; //账号类型；账号均为uin：不填或者0；存在uid：1
+    repeated MetaData trpc_trans_info = 11; // 字段取名见：https://iwiki.woa.com/pages/viewpage.action?pageId=1283861911
+};
+
+// from hap\resources\rawfile\oidb\oidb.proto
+message MetaData {
+    optional string key = 1;
+    optional string value = 2;
+};
+
+/**
+ * https://github.com/tsuzcx/qq_apk/blob/afe46ef5640d0ba6850cdefd3c11badbd725a3f6/com.tencent.mobileqq/classes.jar/com/tencent/mobileqq/paiyipai/PaiYiPaiHandler.java#L305
+ *
+ * https://github.com/tsuzcx/qq_apk/blob/afe46ef5640d0ba6850cdefd3c11badbd725a3f6/com.tencent.mobileqq/classes.jar/tencent/im/oidb/cmd0xed3/oidb_cmd0xed3%24ReqBody.java#L24C192-L24C209
+ * 
+ * 拍一拍数据结构定义
+ * 
+ */
+message PaiYiPaiReq {
+    uint32 uint64_to_uin = 1;
+    optional uint32 uint64_group_code = 2;
+    optional uint32 uint32_msg_seq = 3;
+    optional uint32 uint32_msg_rand = 4;
+    optional uint32 uint64_aio_uin = 5;
+    uint32 uint32_nudge_type = 6;
+}

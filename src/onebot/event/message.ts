@@ -39,7 +39,7 @@ const onRecvMsg = () => {
       }
       const ret: EventDataType<BotMessageData> = {
         self: {
-          id: parseInt(user.uin),
+          id: user.uin,
           uid: user.uid
         },
         time: parseInt(msg.msgTime),
@@ -113,7 +113,7 @@ const onAddSendMsg = () => {
     const senderUserInfo = await getUserInfoByUid(msg.senderUid)
     const ret: EventDataType<BotMessageData> = {
       self: {
-        id: parseInt(user.uin),
+        id: user.uin,
         uid: user.uid
       },
       time: parseInt(msg.msgTime),
@@ -166,7 +166,7 @@ const onUpdateMsg = () => {
         // 是撤回消息
         const ret: EventDataType<RecallMessageData> = {
           self: {
-            id: parseInt(user.uin),
+            id: user.uin,
             uid: user.uid
           },
           time: parseInt(msg.msgTime),

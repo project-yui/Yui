@@ -11,4 +11,13 @@ export class NodeIKernelCollectionListener {
 }
 export class NodeIKernelCollectionService {
     addKernelCollectionListener(listener: NodeIKernelCollectionListener): void
+    getCollectionItemList(searchInfo: {
+        category: number
+        groupId: number
+        forceSync: boolean
+        forceFromDb: boolean
+        timeStamp: `${number}`
+        count: number
+        searchDown: boolean
+    }): Promise<any>
 }

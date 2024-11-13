@@ -2,7 +2,7 @@ interface UserInfo {
   /**
    * 用户QQ号
    */
-  uin: `${number}` | undefined
+  uin: number
   /**
    * 用户ID
    */

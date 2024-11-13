@@ -6,31 +6,19 @@
 
   1. 命令行执行：`https://github.com/project-yui/Yui.git`
   2. 进入项目：`cd Yui`
-  3. 安装包：`pnpm install`
+  3. 安装npm包：`pnpm install`
 
-## 2. 获取QQ
+## 2 安装环境
 
-  1. 进入官网：https://im.qq.com/index/
-  2. 下载对应平台的安装包
-  3. ***解压*** 到任意文件夹，移动其中的Files目录中的文件到 **项目** 的`program`目录下（注意，**不能**将文件夹下的文件加入git版本控制）
+### 2.1 使用脚本安装
 
-      大致结构如下：
-      ```
-      Yui
-      ├─program
-      │  ├─lib
-      │  ├─locales
-      │  ├─obj
-      │  └─resources
-      ├─src
-      ├─tools
-      ....
-      ```
-      
-## 3. 跳过启动验证
+1. 执行 `pnpm run install-ntqq`
+2. pnpm run dev
+3. pnpm run nodestart
 
-  1. 打开地址: https://github.com/project-yui/Yui-patch
-  2. 下载 release 中的 `dbghelp.dll` 文件，放置于 pragram 文件夹下。
+### 2.2 手动安装
+
+[参考此处](./dev-manual.md)
 
 # 二、开发介绍
 
@@ -40,6 +28,7 @@
   2. 生成的文件在 `program/resources/app/app_launcher/index.js`
   3. 启动无UI界面的Yui，执行`pnpm nodestart`
   4. 启动有UI界面的Yui，执行`pnpm start`
+  5. 启动有UI界面保存Log的Yui，执行`pnpm start-log-file` (分析接口行为使用)
 
 ## 2. 关于后续开发
 

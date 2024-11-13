@@ -142,6 +142,7 @@ assertion (argc == 0) failed: NodeIKernelNodeMiscService::cancelOCRImage needs 0
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::checkIsSupportAutoDetect needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::cleanWindowsInfo needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::delAutoRun needs 0 arguments
+assertion (argc == 0) failed: NodeIKernelNodeMiscService::endScreenCapture needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::getDisplayInfo needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::getGetFullScreenInfo needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::getMiniAppPath needs 0 arguments
@@ -152,11 +153,13 @@ assertion (argc == 0) failed: NodeIKernelNodeMiscService::getSendKey needs 0 arg
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::getUserDataDir needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::getWindowsInfo needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::initScreenShotPlugin needs 0 arguments
+assertion (argc == 0) failed: NodeIKernelNodeMiscService::isDwmCompositionEnabled needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::isMiniAppAlreadyExist needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::isMiniAppExist needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::isMiniGameAlreadyExist needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::isMiniGameExist needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::isScreenCaptureOrRecording needs 0 arguments
+assertion (argc == 0) failed: NodeIKernelNodeMiscService::listenMouseMoveOnDisplays needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::mainWindowInitComplete needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::notifyGuildHasHiddenDock needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::queryAutoRun needs 0 arguments
@@ -164,6 +167,7 @@ assertion (argc == 0) failed: NodeIKernelNodeMiscService::setAutoRun needs 0 arg
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::setScreenShotSetting needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::startNewAppInstance needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::startScreenShotInstance needs 0 arguments
+assertion (argc == 0) failed: NodeIKernelNodeMiscService::unlistenMouseMoveOnDisplays needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::wantParseClipboard needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::wantScreenRecording needs 0 arguments
 assertion (argc == 0) failed: NodeIKernelNodeMiscService::wantScreenShot needs 0 arguments
@@ -372,7 +376,9 @@ assertion (argc == 1) failed: NodeIKernelCollectionService::deleteCollectionItem
 assertion (argc == 1) failed: NodeIKernelCollectionService::getCollectionItemList needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelCollectionService::getEditPicInfoByPath needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelCollectionService::removeKernelCollectionListener needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelConfigMgrService::addKernelConfigMgrListener needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelConfigMgrService::getConfigMgrInfo needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelConfigMgrService::removeKernelConfigMgrListener needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelConfigMgrService::saveSideBarConfig needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelDbToolsService::backupDatabase needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelDbToolsService::depositDatabase needs 1 arguments
@@ -404,6 +410,7 @@ assertion (argc == 1) failed: NodeIKernelFileAssistantService::deleteFile needs 
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::downloadFile needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::getFileAssistantList needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::getMoreFileAssistantList needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelFileAssistantService::modifyFileInfo needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::removeKernelFileAssistantListener needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::retryFileAction needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelFileAssistantService::searchMoreFile needs 1 arguments
@@ -729,9 +736,11 @@ assertion (argc == 1) failed: NodeIKernelLoginService::deleteLoginInfo needs 1 a
 assertion (argc == 1) failed: NodeIKernelLoginService::getLoginMiscData needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::initConfig needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::isHasLoginInfo needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelLoginService::loadNoLoginUnitedConfig needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::loginUnusualDevice needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::passwordLogin needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::quickLoginWithUin needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelLoginService::registerUnitedConfigPushGroupList needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::removeKernelLoginListener needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelLoginService::resetLoginInfo needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelMSFService::getBrowserAndSetLocalProxy needs 1 arguments
@@ -917,6 +926,7 @@ assertion (argc == 1) failed: NodeIKernelNodeMiscService::deleteShareFile needs 
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::downloadMiniApp needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::downloadMiniGame needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::getCurWindowInfo needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelNodeMiscService::getGroupOpenID needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::getMiniGameV2EngineConfig needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::isAppInstalled needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::isOldQQRunning needs 1 arguments
@@ -929,6 +939,7 @@ assertion (argc == 1) failed: NodeIKernelNodeMiscService::registerSchemes needs 
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::registerScreenCaptureShortcutWithKeycode needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::registerScreenRecordShortcutWithKeycode needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::removeKernelNodeMiscListener needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelNodeMiscService::scanQBar needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::sendRequestToApiGateway needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::setCurWindowsStatus needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelNodeMiscService::setMiniAppVersion needs 1 arguments
@@ -1093,6 +1104,7 @@ assertion (argc == 1) failed: NodeIKernelSettingService::getSettingForBuffer nee
 assertion (argc == 1) failed: NodeIKernelSettingService::getSettingForNum needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelSettingService::getSettingForStr needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelSettingService::modifyAccount needs 1 arguments
+assertion (argc == 1) failed: NodeIKernelSettingService::openUrlInIM needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelSettingService::openUrlWithQQBrowser needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelSettingService::removeKernelSettingListener needs 1 arguments
 assertion (argc == 1) failed: NodeIKernelSettingService::setAutoLoginSwitch needs 1 arguments
@@ -1479,9 +1491,11 @@ assertion (argc == 2) failed: NodeIKernelNodeMiscService::flashWindowInTaskbar n
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::getAppInfoByLink needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::getOpenAuth needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::installApp needs 2 arguments
+assertion (argc == 2) failed: NodeIKernelNodeMiscService::setBackgroudWindowLevel needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::setCurActiveGuildAndChannel needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::setWindowLevelNT needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::startNewMiniApp needs 2 arguments
+assertion (argc == 2) failed: NodeIKernelNodeMiscService::startScreenCapture needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelNodeMiscService::writeClipboard needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelProfileService::enumCityOptions needs 2 arguments
 assertion (argc == 2) failed: NodeIKernelProfileService::getCoreAndBaseInfo needs 2 arguments
@@ -1721,7 +1735,9 @@ assertion (argc == 3) failed: NodeIKernelMsgService::unregisterSysMsgNotificatio
 assertion (argc == 3) failed: NodeIKernelMsgService::updateMsgRecordExtPbBufForUI needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNearbyProService::fetchNearbyProUserInfo needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNewFeedService::setChannelDraft needs 3 arguments
+assertion (argc == 3) failed: NodeIKernelNodeMiscService::getGroupMemberOpenID needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNodeMiscService::getOpenAuthDelegateCode needs 3 arguments
+assertion (argc == 3) failed: NodeIKernelNodeMiscService::getRelationUinToOpenID needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNodeMiscService::sendLog needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNodeMiscService::sendMiniAppMsg needs 3 arguments
 assertion (argc == 3) failed: NodeIKernelNodeMiscService::startScreenCaptureDetectByBuf needs 3 arguments

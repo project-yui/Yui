@@ -46,7 +46,11 @@ global.asyncLocalStorage = asyncLocalStorage;
           {
             throw new Error('use wrapper: idx error')
           }
-          const targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
+          let targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
+          if (process.env['YUI_ACTION'] === 'ui')
+          {
+            targetPath = wrapperPath
+          }
           if (!fs.existsSync(targetPath))
           {
             fs.cpSync(wrapperPath, targetPath)

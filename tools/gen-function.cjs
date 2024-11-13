@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+
 let data = fs.readFileSync(path.resolve(__dirname, '../docs/functions/func.log')).toString()
 data = data.split('\n')
 console.log(data.length)

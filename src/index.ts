@@ -1,16 +1,15 @@
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
-import { NTInitialize } from "./ntqq";
+import { initNative } from "./native/native";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
-import { useAsyncStore } from "./store/async-store";
 import { test } from "./test/test";
 import { hookWrapper } from "./wrapper/hook";
 
 global.module = module
 const log = useLogger('Index')
 try {
-  log.info('hi ntqq bot!! v0.0.2')
+  log.info('Hi Yui bot!!')
   console.log(process.version)
 
   process.on('unhandledRejection', (err) => {
@@ -18,13 +17,6 @@ try {
     // process.exit(1)
   })
 
-  // 核心事件hook
-  if (process.env['YUKIHANA_ACTION'] === 'ui') {
-    // log.info('hook')
-    hook()
-    log.info('hookWrapper')
-    hookWrapper()
-  }
 
   log.info('initOnebot')
   initOnebot()
@@ -36,9 +28,16 @@ try {
   // 测试
   test(module)
 
-  // ntqq/resources/app/app_launcher/index.js 原始代码
-  if (process.env['YUKIHANA_ACTION'] === 'ui')
+  // 核心事件hook
+  if (process.env['YUI_ACTION'] === 'ui') {
+    // log.info('hook')
+    hook()
+    log.info('hookWrapper')
+    hookWrapper()
+    initNative('wrapper.node')
+    // ntqq/resources/app/app_launcher/index.js 原始代码
     console.log(require('../major.node').load('internal_index', module));
+  }
   console.log('end....')
 }
 catch(err) {

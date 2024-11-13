@@ -12,7 +12,7 @@ declare namespace YuiNativeWrapper {
          * 添加消息
          */
         const addMsg: (msg: AddMsgType) => boolean
-        const test: () => boolean
+        const addPkg: (pkg: AddPkgType) => Promise<Uint8Array>
     }
     interface SignatureType {
       sqlite3_stmt?: number[]
@@ -93,6 +93,11 @@ declare namespace YuiNativeWrapper {
         extInfoForUI: null,
         personalMedal: null,
         categoryManage: 0
+    }
+    interface AddPkgType {
+      uin: number
+      cmd: string
+      data: Uint8Array
     }
 }
 

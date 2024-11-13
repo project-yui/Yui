@@ -1,9 +1,9 @@
 {
     "resources\\app\\package.json": {
-        "target": "resources\\app\\package.original.json",
+        "target": "resources\\app\\package.patch.json",
         "content": "",
         "cur": 0,
-        "start": 3,
+        "start": 1,
         "end": 4
     }
 }
