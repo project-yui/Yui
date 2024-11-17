@@ -5,7 +5,7 @@ package nt.communication;
 /** 
  * from hap\resources\rawfile\oidb\oidb.proto
  *
- * 小圈子闹麻了，数据定义找官方拿。
+ * 小圈子闹麻了，人菜瘾大，数据定义找官方拿。
  */
 message CommunicationPkg {
     optional uint32 uint32_command = 1;         //主命令号, 即协议号
@@ -39,5 +39,8 @@ message PaiYiPaiReq {
     optional uint32 uint32_msg_seq = 3;
     optional uint32 uint32_msg_rand = 4;
     optional uint32 uint64_aio_uin = 5;
+    /**
+     * 1 - 拍一拍好友的在线状态
+     */
     uint32 uint32_nudge_type = 6;
 }

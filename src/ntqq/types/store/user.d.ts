@@ -6,7 +6,7 @@ interface UserInfo {
   /**
    * 用户ID
    */
-  uid: `u_${string}` | undefined
+  uid: `u_${string}`
   /**
    * 用户昵称
    */

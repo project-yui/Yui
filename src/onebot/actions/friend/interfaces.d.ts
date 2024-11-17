@@ -92,6 +92,41 @@ export interface GroupMemberInfoResp {
 }
 
 //#endregion
+
+//#region "GroupNudgeInfo"
+/**
+ * 获取用户信息动作的数据
+ */
+export interface GroupMemberNudgeReq extends BotActionParams {
+  groupId: number
+  userUin: number
+  userUid: `u_${string}`
+}
+
+/**
+ * 响应用户信息动作的数据
+ */
+export interface GroupMemberNudgeResp {
+  /**
+   * 用户id
+   */
+  userUid: `u_${string}`
+  /**
+   * 用户QQ号
+   */
+  userUin: number
+  /**
+   * 用户昵称
+   */
+  nick: string
+  /**
+   * 群昵称
+   */
+  cardName: string
+  avatarUrl: string
+}
+
+//#endregion
 export interface LikeUserReq extends BotActionParams {
   userId: `u_${string}`
   count: number

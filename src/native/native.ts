@@ -45,6 +45,13 @@ export const initNative = (name: string) => {
     const result = install(name, sigData)
     log.info('install result:', result)
 }
+
+/**
+ * 
+ * @param cmd 
+ * @param data 
+ * @returns 
+ */
 export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
     const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()

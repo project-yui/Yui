@@ -5,6 +5,7 @@ import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
 import { CustomError } from "../../../server/error/custom-error";
 import { initNative } from "../../../native/native";
+import { User } from "../../../models/contact/user";
 
 const log = useLogger('NTWrapper')
 export const useNTWrapper = () => {
@@ -27,7 +28,7 @@ export const useNTWrapper = () => {
             moduleIndex: idx,
             info: {
                 uin: 0,
-                uid: undefined,
+                uid: 'u_',
                 userNick: ""
             },
             dispatcher: new EventEmitter(),

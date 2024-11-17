@@ -11,6 +11,7 @@ import bytenode from 'bytenode'
 import path from 'path';
 
 const outputDir = process.env['outputDir'] || 'program/resources/app/app_launcher/'
+const isDev = process.env.ENVIRONMENT !== 'production'
 const options: RollupOptions[] = [
   // {
   //   // 此模块用于其它平台编译字节码
@@ -72,7 +73,7 @@ const options: RollupOptions[] = [
       typescript(),
       json(),
       // 压缩
-      // terser(),
+      !isDev ? terser() : null,
       // 混淆
       // obfuscator({
       //   global: true,

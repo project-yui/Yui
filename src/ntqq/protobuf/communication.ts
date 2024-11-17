@@ -12,7 +12,7 @@ export const protobufPackage = "nt.communication";
 /**
  * from hap\resources\rawfile\oidb\oidb.proto
  *
- * 小圈子闹麻了，数据定义找官方拿。
+ * 小圈子闹麻了，人菜瘾大，数据定义找官方拿。
  */
 export interface CommunicationPkg {
   /** 主命令号, 即协议号 */
@@ -64,7 +64,10 @@ export interface PaiYiPaiReq {
   uint64GroupCode?: number | undefined;
   uint32MsgSeq?: number | undefined;
   uint32MsgRand?: number | undefined;
-  uint64AioUin?: number | undefined;
+  uint64AioUin?:
+    | number
+    | undefined;
+  /** 1 - 拍一拍好友的在线状态 */
   uint32NudgeType: number;
 }
 
