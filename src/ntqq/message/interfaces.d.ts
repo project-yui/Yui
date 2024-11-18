@@ -300,15 +300,17 @@ export declare namespace NTReceiveMessageType {
     /**
      * 2 - 普通消息 ?
      * 
-     * 5 - 撤回消息 ?
+     * 5 - 提示消息 撤回消息/戳一戳 ?
      */
     msgType: 2 | 5
     /**
-     * 1 - ?
+     * 1 - 普通消息出现?
      * 
      * 4 - ?
+     * 
+     * 12 - 戳一戳出现
      */
-    subMsgType: 1 | 4
+    subMsgType: 1 | 4 | 12
     sendType: 0
     senderUid: `u_${string}`
     /**
@@ -582,10 +584,16 @@ export declare namespace NTReceiveMessageType {
      * 提示类型
      * 
      * 1 - 撤回提示
+     * 
+     * 17 - 戳一戳 出现
      */
-    subElementType: 1
+    subElementType: 1 | 17
     revokeElement?: {
       operatorTinyId: `${number}`
+    }
+    jsonGrayTipElement: {
+      busiId: `${number}`
+      jsonStr: string
     }
   }
   /**

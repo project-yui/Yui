@@ -83,3 +83,17 @@ export interface RecallMessageData {
    */
   time: number
 }
+/**
+ * 戳一戳消息
+ * 
+ * 回给对面ws的
+ */
+export interface NudgeMessageData {
+  messageId: string
+  messageSeq: string
+  groupId: number
+  senderUin: number
+  senderUid: `u_${string}`
+  targetUin: number
+  targetUid: `u_${string}`
+}

@@ -36,7 +36,7 @@ export const useNTUserStore = () => ({
     log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
     return accountNTData[resultUin]?.info
   },
-  getUser: async () => {
+  getUser: () => {
     let resultUin: number
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
@@ -48,7 +48,7 @@ export const useNTUserStore = () => ({
     log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
     let user = accountNTData[resultUin]?.user
     if (user) return user
-    user = await User.create(resultUin)
+    user = User.create(resultUin)
     accountNTData[resultUin].user = user
     return user
   },
