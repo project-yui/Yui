@@ -81,7 +81,13 @@ const getAppInfo = (): StoreAppInfo => {
     }
 }
 const getAppId = () => {
-    return platform === 'win32' ? '537249321' : '537207207'
+    return platform === 'win32' 
+    ?
+    '537249321'
+    :
+    // '537207207'
+    // major.node 中字符串搜索 5372
+    '537249996'
  }
 const getNTConfigStoreFolder = (): string => {
   const wrapper = useNTWrapper()

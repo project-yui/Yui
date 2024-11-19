@@ -18,16 +18,20 @@ fail() {
 }
 
 cache_dir="$root_dir/cache"
-program_ver="3.2.7_240412"
+program_ver="3.2.13_241112"
 
 mkdir -p $cache_dir
 
-if [ ! -f "$cache_dir/qq-${program_ver}.deb" ];then
-    wget -c -O "$cache_dir/qq-${program_ver}.deb.tmp" https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_${program_ver}_amd64_01.deb
-    mv "$cache_dir/qq-${program_ver}.deb.tmp" "$cache_dir/qq-${program_ver}.deb"
+if [ ! -f "$cache_dir/qq-${program_ver}.AppImage" ];then
+    wget -c -O "$cache_dir/qq-${program_ver}.AppImage.tmp" https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_${program_ver}_x86_64_01.AppImage
+    mv "$cache_dir/qq-${program_ver}.AppImage.tmp" "$cache_dir/qq-${program_ver}.AppImage"
 fi
 
-dpkg -x "$cache_dir/qq-${program_ver}.deb" "$root_dir/program"
-rm -rf "$root_dir/program/resources" "$root_dir/program/usr"
-mv "$root_dir/program/opt/QQ"/* "$root_dir/program"
-rm -rf "$root_dir/program/opt"
+chmod +x "$cache_dir/qq-${program_ver}.AppImage"
+
+cd $cache_dir
+"$cache_dir/qq-${program_ver}.AppImage" --appimage-extract
+
+mkdir -p "$root_dir/program"
+mv "$cache_dir/squashfs-root"/* "$root_dir/program"
+rm -rf "$cache_dir/squashfs-root"

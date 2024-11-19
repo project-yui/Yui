@@ -2,7 +2,7 @@ const yaml = require('yaml')
 const fs = require('fs')
 const path = require('path');
 const { windows } = require('./windows/install.cjs');
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 
 /**
  * Simple object check.
@@ -79,6 +79,7 @@ const ActionHandle = {
                 break;
                 
             case 'linux':
+                execSync(path.resolve(__dirname, './linux/install.sh'), {stdio: 'inherit'})
                 break;
         
             default:
@@ -158,6 +159,27 @@ const ActionHandle = {
                     })
                 }
                 break
+            case 'linux':
+                {
+                    console.log('write log to tmp/output.log')
+                    // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"
+                    const script = path.resolve(__dirname, '../program/resources/app/app_launcher/index.js')
+                    execSync(`./qq ${script} > ../tmp/output.log 2>&1`, {
+                        stdio: 'inherit',
+                        env: {
+                            ...process.env,
+                            YUI_LOG: true,
+                            // ELECTRON_RUN_AS_NODE: '1',
+                            // ELECTRON_ATTACH_CONSOLE: '1',
+                            YUI_ACTION: 'ui',
+                            YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
+                            QQV8BytecodeDebug: '1'
+                        },
+                        cwd: path.resolve(__dirname, '../program'),
+                    })
+                }
+                break
+
         }
     },
     nodestart: (args) => {
@@ -189,11 +211,12 @@ const ActionHandle = {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
-                            YUKIHANA_LOG: true,
+                            YUI_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
-                            YUKIHANA_ACTION: 'dev',
-                            YUKIHANA_NATIVE: "/home/msojocs/github/nt-native/build/nt_native.node",
-                        }
+                            YUI_ACTION: 'dev',
+                            YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
+                        },
+                        cwd: path.resolve(__dirname, '../program')
                     })
                 }
                 break

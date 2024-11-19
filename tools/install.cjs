@@ -2,7 +2,10 @@ const path = require("path");
 const { Downloader } = require("nodejs-file-downloader");
 const { existsSync, rmSync } = require("fs");
 const { execSync } = require("child_process");
+const { useLogger } = require("./common/log.cjs");
+const fs = require('fs')
 
+const log = useLogger()
 // 安装QQ
 const windows = async () => {
   // 下载
@@ -146,7 +149,16 @@ function moveFilesAndDeleteDir(sourceDir, destDir) {
   });
 }
 (async () => {
+  log.info('platform:', process.platform)
   if (process.platform == "win32") {
     await windows();
+  }
+  else if (process.platform == 'linux')
+  {
+    execSync(path.resolve(__dirname, './linux/install.sh'))
+    const pkgPath = path.resolve(__dirname, '../program/resources/app/package.json')
+    const pkg = JSON.parse(fs.readFileSync(pkgPath))
+    pkg.main = "./app_launcher/index.js"
+    fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2))
   }
 })();
