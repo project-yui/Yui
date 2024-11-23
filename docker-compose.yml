@@ -3,13 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    tty: true
     container_name: yui
-    restart: always
+    # restart: always
     ports:
       - "8080:8080"
+      - "8081:8081"
     environment:
       - TZ=Asia/Shanghai
-      - YUKIHANA_LOG=true
+      - YUI_LOG=false
     volumes:
       - ./data/QQ:/root/.config/QQ
+    # command: ["tail", "-f", "/etc/issue"]

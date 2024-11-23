@@ -8,6 +8,11 @@ import { hookWrapper } from "./wrapper/hook";
 
 global.module = module
 const log = useLogger('Index')
+{
+  delete require.cache['electron']
+  delete require.cache['electron/common']
+  delete require.cache['electron/main']
+}
 try {
   log.info('Hi Yui bot!!')
   console.log(process.version)
