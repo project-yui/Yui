@@ -32,8 +32,8 @@ const sendForwardMessage = async (p: BotMessage.SendMsg): Promise<any> => {
      */
     const msg = p.message[0]
     if (msg.type == 'multiforward') {
-      if (msg.data.forward_data) {
-        const result = await sendForwardMessageToGroup(`${p.groupId}`, msg.data.forward_data)
+      if (msg.data.forwardData) {
+        const result = await sendForwardMessageToGroup(`${p.groupId}`, msg.data.forwardData)
         return result
       }
     }

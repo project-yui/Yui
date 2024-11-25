@@ -56,8 +56,8 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
    * 转发消息列表的来源对象
    */
   const peer: PeerInfo = {
-    chatType: forwardData.from_type === 'group' ? 2 : 1,
-    peerUid: (forwardData.from_type === 'group' ? `${forwardData.group_id ?? ''}` : forwardData.sender_id) || '',
+    chatType: forwardData.fromType === 'group' ? 2 : 1,
+    peerUid: (forwardData.fromType === 'group' ? `${forwardData.groupId ?? ''}` : forwardData.senderId) || '',
     guildId: ''
   }
   const msgList: NTSendMessageType.ForwardMsgItem[] = []
@@ -91,18 +91,18 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
         msgType: 2,
         subMsgType: 1,
         sendType: 0,
-        senderUid: msgItem.sender_uid,
+        senderUid: msgItem.senderUid,
         peerUid: peer.peerUid as `${number}`,
         channelId: "",
         guildId: "",
         guildCode: "0",
         fromUid: "0",
         fromAppid: "0",
-        msgTime: msgItem.msg_time,
+        msgTime: msgItem.msgTime,
         msgMeta: "0x",
         sendStatus: 2,
         sendRemarkName: "",
-        sendMemberName: msgItem.sender_member_name,
+        sendMemberName: msgItem.senderMemberName,
         sendNickName: "nick name",
         guildName: "",
         channelName: "",
@@ -146,7 +146,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
         fileGroupSize: null,
         foldingInfo: null,
         multiTransInfo: null,
-        senderUin: msgItem.sender_uin,
+        senderUin: msgItem.senderUin,
         peerUin: peer.peerUid as `${number}`,
         msgAttrs: new Map(),
         anonymousExtInfo: null,
@@ -158,7 +158,7 @@ export const sendForwardMessageToGroup = async (targetId: `${number}`, msg: BotM
       }
       log.debug('msgContent:', JSON.stringify(msgContent, null, 4))
       log.info('start to add')
-      const addResult = false; //addMsg(msgContent)
+      const addResult = addMsg(msgContent)
       log.info('add result:')
       log.info('add result:', addResult)
       if (addResult) {

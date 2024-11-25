@@ -93,7 +93,7 @@ export declare namespace BotMessage {
       /**
        * 转发消息的内容
        */
-      forward_data?: BotMessageSendElements.ForwardElement
+      forwardData?: BotMessageSendElements.ForwardElement
     }
   }
 
@@ -183,17 +183,17 @@ declare namespace BotMessageSendElements {
      * 
      * friend - 好友
      */
-    from_type: 'group' | 'friend'
+    fromType: 'group' | 'friend'
 
     /**
      * 来源群号，`from_type` 为group时必须
      */
-    group_id?: number
+    groupId?: number
 
     /**
      * 来源好友QQ，`from_type` 为friend时必须
      */
-    sender_id?: `${number}`
+    senderId?: `${number}`
     
     /**
      * 转发消息的内容
@@ -210,24 +210,24 @@ declare namespace BotMessageSendElements {
      * 
      * 有的时候会去数据库找一下，找不到会替换成随机生成的id
      */
-    msg_id?: `${number}`
+    msgId?: `${number}`
 
     /**
      * QQ号
      */
-    sender_uin: number
+    senderUin: number
 
     /**
      * QQ用户UID
      */
-    sender_uid: `u_${string}`
+    senderUid: `u_${string}`
     
     /**
      * 消息发送的时间
      */
-    msg_time: number
+    msgTime: number
 
-    sender_member_name: string
+    senderMemberName: string
     
     /**
      * 组成消息内容的元素
