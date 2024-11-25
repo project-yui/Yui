@@ -3,7 +3,7 @@
  */
 export interface BaseUserInfoType {
     uin: number
-    uid: `u_${string}`
+    uid: `u_${string}` | undefined
     /**
      * 昵称
      */

@@ -21,7 +21,7 @@ export class Group extends Contact {
     {
         return Member.create(this.id, {
             uin: mid,
-            uid: "u_",
+            uid: undefined,
             groupNick: "",
             remark: "",
             nick: "",

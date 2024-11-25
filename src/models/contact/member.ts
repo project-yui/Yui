@@ -16,7 +16,7 @@ export class Member extends BaseUser {
     private _groupId: number = 0
     private _info?: MemberUserInfoType
 
-    protected constructor(id: number, uid: `u_${string}`) {
+    protected constructor(id: number, uid: `u_${string}` | undefined) {
         super(id, uid)
     }
     /**

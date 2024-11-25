@@ -8,11 +8,6 @@ import { hookWrapper } from "./wrapper/hook";
 
 global.module = module
 const log = useLogger('Index')
-{
-  delete require.cache['electron']
-  delete require.cache['electron/common']
-  delete require.cache['electron/main']
-}
 try {
   log.info('Hi Yui bot!!')
   console.log(process.version)
@@ -42,6 +37,12 @@ try {
     initNative('wrapper.node')
     // ntqq/resources/app/app_launcher/index.js 原始代码
     console.log(require('../major.node').load('internal_index', module));
+  }
+  else
+  {
+    delete require.cache['electron']
+    delete require.cache['electron/common']
+    delete require.cache['electron/main']
   }
   console.log('end....')
 }

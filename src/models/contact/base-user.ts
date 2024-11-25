@@ -8,7 +8,7 @@ export abstract class BaseUser extends Contact
 {
     protected uid: `u_${string}` | undefined
 
-    protected constructor(id: number, uid: `u_${string}`)
+    protected constructor(id: number, uid: `u_${string}` | undefined)
     {
         super(id)
         this.uid = uid
