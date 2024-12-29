@@ -66,6 +66,15 @@ global.asyncLocalStorage = asyncLocalStorage;
       if (process.env['YUI_NATIVE']) {
         wrapperPath = process.env['YUI_NATIVE']
       }
+      if (!orgi_require('fs').existsSync(wrapperPath)) {
+        log('wrapper.node not exists!')
+        return {
+          install: () => {
+            log('fake installing...')
+            return false
+          }
+        }
+      }
       return orgi_require.apply(t, [wrapperPath])
     }
   }

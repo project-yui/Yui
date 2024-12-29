@@ -10,7 +10,7 @@ const log = useLogger()
 const windows = async () => {
   // 下载
   const qqUrl =
-    "https://dldir1.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.15_240808_x64_01.exe";
+    "https://dldir1.qq.com/qqfile/qq/QQNT/Windows/QQ_9.9.17_241224_x64_01.exe";
   const cachePath = path.resolve(__dirname, "../cache");
   {
     const filename = path.basename(qqUrl);
@@ -29,7 +29,7 @@ const windows = async () => {
       try {
         const { filePath, downloadStatus } = await downloader.download(); //Downloader.download() resolves with some useful properties.
 
-        console.log("All done");
+        console.log("qq download done.");
       } catch (error) {
         //IMPORTANT: Handle a possible error. An error is thrown in case of network errors, or status codes of 400 and above.
         //Note that if the maxAttempts is set to higher than 1, the error is thrown only if all attempts fail.
