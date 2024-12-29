@@ -87,7 +87,8 @@ const getAppId = () => {
     :
     // '537207207'
     // major.node 中字符串搜索 5372
-    '537249996'
+    // '537249996'
+    '537263831'
  }
 const getNTConfigStoreFolder = (): string => {
   const wrapper = useNTWrapper()

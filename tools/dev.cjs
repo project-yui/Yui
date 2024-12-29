@@ -189,7 +189,7 @@ const ActionHandle = {
                 {
                     console.log('nodestart')
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-                    const pro = spawn(devConfig.program_path, [], {
+                    const pro = spawn('.\\QQ.exe', [], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
@@ -207,7 +207,7 @@ const ActionHandle = {
             case 'linux':
                 {
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-                    spawn(devConfig.program_path, ['./program/resources/app/app_launcher/index.js'], {
+                    spawn('./qq', ['./program/resources/app/app_launcher/index.js'], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,

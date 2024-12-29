@@ -18,7 +18,7 @@ fail() {
 }
 
 cache_dir="$root_dir/cache"
-program_ver="3.2.13_241112"
+program_ver="3.2.15_241224"
 
 mkdir -p $cache_dir
 
@@ -32,6 +32,8 @@ chmod +x "$cache_dir/qq-${program_ver}.AppImage"
 cd $cache_dir
 "$cache_dir/qq-${program_ver}.AppImage" --appimage-extract
 
+rm -rf "$root_dir/program"
 mkdir -p "$root_dir/program"
 mv "$cache_dir/squashfs-root"/* "$root_dir/program"
+sed -i 's#application.asar/##' "$root_dir/program/resources/app/package.json"
 rm -rf "$cache_dir/squashfs-root"

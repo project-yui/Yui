@@ -2,6 +2,7 @@
 
 - fix: 没有native模块时无法登录
 - update: 更新Docker中安装的程序版本
+- fix: 修正Linux重新安装会失败的问题
 
 ## v1.1.4 / 2024-09-22
 
