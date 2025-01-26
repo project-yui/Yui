@@ -14,7 +14,7 @@ RUN sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sourc
     && rm -rf /var/lib/apt/lists/*
 COPY xvfb-startup.sh /opt
 
-ENV QQ_VERSION=3.2.15_241224
+ENV QQ_VERSION=3.2.15_250110
 # 安装Linux QQ (单独一步是为了方便更新版本)
 RUN sed -i 's/\r$//' /opt/xvfb-startup.sh && chmod +x /opt/xvfb-startup.sh \
     && mkdir -p /opt && cd /opt \

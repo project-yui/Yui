@@ -8,6 +8,6 @@ export DISPLAY=:99
 ls -l /opt
 ls -l /opt/QQ
 cd /opt/QQ
-./qq --no-sandbox
+./qq --no-sandbox --disable-gpu
 "$@"
 kill $XVFB_PROC
