@@ -43,19 +43,19 @@ export const useListenerProxy = (name: string) => {
                 throw new CustomError(500, 'id error')
             }
             return (...args: any[]) => {
-                log.info('get async store')
+                log.debug('get async store')
                 const asyncStore = useAsyncStore()
                 if (!s) {
                     log.error('Async store error!')
                     throw  new CustomError(500, 'Async store error!')
                 }
                 asyncStore.run(s, () => {
-                    log.info(name, 'useListenerProxy call')
+                    log.debug(name, 'useListenerProxy call')
                     const s = asyncStore.getStore()
-                    log.info(name, 'useListenerProxy call async store:', s)
+                    log.debug(name, 'useListenerProxy call async store:', s)
                     s?.set('uin', uin)
-                    log.info(`${name}/${prop}`, ...args)
-                    log.info(`${name}/${prop}`, JSON.stringify(args, null, 4))
+                    log.debug(`${name}/${prop}`, ...args)
+                    log.debug(`${name}/${prop}`, JSON.stringify(args, null, 4))
                     const { getCurrentAccountData } = useNTUserStore()
                     const dispatcher = getCurrentAccountData().dispatcher
                     if (!dispatcher){

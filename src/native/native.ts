@@ -41,7 +41,7 @@ export const initNative = (name: string) => {
             sigData.msf_resp = sigArr
         }
     }
-    log.info('install:', sigData)
+    log.info('install target:', sigData)
     const result = install(name, sigData)
     log.info('install result:', result)
 }
@@ -55,7 +55,9 @@ export const initNative = (name: string) => {
 export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
     const { getWrapperSession } = useNTCore()
     const session = getWrapperSession()
+    log.debug('wrapper session:', session)
     const search = session.getSearchService()
+    log.debug('search service:', search)
     const { getCurrentAccountData } = useNTUserStore()
     const info = getCurrentAccountData()
     const send = addPkg({
