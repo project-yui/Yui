@@ -214,7 +214,7 @@ const ActionHandle = {
                             YUI_LOG: true,
                             ELECTRON_RUN_AS_NODE: true,
                             YUI_ACTION: 'dev',
-                            YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
+                            // YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
                         },
                         cwd: path.resolve(__dirname, '../program')
                     })

@@ -18,7 +18,7 @@ fail() {
 }
 
 cache_dir="$root_dir/cache"
-program_ver="3.2.15_250110"
+program_ver="3.2.19_250904"
 
 mkdir -p $cache_dir
 
