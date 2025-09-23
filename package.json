@@ -12,7 +12,7 @@
     "start-log-file": "node tools/dev.cjs start-log-file",
     "nodestart": "node tools/dev.cjs nodestart",
     "compile-jsc": "node tools/dev.cjs compile-jsc",
-    "proto:generate": "protoc --ts_proto_out=. ./src/ntqq/protobuf/*.proto --ts_proto_opt=esModuleInterop=true",
+    "proto:generate": "protoc --ts_proto_out=../ ./src/ntqq/protobuf/protos/*.proto --ts_proto_opt=esModuleInterop=true",
     "proto:watch": "chokidar \"./src/**/*.proto\" -c \"npm run proto:generate\""
   },
   "keywords": [],
@@ -35,6 +35,7 @@
     "electron": "25.8.1",
     "javascript-obfuscator": "^4.1.0",
     "nodejs-file-downloader": "^4.13.0",
+    "protoc": "^32.1.0",
     "rollup": "^4.13.2",
     "rollup-plugin-obfuscator": "^1.1.0",
     "ts-proto": "^2.2.5",

@@ -1,5 +1,5 @@
 import { NTSendMessage } from "../../ntqq/message/message";
-import { NTReceiveMessageType, NTSendMessageType } from "../../ntqq/message/interfaces";
+import { NTSendMessageType } from "../../ntqq/message/interfaces";
 import { BotMessage } from "../../onebot/common/message";
 import { useLogger } from "../../common/log";
 import { convertBotMessage2NTMessage } from "./convert";

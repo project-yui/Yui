@@ -36,6 +36,10 @@ export const useNTUserStore = () => ({
     log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
     return accountNTData[resultUin]?.info
   },
+  /**
+   * 获取当前登录的用户
+   * @returns 
+   */
   getUser: () => {
     let resultUin: number
     const asyncStore = useAsyncStore()
@@ -43,9 +47,9 @@ export const useNTUserStore = () => ({
     resultUin = s?.get('uin')
     if (!resultUin)
     {
-      throw new CustomError(500, 'useNTUserStore -> getUserInfo id error.')
+      throw new CustomError(500, 'useNTUserStore -> getUser id error.')
     }
-    log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
+    log.info('useNTUserStore -> getUser', resultUin, accountNTData)
     let user = accountNTData[resultUin]?.user
     if (user) return user
     user = User.create(resultUin)

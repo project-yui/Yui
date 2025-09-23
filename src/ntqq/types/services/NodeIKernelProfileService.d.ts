@@ -52,6 +52,7 @@ export class NodeIKernelProfileService {
      * @param bizList [0]
      */
     fetchUserDetailInfo(callFrom: string, uid: `u_${string}`[], source: number, bizList: number[]): Promise<SimpleResult>
+    getSelfStatus(): Promise<SimpleResult>
     getUserDetailInfoWithBizInfo(uid: `u_${string}`, keys: number[]): Promise<SimpleResult>
     getCoreAndBaseInfo(src: string, ids: `u_${string}`[]): Map<`u_${string}`, CoreAndBaseInfo>
 }

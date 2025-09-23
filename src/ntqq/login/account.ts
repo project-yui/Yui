@@ -145,3 +145,24 @@ export const NTQuickLoginByUin = async (uin: `${number}`) => {
   const loginResult = await loginService.quickLoginWithUin(uin)
   return loginResult
 }
+
+export const NTGetLoginStatus = () => new Promise<boolean>(async (resolve) => {
+  const { getWrapperSession } = useNTCore()
+  const profileService = getWrapperSession().getProfileService()
+  if (!profileService) {
+    resolve(false)
+    return
+  }
+  const l = registerEventListener('KernelProfileListener/onSelfStatusChanged', 'once', (payload: any) => {
+    log.info('onSelfStatusChanged:', payload)
+    log.info('result:', payload.status === 10)
+    resolve(payload.status === 10)
+  })
+  const status = await profileService.getSelfStatus()
+  if (status.result !== 0) {
+    l.remove()
+    resolve(false)
+    return
+  }
+  log.info('self status:', status)
+})

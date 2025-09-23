@@ -2,10 +2,9 @@ import { NTLoginByAccountInfo } from "../../ntqq/login/account"
 import { NTLogin } from "../../ntqq/login/interfaces"
 import { NTGetLoginQrCode } from "../../ntqq/login/qrcode"
 import { BotLogin } from "../../onebot/actions/bot/interfaces"
-import { BotActionResponse, BotActionParams } from "../../onebot/actions/interfaces"
+import { BotActionParams } from "../../onebot/actions/interfaces"
 import { useLogger } from "../../common/log"
 import { CustomError } from "../../server/error/custom-error"
-import { listenLoginEvent } from "../../onebot/event/login"
 
 const log = useLogger('Login')
 
@@ -50,13 +49,7 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
  * @param p 
  * @returns 登录的二维码
  */
-export const loginByQrCode = async (p: BotActionParams): Promise<BotLogin.QrCodeResponse> => {
+export const loginByQrCode = async (p: BotActionParams) => {
   log.info('loginByQrCode', p);
   const resp = await NTGetLoginQrCode()
-  listenLoginEvent();
-  return {
-    qrCodeImage: resp.pngBase64QrcodeData,
-    qrCodeUrl: resp.qrcodeUrl,
-    expireTime: resp.expireTime
-  }
 }

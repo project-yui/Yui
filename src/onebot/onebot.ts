@@ -6,5 +6,4 @@ import { initEvent } from "./event"
  */
 export const initOnebot = () => {
   initAction()
-  initEvent()
 }

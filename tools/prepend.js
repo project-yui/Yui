@@ -62,20 +62,20 @@ global.asyncLocalStorage = asyncLocalStorage;
     'yui-native': (t) => {
       /**  @type {import('path')} */
       const path = orgi_require('path')
-      let wrapperPath = path.resolve(__dirname, `./nt_native.node`)
+      let modulePath = path.resolve(__dirname, `./nt_native.node`)
       if (process.env['YUI_NATIVE']) {
-        wrapperPath = process.env['YUI_NATIVE']
+        modulePath = process.env['YUI_NATIVE']
       }
-      if (!orgi_require('fs').existsSync(wrapperPath)) {
-        log('wrapper.node not exists!')
+      if (!orgi_require('fs').existsSync(modulePath)) {
+        log('---------------->nt_native.node not exists!')
         return {
           install: () => {
-            log('fake installing...')
+            log('----------------->nt_native.node not exists! fake installing...')
             return false
           }
         }
       }
-      return orgi_require.apply(t, [wrapperPath])
+      return orgi_require.apply(t, [modulePath])
     }
   }
   module.require = function (...args) {

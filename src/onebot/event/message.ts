@@ -12,6 +12,7 @@ import { CommunicationPkg } from "../../ntqq/protobuf/communication"
 const { registerEventListener } = useStore()
 const { sendMessage } = useServer()
 const log = useLogger('event/Message')
+
 /**
  * 监听新消息
  * 
@@ -148,6 +149,7 @@ const onRecvMsg = () => {
   //   log.info('onRecvSysMsg', data)
   // })
 }
+
 /**
  * 监听新发送的消息
  * 
@@ -205,6 +207,7 @@ const onAddSendMsg = () => {
     sendMessage(ret)
   })
 }
+
 /**
  * 监听消息更新
  */

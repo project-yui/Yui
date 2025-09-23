@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { useLogger } from "../common/log";
 import { readFileSync } from "fs";
 

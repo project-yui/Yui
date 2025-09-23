@@ -1,12 +1,11 @@
 import { useLogger } from "../../../common/log"
-import { NTInitialize } from "../../../ntqq"
-import { NTGetQuickLoginList, NTQuickLoginByUin } from "../../../ntqq/login/account"
+import { NTGetQuickLoginList, NTGetLoginStatus, NTQuickLoginByUin } from "../../../ntqq/login/account"
 import { useNTUserStore } from "../../../ntqq/store/user"
 import { CustomError } from "../../../server/error/custom-error"
 import { useStore } from "../../../store/store"
 import { loginByAccount, loginByQrCode } from "../../../transfer/login/login"
 import { getUserInfoByUid } from "../../common/user"
-import { UserInfoReq, UserInfoResp } from "../friend/interfaces"
+import { UserInfoResp } from "../friend/interfaces"
 import { BotActionParams } from "../interfaces"
 import { getClipboardMsg } from "./clipboard"
 import { QuickLoginItem } from "./types"
@@ -65,12 +64,17 @@ const getAccountList = (p: BotActionParams): any => {
   const allAccount = getAllAccountData()
   return Object.keys(allAccount).filter(e => e !== '1234567890')
 }
+const checkUserLogin = async (p: {}): Promise<boolean> => {
+  const status = await NTGetLoginStatus()
+  return status
+}
 export const initBot = () => {
   const { registerActionHandle } = useStore()
   // 登录
   registerActionHandle('login_by_account', loginByAccount)
   registerActionHandle('login_by_qrcode', loginByQrCode)
   registerActionHandle('get_self_info', getBotInfo)
+  registerActionHandle('is_self_login', checkUserLogin)
   registerActionHandle('get_quick_login_list', getQuickLoginList)
   registerActionHandle('quick_login_by_uin', QuickLoginByUin)
   registerActionHandle('get_clipboard_msg', getClipboardMsg)

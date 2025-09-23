@@ -12,6 +12,7 @@ import { NTInitialize } from '../ntqq';
 import { useAsyncStore } from '../store/async-store';
 import { listenMessage } from '../onebot/event/message';
 import { useNTUserStore } from '../ntqq/store/user';
+import { initEvent } from '../onebot/event';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -69,16 +70,9 @@ export const startWebsocketServer = () => {
             const { getUserInfo } = useNTUserStore()
             let u = getUserInfo()
             if (!u) {
-              const defaultId: number = 1234567890
-              log.info(`user info not exists, check default user(${defaultId})...`)
-              u = getUserInfo(defaultId)
-              asyncStore.getStore()?.set('uin', defaultId)
-              if (!u)
-              {
-                log.info(`default user(${defaultId}) has not been initialized, start to initialize...`)
-                await NTInitialize()
-                listenMessage()
-              }
+              log.info(`user(${msg.user.uin}) has not been initialized, start to initialize...`)
+              await NTInitialize()
+              initEvent()
             }
           }
           catch (e) {

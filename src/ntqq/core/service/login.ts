@@ -28,7 +28,7 @@ export const initLogin = () => {
     const userInfo = getUserInfo()
     log.info('qrcode login success:', info, userInfo)
     userInfo.uid = info.uid
-    userInfo.uin = info.uin
+    userInfo.uin = parseInt(info.uin)
     log.info('qrcode login user info:', info)
     // start to init session
     initWrapperSession(info.uin, info.uid)
