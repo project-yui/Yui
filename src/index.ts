@@ -3,7 +3,7 @@ import { hook } from "./hook";
 import { initNative } from "./native/native";
 import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
-import { test } from "./test/test";
+import { test } from "./test/testaction";
 import { hookWrapper } from "./wrapper/hook";
 
 global.module = module

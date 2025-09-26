@@ -80,3 +80,35 @@ export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
     const resp = CommunicationPkg.decode(result, result.byteLength)
     return resp
 }
+/**
+ * 
+ * @param cmd 
+ * @param data 
+ * @returns 
+ */
+export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
+    const { getWrapperSession } = useNTCore()
+    const session = getWrapperSession()
+    log.debug('wrapper session:', session)
+    const search = session.getSearchService()
+    log.debug('search service:', search)
+    const { getCurrentAccountData } = useNTUserStore()
+    const info = getCurrentAccountData()
+    const send = addPkg({
+        data: data,
+        uin: info.info.uin,
+        cmd,
+    })
+    log.debug('emit start ...')
+    const t = search.searchStranger('565656556', {
+      keyWords: '1145141919810', // 触发关键字
+      forceUpdate: true
+    }, {
+      businessMask: [],
+      cookie: new Uint8Array(),
+      pageSize: 1
+    })
+    log.debug('emit over, await ...')
+    const result = await send
+    return result
+}
