@@ -29,7 +29,12 @@ export const startWebsocketServer = () => {
     host: cfg.yui.ws.host,
     port: cfg.yui.ws.port,
   });
-
+  wss.once('close', () => {
+    log.info('websocket server closed.')
+  })
+  wss.once('listening', () => {
+    log.info(`websocket server listening on ${cfg.yui.ws.host}:${cfg.yui.ws.port}`)
+  })
   wss.on('connection', function connection(ws, req) {
     log.info('receive connection.');
     const asyncStore = useAsyncStore()

@@ -1,72 +1,47 @@
 syntax = "proto3";
 
 package nt.longmsg;
+import "nt_msg_common.proto";
 
-message LongMsgReqBody {
-    uint32 uint32_subcmd = 1;
-    uint32 uint32_term_type = 2;
-    uint32 uint32_platform_type = 3;
-    repeated MsgUpReq rpt_msg_up_req = 4;
-    repeated MsgDownReq rpt_msg_down_req = 5;
-    repeated MsgDelReq rpt_msg_del_req = 6;
-    uint32 uint32_agent_type = 7;
-    /**
-     * 0 - MultiMsg
-     * 1 - LongTextMsg
-     * 2 - MixedMsg
-     * 3 - ShareStructLongMessage
-     */
-    uint32 uint32_busi_type = 8;
+message SsoSendLongMsgReq {
+    LongMsgBody body = 2;
 }
 
-message MsgDeleteReq {
-    bytes bytes_msg_resid = 1;
-    uint32 uint32_msg_type = 2;
+message LongMsgBody {
+    string fileName = 1;
+    LongMsgData data = 2;
+}
+message LongMsgData {
+    repeated trpc.msg.common.Msg msgs = 1;
 }
 
-message MsgDeleteRsp {
-    uint32 uint32_result = 1;
-    bytes bytes_msg_resid = 2;
+message LongMsgSettings {
+  uint32 field1 = 1; // 4
+  uint32 field2 = 2; // 1
+  uint32 field3 = 3; // 7
+  uint32 field4 = 4; // 0
 }
 
-message MsgDownReq {
-    uint32 uint32_src_uin = 1;
-    bytes bytes_msg_resid = 2;
-    uint32 uint32_msg_type = 3;
-    uint32 uint32_need_cache = 4;
+message SendLongMsgReq {
+  SendLongMsgInfo info = 2;
+  LongMsgSettings settings = 15;
 }
 
-message MsgDownRsp {
-    uint32 uint32_result = 1;
-    bytes bytes_msg_resid = 2;
-    bytes bytes_msg_content = 3;
+message SendLongMsgInfo {
+  uint32 type = 1; // Group: 3, Friend: 1
+  optional PeerInfo peer = 2;
+  optional uint32 groupCode = 3;
+  optional bytes payload = 4;
+}
+message PeerInfo {
+  optional string uid = 2;
 }
 
-message MsgUpReq {
-    /**
-     * 17 - 举报消息
-     */
-    uint32 uint32_msg_type = 1;
-    uint64 uint64_dst_uin = 2;
-    uint32 uint32_msg_id = 3;
-    bytes bytes_msg_content = 4;
-    /**
-     * 2
-     */
-    uint32 uint32_store_type = 5;
-    bytes bytes_msg_ukey = 6;
-    uint32 uint32_need_cache = 7;
+message SendLongMsgResp {
+  SendLongMsgResult result = 2;
+  LongMsgSettings settings = 15;
 }
 
-message MsgUpRsp {
-    uint32 uint32_result = 1;
-    uint32 uint32_msg_id = 2;
-    bytes bytes_msg_resid = 3;
-}
-
-message LongMsgReqBody {
-    uint32 uint32_subcmd = 1;
-    repeated MsgUpRsp rpt_msg_up_rsp = 2;
-    repeated MsgDownRsp rpt_msg_down_rsp = 3;
-    repeated MsgDeleteRsp rpt_msg_del_rsp = 4;
+message SendLongMsgResult {
+  string resId = 3;
 }

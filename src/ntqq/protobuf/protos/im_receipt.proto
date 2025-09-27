@@ -1,0 +1,27 @@
+package im_receipt;
+
+
+message MsgInfo {
+    optional uint64 uint64_from_uin = 1;
+    optional uint64 uint64_to_uin = 2;
+    optional uint32 uint32_msg_seq = 3;
+    optional uint32 uint32_msg_random = 4;
+}
+
+
+message ReceiptInfo {
+    optional uint64 uint64_read_time = 1;
+}
+
+
+message ReceiptReq {
+    optional int32 command = 1;
+    optional MsgInfo msg_info = 2;
+}
+
+
+message ReceiptResp {
+    optional int32 command = 1;
+    optional ReceiptInfo receipt_info = 2;
+}
+

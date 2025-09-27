@@ -44,3 +44,12 @@ export function convertToCamelCase(obj: any) {
 
   return newObj;
 }
+/**
+ * https://github.com/tsuzcx/qq_apk/blob/afe46ef5640d0ba6850cdefd3c11badbd725a3f6/com.tencent.mobileqq/classes.jar/com/tencent/mobileqq/utils/httputils/PkgTools.java#L967
+ */
+export const int2IPNet = (ip: number): string => {
+  return (ip & 0xFF) + '.' +
+    ((ip >> 8) & 0xFF) + '.' +
+    ((ip >> 16) & 0xFF) + '.' +
+    ((ip >> 24) & 0xFF);
+}

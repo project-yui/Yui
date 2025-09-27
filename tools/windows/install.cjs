@@ -7,7 +7,7 @@ const { execSync } = require ("child_process");
 const programPath = path.resolve(__dirname, '../../program');
 
 const log = useLogger('Install')
-const downloadVersion = '9.9.16_241104'
+const downloadVersion = '9.9.21_250904'
 // 
 /**
  * 移动文件的函数

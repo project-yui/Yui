@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package msg_comm;
+
+
+message ContentHead {
+    optional uint32 pkg_num = 1;
+    optional uint32 pkg_index = 2;
+    optional uint32 div_seq = 3;
+    optional uint32 auto_reply = 4;
+}
+

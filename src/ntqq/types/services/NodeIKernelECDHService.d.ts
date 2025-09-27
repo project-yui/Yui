@@ -3,8 +3,8 @@ export class NodeIKernelECDHService {
     setGuid(a: any): any
     /**
      * 
-     * @param a1 
-     * @param a2 
+     * @param a1 cmd ?
+     * @param a2 seq ?
      * @param a3
      * @param a4  info[3] should be a hexadecimal string.
      */

@@ -4,6 +4,7 @@ const path = require('path');
 const { windows } = require('./windows/install.cjs');
 const { spawn, execSync } = require('child_process');
 
+const startupProgram = process.platform == 'win32' ? '.\\QQ.exe' : './qq'
 /**
  * Simple object check.
  * @param item
@@ -98,7 +99,7 @@ const ActionHandle = {
             stdio: 'inherit',
             env: {
                 ...process.env,
-                PROGRAM_PATH: devConfig.program_path
+                PROGRAM_PATH: startupProgram
             },
             shell: true
         })
@@ -114,7 +115,7 @@ const ActionHandle = {
             stdio: 'inherit',
             env: {
                 ...process.env,
-                PROGRAM_PATH: devConfig.program_path
+                PROGRAM_PATH: startupProgram
             },
             shell: true
         })
@@ -126,13 +127,13 @@ const ActionHandle = {
     start: (args) => {
         copyConfiguration()
         // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev .\\ntqq\\QQ.exe
-        spawn(devConfig.program_path, {
+        spawn(startupProgram, {
             stdio: 'inherit',
             env: {
                 ...process.env,
-                YUKIHANA_LOG: true,
-                YUKIHANA_ACTION: 'ui',
-                YUKIHANA_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
+                YUI_LOG: true,
+                YUI_ACTION: 'ui',
+                YUI_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
             },
             cwd: path.resolve(__dirname, '../program'),
         })
@@ -144,14 +145,14 @@ const ActionHandle = {
                 {
                     console.log('write log to tmp/output.log')
                     // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"
-                    spawn('cmd.exe', ['/C', `${devConfig.program_path} > ..\\tmp\\output.log 2>&1`], {
+                    spawn('cmd.exe', ['/C', `${startupProgram} > ..\\tmp\\output.log 2>&1`], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
                             YUI_LOG: true,
                             // ELECTRON_RUN_AS_NODE: '1',
                             // ELECTRON_ATTACH_CONSOLE: '1',
-                            YUI_ACTION: 'ui',
+                            // YUI_ACTION: 'ui',
                             YUI_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
                             QQV8BytecodeDebug: '1'
                         },
@@ -194,11 +195,11 @@ const ActionHandle = {
                         env: {
                             ...process.env,
                             YUI_LOG: true,
-                            // ELECTRON_RUN_AS_NODE: true,
+                            ELECTRON_RUN_AS_NODE: true,
                             YUI_ACTION: 'dev',
                             ELECTRON_ATTACH_CONSOLE: '1',
                             YUI_NATIVE: "D:/GitHub/Yui-native/build/nt_native.node",
-                            QQV8BytecodeDebug: '1',
+                            // QQV8BytecodeDebug: '1',
                         },
                         cwd: path.resolve(__dirname, '../program')
                     })
@@ -227,7 +228,7 @@ const ActionHandle = {
             case 'win32':
                 {
                     // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\compile.js
-                    spawn(devConfig.program_path, ['./ntqq/resources/app/app_launcher/compile.js'], {
+                    spawn(startupProgram, ['./ntqq/resources/app/app_launcher/compile.js'], {
                         stdio: 'inherit',
                         env: {
                             ...process.env,
