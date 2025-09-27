@@ -22,7 +22,6 @@ touch yui.dev.yaml
 cat > yui.dev.yaml <<EOF
 yui:
   dev:
-    program_path: /opt/QQ/qq
 EOF
 pnpm install
 mkdir -p tmp/build

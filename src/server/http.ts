@@ -72,6 +72,9 @@ export const startHTTPServer = () => {
     const httpsServer = https.createServer(options, app)
     log.info('Try to listen on 443.')
     httpsServer.listen(443)
+    httpsServer.on('listening', () => {
+        log.info('https server listening on 443')
+    })
     httpsServer.on('error', function (err: any) {
         log.error('err:', err)
         if (err.code === 'EACCES' && err.port === 443) {
