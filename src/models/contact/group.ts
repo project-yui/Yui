@@ -55,7 +55,7 @@ export class Group extends Contact {
             signature: ""
         })
     }
-    async sendForwardMessage2(forwardData: BotMessageSendElements.ForwardElement) {
+    async sendForwardMessage(forwardData: BotMessageSendElements.ForwardElement) {
         log.info("upload test....")
         const { getUserInfo } = useNTUserStore()
         const core = useNTCore()

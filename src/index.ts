@@ -10,13 +10,11 @@ global.module = module
 const log = useLogger('Index')
 try {
   log.info('Hi Yui bot!!')
-  console.log(process.version)
 
   process.on('unhandledRejection', (err) => {
     log.error('unhandledRejection:', err)
     // process.exit(1)
   })
-
 
   log.info('initOnebot')
   initOnebot()
@@ -44,7 +42,7 @@ try {
     delete require.cache['electron/common']
     delete require.cache['electron/main']
   }
-  console.log('end....')
+  log.info('end....')
 }
 catch(err) {
   log.error('Error:', err)

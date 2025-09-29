@@ -36,7 +36,7 @@ export const useListenerProxy = (name: string) => {
     log.info('useListenerProxy async store:', name, s)
     const handler = {
         get(obj: any, prop: string) {
-            log.info('handle get', obj, prop)
+            log.info('handle get', obj, prop, name)
             const uin: number = s?.get('uin')
             if (!uin)
             {

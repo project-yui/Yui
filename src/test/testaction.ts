@@ -3,7 +3,7 @@ import { useLogger } from "../common/log"
 import { NTSendForwardMessage, NTSendMessage } from "../ntqq/message/message"
 import { BotActionResponse } from "../onebot/actions/interfaces"
 import { useStore } from "../store/store"
-import { sendForwardMessageToGroup, sendMessageToGroup } from "../transfer/message/group"
+import { sendMessageToGroup } from "../transfer/message/group"
 import fs, { readFileSync } from 'fs'
 import { Script } from 'vm'
 import { randomUUID } from "crypto"

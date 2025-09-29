@@ -8,10 +8,6 @@ declare namespace YuiNativeWrapper {
          * @param signature 函数签名
          */
         const install: (name: string, signature: SignatureType) => Record<string, boolean>
-        /**
-         * 添加消息
-         */
-        const addMsg: (msg: AddMsgType) => boolean
         const addPkg: (pkg: AddPkgType) => Promise<Uint8Array>
     }
     interface SignatureType {

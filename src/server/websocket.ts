@@ -10,7 +10,6 @@ import { CustomError } from './error/custom-error';
 import { convertToCamelCase, convertToSnakeCase } from '../common/utils';
 import { NTInitialize } from '../ntqq';
 import { useAsyncStore } from '../store/async-store';
-import { listenMessage } from '../onebot/event/message';
 import { useNTUserStore } from '../ntqq/store/user';
 import { initEvent } from '../onebot/event';
 
