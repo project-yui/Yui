@@ -4,16 +4,11 @@ import { Contact } from "./contact";
 import { Member } from "./member";
 import { useLogger } from "../../common/log";
 import { BotMessageSendElements } from "../../onebot/common/message";
-import { int2IPNet } from "../../common/utils";
 import { gzipSync } from "zlib";
-import { request } from "http";
-import { createHash, randomBytes } from "crypto";
+import { randomBytes } from "crypto";
 import { useNTUserStore } from "../../ntqq/store/user";
-import { connect } from "net";
 import { useNTCore } from "../../ntqq/core/core";
-import { NTSendMessageType } from "../../ntqq/message/interfaces";
 import { SendLongMsgReq, SendLongMsgResp, SsoSendLongMsgReq } from "../../ntqq/protobuf/longmsg";
-import { Msg } from "../../ntqq/protobuf/nt_msg_common";
 import { PbSendMsgReq, PbSendMsgResp } from "../../ntqq/protobuf/msg_svc";
 import { ForwardConverter } from "../../common/forward-converter";
 
@@ -68,7 +63,8 @@ export class Group extends Contact {
         const msgUid = rand2uuid(rand)
         log.info('seq:', seq, 'rand:', rand, 'msgUid:', msgUid)
         // 1. 组装PbMultiMsgTransmit
-        const msgItem = new ForwardConverter(forwardData).toPbMsg()
+        const forwardConverter = new ForwardConverter(forwardData)
+        const msgItem = forwardConverter.toPbMsg()
         const transmit = SsoSendLongMsgReq.encode({
             body: {
                 fileName: "MultiMsg",
@@ -103,7 +99,9 @@ export class Group extends Contact {
         if (!resId) {
             throw new Error('发送失败，没有获取到resId')
         }
-        const xml = `<?xml version='1.0' encoding='UTF-8' standalone=\"yes\"?> <msg serviceID=\"35\" templateID=\"1\" action=\"viewMultiMsg\" brief=\"[聊天记录]\" m_fileName=\"MultiMsg\" m_resid=\"${resId}\" tSum=\"2\" flag=\"3\"><item layout=\"1\"> <title color=\"#000000\" size=\"34\"> 群聊的聊天记录 </title><title color=\"#777777\" size=\"26\"> 群昵称123:无人鸡 </title><title color=\"#777777\" size=\"26\"> 荒:[动画表情] </title> <hr></hr> <summary color=\"#808080\"> 查看转发消息  </summary></item> <source name=\" 群聊的聊天记录 \"></source> </msg>`
+
+        const xml = forwardConverter.toXml(resId)
+
         log.info('send message.')
         const sendResultData = await sendCustomPkgV2('MessageSvc.PbSendMsg', PbSendMsgReq.encode({
             routingHead: {
