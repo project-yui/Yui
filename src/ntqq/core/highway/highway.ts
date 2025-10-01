@@ -96,7 +96,7 @@ export class HighwayUpload {
             const headerSize = resBuf.readUInt32BE(1);
             const headerBuf = new Uint8Array(resBuf).slice(9, 9 + headerSize);
             const resp = RspDataHighwayHead.decode(headerBuf);
-            log.info(`Received response for chunk ${chunkIndex}:`, JSON.stringify(resp, null, 2));
+            log.info(`Received response for chunk ${chunkIndex}:`, JSON.stringify(resp));
             if (resp.uint32ErrorCode !== 0) {
                 throw new Error(`Upload failed at chunk ${chunkIndex} with error code ${resp.uint32ErrorCode}`);
             }
@@ -162,7 +162,7 @@ export class HighwayUpload {
                     },
                     path: `/cgi-bin/httpconn?htcmd=${this.htcmd}&uin=${this.uin}`,
                 }, (res) => {
-                console.log(`STATUS: ${res.statusCode}`);
+                log.info(`STATUS: ${res.statusCode}`);
                 let result: Uint8Array[] = [];
                 res.on('data', (data) => {
                     log.info('Received data chunk', typeof data, data.length);

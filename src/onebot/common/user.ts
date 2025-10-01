@@ -22,6 +22,7 @@ export const getUserInfoByUid = (uid: `u_${string}`): Promise<UserDetailInfoType
       if (payload.uid !== uid) return;
       // 清除超时计时
       clearTimeout(time)
+      userInfoListener?.remove()
       resolve(payload)
     })
     const { getWrapperSession } = useNTCore()
