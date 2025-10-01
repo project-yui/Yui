@@ -51,7 +51,6 @@ export class Group extends Contact {
         })
     }
     async sendForwardMessage(forwardData: BotMessageSendElements.ForwardElement) {
-        log.info("upload test....")
         const { getUserInfo } = useNTUserStore()
         const core = useNTCore()
         const user = getUserInfo()
@@ -64,6 +63,7 @@ export class Group extends Contact {
         log.info('seq:', seq, 'rand:', rand, 'msgUid:', msgUid)
         // 1. 组装PbMultiMsgTransmit
         const forwardConverter = new ForwardConverter(forwardData)
+        await forwardConverter.uploadImage()
         const msgItem = forwardConverter.toPbMsg()
         const transmit = SsoSendLongMsgReq.encode({
             body: {
@@ -74,6 +74,7 @@ export class Group extends Contact {
                 
             }
         }).finish()
+        log.info('transmit data:', Buffer.from(transmit).toString('hex'))
         // 2. gzip压缩
         const compressed = gzipSync(transmit)
         let body = SendLongMsgReq.encode({
@@ -88,10 +89,11 @@ export class Group extends Contact {
             settings: {
                 field1: 4,
                 field2: 1,
-                field3: 7,
+                field3: 3,
                 field4: 0
             }
         }).finish()
+        log.info('full data:', Buffer.from(body).toString('hex'))
         const sendLongResp = await sendCustomPkgV2('trpc.group.long_msg_interface.MsgService.SsoSendLongMsg', body)
         log.info('send long resp:', Buffer.from(sendLongResp).toString('hex'))
         const sendLongResult = SendLongMsgResp.decode(sendLongResp, sendLongResp.byteLength)

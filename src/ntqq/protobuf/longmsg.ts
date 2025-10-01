@@ -25,13 +25,19 @@ export interface LongMsgData {
 
 export interface LongMsgSettings {
   /** 4 */
-  field1: number;
+  field1?:
+    | number
+    | undefined;
   /** 1 */
-  field2: number;
+  field2?:
+    | number
+    | undefined;
   /** 7 */
-  field3: number;
+  field3?:
+    | number
+    | undefined;
   /** 0 */
-  field4: number;
+  field4?: number | undefined;
 }
 
 export interface SendLongMsgReq {
@@ -257,21 +263,21 @@ export const LongMsgData: MessageFns<LongMsgData> = {
 };
 
 function createBaseLongMsgSettings(): LongMsgSettings {
-  return { field1: 0, field2: 0, field3: 0, field4: 0 };
+  return { field1: undefined, field2: undefined, field3: undefined, field4: undefined };
 }
 
 export const LongMsgSettings: MessageFns<LongMsgSettings> = {
   encode(message: LongMsgSettings, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.field1 !== 0) {
+    if (message.field1 !== undefined) {
       writer.uint32(8).uint32(message.field1);
     }
-    if (message.field2 !== 0) {
+    if (message.field2 !== undefined) {
       writer.uint32(16).uint32(message.field2);
     }
-    if (message.field3 !== 0) {
+    if (message.field3 !== undefined) {
       writer.uint32(24).uint32(message.field3);
     }
-    if (message.field4 !== 0) {
+    if (message.field4 !== undefined) {
       writer.uint32(32).uint32(message.field4);
     }
     return writer;
@@ -327,25 +333,25 @@ export const LongMsgSettings: MessageFns<LongMsgSettings> = {
 
   fromJSON(object: any): LongMsgSettings {
     return {
-      field1: isSet(object.field1) ? globalThis.Number(object.field1) : 0,
-      field2: isSet(object.field2) ? globalThis.Number(object.field2) : 0,
-      field3: isSet(object.field3) ? globalThis.Number(object.field3) : 0,
-      field4: isSet(object.field4) ? globalThis.Number(object.field4) : 0,
+      field1: isSet(object.field1) ? globalThis.Number(object.field1) : undefined,
+      field2: isSet(object.field2) ? globalThis.Number(object.field2) : undefined,
+      field3: isSet(object.field3) ? globalThis.Number(object.field3) : undefined,
+      field4: isSet(object.field4) ? globalThis.Number(object.field4) : undefined,
     };
   },
 
   toJSON(message: LongMsgSettings): unknown {
     const obj: any = {};
-    if (message.field1 !== 0) {
+    if (message.field1 !== undefined) {
       obj.field1 = Math.round(message.field1);
     }
-    if (message.field2 !== 0) {
+    if (message.field2 !== undefined) {
       obj.field2 = Math.round(message.field2);
     }
-    if (message.field3 !== 0) {
+    if (message.field3 !== undefined) {
       obj.field3 = Math.round(message.field3);
     }
-    if (message.field4 !== 0) {
+    if (message.field4 !== undefined) {
       obj.field4 = Math.round(message.field4);
     }
     return obj;
@@ -356,10 +362,10 @@ export const LongMsgSettings: MessageFns<LongMsgSettings> = {
   },
   fromPartial<I extends Exact<DeepPartial<LongMsgSettings>, I>>(object: I): LongMsgSettings {
     const message = createBaseLongMsgSettings();
-    message.field1 = object.field1 ?? 0;
-    message.field2 = object.field2 ?? 0;
-    message.field3 = object.field3 ?? 0;
-    message.field4 = object.field4 ?? 0;
+    message.field1 = object.field1 ?? undefined;
+    message.field2 = object.field2 ?? undefined;
+    message.field3 = object.field3 ?? undefined;
+    message.field4 = object.field4 ?? undefined;
     return message;
   },
 };

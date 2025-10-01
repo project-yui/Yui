@@ -332,6 +332,10 @@ declare namespace BotMessageSendElements {
      * 
      */
     path: string
+    /**
+     * 上传准备后的数据
+     */
+    pbElem?: Uint8Array
   }
 
   /**

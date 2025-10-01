@@ -29,7 +29,7 @@ const onRecvMsg = () => {
         log.info('一分钟前的消息不处理')
         continue
       }
-      log.info('receive:', JSON.stringify(msg, null, 4))
+      log.info('receive:', JSON.stringify(msg))
       // 频道消息暂不处理
       if (msg.chatType === 4) continue
       
@@ -165,7 +165,7 @@ const onAddSendMsg = () => {
       log.info('一分钟前的消息不处理')
       return;
     }
-    log.info('receive:', JSON.stringify(msg, null, 4))
+    log.info('receive:', JSON.stringify(msg))
     // 频道消息暂不处理
     if (msg.chatType === 4) return
     

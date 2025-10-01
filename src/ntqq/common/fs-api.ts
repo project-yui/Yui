@@ -38,7 +38,12 @@ export const getFileMd5 = async (path: string) => {
  */
 export const getFileType = (path: string) => {
   const f = readFileSync(path)
-  return parse(f)
+  const buf = new ArrayBuffer(f.byteLength)
+  const view = new Uint8Array(buf)
+  for (let i = 0; i < f.byteLength; i++) {
+    view[i] = f[i]
+  }
+  return parse(buf)
 }
 
 /**

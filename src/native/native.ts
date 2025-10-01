@@ -94,6 +94,7 @@ export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
     log.debug('search service:', search)
     const { getCurrentAccountData } = useNTUserStore()
     const info = getCurrentAccountData()
+    log.info('send pb:', cmd, Buffer.from(data).toString('hex'))
     const send = addPkg({
         data: data,
         uin: info.info.uin,

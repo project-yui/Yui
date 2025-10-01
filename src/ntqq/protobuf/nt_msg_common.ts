@@ -76,7 +76,7 @@ export interface RoutingHead {
 }
 
 export interface ContentHead {
-  /** 消息类型 */
+  /** 消息类型 group:82 */
   msgType?:
     | number
     | undefined;
@@ -110,6 +110,15 @@ export interface ContentHead {
   /** 两个uin之间c2c消息唯一递增seq */
   ntMsgSeq?: number | undefined;
   msgUid?: number | undefined;
+  forward: ForwardHead | undefined;
+}
+
+export interface ForwardHead {
+  field1?: number | undefined;
+  field2?: number | undefined;
+  field3?: number | undefined;
+  field4?: string | undefined;
+  field5?: string | undefined;
 }
 
 export interface Msg {
@@ -123,45 +132,45 @@ export interface Msg {
 
 function createBaseGroup(): Group {
   return {
-    groupCode: 0,
-    groupType: 0,
-    groupInfoSeq: 0,
-    groupCard: new Uint8Array(0),
-    groupCardType: 0,
-    groupLevel: 0,
-    groupName: new Uint8Array(0),
-    extGroupKeyInfo: new Uint8Array(0),
-    msgFlag: 0,
+    groupCode: undefined,
+    groupType: undefined,
+    groupInfoSeq: undefined,
+    groupCard: undefined,
+    groupCardType: undefined,
+    groupLevel: undefined,
+    groupName: undefined,
+    extGroupKeyInfo: undefined,
+    msgFlag: undefined,
   };
 }
 
 export const Group: MessageFns<Group> = {
   encode(message: Group, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.groupCode !== undefined && message.groupCode !== 0) {
+    if (message.groupCode !== undefined) {
       writer.uint32(8).uint64(message.groupCode);
     }
-    if (message.groupType !== undefined && message.groupType !== 0) {
+    if (message.groupType !== undefined) {
       writer.uint32(16).uint32(message.groupType);
     }
-    if (message.groupInfoSeq !== undefined && message.groupInfoSeq !== 0) {
+    if (message.groupInfoSeq !== undefined) {
       writer.uint32(24).uint64(message.groupInfoSeq);
     }
-    if (message.groupCard !== undefined && message.groupCard.length !== 0) {
+    if (message.groupCard !== undefined) {
       writer.uint32(34).bytes(message.groupCard);
     }
-    if (message.groupCardType !== undefined && message.groupCardType !== 0) {
+    if (message.groupCardType !== undefined) {
       writer.uint32(40).uint32(message.groupCardType);
     }
-    if (message.groupLevel !== undefined && message.groupLevel !== 0) {
+    if (message.groupLevel !== undefined) {
       writer.uint32(48).uint32(message.groupLevel);
     }
-    if (message.groupName !== undefined && message.groupName.length !== 0) {
+    if (message.groupName !== undefined) {
       writer.uint32(58).bytes(message.groupName);
     }
-    if (message.extGroupKeyInfo !== undefined && message.extGroupKeyInfo.length !== 0) {
+    if (message.extGroupKeyInfo !== undefined) {
       writer.uint32(66).bytes(message.extGroupKeyInfo);
     }
-    if (message.msgFlag !== undefined && message.msgFlag !== 0) {
+    if (message.msgFlag !== undefined) {
       writer.uint32(72).uint32(message.msgFlag);
     }
     return writer;
@@ -257,45 +266,45 @@ export const Group: MessageFns<Group> = {
 
   fromJSON(object: any): Group {
     return {
-      groupCode: isSet(object.groupCode) ? globalThis.Number(object.groupCode) : 0,
-      groupType: isSet(object.groupType) ? globalThis.Number(object.groupType) : 0,
-      groupInfoSeq: isSet(object.groupInfoSeq) ? globalThis.Number(object.groupInfoSeq) : 0,
-      groupCard: isSet(object.groupCard) ? bytesFromBase64(object.groupCard) : new Uint8Array(0),
-      groupCardType: isSet(object.groupCardType) ? globalThis.Number(object.groupCardType) : 0,
-      groupLevel: isSet(object.groupLevel) ? globalThis.Number(object.groupLevel) : 0,
-      groupName: isSet(object.groupName) ? bytesFromBase64(object.groupName) : new Uint8Array(0),
-      extGroupKeyInfo: isSet(object.extGroupKeyInfo) ? bytesFromBase64(object.extGroupKeyInfo) : new Uint8Array(0),
-      msgFlag: isSet(object.msgFlag) ? globalThis.Number(object.msgFlag) : 0,
+      groupCode: isSet(object.groupCode) ? globalThis.Number(object.groupCode) : undefined,
+      groupType: isSet(object.groupType) ? globalThis.Number(object.groupType) : undefined,
+      groupInfoSeq: isSet(object.groupInfoSeq) ? globalThis.Number(object.groupInfoSeq) : undefined,
+      groupCard: isSet(object.groupCard) ? bytesFromBase64(object.groupCard) : undefined,
+      groupCardType: isSet(object.groupCardType) ? globalThis.Number(object.groupCardType) : undefined,
+      groupLevel: isSet(object.groupLevel) ? globalThis.Number(object.groupLevel) : undefined,
+      groupName: isSet(object.groupName) ? bytesFromBase64(object.groupName) : undefined,
+      extGroupKeyInfo: isSet(object.extGroupKeyInfo) ? bytesFromBase64(object.extGroupKeyInfo) : undefined,
+      msgFlag: isSet(object.msgFlag) ? globalThis.Number(object.msgFlag) : undefined,
     };
   },
 
   toJSON(message: Group): unknown {
     const obj: any = {};
-    if (message.groupCode !== undefined && message.groupCode !== 0) {
+    if (message.groupCode !== undefined) {
       obj.groupCode = Math.round(message.groupCode);
     }
-    if (message.groupType !== undefined && message.groupType !== 0) {
+    if (message.groupType !== undefined) {
       obj.groupType = Math.round(message.groupType);
     }
-    if (message.groupInfoSeq !== undefined && message.groupInfoSeq !== 0) {
+    if (message.groupInfoSeq !== undefined) {
       obj.groupInfoSeq = Math.round(message.groupInfoSeq);
     }
-    if (message.groupCard !== undefined && message.groupCard.length !== 0) {
+    if (message.groupCard !== undefined) {
       obj.groupCard = base64FromBytes(message.groupCard);
     }
-    if (message.groupCardType !== undefined && message.groupCardType !== 0) {
+    if (message.groupCardType !== undefined) {
       obj.groupCardType = Math.round(message.groupCardType);
     }
-    if (message.groupLevel !== undefined && message.groupLevel !== 0) {
+    if (message.groupLevel !== undefined) {
       obj.groupLevel = Math.round(message.groupLevel);
     }
-    if (message.groupName !== undefined && message.groupName.length !== 0) {
+    if (message.groupName !== undefined) {
       obj.groupName = base64FromBytes(message.groupName);
     }
-    if (message.extGroupKeyInfo !== undefined && message.extGroupKeyInfo.length !== 0) {
+    if (message.extGroupKeyInfo !== undefined) {
       obj.extGroupKeyInfo = base64FromBytes(message.extGroupKeyInfo);
     }
-    if (message.msgFlag !== undefined && message.msgFlag !== 0) {
+    if (message.msgFlag !== undefined) {
       obj.msgFlag = Math.round(message.msgFlag);
     }
     return obj;
@@ -306,15 +315,15 @@ export const Group: MessageFns<Group> = {
   },
   fromPartial<I extends Exact<DeepPartial<Group>, I>>(object: I): Group {
     const message = createBaseGroup();
-    message.groupCode = object.groupCode ?? 0;
-    message.groupType = object.groupType ?? 0;
-    message.groupInfoSeq = object.groupInfoSeq ?? 0;
-    message.groupCard = object.groupCard ?? new Uint8Array(0);
-    message.groupCardType = object.groupCardType ?? 0;
-    message.groupLevel = object.groupLevel ?? 0;
-    message.groupName = object.groupName ?? new Uint8Array(0);
-    message.extGroupKeyInfo = object.extGroupKeyInfo ?? new Uint8Array(0);
-    message.msgFlag = object.msgFlag ?? 0;
+    message.groupCode = object.groupCode ?? undefined;
+    message.groupType = object.groupType ?? undefined;
+    message.groupInfoSeq = object.groupInfoSeq ?? undefined;
+    message.groupCard = object.groupCard ?? undefined;
+    message.groupCardType = object.groupCardType ?? undefined;
+    message.groupLevel = object.groupLevel ?? undefined;
+    message.groupName = object.groupName ?? undefined;
+    message.extGroupKeyInfo = object.extGroupKeyInfo ?? undefined;
+    message.msgFlag = object.msgFlag ?? undefined;
     return message;
   },
 };
@@ -364,12 +373,12 @@ export const C2c: MessageFns<C2c> = {
 
 function createBaseRoutingHead(): RoutingHead {
   return {
-    fromUin: 0,
-    fromUid: new Uint8Array(0),
-    fromAppid: 0,
-    fromInstid: 0,
-    toUin: 0,
-    toUid: new Uint8Array(0),
+    fromUin: undefined,
+    fromUid: undefined,
+    fromAppid: undefined,
+    fromInstid: undefined,
+    toUin: undefined,
+    toUid: undefined,
     c2c: undefined,
     group: undefined,
   };
@@ -377,22 +386,22 @@ function createBaseRoutingHead(): RoutingHead {
 
 export const RoutingHead: MessageFns<RoutingHead> = {
   encode(message: RoutingHead, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.fromUin !== undefined && message.fromUin !== 0) {
+    if (message.fromUin !== undefined) {
       writer.uint32(8).uint64(message.fromUin);
     }
-    if (message.fromUid !== undefined && message.fromUid.length !== 0) {
+    if (message.fromUid !== undefined) {
       writer.uint32(18).bytes(message.fromUid);
     }
-    if (message.fromAppid !== undefined && message.fromAppid !== 0) {
+    if (message.fromAppid !== undefined) {
       writer.uint32(24).uint32(message.fromAppid);
     }
-    if (message.fromInstid !== undefined && message.fromInstid !== 0) {
+    if (message.fromInstid !== undefined) {
       writer.uint32(32).uint32(message.fromInstid);
     }
-    if (message.toUin !== undefined && message.toUin !== 0) {
+    if (message.toUin !== undefined) {
       writer.uint32(40).uint64(message.toUin);
     }
-    if (message.toUid !== undefined && message.toUid.length !== 0) {
+    if (message.toUid !== undefined) {
       writer.uint32(50).bytes(message.toUid);
     }
     if (message.c2c !== undefined) {
@@ -486,12 +495,12 @@ export const RoutingHead: MessageFns<RoutingHead> = {
 
   fromJSON(object: any): RoutingHead {
     return {
-      fromUin: isSet(object.fromUin) ? globalThis.Number(object.fromUin) : 0,
-      fromUid: isSet(object.fromUid) ? bytesFromBase64(object.fromUid) : new Uint8Array(0),
-      fromAppid: isSet(object.fromAppid) ? globalThis.Number(object.fromAppid) : 0,
-      fromInstid: isSet(object.fromInstid) ? globalThis.Number(object.fromInstid) : 0,
-      toUin: isSet(object.toUin) ? globalThis.Number(object.toUin) : 0,
-      toUid: isSet(object.toUid) ? bytesFromBase64(object.toUid) : new Uint8Array(0),
+      fromUin: isSet(object.fromUin) ? globalThis.Number(object.fromUin) : undefined,
+      fromUid: isSet(object.fromUid) ? bytesFromBase64(object.fromUid) : undefined,
+      fromAppid: isSet(object.fromAppid) ? globalThis.Number(object.fromAppid) : undefined,
+      fromInstid: isSet(object.fromInstid) ? globalThis.Number(object.fromInstid) : undefined,
+      toUin: isSet(object.toUin) ? globalThis.Number(object.toUin) : undefined,
+      toUid: isSet(object.toUid) ? bytesFromBase64(object.toUid) : undefined,
       c2c: isSet(object.c2c) ? C2c.fromJSON(object.c2c) : undefined,
       group: isSet(object.group) ? Group.fromJSON(object.group) : undefined,
     };
@@ -499,22 +508,22 @@ export const RoutingHead: MessageFns<RoutingHead> = {
 
   toJSON(message: RoutingHead): unknown {
     const obj: any = {};
-    if (message.fromUin !== undefined && message.fromUin !== 0) {
+    if (message.fromUin !== undefined) {
       obj.fromUin = Math.round(message.fromUin);
     }
-    if (message.fromUid !== undefined && message.fromUid.length !== 0) {
+    if (message.fromUid !== undefined) {
       obj.fromUid = base64FromBytes(message.fromUid);
     }
-    if (message.fromAppid !== undefined && message.fromAppid !== 0) {
+    if (message.fromAppid !== undefined) {
       obj.fromAppid = Math.round(message.fromAppid);
     }
-    if (message.fromInstid !== undefined && message.fromInstid !== 0) {
+    if (message.fromInstid !== undefined) {
       obj.fromInstid = Math.round(message.fromInstid);
     }
-    if (message.toUin !== undefined && message.toUin !== 0) {
+    if (message.toUin !== undefined) {
       obj.toUin = Math.round(message.toUin);
     }
-    if (message.toUid !== undefined && message.toUid.length !== 0) {
+    if (message.toUid !== undefined) {
       obj.toUid = base64FromBytes(message.toUid);
     }
     if (message.c2c !== undefined) {
@@ -531,12 +540,12 @@ export const RoutingHead: MessageFns<RoutingHead> = {
   },
   fromPartial<I extends Exact<DeepPartial<RoutingHead>, I>>(object: I): RoutingHead {
     const message = createBaseRoutingHead();
-    message.fromUin = object.fromUin ?? 0;
-    message.fromUid = object.fromUid ?? new Uint8Array(0);
-    message.fromAppid = object.fromAppid ?? 0;
-    message.fromInstid = object.fromInstid ?? 0;
-    message.toUin = object.toUin ?? 0;
-    message.toUid = object.toUid ?? new Uint8Array(0);
+    message.fromUin = object.fromUin ?? undefined;
+    message.fromUid = object.fromUid ?? undefined;
+    message.fromAppid = object.fromAppid ?? undefined;
+    message.fromInstid = object.fromInstid ?? undefined;
+    message.toUin = object.toUin ?? undefined;
+    message.toUid = object.toUid ?? undefined;
     message.c2c = (object.c2c !== undefined && object.c2c !== null) ? C2c.fromPartial(object.c2c) : undefined;
     message.group = (object.group !== undefined && object.group !== null) ? Group.fromPartial(object.group) : undefined;
     return message;
@@ -545,58 +554,62 @@ export const RoutingHead: MessageFns<RoutingHead> = {
 
 function createBaseContentHead(): ContentHead {
   return {
-    msgType: 0,
-    subType: 0,
-    c2cCmd: 0,
-    random: 0,
-    msgSeq: 0,
-    msgTime: 0,
-    pkgNum: 0,
-    pkgIndex: 0,
-    divSeq: 0,
-    autoReply: 0,
-    ntMsgSeq: 0,
-    msgUid: 0,
+    msgType: undefined,
+    subType: undefined,
+    c2cCmd: undefined,
+    random: undefined,
+    msgSeq: undefined,
+    msgTime: undefined,
+    pkgNum: undefined,
+    pkgIndex: undefined,
+    divSeq: undefined,
+    autoReply: undefined,
+    ntMsgSeq: undefined,
+    msgUid: undefined,
+    forward: undefined,
   };
 }
 
 export const ContentHead: MessageFns<ContentHead> = {
   encode(message: ContentHead, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.msgType !== undefined && message.msgType !== 0) {
+    if (message.msgType !== undefined) {
       writer.uint32(8).uint64(message.msgType);
     }
-    if (message.subType !== undefined && message.subType !== 0) {
+    if (message.subType !== undefined) {
       writer.uint32(16).uint64(message.subType);
     }
-    if (message.c2cCmd !== undefined && message.c2cCmd !== 0) {
+    if (message.c2cCmd !== undefined) {
       writer.uint32(24).uint32(message.c2cCmd);
     }
-    if (message.random !== undefined && message.random !== 0) {
+    if (message.random !== undefined) {
       writer.uint32(32).uint64(message.random);
     }
-    if (message.msgSeq !== undefined && message.msgSeq !== 0) {
+    if (message.msgSeq !== undefined) {
       writer.uint32(40).uint64(message.msgSeq);
     }
-    if (message.msgTime !== undefined && message.msgTime !== 0) {
+    if (message.msgTime !== undefined) {
       writer.uint32(48).uint64(message.msgTime);
     }
-    if (message.pkgNum !== undefined && message.pkgNum !== 0) {
+    if (message.pkgNum !== undefined) {
       writer.uint32(56).uint32(message.pkgNum);
     }
-    if (message.pkgIndex !== undefined && message.pkgIndex !== 0) {
+    if (message.pkgIndex !== undefined) {
       writer.uint32(64).uint32(message.pkgIndex);
     }
-    if (message.divSeq !== undefined && message.divSeq !== 0) {
+    if (message.divSeq !== undefined) {
       writer.uint32(72).uint32(message.divSeq);
     }
-    if (message.autoReply !== undefined && message.autoReply !== 0) {
+    if (message.autoReply !== undefined) {
       writer.uint32(80).uint32(message.autoReply);
     }
-    if (message.ntMsgSeq !== undefined && message.ntMsgSeq !== 0) {
+    if (message.ntMsgSeq !== undefined) {
       writer.uint32(88).uint64(message.ntMsgSeq);
     }
-    if (message.msgUid !== undefined && message.msgUid !== 0) {
+    if (message.msgUid !== undefined) {
       writer.uint32(96).uint64(message.msgUid);
+    }
+    if (message.forward !== undefined) {
+      ForwardHead.encode(message.forward, writer.uint32(122).fork()).join();
     }
     return writer;
   },
@@ -704,6 +717,14 @@ export const ContentHead: MessageFns<ContentHead> = {
           message.msgUid = longToNumber(reader.uint64());
           continue;
         }
+        case 15: {
+          if (tag !== 122) {
+            break;
+          }
+
+          message.forward = ForwardHead.decode(reader, reader.uint32());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -715,58 +736,62 @@ export const ContentHead: MessageFns<ContentHead> = {
 
   fromJSON(object: any): ContentHead {
     return {
-      msgType: isSet(object.msgType) ? globalThis.Number(object.msgType) : 0,
-      subType: isSet(object.subType) ? globalThis.Number(object.subType) : 0,
-      c2cCmd: isSet(object.c2cCmd) ? globalThis.Number(object.c2cCmd) : 0,
-      random: isSet(object.random) ? globalThis.Number(object.random) : 0,
-      msgSeq: isSet(object.msgSeq) ? globalThis.Number(object.msgSeq) : 0,
-      msgTime: isSet(object.msgTime) ? globalThis.Number(object.msgTime) : 0,
-      pkgNum: isSet(object.pkgNum) ? globalThis.Number(object.pkgNum) : 0,
-      pkgIndex: isSet(object.pkgIndex) ? globalThis.Number(object.pkgIndex) : 0,
-      divSeq: isSet(object.divSeq) ? globalThis.Number(object.divSeq) : 0,
-      autoReply: isSet(object.autoReply) ? globalThis.Number(object.autoReply) : 0,
-      ntMsgSeq: isSet(object.ntMsgSeq) ? globalThis.Number(object.ntMsgSeq) : 0,
-      msgUid: isSet(object.msgUid) ? globalThis.Number(object.msgUid) : 0,
+      msgType: isSet(object.msgType) ? globalThis.Number(object.msgType) : undefined,
+      subType: isSet(object.subType) ? globalThis.Number(object.subType) : undefined,
+      c2cCmd: isSet(object.c2cCmd) ? globalThis.Number(object.c2cCmd) : undefined,
+      random: isSet(object.random) ? globalThis.Number(object.random) : undefined,
+      msgSeq: isSet(object.msgSeq) ? globalThis.Number(object.msgSeq) : undefined,
+      msgTime: isSet(object.msgTime) ? globalThis.Number(object.msgTime) : undefined,
+      pkgNum: isSet(object.pkgNum) ? globalThis.Number(object.pkgNum) : undefined,
+      pkgIndex: isSet(object.pkgIndex) ? globalThis.Number(object.pkgIndex) : undefined,
+      divSeq: isSet(object.divSeq) ? globalThis.Number(object.divSeq) : undefined,
+      autoReply: isSet(object.autoReply) ? globalThis.Number(object.autoReply) : undefined,
+      ntMsgSeq: isSet(object.ntMsgSeq) ? globalThis.Number(object.ntMsgSeq) : undefined,
+      msgUid: isSet(object.msgUid) ? globalThis.Number(object.msgUid) : undefined,
+      forward: isSet(object.forward) ? ForwardHead.fromJSON(object.forward) : undefined,
     };
   },
 
   toJSON(message: ContentHead): unknown {
     const obj: any = {};
-    if (message.msgType !== undefined && message.msgType !== 0) {
+    if (message.msgType !== undefined) {
       obj.msgType = Math.round(message.msgType);
     }
-    if (message.subType !== undefined && message.subType !== 0) {
+    if (message.subType !== undefined) {
       obj.subType = Math.round(message.subType);
     }
-    if (message.c2cCmd !== undefined && message.c2cCmd !== 0) {
+    if (message.c2cCmd !== undefined) {
       obj.c2cCmd = Math.round(message.c2cCmd);
     }
-    if (message.random !== undefined && message.random !== 0) {
+    if (message.random !== undefined) {
       obj.random = Math.round(message.random);
     }
-    if (message.msgSeq !== undefined && message.msgSeq !== 0) {
+    if (message.msgSeq !== undefined) {
       obj.msgSeq = Math.round(message.msgSeq);
     }
-    if (message.msgTime !== undefined && message.msgTime !== 0) {
+    if (message.msgTime !== undefined) {
       obj.msgTime = Math.round(message.msgTime);
     }
-    if (message.pkgNum !== undefined && message.pkgNum !== 0) {
+    if (message.pkgNum !== undefined) {
       obj.pkgNum = Math.round(message.pkgNum);
     }
-    if (message.pkgIndex !== undefined && message.pkgIndex !== 0) {
+    if (message.pkgIndex !== undefined) {
       obj.pkgIndex = Math.round(message.pkgIndex);
     }
-    if (message.divSeq !== undefined && message.divSeq !== 0) {
+    if (message.divSeq !== undefined) {
       obj.divSeq = Math.round(message.divSeq);
     }
-    if (message.autoReply !== undefined && message.autoReply !== 0) {
+    if (message.autoReply !== undefined) {
       obj.autoReply = Math.round(message.autoReply);
     }
-    if (message.ntMsgSeq !== undefined && message.ntMsgSeq !== 0) {
+    if (message.ntMsgSeq !== undefined) {
       obj.ntMsgSeq = Math.round(message.ntMsgSeq);
     }
-    if (message.msgUid !== undefined && message.msgUid !== 0) {
+    if (message.msgUid !== undefined) {
       obj.msgUid = Math.round(message.msgUid);
+    }
+    if (message.forward !== undefined) {
+      obj.forward = ForwardHead.toJSON(message.forward);
     }
     return obj;
   },
@@ -776,18 +801,145 @@ export const ContentHead: MessageFns<ContentHead> = {
   },
   fromPartial<I extends Exact<DeepPartial<ContentHead>, I>>(object: I): ContentHead {
     const message = createBaseContentHead();
-    message.msgType = object.msgType ?? 0;
-    message.subType = object.subType ?? 0;
-    message.c2cCmd = object.c2cCmd ?? 0;
-    message.random = object.random ?? 0;
-    message.msgSeq = object.msgSeq ?? 0;
-    message.msgTime = object.msgTime ?? 0;
-    message.pkgNum = object.pkgNum ?? 0;
-    message.pkgIndex = object.pkgIndex ?? 0;
-    message.divSeq = object.divSeq ?? 0;
-    message.autoReply = object.autoReply ?? 0;
-    message.ntMsgSeq = object.ntMsgSeq ?? 0;
-    message.msgUid = object.msgUid ?? 0;
+    message.msgType = object.msgType ?? undefined;
+    message.subType = object.subType ?? undefined;
+    message.c2cCmd = object.c2cCmd ?? undefined;
+    message.random = object.random ?? undefined;
+    message.msgSeq = object.msgSeq ?? undefined;
+    message.msgTime = object.msgTime ?? undefined;
+    message.pkgNum = object.pkgNum ?? undefined;
+    message.pkgIndex = object.pkgIndex ?? undefined;
+    message.divSeq = object.divSeq ?? undefined;
+    message.autoReply = object.autoReply ?? undefined;
+    message.ntMsgSeq = object.ntMsgSeq ?? undefined;
+    message.msgUid = object.msgUid ?? undefined;
+    message.forward = (object.forward !== undefined && object.forward !== null)
+      ? ForwardHead.fromPartial(object.forward)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseForwardHead(): ForwardHead {
+  return { field1: undefined, field2: undefined, field3: undefined, field4: undefined, field5: undefined };
+}
+
+export const ForwardHead: MessageFns<ForwardHead> = {
+  encode(message: ForwardHead, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.field1 !== undefined) {
+      writer.uint32(8).uint32(message.field1);
+    }
+    if (message.field2 !== undefined) {
+      writer.uint32(16).uint32(message.field2);
+    }
+    if (message.field3 !== undefined) {
+      writer.uint32(24).uint32(message.field3);
+    }
+    if (message.field4 !== undefined) {
+      writer.uint32(34).string(message.field4);
+    }
+    if (message.field5 !== undefined) {
+      writer.uint32(42).string(message.field5);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ForwardHead {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseForwardHead();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.field1 = reader.uint32();
+          continue;
+        }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.field2 = reader.uint32();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.field3 = reader.uint32();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.field4 = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.field5 = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ForwardHead {
+    return {
+      field1: isSet(object.field1) ? globalThis.Number(object.field1) : undefined,
+      field2: isSet(object.field2) ? globalThis.Number(object.field2) : undefined,
+      field3: isSet(object.field3) ? globalThis.Number(object.field3) : undefined,
+      field4: isSet(object.field4) ? globalThis.String(object.field4) : undefined,
+      field5: isSet(object.field5) ? globalThis.String(object.field5) : undefined,
+    };
+  },
+
+  toJSON(message: ForwardHead): unknown {
+    const obj: any = {};
+    if (message.field1 !== undefined) {
+      obj.field1 = Math.round(message.field1);
+    }
+    if (message.field2 !== undefined) {
+      obj.field2 = Math.round(message.field2);
+    }
+    if (message.field3 !== undefined) {
+      obj.field3 = Math.round(message.field3);
+    }
+    if (message.field4 !== undefined) {
+      obj.field4 = message.field4;
+    }
+    if (message.field5 !== undefined) {
+      obj.field5 = message.field5;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ForwardHead>, I>>(base?: I): ForwardHead {
+    return ForwardHead.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ForwardHead>, I>>(object: I): ForwardHead {
+    const message = createBaseForwardHead();
+    message.field1 = object.field1 ?? undefined;
+    message.field2 = object.field2 ?? undefined;
+    message.field3 = object.field3 ?? undefined;
+    message.field4 = object.field4 ?? undefined;
+    message.field5 = object.field5 ?? undefined;
     return message;
   },
 };

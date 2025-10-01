@@ -1,0 +1,301 @@
+syntax = "proto3";
+
+package nt.pic_upload;
+
+message ReqUploadGroupPicPrepare {
+    UploadHead head = 1;
+    UploadBody body = 2;
+}
+
+message UploadHead {
+    UploadHeadField1 field1 = 1;
+    UploadHeadField2 field2 = 2;
+    UploadHeadField3 field3 = 3;
+}
+message UploadHeadField1 {
+    // group:3
+    uint32 field1 = 1;
+    // group:100
+    uint32 field2 = 2;
+}
+message UploadHeadField2 {
+    // group:2
+    optional uint32 field101 = 101;
+    // group:1
+    optional uint32 field102 = 102;
+    // group:0
+    optional uint32 field103 = 103;
+    // group:2
+    optional uint32 field200 = 200;
+    PeerInfo peer_info = 202;
+}
+message UploadHeadField3 {
+    // group:2
+    uint32 field1 = 1;
+}
+
+message UploadBody {
+    repeated UploadBodyField1 field1 = 1;
+    optional uint32 field2 = 2;
+    optional uint32 field3 = 3;
+    optional uint32 field4 = 4;
+    optional uint32 field5 = 5;
+    // TODO: 6
+    UploadBodyField6 field6 = 6;
+    optional uint32 field7 = 7;
+    optional uint32 field8 = 8;
+    optional bytes field9 = 9;
+}
+
+message UploadBodyField6 {
+    UploadBodyField6_1 field1 = 1;
+    UploadBodyField6_2 field2 = 2;
+    UploadBodyField6_3 field3 = 3;
+    optional uint32 field10 = 10;
+}
+message UploadBodyField6_1 {
+    optional uint32 filed1 = 1;
+    optional string field2 = 2;
+    UploadBodyField6_1_12 field12 = 12;
+}
+message UploadBodyField6_1_12 {
+    optional uint32 field1 = 1;
+    optional uint32 field3 = 3;
+    optional uint32 field4 = 4;
+    optional string field9 = 9;
+    optional uint32 field10 = 10;
+    optional string field12 = 12;
+    optional string field18 = 18;
+    optional string field19 = 19;
+    UploadBodyField6_1_12_21 field21 = 21;
+    optional string field31 = 31;
+}
+message UploadBodyField6_1_12_21 {
+    optional uint32 field1 = 1;
+    optional string field2 = 2;
+    optional uint32 field3 = 3;
+    optional uint32 field4 = 4;
+    optional uint32 field5 = 5;
+    optional string field7 = 7;
+}
+message UploadBodyField6_2 {
+    optional string field3 = 3;
+}
+message UploadBodyField6_3 {
+    optional string field11 = 11;
+    optional string field12 = 12;
+}
+
+message UploadBodyField1 {
+    ImageInfo image_info = 1;
+    optional uint32 field2 = 2;
+}
+
+message PeerInfo {
+    // 群号
+    uint32 group_code = 1;
+}
+message ImageInfo {
+    // 字节大小
+    uint32 pic_size = 1;
+    // 小写md5
+    string pic_md5 = 2;
+    // 文件sha1
+    string sha1 = 3;
+    // 大写MD5.png
+    string file_name = 4;
+    optional ImageInfoField5 field5 = 5;
+    uint32 pic_width = 6;
+    uint32 pic_height = 7;
+    // group:0
+    optional uint32 field8 = 8;
+    // group:1
+    optional uint32 field9 = 9;
+}
+message ImageInfoField5 {
+    // group:1
+    optional uint32 field1 = 1;
+    // group:1001
+    optional uint32 field2 = 2;
+    // group:0
+    optional uint32 field3 = 3;
+    // group:0
+    optional uint32 field4 = 4;
+}
+
+
+message RspUploadGroupPicPrepare {
+    RspHead head = 1;
+    RspBody body = 2;
+}
+
+message RspHead {
+    UploadHeadField1 field1 = 1;
+    // 成功：success
+    string message = 3;
+}
+
+message RspBody {
+    string field1 = 1;
+    uint32 field2 = 2;
+    repeated IPInfo ip_info = 3;
+    repeated IPv6Info ipv6_info = 4;
+    RspBodyField6 field6 = 6;
+    RspBodyField7 field7 = 7;
+    string domain = 11;
+    repeated IPAddress upload_ip_list = 14;
+    repeated IPv6Address field15 = 15;
+}
+
+message RspBodyField6 {
+    RspBodyField6_1 field1 = 1;
+    RspBodyField6_2 field2 = 2;
+}
+
+message RspBodyField6_1 {
+    RspBodyField6_1_1 field1 = 1;
+    DownloadInfo download_info = 2;
+    optional uint32 field5 = 5;
+    RspBodyField6_1_6 field6 = 6;
+}
+
+message RspBodyField6_1_1 {
+    ImageInfo image_info = 1;
+    optional string fileId = 2;
+    optional uint32 field3 = 3;
+    optional uint32 timestamp = 4;
+    optional uint32 field5 = 5;
+    optional uint32 field6 = 6;
+    optional uint32 field7 = 7;
+}
+
+message DownloadInfo {
+    string path = 1;
+    SpecOption option = 2;
+    string domain = 3;
+}
+
+message SpecOption {
+    string spec1 = 1;
+    string spec2 = 2;
+    string spec3 = 3;
+}
+
+message RspBodyField6_1_6 {
+    bytes field2 = 2;
+}
+
+message RspBodyField6_2 {
+    RspBodyField6_2_1 field1 = 1;
+    RspBodyField6_2_2 field2 = 2;
+    RspBodyField6_2_3 field3 = 3;
+    optional uint32 field10 = 10;
+}
+
+message RspBodyField6_2_1 {
+    optional uint32 field1 = 1;
+    optional bytes field2 = 2;
+    RspBodyField6_2_1_12 field12 = 12;
+    optional uint32 field1001 = 1001;
+    optional uint32 field1002 = 1002;
+    optional uint32 field1003 = 1003;
+}
+message RspBodyField6_2_2 {
+    optional bytes field3 = 3;
+}
+message RspBodyField6_2_3 {
+    optional bytes field11 = 11;
+    optional bytes field12 = 12;
+
+}
+
+message RspBodyField6_2_1_12 {
+    optional uint32 field1 = 1;
+    optional uint32 field3 = 3;
+    optional uint32 field4 = 4;
+    optional bytes field9 = 9;
+    optional uint32 field10 = 10;
+    optional bytes field12 = 12;
+    optional bytes field18 = 18;
+    optional bytes field19 = 19;
+    RspBodyField6_2_1_12_21 field21 = 21;
+    string rkey = 30;
+    optional string field31 = 31;
+}
+
+message RspBodyField6_2_1_12_21 {
+    uint32 field1 = 1;
+    string field2 = 2;
+    uint32 field3 = 3;
+    uint32 field4 = 4;
+    uint32 field5 = 5;
+    string field7 = 7;
+}
+
+message RspBodyField7 {
+    uint32 field1 = 1;
+    RspBodyField7_3 field3 = 3;
+}
+
+message RspBodyField7_3 {
+    uint32 field1 = 1;
+    uint32 field4 = 4;
+}
+
+message IPInfo {
+    uint32 ip1 = 1;
+    uint32 port1 = 2;
+    uint32 ip2 = 3;
+    uint32 port2 = 4;
+    uint32 field5 = 600;
+}
+
+message IPAddress {
+    uint32 ip = 1;
+    uint32 port = 2;
+}
+
+message IPv6Address {
+    bytes ip = 1;
+    uint32 port = 2;
+}
+
+message IPv6Info {
+    bytes ip = 1;
+    uint32 port = 2;
+    string field3 = 3;
+    uint32 field5 = 5;
+}
+
+message PicHighwayUploadExtendInfo {
+    string fileId = 1;
+    string token2 = 2;
+    uint32 field3 = 3;
+    PicHighwayUploadExtendInfoField4 field4 = 4;
+    PicHighwayUploadExtendInfoField5 field5 = 5;
+    RspBodyField6_1 field6 = 6;
+    uint32 field10 = 10;
+    ChunkInfo chunk_info = 11;
+}
+message PicHighwayUploadExtendInfoField4 {
+    uint32 field4 = 4;
+}
+message PicHighwayUploadExtendInfoField5 {
+    repeated IPAddressInfo ip_list = 1;
+}
+
+message PicHighwayUploadExtendInfoField6_6 {
+    bytes field2 = 2;
+}
+message ChunkInfo {
+    repeated bytes chunkSha1 = 1;
+}
+
+message IPAddressInfo {
+    IPExtendInfo ip = 1;
+    uint32 port = 2;
+}
+message IPExtendInfo {
+    uint32 type = 1;
+    string ip = 2;
+}

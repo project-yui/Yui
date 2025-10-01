@@ -55,7 +55,7 @@ export const useListenerProxy = (name: string) => {
                     log.debug(name, 'useListenerProxy call async store:', s)
                     s?.set('uin', uin)
                     log.debug(`${name}/${prop}`, ...args)
-                    log.debug(`${name}/${prop}`, JSON.stringify(args, null, 4))
+                    log.debug(`${name}/${prop}`, JSON.stringify(args))
                     const { getCurrentAccountData } = useNTUserStore()
                     const dispatcher = getCurrentAccountData().dispatcher
                     if (!dispatcher){

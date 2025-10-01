@@ -1,4 +1,11 @@
+import { createHash } from "crypto";
+import { createReadStream } from "fs";
+import { sendCustomPkgV2 } from "../native/native";
+import { ReqBody, RspBody, SubCmd0x501ReqBody, SubCmd0x501Rspbody } from "../ntqq/protobuf/subcmd0x501";
+import { CommunicationPkg } from "../ntqq/protobuf/communication";
+import { useLogger } from "./log";
 
+const log = useLogger('Utils')
 export const sleep = (t: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, t)
@@ -52,4 +59,42 @@ export const int2IPNet = (ip: number): string => {
     ((ip >> 8) & 0xFF) + '.' +
     ((ip >> 16) & 0xFF) + '.' +
     ((ip >> 24) & 0xFF);
+}
+
+export const calculateFileMd5 = (filePath: string): Promise<Buffer> => new Promise((resolve, reject) => {
+    const hash = createHash('md5');
+    const stream = createReadStream(filePath);
+    stream.on('data', (data) => typeof data === 'object' && hash.update(new Uint8Array(data)));
+    stream.on('end', () => resolve(hash.digest()));
+    stream.on('error', (err) => reject(err));
+});
+
+export const calculateFileSha1 = (filePath: string): Promise<Buffer> => new Promise((resolve, reject) => {
+    const hash = createHash('sha1');
+    const stream = createReadStream(filePath);
+    stream.on('data', (data) => typeof data === 'object' && hash.update(new Uint8Array(data)));
+    stream.on('end', () => resolve(hash.digest()));
+    stream.on('error', (err) => reject(err));
+});
+
+export const getHttpTicket = async(): Promise<Uint8Array> => {
+  // com.tencent.mobileqq\classes.jar\com\tencent\mobileqq\highway\config\HwServlet.java
+  log.info('Getting http ticket...');
+  const resBuf = await sendCustomPkgV2('HttpConn.0x6ff_501', ReqBody.encode({
+      msgSubcmd0x501ReqBody: {
+        uint64Uin: 0,
+        uint32IdcId: 0,
+        uint32Appid: 16,
+        uint32LoginSigType: 1,
+        uint32RequestFlag: 3,
+        rptUint32ServiceTypes: [1, 5, 10, 21],
+        uint32Term: 2,
+        uint32Plat: 9,
+        uint32Net: 8,
+        bytesVer: '1.0.1',
+      }
+    }).finish())
+  const resp = RspBody.decode(resBuf)
+  log.info('Getting http ticket response:', resp);
+  return resp.msgSubcmd0x501RspBody?.bytesHttpconnSigSession || new Uint8Array();
 }

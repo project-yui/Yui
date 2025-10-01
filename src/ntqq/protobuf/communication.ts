@@ -44,6 +44,8 @@ export interface CommunicationPkg {
    * optional uint32 account_type = 9; //账号类型；账号均为uin：不填或者0；存在uid：1
    */
   trpcTransInfo: MetaData[];
+  /** 图片上传准备：1 */
+  field12?: number | undefined;
 }
 
 /** from hap\resources\rawfile\oidb\oidb.proto */
@@ -80,6 +82,7 @@ function createBaseCommunicationPkg(): CommunicationPkg {
     strErrorMsg: undefined,
     strClientVersion: undefined,
     trpcTransInfo: [],
+    field12: undefined,
   };
 }
 
@@ -105,6 +108,9 @@ export const CommunicationPkg: MessageFns<CommunicationPkg> = {
     }
     for (const v of message.trpcTransInfo) {
       MetaData.encode(v!, writer.uint32(90).fork()).join();
+    }
+    if (message.field12 !== undefined) {
+      writer.uint32(96).uint32(message.field12);
     }
     return writer;
   },
@@ -172,6 +178,14 @@ export const CommunicationPkg: MessageFns<CommunicationPkg> = {
           message.trpcTransInfo.push(MetaData.decode(reader, reader.uint32()));
           continue;
         }
+        case 12: {
+          if (tag !== 96) {
+            break;
+          }
+
+          message.field12 = reader.uint32();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -192,6 +206,7 @@ export const CommunicationPkg: MessageFns<CommunicationPkg> = {
       trpcTransInfo: globalThis.Array.isArray(object?.trpcTransInfo)
         ? object.trpcTransInfo.map((e: any) => MetaData.fromJSON(e))
         : [],
+      field12: isSet(object.field12) ? globalThis.Number(object.field12) : undefined,
     };
   },
 
@@ -218,6 +233,9 @@ export const CommunicationPkg: MessageFns<CommunicationPkg> = {
     if (message.trpcTransInfo?.length) {
       obj.trpcTransInfo = message.trpcTransInfo.map((e) => MetaData.toJSON(e));
     }
+    if (message.field12 !== undefined) {
+      obj.field12 = Math.round(message.field12);
+    }
     return obj;
   },
 
@@ -233,6 +251,7 @@ export const CommunicationPkg: MessageFns<CommunicationPkg> = {
     message.strErrorMsg = object.strErrorMsg ?? undefined;
     message.strClientVersion = object.strClientVersion ?? undefined;
     message.trpcTransInfo = object.trpcTransInfo?.map((e) => MetaData.fromPartial(e)) || [];
+    message.field12 = object.field12 ?? undefined;
     return message;
   },
 };

@@ -17,6 +17,8 @@ message CommunicationPkg {
     //optional LoginSig msg_login_sig = 7;    //客户端上传的登录态, 没填则使用SSO包头的A2
     // optional uint32 account_type = 9; //账号类型；账号均为uin：不填或者0；存在uid：1
     repeated MetaData trpc_trans_info = 11; // 字段取名见：https://iwiki.woa.com/pages/viewpage.action?pageId=1283861911
+    // 图片上传准备：1
+    optional uint32 field12 = 12; // 0
 };
 
 // from hap\resources\rawfile\oidb\oidb.proto

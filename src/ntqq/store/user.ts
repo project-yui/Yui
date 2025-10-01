@@ -33,7 +33,7 @@ export const useNTUserStore = () => ({
     {
       resultUin = uin
     }
-    log.info('useNTUserStore -> getUserInfo', resultUin, accountNTData)
+    log.info('useNTUserStore -> getUserInfo', resultUin)
     return accountNTData[resultUin]?.info
   },
   /**

@@ -1,4 +1,4 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package trpc.msg.common;
 
@@ -33,7 +33,7 @@ message RoutingHead {
 };
 
 message ContentHead {
-    optional uint64 msg_type   = 1;  // 消息类型
+    optional uint64 msg_type   = 1;  // 消息类型 group:82
     optional uint64 sub_type   = 2;  // 消息子类型（0x211\0x2dc\0x210等系统消息的子类型,取值同c2c_cmd）
     optional uint32 c2c_cmd    = 3;  // c2c消息子类型
     optional uint64 random     = 4;
@@ -45,9 +45,16 @@ message ContentHead {
     optional uint32 auto_reply = 10;
     optional uint64 nt_msg_seq = 11;  // 两个uin之间c2c消息唯一递增seq
     optional uint64 msg_uid    = 12;
-    optional ForwardHead Foward = 15;
+    ForwardHead forward = 15;
 };
 
+message ForwardHead {
+    optional uint32 field1 = 1;
+    optional uint32 field2 = 2;
+    optional uint32 field3 = 3;
+    optional string field4 = 4;
+    optional string field5 = 5;
+}
 message Msg {
     optional RoutingHead routing_head    = 1;
     optional ContentHead content_head    = 2;

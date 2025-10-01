@@ -1,0 +1,147 @@
+syntax = "proto3";
+
+package subcmd0x501;
+
+
+message ReqBody {
+    // java里面是1，但实际抓包不是1
+    optional SubCmd0x501ReqBody msg_subcmd_0x501_req_body = 1281;
+}
+
+
+message RspBody {
+    optional SubCmd0x501Rspbody msg_subcmd_0x501_rsp_body = 1281;
+}
+
+
+message SubCmd0x501ReqBody {
+    optional uint64 uint64_uin = 1;
+    optional uint32 uint32_idc_id = 2;
+    optional uint32 uint32_appid = 3;
+    optional uint32 uint32_login_sig_type = 4;
+    optional bytes bytes_login_sig_ticket = 5;
+    optional uint32 uint32_request_flag = 6;
+    repeated int32 rpt_uint32_service_types = 7;
+    optional uint32 uint32_bid = 8;
+    optional uint32 uint32_term = 9;
+    optional uint32 uint32_plat = 10;
+    optional uint32 uint32_net = 11;
+    optional uint32 uint32_caller = 12;
+    optional string bytes_ver = 15;
+}
+
+
+message SubCmd0x501Rspbody_DownloadEncryptConf {
+    optional bool bool_enable_encrypt_request = 1;
+    optional bool bool_enable_encrypted_pic = 2;
+    optional uint32 uint32_ctrl_flag = 3;
+}
+
+
+message SubCmd0x501Rspbody_DynTimeOutConf {
+    optional uint32 uint32_tbase_2g = 1;
+    optional uint32 uint32_tbase_3g = 2;
+    optional uint32 uint32_tbase_4g = 3;
+    optional uint32 uint32_tbase_wifi = 4;
+    optional uint32 uint32_torg_2g = 5;
+    optional uint32 uint32_torg_3g = 6;
+    optional uint32 uint32_torg_4g = 7;
+    optional uint32 uint32_torg_wifi = 8;
+    optional uint32 uint32_max_timeout = 9;
+    optional uint32 uint32_enable_dyn_timeout = 10;
+    optional uint32 uint32_max_timeout_2g = 11;
+    optional uint32 uint32_max_timeout_3g = 12;
+    optional uint32 uint32_max_timeout_4g = 13;
+    optional uint32 uint32_max_timeout_wifi = 14;
+    optional uint32 uint32_hb_timeout_2g = 15;
+    optional uint32 uint32_hb_timeout_3g = 16;
+    optional uint32 uint32_hb_timeout_4g = 17;
+    optional uint32 uint32_hb_timeout_wifi = 18;
+    optional uint32 uint32_hb_timeout_default = 19;
+}
+
+
+message SubCmd0x501Rspbody_Ip6Addr {
+    optional uint32 uint32_type = 1;
+    optional bytes bytes_ip6 = 2;
+    optional uint32 uint32_port = 3;
+    optional uint32 uint32_area = 4;
+    optional uint32 uint32_same_isp = 5;
+}
+
+
+message SubCmd0x501Rspbody_IpAddr {
+    optional uint32 uint32_type = 1;
+    optional fixed32 uint32_ip = 2;
+    optional uint32 uint32_port = 3;
+    optional uint32 uint32_area = 4;
+    optional uint32 uint32_same_isp = 5;
+}
+
+
+message SubCmd0x501Rspbody_IpLearnConf {
+    optional uint32 uint32_refresh_cached_ip = 1;
+    optional uint32 uint32_enable_ip_learn = 2;
+}
+
+
+message SubCmd0x501Rspbody_NetSegConf {
+    optional uint32 uint32_net_type = 1;
+    optional uint32 uint32_segsize = 2;
+    optional uint32 uint32_segnum = 3;
+    optional uint32 uint32_curconnnum = 4;
+}
+
+
+message SubCmd0x501Rspbody_OpenUpConf {
+    optional bool bool_enable_openup = 1;
+    optional uint32 uint32_pre_send_segnum = 2;
+    optional uint32 uint32_pre_send_segnum_3g = 3;
+    optional uint32 uint32_pre_send_segnum_4g = 4;
+    optional uint32 uint32_pre_send_segnum_wifi = 5;
+}
+
+
+message SubCmd0x501Rspbody_PTVConf {
+    optional uint32 uint32_channel_type = 1;
+    repeated SubCmd0x501Rspbody_NetSegConf rpt_msg_netsegconf = 2;
+    optional bool bool_open_hardware_codec = 3;
+}
+
+
+message SubCmd0x501Rspbody_ShortVideoConf {
+    optional uint32 uint32_channel_type = 1;
+    repeated SubCmd0x501Rspbody_NetSegConf rpt_msg_netsegconf = 2;
+    optional bool bool_open_hardware_codec = 3;
+    optional bool bool_send_ahead_signal = 4;
+}
+
+
+message SubCmd0x501Rspbody_SrvAddrs {
+    optional uint32 uint32_service_type = 1;
+    repeated SubCmd0x501Rspbody_IpAddr rpt_msg_addrs = 2;
+    optional uint32 uint32_fragment_size = 3;
+    repeated SubCmd0x501Rspbody_NetSegConf rpt_msg_netsegconf = 4;
+    repeated SubCmd0x501Rspbody_Ip6Addr rpt_msg_addrs_v6 = 5;
+}
+
+
+message SubCmd0x501Rspbody {
+    optional bytes bytes_httpconn_sig_session = 1;
+    optional bytes bytes_session_key = 2;
+    repeated SubCmd0x501Rspbody_SrvAddrs rpt_msg_httpconn_addrs = 3;
+    optional uint32 uint32_pre_connection = 4;
+    optional uint32 uint32_cs_conn = 5;
+    optional SubCmd0x501Rspbody_IpLearnConf msg_ip_learn_conf = 6;
+    optional SubCmd0x501Rspbody_DynTimeOutConf msg_dyn_timeout_conf = 7;
+    optional SubCmd0x501Rspbody_OpenUpConf msg_open_up_conf = 8;
+    optional SubCmd0x501Rspbody_DownloadEncryptConf msg_download_encrypt_conf = 9;
+    optional SubCmd0x501Rspbody_ShortVideoConf msg_short_video_conf = 10;
+    optional SubCmd0x501Rspbody_PTVConf msg_ptv_conf = 11;
+    optional uint32 uint32_share_type = 12;
+    optional uint32 uint32_share_channel = 13;
+    optional uint32 uint32_fmt_policy = 14;
+    optional uint32 uint32_bigdata_policy = 15;
+    optional uint32 uint32_conn_attempt_delay = 16;
+}
+

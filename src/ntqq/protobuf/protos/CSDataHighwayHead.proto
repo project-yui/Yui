@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package CSDataHighwayHead;
+
+
+message C2CCommonExtendinfo {
+    optional uint32 uint32_info_id = 1;
+    optional FilterExtendinfo msg_filter_extendinfo = 2;
+}
+
+
+message DataHighwayHead {
+    optional uint32 uint32_version = 1;
+    optional string bytes_uin = 2;
+    optional string bytes_command = 3;
+    optional uint32 uint32_seq = 4;
+    optional uint32 uint32_retry_times = 5;
+    optional uint32 uint32_appid = 6;
+    optional uint32 uint32_dataflag = 7;
+    optional uint32 uint32_command_id = 8;
+    optional bytes bytes_build_ver = 9;
+    optional uint32 locale_id = 10;
+    optional uint32 env_id = 11;
+}
+
+
+message DataHole {
+    optional uint64 uint64_begin = 1;
+    optional uint64 uint64_end = 2;
+}
+
+
+message FilterExtendinfo {
+    optional uint32 uint32_filter_flag = 1;
+    optional ImageFilterRequest msg_image_filter_request = 2;
+}
+
+
+message FilterStyle {
+    optional uint32 style_id = 1;
+    optional bytes style_name = 2;
+}
+
+
+message ImageFilterRequest {
+    optional bytes session_id = 1;
+    optional uint32 client_ip = 2;
+    optional uint64 uin = 3;
+    optional FilterStyle style = 4;
+    optional uint32 width = 5;
+    optional uint32 height = 6;
+    optional bytes image_data = 7;
+}
+
+
+message ImageFilterResponse {
+    optional int32 ret_code = 1;
+    optional bytes image_data = 2;
+    optional uint32 cost_time = 3;
+}
+
+
+message LoginSigHead {
+    optional uint32 uint32_loginsig_type = 1;
+    optional bytes bytes_loginsig = 2;
+    optional uint32 appid = 3;
+}
+
+
+message NewServiceTicket {
+    optional bytes bytes_signature = 1;
+    optional bytes bytes_ukey = 2;
+}
+
+
+message PicInfoExt {
+    optional uint32 uint32_pic_width = 1;
+    optional uint32 uint32_pic_height = 2;
+    optional uint32 uint32_pic_flag = 3;
+    optional uint32 uint32_busi_type = 4;
+    optional uint32 uint32_src_term = 5;
+    optional uint32 uint32_plat_type = 6;
+    optional uint32 uint32_net_type = 7;
+    optional uint32 uint32_img_type = 8;
+    optional uint32 uint32_app_pic_type = 9;
+    optional bytes bytes_echo_created_by_server = 10;
+    optional uint64 uint64_qqmeet_guild_id = 11;
+    optional uint64 uint64_qqmeet_channel_id = 12;
+}
+
+
+message PicRspExtInfo {
+    optional bytes bytes_skey = 1;
+    optional uint32 uint32_client_ip = 2;
+    optional uint64 uint64_up_offset = 3;
+    optional uint64 uint64_block_size = 4;
+}
+
+
+message QueryHoleRsp {
+    optional uint32 uint32_result = 1;
+    repeated DataHole rpt_data_hole = 2;
+    optional bool bool_comp_flag = 3;
+}
+
+
+message ReqDataHighwayHead {
+    optional DataHighwayHead msg_basehead = 1;
+    optional SegHead msg_seghead = 2;
+    optional bytes bytes_req_extendinfo = 3;
+    optional uint64 uint64_timestamp = 4;
+    optional LoginSigHead msg_login_sig_head = 5;
+}
+
+
+message RspBody {
+    optional QueryHoleRsp msg_query_hole_rsp = 1;
+}
+
+
+message RspDataHighwayHead {
+    optional DataHighwayHead msg_basehead = 1;
+    optional SegHead msg_seghead = 2;
+    optional uint32 uint32_error_code = 3;
+    optional uint32 uint32_allow_retry = 4;
+    optional uint32 uint32_cachecost = 5;
+    optional uint32 uint32_htcost = 6;
+    optional bytes bytes_rsp_extendinfo = 7;
+    optional uint64 uint64_timestamp = 8;
+    optional uint64 uint64_range = 9;
+    optional uint32 uint32_is_reset = 10;
+}
+
+
+message SegHead {
+    optional uint32 uint32_serviceid = 1;
+    optional uint64 uint64_filesize = 2;
+    optional uint64 uint64_dataoffset = 3;
+    optional uint32 uint32_datalength = 4;
+    optional uint32 uint32_rtcode = 5;
+    optional bytes bytes_serviceticket = 6;
+    optional uint32 uint32_flag = 7;
+    optional bytes bytes_md5 = 8;
+    optional bytes bytes_file_md5 = 9;
+    optional uint32 uint32_cache_addr = 10;
+    optional uint32 uint32_query_times = 11;
+    optional uint32 uint32_update_cacheip = 12;
+    optional uint32 uint32_cache_port = 13;
+}
+
