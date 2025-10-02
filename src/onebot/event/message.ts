@@ -212,13 +212,24 @@ const onAddSendMsg = () => {
  * 监听消息更新
  */
 const onUpdateMsg = () => {
+  let oldPayload: string = ''
   registerEventListener('KernelMsgListener/onMsgInfoListUpdate', 'always', async (payload: NTReceiveMessageType.NTMessageItemType[]) => {
     const msgList = payload
+    {
+      // repeat check
+      const p = JSON.stringify(payload)
+      if (oldPayload === p) {
+        log.warn('onMsgInfoListUpdate payload no change')
+        return
+      }
+      oldPayload = p
+    }
+    log.info('onMsgInfoListUpdate count:', msgList.length)
     const user = getBotAccount()
     if (user.uid === undefined || user.uin === undefined)
       throw new CustomError(500, 'can not get user info!')
     for (const msg of msgList) {
-      
+      log.info(`get user info for user: ${msg.senderUid}`)
       const senderUserInfo = await getUserInfoByUid(msg.senderUid)
       // 判断一下撤回消息
       const rMsg = msg.elements.find(e => e.elementType === 8 && e.grayTipElement?.subElementType === 1)

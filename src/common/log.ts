@@ -154,7 +154,7 @@ class Logger {
    * @param args 任意参数
    */
   public debug (...args: unknown[]) {
-    this._log(LogLevel.Info, args)
+    this._log(LogLevel.Debug, args)
     return this
   }
 
