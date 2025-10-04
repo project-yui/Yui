@@ -5,11 +5,22 @@ import { initOnebot } from "./onebot/onebot";
 import { startServer } from "./server";
 import { test } from "./test/testaction";
 import { hookWrapper } from "./wrapper/hook";
+import { constants } from 'os'
 
 global.module = module
 const log = useLogger('Index')
 try {
   log.info('Hi Yui bot!!')
+  log.info('preload.node')
+  {
+    const m = { exports: {} };
+    const preload = process.env['YUI_PRELOAD']  || './preload.node'
+    process.dlopen( 
+        m,
+        preload,
+        constants.dlopen.RTLD_NOW | constants.dlopen.RTLD_GLOBAL
+    )
+  }
 
   process.on('unhandledRejection', (err) => {
     log.error('unhandledRejection:', err)

@@ -67,8 +67,8 @@ importers:
         specifier: ^30.0.0
         version: 30.0.0
       '@types/node':
-        specifier: ^20.8.7
-        version: 20.12.7
+        specifier: ^24.6.2
+        version: 24.6.2
       '@types/uuid':
         specifier: ^9.0.6
         version: 9.0.8
@@ -89,7 +89,7 @@ importers:
         version: 4.1.0
       jest:
         specifier: ^30.1.3
-        version: 30.1.3(@types/node@20.12.7)
+        version: 30.1.3(@types/node@24.6.2)
       nodejs-file-downloader:
         specifier: ^4.13.0
         version: 4.13.0
@@ -104,7 +104,7 @@ importers:
         version: 1.1.0(javascript-obfuscator@4.1.0)(rollup@4.14.3)
       ts-jest:
         specifier: ^29.4.4
-        version: 29.4.4(@babel/core@7.28.4)(@jest/transform@30.1.2)(@jest/types@30.0.5)(babel-jest@30.1.2(@babel/core@7.28.4))(jest-util@30.0.5)(jest@30.1.3(@types/node@20.12.7))(typescript@5.4.5)
+        version: 29.4.4(@babel/core@7.28.4)(@jest/transform@30.1.2)(@jest/types@30.0.5)(babel-jest@30.1.2(@babel/core@7.28.4))(jest-util@30.0.5)(jest@30.1.3(@types/node@24.6.2))(typescript@5.4.5)
       ts-proto:
         specifier: ^2.2.5
         version: 2.2.5
@@ -680,6 +680,9 @@ packages:
 
   '@types/node@20.12.7':
     resolution: {integrity: sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==}
+
+  '@types/node@24.6.2':
+    resolution: {integrity: sha512-d2L25Y4j+W3ZlNAeMKcy7yDsK425ibcAOO2t7aPTz6gNMH0z2GThtwENCDc0d/Pw9wgyRqE5Px1wkV7naz8ang==}
 
   '@types/qs@6.9.14':
     resolution: {integrity: sha512-5khscbd3SwWMhFqylJBLQ0zIu7c1K6Vz0uBIt915BI3zV0q1nfjRQD3RqSBcPaO6PHEF4ov/t9y89fSiyThlPA==}
@@ -2509,6 +2512,9 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
+  undici-types@7.13.0:
+    resolution: {integrity: sha512-Ov2Rr9Sx+fRgagJ5AX0qvItZG/JKKoBRAVITs1zk7IqZGTJUwgUr7qoYBpWwakpWilTZFM98rG/AFRocu10iIQ==}
+
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
@@ -3349,6 +3355,10 @@ snapshots:
   '@types/node@20.12.7':
     dependencies:
       undici-types: 5.26.5
+
+  '@types/node@24.6.2':
+    dependencies:
+      undici-types: 7.13.0
 
   '@types/qs@6.9.14': {}
 
@@ -4389,7 +4399,7 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@30.1.3(@types/node@20.12.7):
+  jest-cli@30.1.3(@types/node@24.6.2):
     dependencies:
       '@jest/core': 30.1.3
       '@jest/test-result': 30.1.3
@@ -4397,7 +4407,7 @@ snapshots:
       chalk: 4.1.2
       exit-x: 0.2.2
       import-local: 3.2.0
-      jest-config: 30.1.3(@types/node@20.12.7)
+      jest-config: 30.1.3(@types/node@24.6.2)
       jest-util: 30.0.5
       jest-validate: 30.1.0
       yargs: 17.7.2
@@ -4436,6 +4446,38 @@ snapshots:
       strip-json-comments: 3.1.1
     optionalDependencies:
       '@types/node': 20.12.7
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
+  jest-config@30.1.3(@types/node@24.6.2):
+    dependencies:
+      '@babel/core': 7.28.4
+      '@jest/get-type': 30.1.0
+      '@jest/pattern': 30.0.1
+      '@jest/test-sequencer': 30.1.3
+      '@jest/types': 30.0.5
+      babel-jest: 30.1.2(@babel/core@7.28.4)
+      chalk: 4.1.2
+      ci-info: 4.3.0
+      deepmerge: 4.3.1
+      glob: 10.4.5
+      graceful-fs: 4.2.11
+      jest-circus: 30.1.3
+      jest-docblock: 30.0.1
+      jest-environment-node: 30.1.2
+      jest-regex-util: 30.0.1
+      jest-resolve: 30.1.3
+      jest-runner: 30.1.3
+      jest-util: 30.0.5
+      jest-validate: 30.1.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 30.0.5
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 24.6.2
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -4655,12 +4697,12 @@ snapshots:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@30.1.3(@types/node@20.12.7):
+  jest@30.1.3(@types/node@24.6.2):
     dependencies:
       '@jest/core': 30.1.3
       '@jest/types': 30.0.5
       import-local: 3.2.0
-      jest-cli: 30.1.3(@types/node@20.12.7)
+      jest-cli: 30.1.3(@types/node@24.6.2)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -5274,12 +5316,12 @@ snapshots:
     dependencies:
       utf8-byte-length: 1.0.5
 
-  ts-jest@29.4.4(@babel/core@7.28.4)(@jest/transform@30.1.2)(@jest/types@30.0.5)(babel-jest@30.1.2(@babel/core@7.28.4))(jest-util@30.0.5)(jest@30.1.3(@types/node@20.12.7))(typescript@5.4.5):
+  ts-jest@29.4.4(@babel/core@7.28.4)(@jest/transform@30.1.2)(@jest/types@30.0.5)(babel-jest@30.1.2(@babel/core@7.28.4))(jest-util@30.0.5)(jest@30.1.3(@types/node@24.6.2))(typescript@5.4.5):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       handlebars: 4.7.8
-      jest: 30.1.3(@types/node@20.12.7)
+      jest: 30.1.3(@types/node@24.6.2)
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
@@ -5337,6 +5379,8 @@ snapshots:
     optional: true
 
   undici-types@5.26.5: {}
+
+  undici-types@7.13.0: {}
 
   universalify@0.1.2: {}
 

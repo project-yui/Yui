@@ -5,6 +5,7 @@ import { useNTCore } from '../ntqq/core/core'
 import { CommunicationPkg } from '../ntqq/protobuf/communication'
 import { useNTConfig } from '../ntqq/store/config'
 import { useNTUserStore } from '../ntqq/store/user'
+import { sleep } from '../common/utils'
 
 const log = useLogger('Native')
 export const initNative = (name: string) => {
@@ -66,6 +67,7 @@ export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
         cmd,
     })
     log.debug('emit start ...')
+    await sleep(100)
     const t = search.searchStranger('565656556', {
       keyWords: '1145141919810', // 触发关键字
       forceUpdate: true
@@ -101,6 +103,7 @@ export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
         cmd,
     })
     log.debug('emit start ...')
+    await sleep(100)
     const t = search.searchStranger('565656556', {
       keyWords: '1145141919810', // 触发关键字
       forceUpdate: true

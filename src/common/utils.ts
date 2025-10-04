@@ -6,9 +6,9 @@ import { CommunicationPkg } from "../ntqq/protobuf/communication";
 import { useLogger } from "./log";
 
 const log = useLogger('Utils')
-export const sleep = (t: number) => {
+export const sleep = (ms: number) => {
   return new Promise((resolve) => {
-    setTimeout(resolve, t)
+    setTimeout(resolve, ms)
   })
 }
 
