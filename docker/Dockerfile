@@ -1,32 +1,24 @@
 # 使用基于Ubuntu 20.04的基础映像
-FROM ubuntu:20.04
+FROM node:22-slim
 
 # 设置环境变量
 ENV DEBIAN_FRONTEND=noninteractive
 # ENV ELECTRON_RUN_AS_NODE=1
 
 # 安装必要的软件包
-RUN sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
-    sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list && \
+RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debian.sources && \
     apt-get update \
-    && apt install -y curl libgtk-3-0 libnotify4 libxss1 xdg-utils libsecret-1-0 \
-    && apt-get install --no-install-recommends -y xvfb \
+    # QQ 依赖
+    && apt install -y curl libgtk-3-0 libnotify4 libxss1 xdg-utils libsecret-1-0 libnss3 \
     && rm -rf /var/lib/apt/lists/*
-COPY xvfb-startup.sh /opt
 
 ARG QQ_VERSION
 # 安装Linux QQ (单独一步是为了方便更新版本)
-RUN sed -i 's/\r$//' /opt/xvfb-startup.sh && chmod +x /opt/xvfb-startup.sh \
-    && mkdir -p /opt && cd /opt \
+RUN mkdir -p /opt && cd /opt \
     && curl -o linuxqq.deb "https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_"$QQ_VERSION"_amd64_01.deb" \
-    && dpkg -i ./linuxqq.deb && rm ./linuxqq.deb && sed -i 's#application.asar/##' /opt/QQ/resources/app/package.json \
+    && dpkg -i ./linuxqq.deb && rm ./linuxqq.deb \
     # 移除软件包
     && apt remove curl -y && apt clean -y && apt autoremove -y
-
-# 降低xvfb的内存占用
-ARG RESOLUTION="1x0x8"
-ENV XVFB_RES="${RESOLUTION}"
-ARG XARGS=""
-ENV XVFB_ARGS="${XARGS}"
+WORKDIR /opt/QQ
 # 设置容器启动时运行的命令
-CMD ["/bin/bash", "-c", "/opt/xvfb-startup.sh"]
+CMD ["node", "./resources/app/app_launcher/index.js"]

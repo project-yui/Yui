@@ -10,8 +10,6 @@ import { randomUUID } from "crypto"
 import vm from 'vm'
 import v8 from 'v8'
 import events from 'events'
-import { app } from 'electron'
-import { addPkg } from 'yui-native'
 
 
 const { registerActionHandle } = useStore()

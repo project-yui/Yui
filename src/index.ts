@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { useLogger } from "./common/log"
 import { hook } from "./hook";
 import { initNative } from "./native/native";
@@ -14,7 +15,7 @@ try {
   log.info('preload.node')
   {
     const m = { exports: {} };
-    const preload = process.env['YUI_PRELOAD']  || './preload.node'
+    const preload = process.env['YUI_PRELOAD']  || resolve(__dirname, './preload.node')
     process.dlopen( 
         m,
         preload,
@@ -40,18 +41,12 @@ try {
   // 核心事件hook
   if (process.env['YUI_ACTION'] === 'ui') {
     // log.info('hook')
-    hook()
+    // hook()
     log.info('hookWrapper')
     hookWrapper()
     initNative('wrapper.node')
     // ntqq/resources/app/app_launcher/index.js 原始代码
     console.log(require('../major.node').load('internal_index', module));
-  }
-  else
-  {
-    delete require.cache['electron']
-    delete require.cache['electron/common']
-    delete require.cache['electron/main']
   }
   log.info('end....')
 }
