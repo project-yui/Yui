@@ -46,7 +46,9 @@ try {
     hookWrapper()
     initNative('wrapper.node')
     // ntqq/resources/app/app_launcher/index.js 原始代码
-    console.log(require('../major.node').load('internal_index', module));
+    log.info('load internal_index')
+    log.info(require('./resources/app/application.asar/app_launcher/index.js').toString())
+    // console.log(require('../major.node').load('internal_index', module));
   }
   log.info('end....')
 }

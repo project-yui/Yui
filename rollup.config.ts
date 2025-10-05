@@ -10,7 +10,7 @@ import obfuscator from 'rollup-plugin-obfuscator';
 import bytenode from 'bytenode'
 import path from 'path';
 
-const outputDir = process.env['outputDir'] || 'program/resources/app/app_launcher/'
+const outputDir = process.env['outputDir'] || 'program'
 const isDev = process.env.ENVIRONMENT !== 'production'
 const options: RollupOptions[] = [
   // {
