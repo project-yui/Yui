@@ -40,12 +40,12 @@ jobs:
           version: latest
           run_install: false
 
-      - name: Prepare
-        run: |
-          sudo apt install wget -y
-          wget -c https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_amd64_01.deb
-          sudo apt install -y libnotify4
-          sudo dpkg -i QQ_3.2.7_240412_amd64_01.deb
+      # - name: Prepare
+      #   run: |
+      #     sudo apt install wget -y
+      #     wget -c https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_3.2.7_240412_amd64_01.deb
+      #     sudo apt install -y libnotify4
+      #     sudo dpkg -i QQ_3.2.7_240412_amd64_01.deb
 
       - name: Generate TAG
         id: Tag
@@ -65,7 +65,7 @@ jobs:
           tools/linux/ci.sh
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           # Artifact name
           name: yui-${{ matrix.ARCH }}.build
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Inspect directory after downloading artifacts
         run: ls -alFR
 
@@ -108,7 +108,7 @@ jobs:
           **build/*.yaml
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           # note you'll typically need to create a personal access token
