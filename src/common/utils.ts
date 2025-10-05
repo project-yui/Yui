@@ -98,3 +98,10 @@ export const getHttpTicket = async(): Promise<Uint8Array> => {
   log.info('Getting http ticket response:', resp);
   return resp.msgSubcmd0x501RspBody?.bytesHttpconnSigSession || new Uint8Array();
 }
+
+export const admZip = () => {
+  // 暂时没用，记录一下
+  require('../major.node').load('internal_admzip', module);
+  // const admzip = new AdmZip.admZip.default(zipPath);
+  // admzip.extractAllTo(path.resolve(__dirname, `../versions/${version}`)); // 把整个压缩包完全解压
+}

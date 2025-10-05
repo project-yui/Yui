@@ -34,6 +34,6 @@ cd $cache_dir
 
 rm -rf "$root_dir/program"
 mkdir -p "$root_dir/program"
-mv "$cache_dir/squashfs-root"/* "$root_dir/program"
-sed -i 's#application.asar/##' "$root_dir/program/resources/app/package.json"
+mv "$cache_dir/squashfs-root"/resources/app/* "$root_dir/program"
+# sed -i 's#application.asar/##' "$root_dir/program/package.json"
 rm -rf "$cache_dir/squashfs-root"
