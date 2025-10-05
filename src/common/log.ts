@@ -87,7 +87,7 @@ class Logger {
 
   private _log (level: LogLevel, args: unknown[]) {
     const asyncStore = useAsyncStore()
-    let traceId = asyncStore.getStore()?.get('traceId')
+    let traceId = asyncStore?.getStore()?.get('traceId')
     if (!isLogEnabled) return
     // 优先级小的不显示
     if (level < CurrentLogLevel) return

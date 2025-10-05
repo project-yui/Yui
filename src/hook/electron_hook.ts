@@ -22,11 +22,11 @@ export const getHookedBrowserWindow = () => {
     function HookedBrowserWindow(options: Electron.BrowserWindowConstructorOptions | undefined) {
       // 修改或增加构造函数的选项
       try {
-        // log.info('options before:', options)
+        log.info('options before:', options)
         if (options && options.webPreferences) {
           options.webPreferences.devTools = true
         }
-        // log.info('options after:', options)
+        log.info('options after:', options)
       }catch(e) {
   
       }
@@ -115,7 +115,7 @@ const hookIpcMain = () => {
     log.info('注册频道监听器，监听频道:', channel)
     return (ipcMain as any)._on(channel, function(event: Electron.IpcMainEvent, ...a: any[]) {
 
-      if (channel?.includes('IPC_UP') && a.length >= 2 && a[1]) {
+      // if (channel?.includes('IPC_UP') && a.length >= 2 && a[1]) {
         // 存储eventStore
         // if(!tempEventStore[channel]) tempEventStore[channel] = {}
         const eventName = a[0]?.eventName
@@ -133,7 +133,7 @@ const hookIpcMain = () => {
             catch(e){}
           }
         }
-      }
+      // }
       // log.info('args:', ...a)
       // for (let i = 0; i < a.length; i++) {
       //   const arg = a[i]

@@ -38,18 +38,6 @@ try {
   // 测试
   test(module)
 
-  // 核心事件hook
-  if (process.env['YUI_ACTION'] === 'ui') {
-    // log.info('hook')
-    // hook()
-    log.info('hookWrapper')
-    hookWrapper()
-    initNative('wrapper.node')
-    // ntqq/resources/app/app_launcher/index.js 原始代码
-    log.info('load internal_index')
-    log.info(require('./resources/app/application.asar/app_launcher/index.js').toString())
-    // console.log(require('../major.node').load('internal_index', module));
-  }
   log.info('end....')
 }
 catch(err) {
