@@ -60,14 +60,7 @@ const args = process.argv.slice(2)
 
 const copyConfiguration = () => 
 {
-    try {
-        fs.mkdirSync(path.resolve(__dirname, '../program/resources/app/app_launcher'), {recursive: true})
-    } catch(_){}
-    fs.copyFileSync(path.resolve(__dirname, '../yui.yaml'), path.resolve(__dirname, '../program/resources/app/app_launcher/yui.yaml'))
-    fs.copyFileSync(path.resolve(__dirname, '../resources/hack/patch.json'), path.resolve(__dirname, '../program/patch.json'))
-    const pkg = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../program/resources/app/package.json')).toString())
-    pkg.main = './app_launcher/index.js'
-    fs.writeFileSync(path.resolve(__dirname, '../program/resources/app/package.patch.json'), JSON.stringify(pkg, null, 2))
+    fs.copyFileSync(path.resolve(__dirname, '../yui.yaml'), path.resolve(__dirname, '../program/yui.yaml'))
 }
 
 /////////////////////////配置处理完毕////////////////////////////////////

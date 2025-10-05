@@ -12,8 +12,8 @@ global.module = module
 const log = useLogger('Index')
 try {
   log.info('Hi Yui bot!!')
-  log.info('preload.node')
-  {
+  if (process.platform === 'linux') {
+    log.info('preload.node')
     const m = { exports: {} };
     const preload = process.env['YUI_PRELOAD']  || resolve(__dirname, './preload.node')
     process.dlopen( 
