@@ -26,7 +26,7 @@ EOF
 pnpm install
 mkdir -p tmp/build
 export outputDir="tmp/build"
-pnpm run build
+pnpm run yui:build
 # mv program/resources/app/app_launcher/* tmp/build
 cp yui.yaml tmp/build
 # rm tmp/build/core.js
