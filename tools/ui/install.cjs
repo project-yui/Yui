@@ -7,7 +7,7 @@ const { execSync } = require('child_process');
             break;
             
         case 'linux':
-            execSync(path.resolve(__dirname, './linux/install.sh'), {stdio: 'inherit'})
+            execSync(path.resolve(__dirname, '../linux/install-ui.sh'), {stdio: 'inherit'})
             break;
     
         default:
