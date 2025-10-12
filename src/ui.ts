@@ -4,6 +4,7 @@ import { hook } from './hook'
 
 const log = useLogger('UI')
 log.info('hook')
+log.info('versions:', process.versions)
 hook()
 log.info('hookWrapper')
 hookWrapper()

@@ -21,8 +21,11 @@ const pkg = JSON.parse(
 );
 pkg.main = "app_launcher/ui.js";
 // overwrite the package.json used by the tmp UI so electron will load our launcher
+const pkgPatch = path.resolve(rootDir, process.platform == 'win32'
+   ? "./tmp/ui/resources/app/package.patch.json"
+   : "./tmp/ui/resources/app/package.json")
 fs.writeFileSync(
-  path.resolve(rootDir, "./tmp/ui/resources/app/package.patch.json"),
+  pkgPatch,
   JSON.stringify(pkg, null, 2),
   "utf-8"
 );
