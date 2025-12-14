@@ -37,45 +37,42 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
   const p2 = useListenerProxy('DispatcherAdapter')
 
   const p = useListenerProxy('KernelSessionListener')
-  registerEventListener('KernelSessionListener/onOpentelemetryInit', 'always', async (result) => {
+  registerEventListener('KernelSessionListener/onNTSessionCreate', 'always', async (result) => {
     log.info('onOpentelemetryInit called:', result)
-    if (result.is_init) {
-      log.info('NTWrapperSession init successful!')
-      log.info('initUnitedConfig start')
-      initUnitedConfig()
-      log.info('initMsgService start')
-      await initMsgService()
-      log.info('initProfileService start')
-      initProfileService()
-      log.info('initGroupService start')
-      initGroupService()
-      log.info('initBuddyService start')
-      initBuddyService()
-      log.info('initStorageCleanService start')
-      initStorageCleanService()
-      // 切换模块附属
-      const userStore = useNTUserStore()
-      const account = userStore.getAllAccountData()
-      const asyncStore = useAsyncStore()
-      const s = asyncStore.getStore()
-      const uin = s?.get('uin') as number
-      const t = account[uin]
-      log.info('account data:', t)
-      if (!t.info.uin) {
-        throw new CustomError(20302, 'uin error')
-      }
-      log.info(`变更模块${uin}所属为${t.info.uin}`)
-      s?.set('uin', t.info.uin)
-      delete account[uin]
-      account[t.info.uin] = t
-      const userInfo = useNTUserStore()
-      log.info('current user info:', userInfo.getUserInfo())
-      const login = getLoginService()
-      login.destroy()
+    log.info('NTWrapperSession init successful!')
+    log.info('initUnitedConfig start')
+    initUnitedConfig()
+    log.info('initMsgService start')
+    await initMsgService()
+    log.info('initProfileService start')
+    initProfileService()
+    log.info('initGroupService start')
+    initGroupService()
+    log.info('initBuddyService start')
+    initBuddyService()
+    log.info('initStorageCleanService start')
+    initStorageCleanService()
+    // 切换模块附属
+    const userStore = useNTUserStore()
+    const account = userStore.getAllAccountData()
+    const asyncStore = useAsyncStore()
+    const s = asyncStore.getStore()
+    const uin = s?.get('uin') as number
+    const t = account[uin]
+    log.info('account data:', t)
+    if (!t.info.uin) {
+      throw new CustomError(20302, 'uin error')
     }
-    else {
-      log.error('NTWrapperSession init failed!')
-    }
+    log.info(`变更模块${uin}所属为${t.info.uin}`)
+    s?.set('uin', t.info.uin)
+    delete account[uin]
+    account[t.info.uin] = t
+    const userInfo = useNTUserStore()
+    log.info('current user info:', userInfo.getUserInfo())
+  })
+  registerEventListener('KernelSessionListener/onSessionInitComplete', 'always', async (result) => {
+    const login = getLoginService()
+    login.destroy()
   })
   const configFolder = getNTConfigStoreFolder()
   const pkgInfo = getNTPackageInfo()
@@ -113,7 +110,6 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}',
     deviceType: 3
   }, p1, p2, p)
-  await sleep(1000)
   const sw = getStartupSessionWrapper()
   sw.start()
 }

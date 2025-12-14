@@ -97,7 +97,27 @@ export class NodeIKernelLoginService {
     }
     addKernelLoginListener(...args: any[]) {
         log.info('addKernelLoginListener called with args:', args)
-        return this.instance.addKernelLoginListener(...args)
+        const listener = args[0]
+        return this.instance.addKernelLoginListener(new Proxy(listener, {
+            get(target, p, recv) {
+                return function (...args: any[]) {
+                    log.info(`NodeIKernelLoginService/${String(p)} call start`, args)
+                    const ignore: string[] = [
+                        // 'onLoginConnecting',
+                        // 'onLoginConnected',
+                        // 'onQRCodeLoginSucceed', // 触发Login -> init,start
+                        // 'onLoginState',
+                    ]
+                    if (ignore.includes(String(p))) {
+                        log.info(`NodeIKernelLoginService/${String(p)} call ignored.`, args)
+                        return
+                    }
+                    const result = target[p](...args)
+                    log.info(`NodeIKernelLoginService/${String(p)} call end`, args)
+                    return result
+                }
+            }
+        }))
     }
     abortPolling(...args: any[]) {
         log.info('abortPolling called with args:', args)

@@ -273,8 +273,30 @@ export const getNodeIQQNTWrapperSession = (engine: any): any => {
             return this.instance.getYellowFaceService(...args)
         }
         init(...args: any[]) {
+            const getListener = (listener: any) => new Proxy(listener, {
+                get(target, p, recv) {
+                    return function (...args: any[]) {
+                        log.info(`NodeIQQNTWrapperSession/${String(p)} call start`, args)
+                        const ignore: string[] = [
+                            // 'onMSFStatusChange',
+                            // 'onNTSessionCreate',
+                            // 'onOpentelemetryInit',
+                            // 'onSessionInitComplete',
+                            // 'dispatchCall',
+                            // 'onSendMsfReply',
+                        ]
+                        if (ignore.includes(String(p))) {
+                            log.info(`NodeIQQNTWrapperSession/${String(p)} call ignored.`)
+                            return;
+                        }
+                        const result = target[p](...args)
+                        log.info(`NodeIQQNTWrapperSession/${String(p)} call end`, args)
+                        return result
+                    }
+                }
+            })
             log.info('init called with args:', args)
-            return this.instance.init(...args)
+            return this.instance.init(args[0], getListener(args[1]), getListener(args[2]), getListener(args[3]))
         }
         offLine(...args: any[]) {
             log.info('offLine called with args:', args)
