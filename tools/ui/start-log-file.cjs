@@ -96,7 +96,7 @@ switch (process.platform) {
       // cross-env YUKIHANA_LOG=true YUKIHANA_ACTION=dev cmd.exe /C \".\\ntqq\\QQ.exe > tmp\\output.log 2>&1\"
       const script = path.resolve(
         rootDir,
-        "./program/resources/app/app_launcher/index.js"
+        "./program/resources/app/app_launcher/ui.js"
       );
       execSync(`./qq ${script} > ../output.log 2>&1`, {
         stdio: "inherit",
@@ -107,9 +107,8 @@ switch (process.platform) {
           // ELECTRON_ATTACH_CONSOLE: '1',
           YUI_ACTION: "ui",
           YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
-          QQV8BytecodeDebug: "1",
         },
-        cwd: path.resolve(rootDir, "./program"),
+        cwd: path.resolve(rootDir, "./tmp/ui"),
       });
     }
     break;

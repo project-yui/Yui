@@ -34,10 +34,10 @@ export const prepareBaseEnvironment = async () => {
     app_type: appInfo.app_type,
     app_version: appInfo.app_version,
     os_version: appInfo.os_version,
-    use_xlog: true,
+    use_xlog: false,
     /**
      * 
-     * V1_AND_SQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_YYB_D
+     * V1_LNX_NQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_GW_B
      */
     qua: appInfo.qua,
     global_path_config: {
@@ -64,6 +64,7 @@ export const prepareBaseEnvironment = async () => {
     commonPath: globalPath,
     clientVer: pkgInfo.version,
     hostName: userInfo().username,
+    externalVersion: false
   })
   const hotUpdateSign = await login.getLoginMiscData('hotUpdateSign')
   log.info('hotUpdateSign:', hotUpdateSign)

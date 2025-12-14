@@ -18,6 +18,7 @@ declare namespace NTNativeWrapper {
     const NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
     const NodeQQNTWrapperUtil: NTNativeWrapper.NodeQQNTWrapperUtil
     const NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
+    const NodeIQQNTStartupSessionWrapper: typeof NTNativeWrapper.NodeIQQNTStartupSessionWrapper
     const NodeIKernelUnitedConfigService: typeof import("./services/NodeIKernelUnitedConfigService").NodeIKernelUnitedConfigService
     const NodeIDependsAdapter: typeof import("./adapters/NodeIDependsAdapter").NodeIDependsAdapter
     const NodeIDispatcherAdapter: typeof import("./adapters/NodeIDispatcherAdapter").NodeIDispatcherAdapter
@@ -26,7 +27,9 @@ declare namespace NTNativeWrapper {
     NodeIGlobalAdapter: typeof import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter
     NodeIKernelLoginService: typeof import("./services/NodeIKernelLoginService").NodeIKernelLoginService
     NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
+    NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
     NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
+    NodeIQQNTStartupSessionWrapper: typeof NTNativeWrapper.NodeIQQNTStartupSessionWrapper
   }
   interface DeviceInfo {
     guid: `${string}-${string}-${string}-${string}-${string}`
@@ -83,6 +86,7 @@ declare namespace NTNativeWrapper {
   }
   class NodeIQQNTWrapperEngine {
     constructor()
+    get(): typeof NodeIQQNTWrapperEngine
     getDeviceInfo(): any
     getECDHService(): import('./services/NodeIKernelECDHService').NodeIKernelECDHService
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
@@ -100,6 +104,7 @@ declare namespace NTNativeWrapper {
      */
     init(p: number): void
     addOPSafePwdEditListener(listener: NodeIOPSafePwdEditListener): void;
+    get(): typeof NodeIOPSafePwdEdit
   }
 
   interface NodeIOPSafePwdEditListenerConstructorOptions {
@@ -111,11 +116,16 @@ declare namespace NTNativeWrapper {
 
   class NodeIO3MiscService {
     reportAmgomWeather(a: string, b: string, c: string[]): void
+    get(): typeof NodeIO3MiscService
   }
-
+  class NodeIQQNTStartupSessionWrapper {
+    static create(): NodeIQQNTStartupSessionWrapper
+    start(): void
+    stop(): void
+    getSessionIdList(): Map<string, string>
+  }
   class NodeIQQNTWrapperSession {
     init(config: NodeIQQNTWrapperSessionType.Init, depends: import("./adapters/NodeIDependsAdapter").NodeIDependsAdapter, dispatcher: import("./adapters/NodeIDispatcherAdapter").NodeIDispatcherAdapter, sessionListener: import("./services/NodeIKernelUixConvertService").NodeIKernelSessionListener): void
-    startNT(a?: number): string
     getAvatarService(): import("./services/NodeIKernelAvatarService").NodeIKernelAvatarService
     getAVSDKService(): import("./services/NodeIKernelAVSDKService").NodeIKernelAVSDKService
     getBaseEmojiService(): import('./services/NodeIKernelBaseEmojiService').NodeIKernelBaseEmojiService
@@ -127,9 +137,11 @@ declare namespace NTNativeWrapper {
     getMsgBackupService(): import("./services/NodeIKernelMsgBackupService").default
     getMsgService(): import("./services/NodeIKernelMsgService").default
     getNodeMiscService(): import("./services/NodeIKernelNodeMiscService").default
+    static getNTWrapperSession(id: string): NodeIQQNTWrapperSession
     getOnlineStatusService(): import("./services/NodeIKernelOnlineStatusService").default
     getProfileLikeService(): import("./services/NodeIKernelProfileLikeService").NodeIKernelProfileLikeService
     getProfileService(): import("./services/NodeIKernelProfileService").NodeIKernelProfileService
+    getPublicAccountService(): import("./services/NodeIKernelPublicAccountService").NodeIKernelPublicAccountService
     getQiDianService(): import("./services/NodeIKernelQiDianService").NodeIKernelQiDianService
     getQQPlayService(): import("./services/NodeIKernelQQPlayService").NodeIKernelQQPlayService
     getRecentContactService(): import("./services/NodeIKernelRecentContactService").NodeIKernelRecentContactService
@@ -241,6 +253,7 @@ declare namespace NodeIKernelLoginServiceType {
      * 计算机用户名
      */
     hostName: string
+    externalVersion: boolean
   }
   interface PasswordLoginReq {
     /**
@@ -526,6 +539,7 @@ declare namespace NodeIQQNTWrapperSessionType {
      * {"appearance":{"isSplitViewMode":true},"msg":{}}
      */
     deviceConfig: string
+    deviceType: 3
   }
   interface OfflineReq {
     deviceInfo: {

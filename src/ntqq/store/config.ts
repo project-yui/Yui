@@ -74,7 +74,7 @@ const getAppInfo = (): StoreAppInfo => {
         os_version: devInfo.osVer,
         /**
          * 
-         * V1_AND_SQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_YYB_D
+         * V1_LNX_NQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_GW_B
          */
         qua: `V1_${platform === 'win32' ? 'WIN' : 'LNX' }_NQ_${pkgInfo.version.replace('-', '_')}_GW_B`,
         clientVer: pkgInfo.version,
@@ -88,7 +88,7 @@ const getAppId = () => {
     // '537207207'
     // major.node 中字符串搜索 5372
     // '537249996'
-    '537313942'
+    '537328659'
  }
 const getNTConfigStoreFolder = (): string => {
   const wrapper = useNTWrapper()

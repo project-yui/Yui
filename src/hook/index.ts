@@ -4,8 +4,8 @@ import { hookModule } from "./module_hook"
 
 const log = useLogger('HOOK')
 export const hook = () => {
-  log.info('hook electron')
-  hookElectron()
-  log.info('hook module')
-  hookModule()
+  // log.info('hook electron')
+  // hookElectron()
+  // log.info('hook module')
+  // hookModule()
 }

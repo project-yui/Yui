@@ -1,5 +1,6 @@
 import { useLogger } from "../common/log";
 import { readFileSync } from "fs";
+import { getWrapperExports } from "./exports";
 
 const log = useLogger('Wrapper/hook')
 
@@ -22,37 +23,55 @@ export const hookWrapper = ()=> {
 
     // 修改加载后的native方法
     if (file.includes('wrapper')){
-      const genProxyForObject = (name: string | symbol, o: any) => {
-        log.info('type:', typeof o)
-        if (o === undefined)
-        {
-          return undefined
-        }
-        return new Proxy(o, {
-          construct(target, argArray, newTarget) {
-            log.info(`construct from ${String(name)}:`, target, argArray, newTarget)
-            return o(...argArray)
-          },
-          get(obj, p, recv){
-            log.info(`get from ${String(name)}:`, obj, p, recv)
-            if (p == 'get') {
-              log.info('get ---->', o.get())
-              log.info('get ---->', o.get().prototype)
-              log.info('get ---->', o.prototype)
-              log.info('get ---->', Object.keys(o.prototype))
-              return o.get
-            }
-            return o[p]
-          }
-        })
+      // const typeMap: Record<string, 'object' | 'function'> = {
+      //   'wrapper.NodeIQQNTWrapperEngine': 'object',
+      //   'wrapper.NodeIQQNTStartupSessionWrapper': 'object',
+      //   'wrapper.NodeIQQNTStartupSessionWrapper.create': 'function',
+      //   'wrapper.NodeIQQNTWrapperSession': 'object',
+      //   'wrapper.NodeQQNTWrapperUtil': 'object',
+      //   'wrapper.NodeIKernelLoginService': 'object',
+      // }
+      // const genProxyForObject = (name: string | symbol, o: any) => {
+      //   log.info('type:', typeof o)
+      //   if (o === undefined)
+      //   {
+      //     return undefined
+      //   }
+      //   return new Proxy(o, {
+      //     construct(target, argArray, newTarget) {
+      //       log.info(`construct from ${String(name)}:`, target, argArray, newTarget)
+      //       return o(...argArray)
+      //     },
+      //     get(obj, p, recv){
+      //       try {
+      //         log.info(`get from ${String(name)}:`, p)
+      //         const r = o[p]
+      //         log.info(`typeof ${String(name)}.${String(p)}:`, typeof r)
+      //         const type = typeMap[`${String(name)}.${String(p)}`]
+      //         if (type === 'object' && r !== null) {
+      //           log.info('replace object.')
+      //           return genProxyForObject(`${String(name)}.${String(p)}`, r)
+      //         } else if (type === 'function') {
+      //           log.info('replace function.')
+      //           return function (...args: any[]) {
+      //             log.info(`call ${String(name)}.${String(p)} with args:`, args)
+      //             const res = r.apply(o, args)
+      //             log.info(`${String(name)}.${String(p)} result:`, res)
+      //             return res
+      //           }
+      //         } 
+      //         return r
+      //       } catch (e) {
+      //         log.error('error in get proxy:', e)
+      //       }
+      //     }
+      //   })
+      // }
+      const _exports = {
+        ...m.exports,
+        ...getWrapperExports(m.exports)
       }
-      const _exports = m.exports
-      m.exports = new Proxy({}, {
-        get(obj, p, recv) {
-          log.info('get from export:', obj, p, recv)
-          return genProxyForObject(p, _exports[p])
-        }
-      })
+      m.exports = _exports
       // for (const serviceName in _exports) {
       //   const service = _exports[serviceName]
       //   log.info('service:', service)

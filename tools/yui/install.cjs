@@ -1,5 +1,5 @@
 const path = require("path");
-const { spawn } = require("child_process");
+const { execSync } = require("child_process");
 (async () => {
     switch (process.platform) {
         case 'win32':
@@ -7,7 +7,7 @@ const { spawn } = require("child_process");
             break;
             
         case 'linux':
-            execSync(path.resolve(__dirname, './linux/install.sh'), {stdio: 'inherit'})
+            execSync(path.resolve(__dirname, '../linux/install.sh'), {stdio: 'inherit'})
             break;
     
         default:

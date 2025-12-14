@@ -31,6 +31,7 @@ export class NodeIKernelLoginService {
     addKernelLoginListener(listener: NodeIKernelLoginListener): void
     connect(): boolean
     destroy(): void
+    get(): typeof NodeIKernelLoginService
     getMsfStatus(): number
     getLoginList(): Promise<NodeIKernelLoginServiceType.LoginInfoListResp>
     getLoginMiscData(name: string): Promise<NodeIKernelLoginServiceType.GetLoginMiscDataResp>

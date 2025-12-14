@@ -11,6 +11,7 @@ interface CoreData {
   loginService: NodeIKernelLoginService
   wrapperSession: NTNativeWrapper.NodeIQQNTWrapperSession
   wrapperEngine: NTNativeWrapper.NodeIQQNTWrapperEngine
+  startupSessionWrapper: NTNativeWrapper.NodeIQQNTStartupSessionWrapper
   dispatcher: EventEmitter
   info: UserInfo
   user?: User

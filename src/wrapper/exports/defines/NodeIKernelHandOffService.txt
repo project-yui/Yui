@@ -1,0 +1,8 @@
+assertion (cpp_impl) failed: NodeIKernelHandOffService::addKernelHandOffListener : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::changeHandOffActivities : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::deleteRecentHandOffActivities : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::getHandOffActivities : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::getRecentHandOffActivities : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::removeKernelHandOffListener : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::reportData : implementation of IKernelHandOffService is not valid
+assertion (cpp_impl) failed: NodeIKernelHandOffService::sendCapsulePanelActivities : implementation of IKernelHandOffService is not valid

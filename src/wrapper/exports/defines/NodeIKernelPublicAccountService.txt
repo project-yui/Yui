@@ -1,0 +1,6 @@
+assertion (cpp_impl) failed: NodeIKernelPublicAccountService::addListener : implementation of IKernelPublicAccountService is not valid
+assertion (cpp_impl) failed: NodeIKernelPublicAccountService::follow : implementation of IKernelPublicAccountService is not valid
+assertion (cpp_impl) failed: NodeIKernelPublicAccountService::getFollowList : implementation of IKernelPublicAccountService is not valid
+assertion (cpp_impl) failed: NodeIKernelPublicAccountService::removeListener : implementation of IKernelPublicAccountService is not valid
+assertion (cpp_impl) failed: NodeIKernelPublicAccountService::unfollow : implementation of IKernelPublicAccountService is not valid
+assertion (cpp_impl) failed: NodeIQQNTWrapperSession::getPublicAccountService : implementation of IQQNTWrapperSession is not valid

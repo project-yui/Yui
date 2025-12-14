@@ -24,6 +24,13 @@ export const useNTWrapper = () => {
         const idx = ids.length + 1
         log.info('wrapper index:', uin, idx, ids)
         const wrapper = useWrapper(idx)
+        const sw = wrapper.NodeIQQNTStartupSessionWrapper.create()
+        const sessionIdList = sw.getSessionIdList()
+        const sessionId = sessionIdList.get('nt')
+        if (!sessionId) {
+            log.error('get sessionId error:', sessionIdList)
+            throw new CustomError(500, 'sessionId error.')
+        }
         userStore[uin] = {
             moduleIndex: idx,
             info: {
@@ -33,8 +40,9 @@ export const useNTWrapper = () => {
             },
             dispatcher: new EventEmitter(),
             loginService: new wrapper.NodeIKernelLoginService(),
-            wrapperSession: new wrapper.NodeIQQNTWrapperSession(),
+            wrapperSession: wrapper.NodeIQQNTWrapperSession.getNTWrapperSession(sessionId),
             wrapperEngine: new wrapper.NodeIQQNTWrapperEngine(),
+            startupSessionWrapper: sw,
         }
         initNative(`wrapper-${idx}.node`)
     }

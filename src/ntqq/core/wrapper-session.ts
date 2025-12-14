@@ -22,7 +22,7 @@ const log = useLogger('AfterLogin')
 export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) => {
   const wrapper = useNTWrapper()
   log.info('start to init wrapper session', uin, uid)
-  const { getWrapperSession } = useNTCore()
+  const { getWrapperSession, getStartupSessionWrapper, getLoginService } = useNTCore()
   const { getDeviceInfo } = useNTConfig()
   const { getAppId, getNTConfigStoreFolder } = useNTConfig()
   const session = getWrapperSession()
@@ -38,6 +38,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
 
   const p = useListenerProxy('KernelSessionListener')
   registerEventListener('KernelSessionListener/onOpentelemetryInit', 'always', async (result) => {
+    log.info('onOpentelemetryInit called:', result)
     if (result.is_init) {
       log.info('NTWrapperSession init successful!')
       log.info('initUnitedConfig start')
@@ -69,6 +70,8 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       account[t.info.uin] = t
       const userInfo = useNTUserStore()
       log.info('current user info:', userInfo.getUserInfo())
+      const login = getLoginService()
+      login.destroy()
     }
     else {
       log.error('NTWrapperSession init failed!')
@@ -95,7 +98,7 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       systemId: 0,
       appId: '',
       logicEnvironment: '',
-      platform: 3,
+      platform: 5,
       language: '',
       sdkVersion: '',
       userId: '',
@@ -105,15 +108,12 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
       serverUrl: '',
       fixedAfterHitKeys: [ '' ]
     },
-    defaultFileDownloadPath: 'C:\\Users\\jiyec\\Downloads',
+    defaultFileDownloadPath: '/home/msojocs',
     deviceInfo: getDeviceInfo(),
-    deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}'
+    deviceConfig: '{"appearance":{"isSplitViewMode":true},"msg":{}}',
+    deviceType: 3
   }, p1, p2, p)
   await sleep(1000)
-  try{
-    session.startNT(1)
-  }
-  catch(err) {
-    session.startNT()
-  }
+  const sw = getStartupSessionWrapper()
+  sw.start()
 }

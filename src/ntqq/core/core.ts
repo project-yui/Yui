@@ -66,4 +66,20 @@ export const useNTCore = () => ({
     const accountNTData = userStore.getCurrentAccountData()
     return accountNTData.wrapperSession
   },
+  /**
+   * 频繁调用
+   * @returns 
+   */
+  getStartupSessionWrapper: (): NTNativeWrapper.NodeIQQNTStartupSessionWrapper => {
+    const wrapper = useNTWrapper()
+    const asyncStore = useAsyncStore()
+    const s = asyncStore.getStore()
+    const uin: number = s?.get('uin')
+    if (!uin) {
+      throw new CustomError(500, 'id error')
+    }
+    const userStore = useNTUserStore()
+    const accountNTData = userStore.getCurrentAccountData()
+    return accountNTData.startupSessionWrapper
+  },
 })
