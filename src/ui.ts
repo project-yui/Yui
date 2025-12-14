@@ -3,6 +3,8 @@ import { hookWrapper } from './wrapper/hook'
 import { hook } from './hook'
 
 const log = useLogger('UI')
+
+log.info('versions:', process.versions)
 log.info('hook')
 log.info('versions:', process.versions)
 hook()
