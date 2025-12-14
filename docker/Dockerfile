@@ -6,8 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # ENV ELECTRON_RUN_AS_NODE=1
 
 # 安装必要的软件包
-RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list.d/debian.sources && \
-    apt-get update \
+RUN apt-get update \
     # QQ 依赖
     && apt install -y curl libgtk-3-0 libnotify4 libxss1 xdg-utils libsecret-1-0 libnss3 \
     && rm -rf /var/lib/apt/lists/*
