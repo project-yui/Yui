@@ -1,5 +1,5 @@
-FROM msojocs/yui:v3.2.19_250904
+FROM msojocs/yui:v3.2.22_251203
 
-COPY ./program/resources/app/app_launcher/index.js /opt/QQ/resources/app/app_launcher/index.js
-COPY ./program/resources/app/app_launcher/nt_native.node /opt/QQ/resources/app/app_launcher/nt_native.node
-COPY ./program/resources/app/app_launcher/yui.yaml /opt/QQ/resources/app/app_launcher/yui.yaml
+COPY ./program/index.js /opt/QQ/resources/app/index.js
+COPY ./program/nt_native.node /opt/QQ/resources/app/nt_native.node
+COPY ./program/yui.yaml /opt/QQ/resources/app/yui.yaml

@@ -34,7 +34,7 @@ export const prepareBaseEnvironment = async () => {
     app_type: appInfo.app_type,
     app_version: appInfo.app_version,
     os_version: appInfo.os_version,
-    use_xlog: false,
+    use_xlog: true,
     /**
      * 
      * V1_LNX_NQ_${getQQVersion(MobileQQ.getContext())}_${getQQVersionCode()}_GW_B
