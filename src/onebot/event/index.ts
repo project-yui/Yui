@@ -1,3 +1,4 @@
+import { listenAccountEvent } from "./account"
 import { listenLoginEvent } from "./login"
 import { listenMessage } from "./message"
 
@@ -7,4 +8,5 @@ import { listenMessage } from "./message"
 export const initEvent = () => {
   listenMessage()
   listenLoginEvent()
+  listenAccountEvent()
 }

@@ -24,7 +24,7 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
         next(new Error('No file found!'));
         return;
     }
-    log.info('req:', req)
+    log.info('req:', req.url, 'files:', req.files)
     const file = req.files.file as fileUpload.UploadedFile
     
     if (!file) {
