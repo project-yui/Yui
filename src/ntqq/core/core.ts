@@ -3,7 +3,7 @@ import { useLogger } from "../../common/log"
 import { NodeIKernelLoginService } from "../types/services/NodeIKernelLoginService"
 import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
-import { useNTWrapper } from "./service/nt-wrapper"
+import { resetNTWrapper, useNTWrapper } from "./service/nt-wrapper"
 import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('NTStore')
@@ -55,7 +55,6 @@ export const useNTCore = () => ({
    * @returns 
    */
   getWrapperSession: (): NTNativeWrapper.NodeIQQNTWrapperSession => {
-    const wrapper = useNTWrapper()
     const asyncStore = useAsyncStore()
     const s = asyncStore.getStore()
     const uin: number = s?.get('uin')
@@ -82,4 +81,9 @@ export const useNTCore = () => ({
     const accountNTData = userStore.getCurrentAccountData()
     return accountNTData.startupSessionWrapper
   },
+
+  destroy: () => {
+    log.warn('destroy ntqq core')
+    resetNTWrapper()
+  }
 })

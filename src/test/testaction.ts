@@ -269,8 +269,6 @@ const vmSrcipt = () => {
 import async_hooks from 'node:async_hooks';
 import { stdout } from 'node:process';
 import { useNTCore } from "../ntqq/core/core"
-import { DESTRUCTION } from "dns"
-import { useNTWrapper } from "../ntqq/core/service/nt-wrapper"
 import { PaiYiPaiReq, CommunicationPkg } from "../ntqq/protobuf/communication"
 import { sendCustomPkg } from "../native/native"
 const hookAsync = () => {

@@ -1,7 +1,6 @@
 import { useListenerProxy } from "../dispatcher"
 import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
-import { useNTWrapper } from "./nt-wrapper"
 
 const log = useLogger('Service/msg')
 /**

@@ -92,6 +92,7 @@ declare namespace NTNativeWrapper {
     initWithDeskTopConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
     initWithMobileConfig(config: NodeIQQNTWrapperEngineType.Init, adapter: import("./adapters/NodeIGlobalAdapter").NodeIGlobalAdapter): boolean
     onSendSSOReply(a: number, a2: number, a3: number, a4: number, a5: SSOFilter): void
+    destroy(): void
   }
 
   // #endregion

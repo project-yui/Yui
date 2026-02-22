@@ -51,7 +51,7 @@ const getQuickLoginList = async (p: {}) => {
 interface QuickLoginReq extends BotActionParams {
   uin: `${number}`
 }
-const QuickLoginByUin = async (p: QuickLoginReq) => {
+const quickLoginByUin = async (p: QuickLoginReq) => {
   const result = await NTQuickLoginByUin(p.uin)
   if (result.result !== '0')
   {
@@ -78,7 +78,7 @@ export const initBot = () => {
   registerActionHandle('get_self_info', getBotInfo)
   registerActionHandle('is_self_login', checkUserLogin)
   registerActionHandle('get_quick_login_list', getQuickLoginList)
-  registerActionHandle('quick_login_by_uin', QuickLoginByUin)
+  registerActionHandle('quick_login_by_uin', quickLoginByUin)
   registerActionHandle('get_clipboard_msg', getClipboardMsg)
   registerActionHandle('get_account_list', getAccountList)
 }

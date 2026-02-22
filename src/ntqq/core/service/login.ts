@@ -6,7 +6,6 @@ import { initWrapperSession } from "../wrapper-session"
 import { useNTUserStore } from "../../store/user"
 import { useStore } from "../../../store/store"
 import { useAsyncStore } from "../../../store/async-store"
-import { useNTWrapper } from "./nt-wrapper"
 
 const log = useLogger('LoginInit')
 

@@ -1,4 +1,5 @@
 import { useLogger } from "../../common/log"
+import { useNTCore } from "../../ntqq/core/core"
 import { KickedOfflinePayload } from "../../ntqq/types/listener/msg"
 import { useServer } from "../../server/server"
 import { useAsyncStore } from "../../store/async-store"
@@ -33,6 +34,14 @@ const kickedOffline = () => {
             }
         }
         sendMessage(ret)
+
+        // 直接退出实例
+        // TODO: 找一个不退出的办法
+        setTimeout(process.exit, 5000, 1)
+
+        // destory
+        // const { destroy } = useNTCore()
+        // destroy()
     })
 }
 export const listenAccountEvent = () => {

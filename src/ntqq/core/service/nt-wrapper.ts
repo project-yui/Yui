@@ -5,7 +5,6 @@ import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
 import { CustomError } from "../../../server/error/custom-error";
 import { initNative } from "../../../native/native";
-import { User } from "../../../models/contact/user";
 
 const log = useLogger('NTWrapper')
 export const useNTWrapper = () => {
@@ -47,4 +46,29 @@ export const useNTWrapper = () => {
         initNative(`wrapper-${idx}.node`)
     }
     return useWrapper(userStore[uin].moduleIndex)
+}
+
+export const resetNTWrapper = () => {
+    const asyncStore = useAsyncStore()
+    const s = asyncStore.getStore()
+    const uin: number = s?.get('uin')
+    if (!uin) {
+      throw new CustomError(500, 'id error')
+    }
+    const userStore = useNTUserStore()
+    const accountNTData = userStore.getCurrentAccountData()
+    accountNTData.wrapperEngine.destroy()
+    accountNTData.loginService.destroy()
+
+    const wrapper = useWrapper(accountNTData.moduleIndex)
+    const sw = wrapper.NodeIQQNTStartupSessionWrapper.create()
+    const sessionIdList = sw.getSessionIdList()
+    const sessionId = sessionIdList.get('nt')
+    if (!sessionId) {
+        log.error('get sessionId error:', sessionIdList)
+        throw new CustomError(500, 'sessionId error.')
+    }
+    accountNTData.loginService = new wrapper.NodeIKernelLoginService()
+    accountNTData.wrapperSession = wrapper.NodeIQQNTWrapperSession.getNTWrapperSession(sessionId)
+    accountNTData.wrapperEngine = new wrapper.NodeIQQNTWrapperEngine()
 }
