@@ -19,8 +19,8 @@ const qrCodeFetch = () => {
         log.info('qrCodeFetch async store:', s)
         const uin = s?.get('uin')
         if (!uin) {
-          log.error('qrCodeFetch: user not found')
-          return
+            log.error('qrCodeFetch: user not found')
+            return
         }
         /**
          * 二维码数据
@@ -52,8 +52,8 @@ const qrCodeFailed = () => {
         log.info('qrCodeFetch async store:', s)
         const uin = s?.get('uin')
         if (!uin) {
-          log.error('qrCodeFetch: user not found')
-          return
+            log.error('qrCodeFetch: user not found')
+            return
         }
         /**
          * 未扫描，超时：1 10
@@ -95,8 +95,8 @@ const qrCodeScaned = () => {
         log.info('qrCodeFetch async store:', s)
         const uin = s?.get('uin')
         if (!uin) {
-          log.error('qrCodeFetch: user not found')
-          return
+            log.error('qrCodeFetch: user not found')
+            return
         }
         const ret: EventDataType<any> = {
             self: {
@@ -124,7 +124,7 @@ const qrCodeScaned = () => {
 const qrCodeSuccess = () => {
     const { sendMessage } = useServer()
     const getQrCode = registerEventListener('KernelLoginListener/onQRCodeLoginSucceed', 'always', (userInfo) => {
-        
+
         const ret: EventDataType<any> = {
             self: {
                 id: parseInt(userInfo.uin),
@@ -171,6 +171,83 @@ const alreadyLogin = () => {
     })
 }
 
+const deviceConfirmStatus = () => {
+    const { sendMessage } = useServer()
+    const asyncStore = useAsyncStore()
+    const s = asyncStore.getStore()
+    log.info('qrCodeFetch async store:', s)
+    const uin = s?.get('uin')
+    if (!uin) {
+        log.error('qrCodeFetch: user not found')
+        return
+    }
+    // 手Q确认异常的处理
+    /**
+     * 5 - 手Q取消授权
+     * 9 - 手Q拒绝授权
+     * 10 - 手机端长时间未确认
+     */
+    const getStatus = registerEventListener('KernelLoginListener/OnConfirmUnusualDeviceFailed', 'always', (errCode: number, errMsg: string, errTips: NTLogin.PayloadConfirmUnusualDeviceFailed) => {
+
+        log.info('deviceConfirmStatus payload:', errCode)
+        const ret: EventDataType<any> = {
+            self: {
+                id: uin,
+                uid: 'u_'
+            },
+            time: new Date().getTime(),
+            type: "notice",
+            detailType: "login.account.deviceConfirm",
+            subType: "",
+            data: errCode
+        }
+
+        // 手Q有登录，但是手Q取消/拒绝授权
+        if (errCode === 5) {
+            ret.detailType = 'login.account.deviceConfirm.cancel'
+        }
+        else if (errCode === 9) {
+            ret.detailType = 'login.account.deviceConfirm.rejected'
+        }
+        else if (errCode === 10) {
+            ret.detailType = 'login.account.deviceConfirm.timeout'
+        } else {
+            ret.detailType = 'login.account.deviceConfirm.unknown'
+        }
+
+        sendMessage(ret)
+    })
+}
+
+const loginStatusChange = () => {
+    const { sendMessage } = useServer()
+    const asyncStore = useAsyncStore()
+    const s = asyncStore.getStore()
+    log.info('qrCodeFetch async store:', s)
+    const uin = s?.get('uin')
+    if (!uin) {
+        log.error('qrCodeFetch: user not found')
+        return
+    }
+    const onLoginState = registerEventListener('KernelLoginListener/onLoginState', 'always', (state: number) => {
+        log.info('onLoginState state:', state)
+        if (state === 0) {
+            // 手Q确认，登录成功
+            const ret: EventDataType<any> = {
+                self: {
+                    id: uin,
+                    uid: 'u_'
+                },
+                time: new Date().getTime(),
+                type: "notice",
+                detailType: "login.account.deviceConfirm.success",
+                subType: "",
+                data: state
+            }
+            sendMessage(ret)
+        }
+    })
+}
 /**
  * 初始化时调用
  */
@@ -181,4 +258,6 @@ export const listenLoginEvent = () => {
     qrCodeScaned();
     qrCodeSuccess();
     alreadyLogin();
+    deviceConfirmStatus()
+    loginStatusChange()
 }

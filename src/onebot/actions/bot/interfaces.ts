@@ -14,6 +14,28 @@ export declare namespace BotLogin {
   interface AccountLoginData extends BotActionParams {
     id: number
     password: string
+    step: number
+    proofWaterSig: string
+    proofWaterRand: string
+    proofWaterSid: string
+    deviceVerifySig?: string
+  }
+
+  /**
+   * 请求体
+   * 机器人 -> 框架
+   */
+  interface DeviceVerifyQRCodeData extends BotActionParams {
+    uin: number
+    url: string
+  }
+
+  /**
+   * 请求体
+   * 机器人 -> 框架
+   */
+  interface DeviceVerifyStatusData extends BotActionParams {
+    url: string
   }
 
   /**

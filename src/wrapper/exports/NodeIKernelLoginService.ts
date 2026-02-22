@@ -41,7 +41,15 @@ export class NodeIKernelLoginService {
     }
     passwordLogin(...args: any[]) {
         log.info('passwordLogin called with args:', args)
-        return this.instance.passwordLogin(...args)
+        const result = this.instance.passwordLogin(...args)
+        if (result instanceof Promise) {
+            return result.then((res: any) => {
+                log.info('passwordLogin result:', res)
+                return res
+            })
+        }
+        log.info('passwordLogin result:', result)
+        return result
     }
     loginUnusualDevice(...args: any[]) {
         log.info('loginUnusualDevice called with args:', args)

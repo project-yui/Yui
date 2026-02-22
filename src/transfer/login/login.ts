@@ -1,10 +1,11 @@
-import { NTLoginByAccountInfo } from "../../ntqq/login/account"
+import { NTCheckDeviceVerifyQRCodeStatus, NTGetDeviceVerifyQRCode, NTLoginByAccountInfo } from "../../ntqq/login/account"
 import { NTLogin } from "../../ntqq/login/interfaces"
 import { NTGetLoginQrCode } from "../../ntqq/login/qrcode"
 import { BotLogin } from "../../onebot/actions/bot/interfaces"
 import { BotActionParams } from "../../onebot/actions/interfaces"
 import { useLogger } from "../../common/log"
 import { CustomError } from "../../server/error/custom-error"
+import { CheckScanStatusResult } from "../../ntqq/types/core/oidb/0xc9e_8"
 
 const log = useLogger('Login')
 
@@ -25,11 +26,11 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
     loginInfo: {
       uin: `${p.id}`,
       passwordMd5: p.password,
-      step: 0,
-      newDeviceLoginSig: "",
-      proofWaterSig: "",
-      proofWaterRand: "",
-      proofWaterSid: ""
+      step: p.step,
+      newDeviceLoginSig: p.deviceVerifySig || '',
+      proofWaterSig: p.proofWaterSig,
+      proofWaterRand: p.proofWaterRand,
+      proofWaterSid: p.proofWaterSid
     }
   }
   log.info("req to nt:", JSON.stringify(ntLogin))
@@ -41,6 +42,16 @@ export const loginByAccount = async (p: BotLogin.AccountLoginData): Promise<any>
     return e
   }
 
+}
+
+export const getDeviceVerifyQRCode = async (p: BotLogin.DeviceVerifyQRCodeData): Promise<string> => {
+  const result = await NTGetDeviceVerifyQRCode(p.uin, p.url)
+  return result
+}
+
+export const checkDeviceVerifyQRCodeStatus = async (p: BotLogin.DeviceVerifyStatusData): Promise<CheckScanStatusResult> => {
+  const result = await NTCheckDeviceVerifyQRCodeStatus(p.url)
+  return result
 }
 
 /**

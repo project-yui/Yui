@@ -265,10 +265,10 @@ declare namespace NodeIKernelLoginServiceType {
      */
     passwordMd5: string,
     step: number,
-    newDeviceLoginSig: string,
-    proofWaterSig: string,
-    proofWaterRand: string,
-    proofWaterSid: string,
+    newDeviceLoginSig: Uint8Array,
+    proofWaterSig: Uint8Array,
+    proofWaterRand: Uint8Array,
+    proofWaterSid: Uint8Array,
   }
   interface PasswordLoginResp {
     result: `${number}`,
@@ -278,6 +278,7 @@ declare namespace NodeIKernelLoginServiceType {
       proofWaterUrl: string,
       newDevicePullQrCodeSig: '0x',
       jumpUrl: string,
+      deviceVerifyQRCodeUrl: string
       jumpWord: string,
       tipsTitle: string,
       tipsContent: string,

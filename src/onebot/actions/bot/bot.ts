@@ -3,7 +3,7 @@ import { NTGetQuickLoginList, NTGetLoginStatus, NTQuickLoginByUin } from "../../
 import { useNTUserStore } from "../../../ntqq/store/user"
 import { CustomError } from "../../../server/error/custom-error"
 import { useStore } from "../../../store/store"
-import { loginByAccount, loginByQrCode } from "../../../transfer/login/login"
+import { checkDeviceVerifyQRCodeStatus, getDeviceVerifyQRCode, loginByAccount, loginByQrCode } from "../../../transfer/login/login"
 import { getUserInfoByUid } from "../../common/user"
 import { UserInfoResp } from "../friend/interfaces"
 import { BotActionParams } from "../interfaces"
@@ -72,6 +72,8 @@ export const initBot = () => {
   const { registerActionHandle } = useStore()
   // 登录
   registerActionHandle('login_by_account', loginByAccount)
+  registerActionHandle('check_device_verify_qrcode_status', checkDeviceVerifyQRCodeStatus)
+  registerActionHandle('get_device_verify_qrcode', getDeviceVerifyQRCode)
   registerActionHandle('login_by_qrcode', loginByQrCode)
   registerActionHandle('get_self_info', getBotInfo)
   registerActionHandle('is_self_login', checkUserLogin)

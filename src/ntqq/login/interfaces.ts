@@ -27,6 +27,12 @@ export declare namespace NTLogin {
     }
   }
 
+  interface AccountLoginDeviceVerifyQRRequest {
+    uin: `${number}`
+    uinToken: string
+    devToken: string
+  }
+
   /**
    * 响应数据
    * NTQQ -> 框架
@@ -83,17 +89,8 @@ export declare namespace NTLogin {
    * 非常用设备，手机端确认异常
    */
   export interface PayloadConfirmUnusualDeviceFailed {
-    /**
-     * 5 - 手Q取消授权
-     * 9 - 手Q拒绝授权
-     * 10 - 手机端长时间未确认
-     */
-    errCode: number
-    errMsg: string
-    tips: {
-      tips_version: string
-      tips_title: string
-      tips_template: string
-    }
+    tips_version: string
+    tips_title: string
+    tips_template: string
   }
 }
