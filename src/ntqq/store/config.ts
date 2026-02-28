@@ -1,4 +1,4 @@
-import { homedir, userInfo } from "os";
+import { homedir, hostname } from "os";
 import { getNTPackageInfo } from "../common/utils";
 import { StoreAppInfo } from "../types/store/config";
 import { randomUUID } from "crypto";
@@ -46,7 +46,7 @@ const getDeviceInfo = (): NTNativeWrapper.DeviceInfo => {
       guid,
       buildVer: pkgInfo.version,
       localId: 2052,
-      devName: userInfo().username,
+      devName: hostname(),
       devType: platform == 'win32' ? 'Windows_NT' : 'Linux',
       vendorName: '',
       osVer: osVersion,
