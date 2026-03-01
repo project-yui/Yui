@@ -1,7 +1,0 @@
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::addKernelUnitedConfigListener : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::fetchUnitedCommendConfig : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::fetchUnitedSwitchConfig : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::isUnitedConfigSwitchOn : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::loadUnitedConfig : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::registerUnitedConfigPushGroupList : implementation of IKernelUnitedConfigService is not valid
-assertion (cpp_impl) failed: NodeIKernelUnitedConfigService::removeKernelUnitedConfigListener : implementation of IKernelUnitedConfigService is not valid
