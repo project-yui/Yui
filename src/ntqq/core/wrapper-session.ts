@@ -14,7 +14,6 @@ import { useNTConfig } from "../store/config"
 import { initStorageCleanService } from "./service/storage-clean"
 import { useNTWrapper } from "./service/nt-wrapper"
 import { useNTUserStore } from "../store/user"
-import { useAsyncStore } from "../../store/async-store"
 import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('AfterLogin')
@@ -52,21 +51,12 @@ export const initWrapperSession = async (uin: `${number}`, uid: `u_${string}`) =
     initBuddyService()
     log.info('initStorageCleanService start')
     initStorageCleanService()
-    // 切换模块附属
     const userStore = useNTUserStore()
-    const account = userStore.getAllAccountData()
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin = s?.get('uin') as number
-    const t = account[uin]
+    const t = userStore.getCurrentAccountData()
     log.info('account data:', t)
     if (!t.info.uin) {
       throw new CustomError(20302, 'uin error')
     }
-    log.info(`变更模块${uin}所属为${t.info.uin}`)
-    s?.set('uin', t.info.uin)
-    delete account[uin]
-    account[t.info.uin] = t
     const userInfo = useNTUserStore()
     log.info('current user info:', userInfo.getUserInfo())
   })

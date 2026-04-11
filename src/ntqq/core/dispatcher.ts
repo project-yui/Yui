@@ -1,6 +1,5 @@
 import EventEmitter from "events"
 import { useLogger } from "../../common/log"
-import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
 import { CustomError } from "../../server/error/custom-error"
 
@@ -12,15 +11,9 @@ const log = useLogger('Dispatcher')
  * @returns 调度器
  */
 export const useNTDispatcher = () => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    log.info('useNTDispatcher async store:', s)
-    const uin: number = s?.get('uin')
-    if (!uin)
-    {
-        throw new CustomError(500, 'uin error')
-    }
-    const { getCurrentAccountData } = useNTUserStore()
+    const { getCurrentAccountData, requireCurrentUin } = useNTUserStore()
+    const uin = requireCurrentUin()
+    log.info('useNTDispatcher current uin:', uin)
     const dispatcher = getCurrentAccountData().dispatcher
     return dispatcher
 }
@@ -31,38 +24,21 @@ export const useNTDispatcher = () => {
  * @returns 监听代理
  */
 export const useListenerProxy = (name: string) => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    log.info('useListenerProxy async store:', name, s)
+    log.info('useListenerProxy:', name)
     const handler = {
         get(obj: any, prop: string) {
             log.info(`${name}/${prop}`, 'handle get', obj, prop, name)
-            const uin: number = s?.get('uin')
-            if (!uin)
-            {
-                throw new CustomError(500, 'id error')
-            }
+            const { requireCurrentUin } = useNTUserStore()
+            const uin = requireCurrentUin()
             return (...args: any[]) => {
-                log.debug(`${name}/${prop}`, 'get async store')
-                const asyncStore = useAsyncStore()
-                if (!s) {
-                    log.error(`${name}/${prop}`, 'Async store error!')
-                    throw  new CustomError(500, 'Async store error!')
+                log.debug(`${name}/${prop}`, JSON.stringify(args))
+                const { getCurrentAccountData } = useNTUserStore()
+                const dispatcher = getCurrentAccountData().dispatcher
+                if (!dispatcher){
+                    log.error(`${name}/${prop}`, `dispatcher of ${uin} does not exists.`)
+                    throw new CustomError(500, `dispatcher of ${uin} does not exists.`)
                 }
-                asyncStore.run(s, () => {
-                    log.debug(`${name}/${prop}`, 'useListenerProxy call')
-                    const s = asyncStore.getStore()
-                    log.debug(`${name}/${prop}`, 'useListenerProxy call async store:', s)
-                    s?.set('uin', uin)
-                    log.debug(`${name}/${prop}`, JSON.stringify(args))
-                    const { getCurrentAccountData } = useNTUserStore()
-                    const dispatcher = getCurrentAccountData().dispatcher
-                    if (!dispatcher){
-                        log.error(`${name}/${prop}`, `dispatcher of ${uin} does not exists.`)
-                        throw new CustomError(500, `dispatcher of ${uin} does not exists.`)
-                    }
-                    dispatcher.emit(`${name}/${prop}`, ...args)
-                })
+                dispatcher.emit(`${name}/${prop}`, ...args)
             }
         },
         set(obj: any, prop: string, nv: any, rec: any) {
