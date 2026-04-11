@@ -60,9 +60,8 @@ const quickLoginByUin = async (p: QuickLoginReq) => {
   return {}
 }
 const getAccountList = (p: BotActionParams): any => {
-  const { getAllAccountData } = useNTUserStore()
-  const allAccount = getAllAccountData()
-  return Object.keys(allAccount).filter(e => e !== '1234567890')
+  const { getAccountList } = useNTUserStore()
+  return getAccountList().map(String)
 }
 const checkUserLogin = async (p: {}): Promise<boolean> => {
   const status = await NTGetLoginStatus()

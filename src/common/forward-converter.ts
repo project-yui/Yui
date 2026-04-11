@@ -88,6 +88,9 @@ export class ForwardConverter {
         const { getUserInfo } = useNTUserStore()
         const user = getUserInfo()
         const log = useLogger('ForwardConverter');
+        if (!user) {
+            throw new Error('Failed to get current user info');
+        }
         let picElements = this.forwardData.items.flatMap(item => item.elements.filter(e => e.type === 'image' && e.data.pic).map(e => e.data.pic!));
         if (picElements.length === 0) {
             log.info('No images to upload');

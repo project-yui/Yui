@@ -1,4 +1,4 @@
-import { useAsyncStore } from "../store/async-store"
+import { useRuntimeStore } from "../store/runtime"
 
 const enum LogLevel {
   /** 追踪日志 */
@@ -86,8 +86,8 @@ class Logger {
   }
 
   private _log (level: LogLevel, args: unknown[]) {
-    const asyncStore = useAsyncStore()
-    let traceId = asyncStore?.getStore()?.get('traceId')
+    const { getTraceId } = useRuntimeStore()
+    const traceId = getTraceId()
     if (!isLogEnabled) return
     // 优先级小的不显示
     if (level < CurrentLogLevel) return

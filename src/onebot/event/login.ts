@@ -1,7 +1,7 @@
 import { useLogger } from "../../common/log"
 import { NTLogin } from "../../ntqq/login/interfaces"
+import { useNTUserStore } from "../../ntqq/store/user"
 import { useServer } from "../../server/server"
-import { useAsyncStore } from "../../store/async-store"
 import { useStore } from "../../store/store"
 import { EventDataType } from "./interfaces"
 
@@ -14,10 +14,8 @@ const log = useLogger('Event/Login')
 const qrCodeFetch = () => {
     const { sendMessage } = useServer()
     const getQrCode = registerEventListener('KernelLoginListener/onQRCodeGetPicture', 'always', (payload: NTLogin.GetQRCodeResponse) => {
-        const asyncStore = useAsyncStore()
-        const s = asyncStore.getStore()
-        log.info('qrCodeFetch async store:', s)
-        const uin = s?.get('uin')
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
         if (!uin) {
             log.error('qrCodeFetch: user not found')
             return
@@ -27,7 +25,7 @@ const qrCodeFetch = () => {
          */
         const ret: EventDataType<any> = {
             self: {
-                id: parseInt(uin),
+                id: uin,
                 uid: 'u_0'
             },
             time: new Date().getTime(),
@@ -47,10 +45,8 @@ const qrCodeFetch = () => {
 const qrCodeFailed = () => {
     const { sendMessage } = useServer()
     const getQrCode = registerEventListener('KernelLoginListener/onQRCodeSessionFailed', 'always', (p1: number, p2: number) => {
-        const asyncStore = useAsyncStore()
-        const s = asyncStore.getStore()
-        log.info('qrCodeFetch async store:', s)
-        const uin = s?.get('uin')
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
         if (!uin) {
             log.error('qrCodeFetch: user not found')
             return
@@ -90,10 +86,8 @@ const qrCodeFailed = () => {
 const qrCodeScaned = () => {
     const { sendMessage } = useServer()
     const getQrCode = registerEventListener('KernelLoginListener/onQRCodeSessionUserScaned', 'always', (p1: number, avatarUrl: string) => {
-        const asyncStore = useAsyncStore()
-        const s = asyncStore.getStore()
-        log.info('qrCodeFetch async store:', s)
-        const uin = s?.get('uin')
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
         if (!uin) {
             log.error('qrCodeFetch: user not found')
             return
@@ -173,14 +167,6 @@ const alreadyLogin = () => {
 
 const deviceConfirmStatus = () => {
     const { sendMessage } = useServer()
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    log.info('qrCodeFetch async store:', s)
-    const uin = s?.get('uin')
-    if (!uin) {
-        log.error('qrCodeFetch: user not found')
-        return
-    }
     // 手Q确认异常的处理
     /**
      * 5 - 手Q取消授权
@@ -188,6 +174,12 @@ const deviceConfirmStatus = () => {
      * 10 - 手机端长时间未确认
      */
     const getStatus = registerEventListener('KernelLoginListener/OnConfirmUnusualDeviceFailed', 'always', (errCode: number, errMsg: string, errTips: NTLogin.PayloadConfirmUnusualDeviceFailed) => {
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
+        if (!uin) {
+            log.error('qrCodeFetch: user not found')
+            return
+        }
 
         log.info('deviceConfirmStatus payload:', errCode)
         const ret: EventDataType<any> = {
@@ -221,15 +213,13 @@ const deviceConfirmStatus = () => {
 
 const loginStatusChange = () => {
     const { sendMessage } = useServer()
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    log.info('qrCodeFetch async store:', s)
-    const uin = s?.get('uin')
-    if (!uin) {
-        log.error('qrCodeFetch: user not found')
-        return
-    }
     const onLoginState = registerEventListener('KernelLoginListener/onLoginState', 'always', (state: number) => {
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
+        if (!uin) {
+            log.error('qrCodeFetch: user not found')
+            return
+        }
         log.info('onLoginState state:', state)
         if (state === 0) {
             // 手Q确认，登录成功

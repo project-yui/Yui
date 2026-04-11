@@ -1,8 +1,3 @@
-const { AsyncLocalStorage } = require('async_hooks');
-
-/** @type {import('async_hooks').AsyncLocalStorage<Map>} */
-const asyncLocalStorage = new AsyncLocalStorage();
-global.asyncLocalStorage = asyncLocalStorage;
 ;(() => {
   const orgi_require = module.require
   const log = (...a) => {

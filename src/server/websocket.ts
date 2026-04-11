@@ -9,9 +9,9 @@ import { useConfigStore } from '../store/config';
 import { CustomError } from './error/custom-error';
 import { convertToCamelCase, convertToSnakeCase } from '../common/utils';
 import { NTInitialize } from '../ntqq';
-import { useAsyncStore } from '../store/async-store';
 import { useNTUserStore } from '../ntqq/store/user';
 import { initEvent } from '../onebot/event';
+import { useRuntimeStore } from '../store/runtime';
 
 const { getActionHandle } = useStore()
 const log = useLogger('WebSocket')
@@ -36,7 +36,6 @@ export const startWebsocketServer = () => {
   })
   wss.on('connection', function connection(ws, req) {
     log.info('receive connection.');
-    const asyncStore = useAsyncStore()
     try {
       log.info('async run.');
       if (!req.url) {
@@ -56,23 +55,22 @@ export const startWebsocketServer = () => {
       })
 
       ws.on('message', function incoming(message) {
-
-        asyncStore.run(new Map(), async () => {
+        void (async () => {
+          const { setTraceId, clearTraceId } = useRuntimeStore()
           let msg: BotActionRequest
           try {
             log.info('server: received: ', message.toString());
-            // 此处解析可能会失败
             msg = JSON.parse(message.toString())
             const ret = checkBaseRequestField(msg)
             if (ret !== undefined) {
               ws.send(JSON.stringify(ret));
               return
             }
+            setTraceId(msg.id)
+            const { getUserInfo, setCurrentUin } = useNTUserStore()
             log.info('uin:', msg.user.uin)
-            asyncStore.getStore()?.set('uin', msg.user.uin)
-            asyncStore.getStore()?.set('traceId', msg.id)
-            const { getUserInfo } = useNTUserStore()
-            let u = getUserInfo()
+            setCurrentUin(msg.user.uin)
+            const u = getUserInfo()
             if (!u) {
               log.info(`user(${msg.user.uin}) has not been initialized, start to initialize...`)
               await NTInitialize()
@@ -80,7 +78,6 @@ export const startWebsocketServer = () => {
             }
           }
           catch (e) {
-            // 消息json格式不正确
             log.error(e)
             const result: BotActionResponse = {
               id: NIL_UUID,
@@ -95,10 +92,10 @@ export const startWebsocketServer = () => {
               result.message = e.message
             }
             ws.send(JSON.stringify(result));
+            clearTraceId()
             return
           }
 
-          // 获取动作处理函数
           log.info('request action:', msg.action)
           const handle = getActionHandle(msg.action)
           if (handle != undefined) {
@@ -116,7 +113,6 @@ export const startWebsocketServer = () => {
             }
             catch (e) {
               log.error('内部错误:', e)
-              // TODO: 支持Error和CustomError处理
               if (e instanceof CustomError) {
                 resp.status = 'failed'
                 resp.retcode = e.code
@@ -136,7 +132,6 @@ export const startWebsocketServer = () => {
             ws.send(JSON.stringify(resp));
           }
           else {
-            // 没有找到处理函数
             const result: BotActionResponse = {
               id: msg.id,
               status: 'failed',
@@ -146,7 +141,8 @@ export const startWebsocketServer = () => {
             }
             ws.send(JSON.stringify(result));
           }
-        });
+          clearTraceId()
+        })();
       })
     }
     catch (err) {

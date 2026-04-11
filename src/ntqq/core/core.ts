@@ -1,12 +1,16 @@
-import { useListenerProxy, useNTDispatcher } from "./dispatcher"
+import { useListenerProxy } from "./dispatcher"
 import { useLogger } from "../../common/log"
 import { NodeIKernelLoginService } from "../types/services/NodeIKernelLoginService"
-import { useAsyncStore } from "../../store/async-store"
 import { useNTUserStore } from "../store/user"
 import { resetNTWrapper, useNTWrapper } from "./service/nt-wrapper"
-import { CustomError } from "../../server/error/custom-error"
 
 const log = useLogger('NTStore')
+
+const requireCurrentAccountData = () => {
+  const userStore = useNTUserStore()
+  userStore.requireCurrentUin()
+  return userStore.getCurrentAccountData()
+}
 
 export const useNTCore = () => ({
   getWrapperUtil: () => {
@@ -25,61 +29,29 @@ export const useNTCore = () => ({
    * @returns 
    */
   getWrapperEngine: () => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
-    if (!uin) {
-      throw new CustomError(500, 'id error')
-    }
-    const userStore = useNTUserStore()
-    const accountNTData = userStore.getCurrentAccountData()
-    return accountNTData.wrapperEngine
+    return requireCurrentAccountData().wrapperEngine
   },
   /**
    * 频繁调用
    * @returns 
    */
   getLoginService: (): NodeIKernelLoginService => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
-    if (!uin) {
-      throw new CustomError(500, 'id error')
-    }
-    const userStore = useNTUserStore()
-    const accountNTData = userStore.getCurrentAccountData()
-    return accountNTData.loginService
+    return requireCurrentAccountData().loginService
   },
   /**
    * 频繁调用
    * @returns 
    */
   getWrapperSession: (): NTNativeWrapper.NodeIQQNTWrapperSession => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
-    if (!uin) {
-      throw new CustomError(500, 'id error')
-    }
-    const userStore = useNTUserStore()
-    const accountNTData = userStore.getCurrentAccountData()
-    return accountNTData.wrapperSession
+    return requireCurrentAccountData().wrapperSession
   },
   /**
    * 频繁调用
    * @returns 
    */
   getStartupSessionWrapper: (): NTNativeWrapper.NodeIQQNTStartupSessionWrapper => {
-    const wrapper = useNTWrapper()
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
-    if (!uin) {
-      throw new CustomError(500, 'id error')
-    }
-    const userStore = useNTUserStore()
-    const accountNTData = userStore.getCurrentAccountData()
-    return accountNTData.startupSessionWrapper
+    useNTWrapper()
+    return requireCurrentAccountData().startupSessionWrapper
   },
 
   destroy: () => {

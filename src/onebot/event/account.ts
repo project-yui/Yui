@@ -2,9 +2,9 @@ import { useLogger } from "../../common/log"
 import { useNTCore } from "../../ntqq/core/core"
 import { KickedOfflinePayload } from "../../ntqq/types/listener/msg"
 import { useServer } from "../../server/server"
-import { useAsyncStore } from "../../store/async-store"
 import { useStore } from "../../store/store"
 import { EventDataType } from "./interfaces"
+import { useNTUserStore } from "../../ntqq/store/user"
 
 const { registerEventListener } = useStore()
 const log = useLogger('Event/Account')
@@ -12,10 +12,8 @@ const log = useLogger('Event/Account')
 const kickedOffline = () => {
     const { sendMessage } = useServer()
     registerEventListener('KernelMsgListener/onKickedOffLine', 'always', (p1: KickedOfflinePayload) => {
-        const asyncStore = useAsyncStore()
-        const s = asyncStore.getStore()
-        log.info('onKickedOffLine async store:', s)
-        const uin = s?.get('uin')
+        const { getCurrentUin } = useNTUserStore()
+        const uin = getCurrentUin()
         if (!uin) {
             log.error('onKickedOffLine: user not found')
             return

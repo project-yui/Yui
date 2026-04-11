@@ -1,4 +1,3 @@
-import { AsyncLocalStorage } from "node:async_hooks"
 import { useLogger } from "../common/log"
 import { useNTDispatcher } from "../ntqq/core/dispatcher"
 import { BotActionParams } from "../onebot/actions/interfaces"

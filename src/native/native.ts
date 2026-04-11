@@ -59,11 +59,11 @@ export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
     log.debug('wrapper session:', session)
     const search = session.getSearchService()
     log.debug('search service:', search)
-    const { getCurrentAccountData } = useNTUserStore()
-    const info = getCurrentAccountData()
+    const { getCurrentAccountInfo } = useNTUserStore()
+    const info = getCurrentAccountInfo()
     const send = addPkg({
         data: data,
-        uin: info.info.uin,
+        uin: info.uin,
         cmd,
     })
     log.debug('emit start ...')
@@ -94,12 +94,12 @@ export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
     log.debug('wrapper session:', session)
     const search = session.getSearchService()
     log.debug('search service:', search)
-    const { getCurrentAccountData } = useNTUserStore()
-    const info = getCurrentAccountData()
+    const { getCurrentAccountInfo } = useNTUserStore()
+    const info = getCurrentAccountInfo()
     log.info('send pb:', cmd, Buffer.from(data).toString('hex'))
     const send = addPkg({
         data: data,
-        uin: info.info.uin,
+        uin: info.uin,
         cmd,
     })
     log.debug('emit start ...')

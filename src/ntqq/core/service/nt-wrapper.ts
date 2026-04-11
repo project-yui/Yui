@@ -1,5 +1,4 @@
 import { useWrapper } from "ntwrapper"
-import { useAsyncStore } from "../../../store/async-store"
 import { useNTUserStore } from "../../store/user"
 import { useLogger } from "../../../common/log";
 import EventEmitter from "events";
@@ -8,20 +7,18 @@ import { initNative } from "../../../native/native";
 
 const log = useLogger('NTWrapper')
 export const useNTWrapper = () => {
-    // QQ号索引处理
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
-    if (!uin)
-    {
-        throw new CustomError(500, 'useNTWrapper id error.')
-    }
-    const userStore = useNTUserStore().getAllAccountData()
-    if (!userStore[uin])
-    {
-        const ids = Object.keys(userStore)
-        const idx = ids.length + 1
-        log.info('wrapper index:', uin, idx, ids)
+    const { getCurrentAccountData, getCurrentUin, setCurrentAccountData } = useNTUserStore()
+    const current = (() => {
+        try {
+            return getCurrentAccountData()
+        } catch {
+            return null
+        }
+    })()
+    if (!current) {
+        const uin = getCurrentUin()
+        const idx = 1
+        log.info('wrapper index:', uin, idx)
         const wrapper = useWrapper(idx)
         const sw = wrapper.NodeIQQNTStartupSessionWrapper.create()
         const sessionIdList = sw.getSessionIdList()
@@ -30,10 +27,10 @@ export const useNTWrapper = () => {
             log.error('get sessionId error:', sessionIdList)
             throw new CustomError(500, 'sessionId error.')
         }
-        userStore[uin] = {
+        setCurrentAccountData({
             moduleIndex: idx,
             info: {
-                uin: 0,
+                uin: uin || 0,
                 uid: 'u_',
                 userNick: ""
             },
@@ -42,21 +39,19 @@ export const useNTWrapper = () => {
             wrapperSession: wrapper.NodeIQQNTWrapperSession.getNTWrapperSession(sessionId),
             wrapperEngine: new wrapper.NodeIQQNTWrapperEngine(),
             startupSessionWrapper: sw,
-        }
+        })
         initNative(`wrapper-${idx}.node`)
     }
-    return useWrapper(userStore[uin].moduleIndex)
+    return useWrapper(getCurrentAccountData().moduleIndex)
 }
 
 export const resetNTWrapper = () => {
-    const asyncStore = useAsyncStore()
-    const s = asyncStore.getStore()
-    const uin: number = s?.get('uin')
+    const { getCurrentUin, getCurrentAccountData } = useNTUserStore()
+    const uin = getCurrentUin()
     if (!uin) {
       throw new CustomError(500, 'id error')
     }
-    const userStore = useNTUserStore()
-    const accountNTData = userStore.getCurrentAccountData()
+    const accountNTData = getCurrentAccountData()
     accountNTData.wrapperEngine.destroy()
     accountNTData.loginService.destroy()
 
