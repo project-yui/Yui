@@ -1,7 +1,7 @@
 import { NTPackageInfo } from "./types/utils"
 import { existsSync, readFileSync } from "fs"
 import path from "path"
-import { CustomError } from "../../server/error/custom-error"
+import { CustomError } from "../../common/error/custom-error"
 
 export const getNTPackageInfo = (): NTPackageInfo => {
   const pkgPath = path.resolve(__dirname, './package.json')

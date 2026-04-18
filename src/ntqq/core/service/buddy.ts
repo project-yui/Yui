@@ -1,6 +1,6 @@
-import { useNTCore } from "../core"
-import { useListenerProxy, useNTDispatcher } from "../dispatcher"
 import { useLogger } from "../../../common/log"
+import { getNTBuddyService } from "../core"
+import { bindRuntimeServiceKernelListener } from "./bind-kernel-listener"
 const log = useLogger('BuddyService')
 
 /**
@@ -9,8 +9,9 @@ const log = useLogger('BuddyService')
  * 登陆后调用
  */
 export const initBuddyService = () => {
-  const { getWrapperSession } = useNTCore()
-  const buddy = getWrapperSession().getBuddyService()
-  const p = useListenerProxy('KernelBuddyListener')
-  buddy.addKernelBuddyListener(p)
+  bindRuntimeServiceKernelListener({
+    listenerName: 'KernelBuddyListener',
+    getService: getNTBuddyService,
+    attach: (service, listener) => service.addKernelBuddyListener(listener),
+  })
 }

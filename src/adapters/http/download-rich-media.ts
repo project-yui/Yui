@@ -1,0 +1,45 @@
+import { NextFunction, Request, Response } from "express"
+import { existsSync } from "fs"
+import { useLogger } from "../../common/log"
+import { getNTMsgService } from "../../ntqq/core/core"
+import { registerEventListener } from "../../store/event-registry"
+import { CustomError } from "../../common/error/custom-error"
+
+const log = useLogger("DownloadRichMedia")
+
+export const downloadRichMedia = (req: Request, res: Response, next: NextFunction) => {
+  const msgService = getNTMsgService()
+  const p = req.query
+  log.info("param:", JSON.stringify(p, null, 4))
+  if (typeof p["file_path"] !== "string") {
+    next(new Error("file_path error"))
+    return
+  }
+  if (p["file_path"] && existsSync(p["file_path"])) {
+    res.download(p["file_path"])
+    return
+  }
+  log.info("need download...")
+  const rm = registerEventListener("KernelMsgListener/onRichMediaDownloadComplete", "always", (a) => {
+    if (a.msgId !== p["msg_id"] || a.msgElementId !== p["element_id"]) return
+    rm.remove()
+    log.info("result:", a)
+    res.download(a.filePath)
+  })
+  setTimeout(() => {
+    rm.remove()
+    next(new CustomError(10201, "timeout"))
+  }, 30000)
+  msgService.downloadRichMedia({
+    peerUid: p["peer_uid"] as string,
+    chatType: parseInt(p["chat_type"] as string),
+    msgId: p["msg_id"] as `${number}`,
+    elementId: p["element_id"] as `${number}`,
+    downloadType: parseInt(p["download_type"] as string),
+    thumbSize: parseInt(p["chat_type"] as string),
+    filePath: p["file_path"],
+    fileModelId: p["file_model_id"] as `${number}`,
+    downSourceType: parseInt(p["down_source_type"] as string),
+    triggerType: parseInt(p["trigger_type"] as string),
+  })
+}

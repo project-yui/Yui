@@ -1,9 +1,8 @@
-import { CustomError } from "../../server/error/custom-error"
-import { useNTCore } from "../core/core"
+import { CustomError } from "../../common/error/custom-error"
+import { getNTMsgService } from "../core/core"
 
 export const NTGroupMsgList = async (groupId: `${number}`, msgId: `${number}`, cnt: number) => {
-    const { getWrapperSession } = useNTCore()
-    const msgService = getWrapperSession().getMsgService()
+    const msgService = getNTMsgService()
     const ret = await msgService.getMsgsIncludeSelf({
         chatType: 2,
         peerUid: groupId,

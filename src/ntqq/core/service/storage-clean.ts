@@ -1,12 +1,13 @@
 import { useLogger } from "../../../common/log"
-import { useNTCore } from "../core"
-import { useListenerProxy } from "../dispatcher"
+import { getNTStorageCleanService } from "../core"
+import { bindRuntimeServiceKernelListener } from "./bind-kernel-listener"
 
 const log = useLogger('RichMedia')
 
 export const initStorageCleanService = () => {
-    const { getWrapperSession } = useNTCore()
-    const storageClean = getWrapperSession().getStorageCleanService()
-    const p = useListenerProxy('KernelStorageCleanListener')
-    storageClean.addKernelStorageCleanListener(p)
+    bindRuntimeServiceKernelListener({
+        listenerName: 'KernelStorageCleanListener',
+        getService: getNTStorageCleanService,
+        attach: (service, listener) => service.addKernelStorageCleanListener(listener),
+    })
 }

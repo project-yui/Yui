@@ -4,6 +4,7 @@ import { YuiConfig } from "./config-type"
 import { getNTPackageInfo } from "../ntqq/common/utils"
 import { useLogger } from "../common/log"
 import { resolve } from "path"
+import { mergeDeep } from "../common/deep-merge"
 
 let configCache: YuiConfig = {
     yui: {
@@ -28,6 +29,14 @@ let configCache: YuiConfig = {
 let inited: boolean = false
 const log = useLogger('Yui Config')
 
+const cloneConfig = <TConfig>(config: TConfig): TConfig => {
+    return JSON.parse(JSON.stringify(config)) as TConfig
+}
+
+const loadYamlConfig = (filePath: string) => {
+    return yaml.parse(readFileSync(filePath).toString()) as YuiConfig
+}
+
 /**
  * 从文件加载配置
  * 
@@ -35,21 +44,18 @@ const log = useLogger('Yui Config')
  */
 const loadFromFile = () => {
     log.info('loadFromFile')
-    const cfg = readFileSync(resolve(__dirname, './yui.yaml')).toString()
-    let defaultConfig = yaml.parse(cfg) as YuiConfig
+    const defaultPath = resolve(__dirname, './yui.yaml')
+    const localPath = resolve(__dirname, './yui.local.yaml')
+    const defaultConfig = loadYamlConfig(defaultPath)
     log.info('cfg data:', defaultConfig)
-    {
-        const localPath = resolve(__dirname, './yui.local.yaml')
-        if (existsSync(localPath)) {
-            const localCfg = readFileSync(localPath).toString()
-            const localConfig = yaml.parse(localCfg) as YuiConfig
-            defaultConfig = {
-                ...defaultConfig,
-                ...localConfig,
-            }
-        }
+
+    if (!existsSync(localPath)) {
+        return defaultConfig
     }
-    return defaultConfig
+
+    const localConfig = loadYamlConfig(localPath)
+    log.info('local cfg data:', localConfig)
+    return mergeDeep(cloneConfig(defaultConfig), localConfig) as YuiConfig
 }
 
 /**
@@ -58,15 +64,11 @@ const loadFromFile = () => {
  * @param update 强制读取最新配置
  * @returns 配置信息
  */
-const getConfig = (update: boolean = false) => {
+export const getConfig = (update: boolean = false) => {
     if (!inited || update) {
         try {
             inited = true
-            // TODO: 深层合并
-            configCache = {
-                ...configCache,
-                ...loadFromFile()
-            }
+            configCache = mergeDeep(cloneConfig(configCache), loadFromFile()) as YuiConfig
         }
         catch (ex) {
             log.error('failed to load config!', ex)
@@ -74,31 +76,13 @@ const getConfig = (update: boolean = false) => {
     }
     return configCache
 }
-const getSignature = () => {
+export const getSignature = () => {
     const pkg = getNTPackageInfo()
     const cfg = getConfig()
     if (process.platform === 'linux' || process.platform === 'win32')
         return cfg.yui.signature[process.platform][pkg.version]
 }
-const getStoragePath = () => {
-    const cfg = getConfig()
-    return resolve(__dirname, cfg.yui['storage-path'])
+export const getStoragePath = () => {
+  const cfg = getConfig()
+  return resolve(__dirname, cfg.yui['storage-path'])
 }
-export const useConfigStore = () => ({
-    /**
-     * 获取配置
-     */
-    getConfig,
-    /**
-     * 获取hook签名
-     * 
-     * 用于native使用
-     */
-    getSignature,
-    /**
-     * 存储路径
-     * 
-     * 绝对路径
-     */
-    getStoragePath,
-})

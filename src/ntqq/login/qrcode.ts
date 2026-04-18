@@ -1,9 +1,5 @@
-import { useStore } from "../../store/store"
-import { useNTCore } from "../core/core"
-import { sleep } from "../../common/utils"
 import { useLogger } from "../../common/log"
-
-const { registerEventListener } = useStore()
+import { withReadyNTLoginService } from "./runtime"
 
 const log = useLogger('NTQQ/Login/qrcode')
 /**
@@ -12,8 +8,9 @@ const log = useLogger('NTQQ/Login/qrcode')
  */
 export const NTGetLoginQrCode = async () => {
   log.info('NTGetLoginQrCode')
-  const { getLoginService } = useNTCore()
-  await sleep(2000)
-  const login = getLoginService()
-  log.info('get qrcode:', login.getQRCodePicture())
+  return withReadyNTLoginService(async (loginService) => {
+    const result = loginService.getQRCodePicture()
+    log.info('get qrcode:', result)
+    return result
+  })
 }

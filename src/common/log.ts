@@ -1,4 +1,4 @@
-import { useRuntimeStore } from "../store/runtime"
+import { getTraceId } from "../store/runtime"
 
 const enum LogLevel {
   /** 追踪日志 */
@@ -86,7 +86,6 @@ class Logger {
   }
 
   private _log (level: LogLevel, args: unknown[]) {
-    const { getTraceId } = useRuntimeStore()
     const traceId = getTraceId()
     if (!isLogEnabled) return
     // 优先级小的不显示

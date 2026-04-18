@@ -1,3 +1,10 @@
+> 说明
+>
+> 本文主要记录 NT wrapper / kernel service 的方法清单，用于排查和能力索引。
+>
+> 当前业务主路径已逐步迁移到 `src/bootstrap/**`、`src/adapters/**`、`src/app/**` 与 `src/ntqq/core/**`。
+> 若要新增或调整实际功能，优先从这些目录进入，而不是回到 `src/onebot/**`、`src/server/**` 等兼容入口扩展逻辑。
+
 ## NodeIKernelAVSDKService
 
 | 方法名 | 参数数量 |
@@ -2285,4 +2292,3 @@
 | 方法名 | 参数数量 |
 |-------|-----|
 | onResult | 4 |
-

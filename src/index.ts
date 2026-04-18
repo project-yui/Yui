@@ -1,44 +1,9 @@
-import { resolve } from "path";
 import { useLogger } from "./common/log"
-import { hook } from "./hook";
-import { initNative } from "./native/native";
-import { initOnebot } from "./onebot/onebot";
-import { startServer } from "./server";
-import { test } from "./test/testaction";
-import { hookWrapper } from "./wrapper/hook";
-import { constants } from 'os'
+import { startApp } from "./bootstrap/start-app"
 
-global.module = module
 const log = useLogger('Index')
 try {
-  log.info('Hi Yui bot!!')
-  if (process.platform === 'linux') {
-    log.info('preload.node')
-    const m = { exports: {} };
-    const preload = process.env['YUI_PRELOAD']  || resolve(__dirname, './preload.node')
-    process.dlopen( 
-        m,
-        preload,
-        constants.dlopen.RTLD_NOW | constants.dlopen.RTLD_GLOBAL
-    )
-  }
-
-  process.on('unhandledRejection', (err) => {
-    log.error('unhandledRejection:', err)
-    // process.exit(1)
-  })
-
-  log.info('initOnebot')
-  initOnebot()
-
-  log.info('startServer')
-  // 启动服务器
-  startServer()
-
-  // 测试
-  test(module)
-
-  log.info('end....')
+  startApp()
 }
 catch(err) {
   log.error('Error:', err)

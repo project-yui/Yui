@@ -21,25 +21,12 @@
       }
       return {
         /**
-         * 载入特定模块
-         * @param {number} idx 模块索引
+         * 载入 wrapper.node
+         * @param {number} idx 兼容旧调用，已忽略
          * @returns 
          */
         useWrapper: (idx) => {
-          if (idx === undefined || idx === null)
-          {
-            throw new Error('use wrapper: idx error')
-          }
-          let targetPath = wrapperPath.replace('wrapper.node', `wrapper-${idx}.node`)
-          if (process.env['YUI_ACTION'] === 'ui')
-          {
-            targetPath = wrapperPath
-          }
-          if (!fs.existsSync(targetPath))
-          {
-            fs.cpSync(wrapperPath, targetPath)
-          }
-          return orgi_require.apply(t, [targetPath])
+          return orgi_require.apply(t, [wrapperPath])
         }
       }
     },

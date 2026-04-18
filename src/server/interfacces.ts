@@ -1,1 +1,0 @@
-export type SendHandleType = (msg: string) => void
