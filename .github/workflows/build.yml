@@ -95,17 +95,18 @@ jobs:
           echo "::set-output name=tag::$tag"
           echo "::set-output name=name::$name"
 
-      - name: Create release and upload artifacts
+      - name: Preview
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          sudo apt install -y fuse
-          wget -q https://github.com/TheAssassin/pyuploadtool/releases/download/continuous/pyuploadtool-x86_64.AppImage
-          chmod +x pyuploadtool-x86_64.AppImage
-          ./pyuploadtool-x86_64.AppImage \
-          **build/*.js \
-          **build/*.yaml
+        with:
+          name: ${{ steps.tag.outputs.name }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          prerelease: true
+          make_latest: false
+          overwrite_files: true
+          files: |
+            **build/*.js
+            **build/*.yaml
 
       - name: Release
         uses: softprops/action-gh-release@v2
