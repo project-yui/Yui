@@ -1,6 +1,4 @@
-/// <reference types="jest" />
-
-let initialized = false
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const runtimeState = {
   wrapperEngine: { kind: 'engine' },
@@ -9,51 +7,52 @@ const runtimeState = {
   startupSessionWrapper: { kind: 'startup' },
 }
 
-jest.mock("./service/nt-wrapper", () => ({
-  getNTWrapper: jest.fn(() => {
-    initialized = true
-    return {}
-  }),
-  resetNTWrapper: jest.fn(),
+const mockState = vi.hoisted(() => ({
+  initialized: false,
 }))
 
-jest.mock("./runtime-store", () => ({
-  getCurrentNTUserInfo: jest.fn(),
-  patchCurrentNTSelfIdentity: jest.fn(),
-  requireCurrentNTRuntime: jest.fn(() => {
-    if (!initialized) {
+vi.mock("./service/nt-wrapper", () => ({
+  getNTWrapper: vi.fn(() => {
+    mockState.initialized = true
+    return {}
+  }),
+  resetNTWrapper: vi.fn(),
+}))
+
+vi.mock("./runtime-store", () => ({
+  getCurrentNTUserInfo: vi.fn(),
+  patchCurrentNTSelfIdentity: vi.fn(),
+  requireCurrentNTRuntime: vi.fn(() => {
+    if (!mockState.initialized) {
       throw new Error('runtime not initialized')
     }
     return runtimeState
   }),
-  requireCurrentNTSelfInfo: jest.fn(),
-  requireCurrentNTUserInfo: jest.fn(),
+  requireCurrentNTSelfInfo: vi.fn(),
+  requireCurrentNTUserInfo: vi.fn(),
 }))
 
-jest.mock("./dispatcher", () => ({
-  createNTListenerProxy: jest.fn(() => ({})),
+vi.mock("./dispatcher", () => ({
+  createNTListenerProxy: vi.fn(() => ({})),
 }))
+
+import { getNTLoginService, getNTWrapperEngine, getNTWrapperSession } from "./core"
 
 describe("nt core runtime service access", () => {
   beforeEach(() => {
-    initialized = false
+    mockState.initialized = false
+    vi.clearAllMocks()
   })
 
   it("initializes wrapper runtime before reading wrapper engine", () => {
-    const { getNTWrapperEngine } = require("./core")
-
     expect(getNTWrapperEngine()).toBe(runtimeState.wrapperEngine)
   })
 
   it("initializes wrapper runtime before reading login service", () => {
-    const { getNTLoginService } = require("./core")
-
     expect(getNTLoginService()).toBe(runtimeState.loginService)
   })
 
   it("initializes wrapper runtime before reading wrapper session", () => {
-    const { getNTWrapperSession } = require("./core")
-
     expect(getNTWrapperSession()).toBe(runtimeState.wrapperSession)
   })
 })

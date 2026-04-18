@@ -14,6 +14,7 @@
   "include": [
       "src/**/*.ts",
       "tools/**/*.ts",
-      "rollup.config.ts"
+      "vite.config.ts",
+      "vitest.config.ts"
   ],
 }

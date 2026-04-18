@@ -1,4 +1,4 @@
-/// <reference types="jest" />
+import { describe, expect, it } from "vitest"
 import { mergeDeep } from "./deep-merge"
 
 describe("mergeDeep", () => {
