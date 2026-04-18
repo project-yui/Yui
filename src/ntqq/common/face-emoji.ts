@@ -1,9 +1,8 @@
-import { useNTCore } from "../core/core"
+import { getNTBaseEmojiService } from "../core/core"
 
 export const NTgetFaceEmoji = async () => {
     // 获取全部表情
-    const { getWrapperSession } = useNTCore()
-    const emojiService = getWrapperSession().getBaseEmojiService()
+    const emojiService = getNTBaseEmojiService()
     const emojis = await emojiService.fetchFullSysEmojis({
         pullMoment: 1,
         pullType: 7,

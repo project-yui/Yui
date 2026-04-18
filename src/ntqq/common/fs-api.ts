@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto"
 import { FileType, ImageSizeInfo } from "./fsapi"
-import { useNTCore } from "../core/core"
+import { getNTWrapperUtil } from "../core/core"
 import { useLogger } from "../../common/log"
 import { parse } from 'file-type-mime'
 import { readFileSync } from "fs"
@@ -77,8 +77,7 @@ export const getImageSizeFromPath = async (path: string) => {
  * @returns boolean
  */
 export const copyFile = (from: string, to: string) => {
-  const { getWrapperUtil } = useNTCore()
-  const util = getWrapperUtil()
+  const util = getNTWrapperUtil()
   const ret = util.copyFile(from, to)
   log.info('copyFile:', ret)
   return ret

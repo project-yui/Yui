@@ -1,31 +1,32 @@
 import { useLogger } from "../../common/log"
-import { useStore } from "../../store/store"
-import { useNTCore } from "../core/core"
+import { getNTGroupService } from "../core/core"
+import { createNTEventWaiter } from "../query/wait"
 import { NTGroupInfo } from "./types"
 
-const { registerEventListener } = useStore()
 const log = useLogger('GroupList')
 export const NTGetGroupList = () => {
     return new Promise<NTGroupInfo[]>(async (resolve, reject) => {
-
-        const { getWrapperSession } = useNTCore()
-        const wrapperSession = getWrapperSession()
-        log.info('wrapperSession:', wrapperSession)
-        const groupService = wrapperSession.getGroupService()
+        const groupService = getNTGroupService()
         log.info('groupService:', groupService)
-        const listener = registerEventListener(
-            'KernelGroupListener/onGroupListUpdate',
-            'once',
-            (a: number, list: NTGroupInfo[]) => {
-                log.info(a, list)
-                resolve(list)
-            })
-        const result = await groupService.getGroupList(true)
-        if (result.result !== 0)
-        {
-            listener.remove()
-            reject(result)
+        const waiter = createNTEventWaiter<[number, NTGroupInfo[]], NTGroupInfo[]>({
+            event: 'KernelGroupListener/onGroupListUpdate',
+            match: () => true,
+            select: (_unused, list) => {
+                log.info(_unused, list)
+                return list
+            },
+        })
+        try {
+            const result = await groupService.getGroupList(true)
+            if (result.result !== 0) {
+                waiter.cancel()
+                reject(result)
+                return
+            }
+            resolve(await waiter.promise)
+        } catch (error) {
+            waiter.cancel()
+            reject(error)
         }
     })
-    
 }

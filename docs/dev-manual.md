@@ -33,6 +33,6 @@
 
 ## 4. 启动
 
-  1. pnpm run dev
-  2. pnpm run nodestart
+  1. `pnpm run yui:dev`
+  2. `pnpm run yui:nodestart`
   3. 看到输出中包含：`Hi Yui bot!!`

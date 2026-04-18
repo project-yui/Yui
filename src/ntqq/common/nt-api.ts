@@ -1,5 +1,4 @@
-
-import { useNTCore } from "../core/core"
+import { getNTMsgService } from "../core/core"
 
 /**
  * 调用NT自带的NtApi获取存储路径
@@ -9,8 +8,7 @@ import { useNTCore } from "../core/core"
  * @returns 存储路径
  */
 export const getRichMediaFilePathForGuild = (md5: string, fileName: string) => {
-  const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
+  const msgService = getNTMsgService()
   return msgService.getRichMediaFilePathForGuild({
     md5HexStr: md5,
     fileName: fileName,

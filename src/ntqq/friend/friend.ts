@@ -1,12 +1,8 @@
 import { randomUUID } from "crypto"
-import { useStore } from "../../store/store"
 import { NTFriend } from "./interfaces"
 import { useLogger } from "../../common/log"
-import { useNTCore } from "../core/core"
-import { CustomError } from "../../server/error/custom-error"
-
-
-const { registerEventListener } = useStore()
+import { getNTBuddyService, getNTProfileLikeService, getNTProfileService } from "../core/core"
+import { CustomError } from "../../common/error/custom-error"
 const log = useLogger('NTQQ/Friend')
 
 /**
@@ -15,10 +11,8 @@ const log = useLogger('NTQQ/Friend')
  * @returns 好友列表
  */
 export const NTGetFriendList = async (): Promise<NTFriend.FriendGroupType[]> => {
-  
-    const { getWrapperSession } = useNTCore()
-    const buddyService = getWrapperSession().getBuddyService()
-    const profileService = getWrapperSession().getProfileService();
+    const buddyService = getNTBuddyService()
+    const profileService = getNTProfileService();
     const groupList = await buddyService.getBuddyListV2(true, 0);
     
     const result: NTFriend.FriendGroupType[] = []
@@ -62,8 +56,7 @@ export const NTGetFriendList = async (): Promise<NTFriend.FriendGroupType[]> => 
  */
 export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Promise<NTFriend.LikeRespType> => {
   log.info('send like:', userId, count)
-  const { getWrapperSession } = useNTCore()
-  const likeService = getWrapperSession().getProfileLikeService()
+  const likeService = getNTProfileLikeService()
   const likeResult = await likeService.setBuddyProfileLike({
     friendUid: userId,
     sourceId: 71,
@@ -81,11 +74,3 @@ export const NTSendLikeFriend = async (userId: `u_${string}`, count: number): Pr
  * @param count 点赞次数
  * @returns 好友列表
  */
-// export const NTGetUserInfo = async (userId: `u_${string}`, count: number): Promise<NTFriend.LikeRespType> => {
-//   log.info('send like:', userId, count)
-//   const { getWrapperSession } = useNTCore()
-//   const profileService = getWrapperSession().getProfileService()
-//   const likeResult = await profileService.getUserSimpleInfo()
-//   log.info('send like result:', likeResult)
-//   return likeResult
-// }

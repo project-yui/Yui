@@ -1,13 +1,15 @@
-import { randomUUID } from "crypto"
 import { NTSendMessageType, AddMsgType, NTRecallMessage as NTRecallMessageType } from "./interfaces"
 import { useLogger } from "../../common/log"
-import { useStore } from "../../store/store"
-import { Lock } from "../../common/lock"
-import { useNTCore } from "../core/core"
+import { getNTMsgService } from "../core/core"
+import { createNTEventWaiter } from "../query/wait"
 
 const log = useLogger('NTMessage')
-// const msgLock = new Lock()
-const { registerEventListener } = useStore()
+
+const waitForAddSendMessage = () => createNTEventWaiter<[AddMsgType], AddMsgType>({
+  event: 'KernelMsgListener/onAddSendMsg',
+  match: () => true,
+  select: (payload) => payload,
+})
 
 /**
  * 调用NTAPI发送普通消息
@@ -16,24 +18,19 @@ const { registerEventListener } = useStore()
  * @returns 发送结果
  */
 export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise<NTSendMessageType.SendResponse> => {
-  const { getWrapperSession } = useNTCore()
-  const session = getWrapperSession()
-  const service = session.getMsgService()
-  // await msgLock.lock()
-  const msgInfo = new Promise<AddMsgType>((resolve) => {
-      
-    registerEventListener('KernelMsgListener/onAddSendMsg', 'once', (payload) => {
-      resolve(payload)
-    })
-  })
-  await service.sendMsg(msg.msgId, msg.peer, msg.msgElements, msg.msgAttributeInfos)
-  
-  const info = await msgInfo
-  log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
-  // msgLock.unlock()
-  return {
-    msgId: info.msgId,
-    subMsgType: info.subMsgType,
+  const service = getNTMsgService()
+  const waiter = waitForAddSendMessage()
+  try {
+    await service.sendMsg(msg.msgId, msg.peer, msg.msgElements, msg.msgAttributeInfos)
+    const info = await waiter.promise
+    log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
+    return {
+      msgId: info.msgId,
+      subMsgType: info.subMsgType,
+    }
+  } catch (error) {
+    waiter.cancel()
+    throw error
   }
 }
 
@@ -45,32 +42,20 @@ export const NTSendMessage = async (msg: NTSendMessageType.SendRequest): Promise
  */
 export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardRequest): Promise<NTSendMessageType.SendResponse> => {
   log.info('send data:', msg, msg.msgInfos)
-  const uuid = randomUUID()
-  // nodeIKernelMsgService/forwardMsgWithComment 是逐条转发
-  // 合并转发
-  const reqData: [string, NTSendMessageType.SendForwardRequest, any] = [
-    "nodeIKernelMsgService/multiForwardMsgWithComment",
-    msg,
-    null
-  ]
-
-  // await msgLock.lock()
-  const msgInfo = new Promise<AddMsgType>((resolve) => {
-      
-    registerEventListener('KernelMsgListener/onAddSendMsg', 'once', (payload) => {
-      resolve(payload)
-    })
-  })
+  const waiter = waitForAddSendMessage()
   
-  const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
-  const sendResult = await msgService.multiForwardMsgWithComment(msg.msgInfos, msg.srcContact, msg.dstContact, msg.commentElements, new Map())
-  const info = await msgInfo
-  log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
-  // msgLock.unlock()
-  return {
-    msgId: info.msgId,
-    subMsgType: info.subMsgType,
+  const msgService = getNTMsgService()
+  try {
+    await msgService.multiForwardMsgWithComment(msg.msgInfos, msg.srcContact, msg.dstContact, msg.commentElements, new Map())
+    const info = await waiter.promise
+    log.info('onAddSendMsg info:', JSON.stringify(info, null, 4))
+    return {
+      msgId: info.msgId,
+      subMsgType: info.subMsgType,
+    }
+  } catch (error) {
+    waiter.cancel()
+    throw error
   }
 }
 
@@ -83,8 +68,7 @@ export const NTSendForwardMessage = async (msg: NTSendMessageType.SendForwardReq
 export const NTRecallMessage = async (msg: NTRecallMessageType.Request): Promise<NTRecallMessageType.Response> => {
 
   log.info(`recall msg:`, msg)
-  const { getWrapperSession } = useNTCore()
-  const msgService = getWrapperSession().getMsgService()
+  const msgService = getNTMsgService()
   const sendResult = await msgService.recallMsg(msg.peer, msg.msgIds)
   log.info('onAddSendMsg info:', JSON.stringify(sendResult, null, 4))
   

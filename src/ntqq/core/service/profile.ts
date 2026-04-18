@@ -1,6 +1,6 @@
-import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
-import { useListenerProxy } from "../dispatcher"
+import { getNTProfileService } from "../core"
+import { bindRuntimeServiceKernelListener } from "./bind-kernel-listener"
 
 const log = useLogger('service/profile')
 
@@ -9,8 +9,9 @@ const log = useLogger('service/profile')
  */
 export const initProfileService = () => {
   log.info('initProfileService')
-  const { getWrapperSession } = useNTCore()
-  const profileService = getWrapperSession().getProfileService()
-  const p = useListenerProxy('KernelProfileListener')
-  profileService.addKernelProfileListener(p)
+  bindRuntimeServiceKernelListener({
+    listenerName: 'KernelProfileListener',
+    getService: getNTProfileService,
+    attach: (service, listener) => service.addKernelProfileListener(listener),
+  })
 }

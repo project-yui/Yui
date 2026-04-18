@@ -1,6 +1,6 @@
-import { useListenerProxy } from "../dispatcher"
-import { useNTCore } from "../core"
 import { useLogger } from "../../../common/log"
+import { getNTMsgService } from "../core"
+import { bindRuntimeServiceKernelListener } from "./bind-kernel-listener"
 
 const log = useLogger('Service/msg')
 /**
@@ -10,19 +10,18 @@ const log = useLogger('Service/msg')
  */
 export const initMsgService = async () => {
   log.info('initMsgService')
-  const { getWrapperSession } = useNTCore()
-  const session = getWrapperSession()
   log.info('getMsgService')
-  const msgService = session.getMsgService()
-  log.info('create listener')
-  const p = useListenerProxy('KernelMsgListener')
   // 添加事件监听器
   log.info('add msg listener')
-  msgService.addKernelMsgListener(p)
+  const msgService = bindRuntimeServiceKernelListener({
+    listenerName: 'KernelMsgListener',
+    getService: getNTMsgService,
+    attach: (service, listener) => service.addKernelMsgListener(listener),
+  })
   const dev = await msgService.getOnLineDev()
   log.info('dev:', dev)
   log.info('registerSysMsgNotification')
-  // session.getRecentContactService().addKernelRecentContactListener(useListenerProxy('RecentContactListener'))
+  // session.getRecentContactService().addKernelRecentContactListener(createNTListenerProxy('RecentContactListener'))
   // try
   // {
   //   // const t = msgService.registerSysMsgNotification(1, 2, [1])

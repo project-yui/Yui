@@ -1,11 +1,11 @@
 let currentTraceId: string | undefined
 
-export const useRuntimeStore = () => ({
-  getTraceId: () => currentTraceId,
-  setTraceId: (traceId?: string) => {
-    currentTraceId = traceId
-  },
-  clearTraceId: () => {
-    currentTraceId = undefined
-  }
-})
+export const getTraceId = () => currentTraceId
+
+export const setTraceId = (traceId?: string) => {
+  currentTraceId = traceId
+}
+
+export const clearTraceId = () => {
+  currentTraceId = undefined
+}

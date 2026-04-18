@@ -1,16 +1,14 @@
 import { addPkg, install } from 'yui-native'
-import { useConfigStore } from '../store/config'
+import { getSignature } from '../store/config'
 import { useLogger } from '../common/log'
-import { useNTCore } from '../ntqq/core/core'
+import { getNTSearchService } from '../ntqq/core/core'
+import { requireCurrentNTSelfInfo } from '../ntqq/core/runtime-store'
 import { CommunicationPkg } from '../ntqq/protobuf/communication'
-import { useNTConfig } from '../ntqq/store/config'
-import { useNTUserStore } from '../ntqq/store/user'
 import { sleep } from '../common/utils'
 
 const log = useLogger('Native')
 export const initNative = (name: string) => {
     // 获取函数签名
-    const { getSignature } = useConfigStore()
     const sig = getSignature()
     const sigData: YuiNativeWrapper.SignatureType = {}
 
@@ -54,13 +52,9 @@ export const initNative = (name: string) => {
  * @returns 
  */
 export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
-    const { getWrapperSession } = useNTCore()
-    const session = getWrapperSession()
-    log.debug('wrapper session:', session)
-    const search = session.getSearchService()
+    const search = getNTSearchService()
     log.debug('search service:', search)
-    const { getCurrentAccountInfo } = useNTUserStore()
-    const info = getCurrentAccountInfo()
+    const info = requireCurrentNTSelfInfo()
     const send = addPkg({
         data: data,
         uin: info.uin,
@@ -89,13 +83,9 @@ export const sendCustomPkg = async (cmd: string, data: Uint8Array) => {
  * @returns 
  */
 export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
-    const { getWrapperSession } = useNTCore()
-    const session = getWrapperSession()
-    log.debug('wrapper session:', session)
-    const search = session.getSearchService()
+    const search = getNTSearchService()
     log.debug('search service:', search)
-    const { getCurrentAccountInfo } = useNTUserStore()
-    const info = getCurrentAccountInfo()
+    const info = requireCurrentNTSelfInfo()
     log.info('send pb:', cmd, Buffer.from(data).toString('hex'))
     const send = addPkg({
         data: data,

@@ -1,5 +1,5 @@
-import { useNTCore } from "../core"
-import { useListenerProxy } from "../dispatcher"
+import { getNTGroupService } from "../core"
+import { bindRuntimeServiceKernelListener } from "./bind-kernel-listener"
 
 /**
  * 初始化群组服务
@@ -7,8 +7,9 @@ import { useListenerProxy } from "../dispatcher"
  * 登陆后调用
  */
 export const initGroupService = () => {
-  const { getWrapperSession } = useNTCore()
-  const group = getWrapperSession().getGroupService()
-  const p = useListenerProxy('KernelGroupListener')
-  group.addKernelGroupListener(p)
+  bindRuntimeServiceKernelListener({
+    listenerName: 'KernelGroupListener',
+    getService: getNTGroupService,
+    attach: (service, listener) => service.addKernelGroupListener(listener),
+  })
 }

@@ -12,9 +12,9 @@
 
 ### 2.1 使用脚本安装
 
-1. 执行 `pnpm run install-ntqq`
-2. pnpm run dev
-3. pnpm run nodestart
+1. 执行 `pnpm run yui:install`
+2. 执行 `pnpm run yui:dev`
+3. 执行 `pnpm run yui:nodestart`
 
 ### 2.2 手动安装
 
@@ -24,11 +24,11 @@
 
 ## 1. 运行
 
-  1. 执行命令 `pnpm run dev`，开始编译ts文件
-  2. 生成的文件在 `program/resources/app/app_launcher/index.js`
-  3. 启动无UI界面的Yui，执行`pnpm nodestart`
-  4. 启动有UI界面的Yui，执行`pnpm start`
-  5. 启动有UI界面保存Log的Yui，执行`pnpm start-log-file` (分析接口行为使用)
+  1. 执行命令 `pnpm run yui:dev`，开始监听并编译 TypeScript
+  2. Node 运行入口会构建到 `program/index.js`
+  3. 启动无 UI 界面的 Yui，执行 `pnpm run yui:nodestart`
+  4. 启动有 UI 界面的 Yui，执行 `pnpm run ui:start`
+  5. 启动有 UI 界面并保存日志的 Yui，执行 `pnpm run ui:start-log-file`（分析接口行为使用）
 
 ## 2. 关于后续开发
 
@@ -57,7 +57,7 @@
 
 ## 2. 实现功能流程
 
-  相关代码在：[getFriendList](../src/onebot/actions/friend.ts)
+  相关代码在：[getFriendList](../src/app/friend/friend-service.ts)
 
   1. 通过 `sendEvent` 先订阅 `onBuddyListChange` 事件
   2. 再通过 `registerEventListener` 注册一次性的好友列表变更事件 `onBuddyListChange`，用来接收推送
@@ -65,6 +65,6 @@
 
 ## 3. 注册Onebot的动作处理
 
-  相关代码在：[initFriend](../src/onebot/actions/friend.ts)
+  相关代码在：[friendActionHandlers](../src/app/friend/register-friend-actions.ts)
   
-  在这个函数中，通过 `registerActionHandle` 来注册动作调用函数。
+  当前动作注册已经迁移到 `src/app/**` 下的薄注册层中，通过 `action handler map + registerActionHandlers` 的方式统一完成注册。

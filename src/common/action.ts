@@ -1,5 +1,6 @@
 import { NIL as NIL_UUID } from "uuid";
-import { BotActionRequest, BotActionResponse } from "../onebot/actions/interfaces";
+import { BotActionRequest, BotActionResponse } from "../onebot/contracts/actions";
+import { CustomError } from "./error/custom-error";
 
 /**
  * 检查必要的请求参数
@@ -57,4 +58,28 @@ export const checkBaseRequestField = (req: BotActionRequest): BotActionResponse 
     return ret
   }
   return undefined
+}
+
+export const toBadRequestResponse = (error: unknown): BotActionResponse => {
+  const result: BotActionResponse = {
+    id: NIL_UUID,
+    status: 'failed',
+    retcode: 10004,
+    data: null,
+    message: 'Bad Request'
+  }
+  if (error instanceof CustomError) {
+    result.retcode = error.code
+    result.message = error.message
+  }
+  return result
+}
+
+export const parseBotActionRequest = (rawMessage: string): BotActionRequest => {
+  const request = JSON.parse(rawMessage) as BotActionRequest
+  const invalidResponse = checkBaseRequestField(request)
+  if (invalidResponse !== undefined) {
+    throw new CustomError(invalidResponse.retcode, invalidResponse.message)
+  }
+  return request
 }
