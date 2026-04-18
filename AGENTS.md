@@ -6,15 +6,15 @@ This file gives coding agents and contributors a fast, project-specific map of t
 
 - Yui is a TypeScript-based bot framework around NTQQ/QQ integration.
 - The runtime entry is `src/index.ts`, which initializes OneBot actions, starts HTTP/WebSocket servers, and loads native pieces on Linux.
-- The main build output is bundled with Rollup into `program/index.js` (CommonJS format).
+- The main build output is bundled with Vite into `program/index.js` (CommonJS format).
 - The project expects the Node.js version to match the official client version. The current documented version is `v20.18.1` in `README.MD`.
 
 ## Package Manager And Toolchain
 
 - Package manager: `pnpm`
 - Language: TypeScript with ESM source files
-- Bundler: Rollup
-- Test runner: Jest with `ts-jest`
+- Bundler: Vite
+- Test runner: Vitest
 - Native/runtime coupling: Electron/NTQQ-related native modules and preload hooks are part of normal development flow
 
 ## Common Commands
@@ -23,7 +23,7 @@ Use the commands defined in `package.json` rather than older names in some docs.
 
 - Install dependencies: `pnpm install`
 - Install Yui runtime assets: `pnpm run yui:install`
-- Start Rollup watch build: `pnpm run yui:dev`
+- Start Vite watch build: `pnpm run yui:dev`
 - Build once: `pnpm run yui:build`
 - Start node-mode runtime: `pnpm run yui:nodestart`
 - Install UI assets: `pnpm run ui:install`
@@ -32,7 +32,7 @@ Use the commands defined in `package.json` rather than older names in some docs.
 - Regenerate protobuf TS files: `pnpm run proto:generate`
 - Watch protobuf changes: `pnpm run proto:watch`
 - Compile JS to bytecode helper: `pnpm run compile-jsc`
-- Run tests directly: `pnpm exec jest`
+- Run tests directly: `pnpm exec vitest run`
 
 ## Important Documentation
 
@@ -73,7 +73,7 @@ Note: `docs/dev.md` still uses older command names such as `pnpm run dev` and `p
 - `dist`: additional compiled artifacts such as the UI hook bundle
 - `resources`: static assets
 - `docs`: project documentation and reverse-engineering notes
-- `test`: ad hoc scripts and artifacts, not the main Jest suite
+- `test`: ad hoc scripts and artifacts, not the main Vitest suite
 
 ## Change Guidelines
 
@@ -102,7 +102,7 @@ Choose the lightest useful verification for the files you touch.
 
 - For TypeScript or bundling changes: run `pnpm run yui:build`
 - For protobuf changes: run `pnpm run proto:generate`
-- For unit-testable logic: run `pnpm exec jest`
+- For unit-testable logic: run `pnpm exec vitest run`
 - For runtime/bootstrap changes: if possible, also validate with `pnpm run yui:nodestart`
 
 Because this repo integrates with local QQ/NTQQ assets and native modules, some runtime validation may not be possible in a clean sandbox. If you cannot run full validation, state that clearly.
@@ -119,4 +119,4 @@ Because this repo integrates with local QQ/NTQQ assets and native modules, some 
 
 - The repository may already contain built artifacts and local runtime assets such as `program`, `dist`, `cache`, and `tmp`.
 - The working tree may also include local-only files or directories such as `.codex`; avoid touching unrelated files.
-- The Jest setup exists, but a large portion of the project behavior is integration-driven rather than covered by isolated tests.
+- The Vitest setup exists, but a large portion of the project behavior is integration-driven rather than covered by isolated tests.

@@ -1,17 +1,24 @@
-/// <reference types="jest" />
-import * as fs from "fs"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
-jest.mock("../../common/file", () => ({
-  downloadFile: jest.fn(),
-  getImageInfo: jest.fn(),
+const fsMocks = vi.hoisted(() => ({
+  existsSync: vi.fn(),
 }))
 
-jest.mock("../../ntqq/common/nt-api", () => ({
-  getRichMediaFilePathForGuild: jest.fn(),
+vi.mock("fs", () => ({
+  existsSync: fsMocks.existsSync,
 }))
 
-jest.mock("../../ntqq/common/fs-api", () => ({
-  copyFile: jest.fn(),
+vi.mock("../../common/file", () => ({
+  downloadFile: vi.fn(),
+  getImageInfo: vi.fn(),
+}))
+
+vi.mock("../../ntqq/common/nt-api", () => ({
+  getRichMediaFilePathForGuild: vi.fn(),
+}))
+
+vi.mock("../../ntqq/common/fs-api", () => ({
+  copyFile: vi.fn(),
 }))
 
 import { CustomError } from "../../common/error/custom-error"
@@ -19,11 +26,12 @@ import { prepareSendImageResource } from "./image-resource-preparer"
 
 describe("prepareSendImageResource", () => {
   afterEach(() => {
-    jest.restoreAllMocks()
+    fsMocks.existsSync.mockReset()
+    vi.restoreAllMocks()
   })
 
   it("throws when neither a local file nor a url is available", async () => {
-    jest.spyOn(fs, "existsSync").mockReturnValue(false)
+    fsMocks.existsSync.mockReturnValue(false)
 
     const task = prepareSendImageResource(
       {

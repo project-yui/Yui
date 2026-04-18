@@ -1,7 +1,7 @@
-/// <reference types="jest" />
+import { describe, expect, it, vi } from "vitest"
 
-jest.mock("../../ntqq/common/fs-api", () => ({
-  getFileType: jest.fn(),
+vi.mock("../../ntqq/common/fs-api", () => ({
+  getFileType: vi.fn(),
 }))
 
 import { buildTextSendElement } from "./send-basic-element-builders"
