@@ -2,6 +2,8 @@ const path = require("path");
 const fs = require("fs");
 const { spawn } = require("child_process");
 
+const createNodeArgs = () => ["--enable-source-maps", "./index.js"];
+
 fs.copyFileSync(
   path.resolve(__dirname, "../../yui.yaml"),
   path.resolve(__dirname, "../../program/yui.yaml")
@@ -12,7 +14,7 @@ switch (process.platform) {
     {
       console.log("nodestart");
       // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-      const pro = spawn("node", ["./index.js"], {
+      const pro = spawn(process.execPath, createNodeArgs(), {
         stdio: "inherit",
         env: {
           ...process.env,
@@ -30,7 +32,7 @@ switch (process.platform) {
   case "linux":
     {
       // cross-env YUKIHANA_LOG=true ELECTRON_RUN_AS_NODE=1 .\\ntqq\\QQ.exe .\\ntqq\\resources\\app\\app_launcher\\index.js
-      spawn("node", ["./index.js"], {
+      spawn(process.execPath, createNodeArgs(), {
         stdio: "inherit",
         env: {
           ...process.env,
