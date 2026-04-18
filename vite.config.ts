@@ -58,6 +58,7 @@ export default defineConfig(() => {
       emptyOutDir: false,
       minify: isProduction ? "esbuild" : false,
       outDir: target.outDir,
+      sourcemap: true,
       ssr: target.entry,
       rollupOptions: {
         external: [...nodeBuiltins, ...target.external],

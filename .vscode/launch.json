@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Yui: Debug TS via nodestart",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/tools/yui/nodestart.cjs",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--enable-source-maps"],
+      "preLaunchTask": "yui:build",
+      "autoAttachChildProcesses": true,
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/program/**/*.js"],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/program/**/*.js.map",
+        "${workspaceFolder}/src/**/*.ts",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
