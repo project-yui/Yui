@@ -36,6 +36,8 @@ const nodeBuiltins = [
   ...builtinModules.map((name) => `node:${name}`),
 ]
 
+const wsOptionalNativeModules = ["bufferutil", "utf-8-validate"]
+
 const resolveBuildTarget = (): BuildTarget => {
   return process.env["YUI_BUILD_TARGET"] === "ui" ? "ui" : "main"
 }
@@ -50,7 +52,7 @@ export default defineConfig(() => {
       mainFields: ["module", "jsnext:main", "jsnext", "main"],
     },
     ssr: {
-      external: target.external,
+      external: [...target.external, ...wsOptionalNativeModules],
       noExternal: true,
     },
     build: {
@@ -61,7 +63,7 @@ export default defineConfig(() => {
       sourcemap: true,
       ssr: target.entry,
       rollupOptions: {
-        external: [...nodeBuiltins, ...target.external],
+        external: [...nodeBuiltins, ...target.external, ...wsOptionalNativeModules],
         onwarn(warning, handler) {
           if (warning.code === "THIS_IS_UNDEFINED") {
             return

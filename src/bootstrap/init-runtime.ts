@@ -10,7 +10,7 @@ const loadLinuxPreload = () => {
   }
   log.info('preload.node')
   const m = { exports: {} }
-  const preload = process.env['YUI_PRELOAD'] || resolve(__dirname, '../preload.node')
+  const preload = process.env['YUI_PRELOAD'] || resolve(__dirname, './preload.node')
   process.dlopen(
     m,
     preload,
