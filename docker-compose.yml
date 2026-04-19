@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        QQ_VERSION: 3.2.22_251203
     container_name: yui
     # restart: always
     ports:
@@ -10,7 +12,7 @@ services:
       - "8081:8081"
     environment:
       - TZ=Asia/Shanghai
-      - YUI_LOG=false
+      - YUI_LOG=true
     volumes:
       - ./data/QQ:/root/.config/QQ
     # command: ["tail", "-f", "/etc/issue"]
