@@ -1621,7 +1621,7 @@ export class NodeIKernelMsgService {
         const result = this.instance.getRecentEmojiList(...args)
         if (result instanceof Promise) {
             return result.then((res) => {
-                log.info('getRecentEmojiList called  promise result:', result)
+                log.info('getRecentEmojiList called  promise result:', JSON.stringify(res))
                 return res
             })
         }

@@ -9,6 +9,7 @@ import { recallMessage } from "./message-recall-service"
 const log = useLogger('App/MessageService')
 
 export { recallMessage } from "./message-recall-service"
+export { likeMessage } from "./message-like-service"
 
 const sendForwardMessageToGroup = async (payload: BotMessage.SendMsg) => {
   const user = requireCurrentNTUserModel()

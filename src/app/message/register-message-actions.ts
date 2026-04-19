@@ -3,7 +3,7 @@ import {
   mergeActionHandlerMaps,
   registerActionHandlers,
 } from "../register-action-handlers"
-import { recallMessage, sendForwardMessage, sendMessage } from "./message-service"
+import { likeMessage, recallMessage, sendForwardMessage, sendMessage } from "./message-service"
 
 export const sendMessageActionHandlers = defineActionHandlers({
   send_message: sendMessage,
@@ -14,9 +14,14 @@ export const recallMessageActionHandlers = defineActionHandlers({
   recall_message: recallMessage,
 })
 
+export const likeMessageActionHandlers = defineActionHandlers({
+  like_message: likeMessage,
+})
+
 export const messageActionHandlers = mergeActionHandlerMaps(
   sendMessageActionHandlers,
   recallMessageActionHandlers,
+  likeMessageActionHandlers,
 )
 
 export const registerSendMessageActions = () => {

@@ -74,3 +74,12 @@ export const NTRecallMessage = async (msg: NTRecallMessageType.Request): Promise
   
   return sendResult
 }
+
+export const NTSetMsgEmojiLikes = async (peer: PeerInfo, msgSeq: `${number}`, emojiId: `${number}`, count: `${number}`, set: boolean): Promise<SimpleResult> => {
+  log.info(`setMsgEmojiLikes:`, { peer, msgSeq, emojiId, count, set })
+  const msgService = getNTMsgService()
+  const result = await msgService.setMsgEmojiLikes(peer, msgSeq, emojiId, count, set)
+  log.info('setMsgEmojiLikes result:', JSON.stringify(result, null, 4))
+  
+  return result
+}

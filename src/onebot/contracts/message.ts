@@ -24,6 +24,19 @@ export declare namespace BotMessage {
   }
 
   /**
+   * 设置消息表情(群聊/频道)
+   */
+  export interface LikeMsg extends BotActionParams {
+    detailType: 'group' | 'channel'
+    groupId?: number
+    channelId?: number
+    messageSeq: `${number}`
+    emojiId: `${number}`
+    emojiType: `${number}`
+    set: boolean
+  }
+
+  /**
    * 消息基础类型
    *
    * bot -> framework

@@ -188,6 +188,16 @@ export default class NodeIKernelMsgService {
      * @param attributes 属性
      */
     sendMsg(msgId: `${number}`, peer: PeerInfo, msg: any[], attributes: Map<any, any>): Promise<SimpleResult>
+    
+    /**
+     * 为特定消息设置表情
+     * @param peer 
+     * @param msgSeq 
+     * @param emojiId 
+     * @param count 
+     * @param set 
+     */
+    setMsgEmojiLikes(peer: PeerInfo, msgSeq: `${number}`, emojiId: `${number}`, count: `${number}`, set: boolean): Promise<SimpleResult>
     IsExistOldDb(): boolean
 }
 
