@@ -14,7 +14,7 @@ const buildReceiveImageUrl = (peer: PeerInfo, msgId: `${number}`, element: NTRec
   }
   if (url.startsWith('/download')) {
     const cfg = getConfig()
-    return `http://${cfg.yui.http.host}:${cfg.yui.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=1&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${element.elementId}&thumb_size=0&download_type=2&file_path=${encodeURIComponent(p.sourcePath)}`
+    return `http://${cfg.yui.http.host}:${cfg.yui.http.port}/downloadRichMedia?file_model_id=0&down_source_type=0&trigger_type=0&msg_id=${msgId}&chat_type=${peer.chatType}&peer_uid=${peer.peerUid}&element_id=${element.elementId}&thumb_size=0&download_type=1&file_path=${encodeURIComponent(p.sourcePath)}`
   }
   return url ?? null
 }

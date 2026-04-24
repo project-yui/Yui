@@ -7,7 +7,18 @@ import { CustomError } from "../../common/error/custom-error"
 
 const log = useLogger("DownloadRichMedia")
 
-export const downloadRichMedia = (req: Request, res: Response, next: NextFunction) => {
+export const downloadRichMedia = (req: Request<any, any, any, {
+  file_model_id: `${number}`,
+  down_source_type: string,
+  trigger_type: string,
+  msg_id: `${number}`,
+  chat_type: string,
+  peer_uid: string,
+  element_id: `${number}`,
+  thumb_size: string,
+  download_type: string,
+  file_path?: string
+}>, res: Response, next: NextFunction) => {
   const msgService = getNTMsgService()
   const p = req.query
   log.info("param:", JSON.stringify(p, null, 4))
@@ -21,6 +32,7 @@ export const downloadRichMedia = (req: Request, res: Response, next: NextFunctio
   }
   log.info("need download...")
   const rm = registerEventListener("KernelMsgListener/onRichMediaDownloadComplete", "always", (a) => {
+    log.info("onRichMediaDownloadComplete:", JSON.stringify(a, null, 4))
     if (a.msgId !== p["msg_id"] || a.msgElementId !== p["element_id"]) return
     rm.remove()
     log.info("result:", a)
@@ -30,16 +42,17 @@ export const downloadRichMedia = (req: Request, res: Response, next: NextFunctio
     rm.remove()
     next(new CustomError(10201, "timeout"))
   }, 30000)
-  msgService.downloadRichMedia({
-    peerUid: p["peer_uid"] as string,
-    chatType: parseInt(p["chat_type"] as string),
-    msgId: p["msg_id"] as `${number}`,
-    elementId: p["element_id"] as `${number}`,
-    downloadType: parseInt(p["download_type"] as string),
-    thumbSize: parseInt(p["chat_type"] as string),
-    filePath: p["file_path"],
-    fileModelId: p["file_model_id"] as `${number}`,
-    downSourceType: parseInt(p["down_source_type"] as string),
-    triggerType: parseInt(p["trigger_type"] as string),
+  const result = msgService.downloadRichMedia({
+    fileModelId: p.file_model_id,
+    downSourceType: parseInt(p.down_source_type),
+    triggerType: parseInt(p.trigger_type),
+    msgId: p.msg_id,
+    chatType: parseInt(p.chat_type),
+    peerUid: p.peer_uid,
+    elementId: p.element_id,
+    thumbSize: parseInt(p.thumb_size),
+    downloadType: parseInt(p.download_type),
+    filePath: p.file_path,
   })
+  log.info("downloadRichMedia result:", result)
 }
