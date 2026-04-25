@@ -1,4 +1,4 @@
-import { convertNTMsg2BotMsg, convertNTMsgElement2BotMsgElement } from "../../transfer/message/convert"
+import { NTMessageConverter } from "../../transfer/message/convert"
 import { NTReceiveMessageType } from "../../ntqq/message/interfaces"
 import { BotMessageData, EventDataType, NudgeMessageData, RecallMessageData } from "../../onebot/contracts/event"
 import { buildParsedNudgeEvent, hasRecallMessageEvent } from "./message-event-parsers"
@@ -46,13 +46,8 @@ export const buildMessageEvent = async (msg: NTReceiveMessageType.NTMessageItemT
     data: buildBaseMessageEventData(msg, senderId),
   }
   ret.detailType = applyMessageEventChatContext(msg, ret)
-  ret.data.elements = convertNTMsgElement2BotMsgElement({
-    chatType: msg.chatType,
-    peerUid: msg.peerUid,
-    guildId: ''
-  }, msg.msgId, msg.elements)
+  ret.data = new NTMessageConverter(msg).convert()
   await hydrateMentionUin(msg, ret.data.elements)
-  ret.data.records = msg.records.map(e => convertNTMsg2BotMsg(e))
   return ret
 }
 
@@ -67,12 +62,7 @@ export const buildPostSendEvent = async (msg: NTReceiveMessageType.NTMessageItem
     data: buildBaseMessageEventData(msg, senderId),
   }
   applyMessageEventChatContext(msg, ret)
-  ret.data.elements = convertNTMsgElement2BotMsgElement({
-    chatType: msg.chatType,
-    peerUid: msg.peerUid,
-    guildId: ''
-  }, msg.msgId, msg.elements)
-  ret.data.records = msg.records.map(e => convertNTMsg2BotMsg(e))
+  ret.data = new NTMessageConverter(msg).convert()
   return ret
 }
 

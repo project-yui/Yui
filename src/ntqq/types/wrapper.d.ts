@@ -28,6 +28,7 @@ declare namespace NTNativeWrapper {
     NodeIKernelLoginService: typeof import("./services/NodeIKernelLoginService").NodeIKernelLoginService
     NodeIQQNTWrapperEngine: typeof NTNativeWrapper.NodeIQQNTWrapperEngine
     NodeIQQNTWrapperSession: typeof NTNativeWrapper.NodeIQQNTWrapperSession
+    NodeIKernelMsgService: typeof import("./services/NodeIKernelMsgService").default
     NodeQQNTWrapperUtil: typeof NTNativeWrapper.NodeQQNTWrapperUtil
     NodeIQQNTStartupSessionWrapper: typeof NTNativeWrapper.NodeIQQNTStartupSessionWrapper
   }

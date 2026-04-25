@@ -33,7 +33,7 @@ export const downloadRichMedia = (req: Request<any, any, any, {
   log.info("need download...")
   const rm = registerEventListener("KernelMsgListener/onRichMediaDownloadComplete", "always", (a) => {
     log.info("onRichMediaDownloadComplete:", JSON.stringify(a, null, 4))
-    if (a.msgId !== p["msg_id"] || a.msgElementId !== p["element_id"]) return
+    if (a.msgId !== p.msg_id || a.msgElementId !== p.element_id) return
     rm.remove()
     log.info("result:", a)
     res.download(a.filePath)

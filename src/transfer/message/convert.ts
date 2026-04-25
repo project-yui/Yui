@@ -6,6 +6,5 @@ export {
 } from "./convert-send"
 
 export {
-  convertNTMsg2BotMsg,
-  convertNTMsgElement2BotMsgElement,
+  NTMessageConverter
 } from "./convert-receive"

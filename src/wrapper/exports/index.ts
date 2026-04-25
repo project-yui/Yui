@@ -1,6 +1,7 @@
 import { useLogger } from "../../common/log"
 import { getNodeIGlobalAdapter } from "./NodeIGlobalAdapter"
 import { getNodeIKernelLoginService } from "./NodeIKernelLoginService"
+import { getNodeIKernelMsgService } from "./NodeIKernelMsgService"
 import { getNodeIQQNTStartupSessionWrapper } from "./NodeIQQNTStartupSessionWrapper"
 import { getNodeIQQNTWrapperEngine } from "./NodeIQQNTWrapperEngine"
 import { getNodeIQQNTWrapperSession } from "./NodeIQQNTWrapperSession"
@@ -51,6 +52,7 @@ export const getWrapperExports = (wrapper: NTNativeWrapper.CrossProcessExportsIn
         NodeIKernelLoginService: getNodeIKernelLoginService(wrapper.NodeIKernelLoginService),
         NodeIQQNTWrapperEngine: getNodeIQQNTWrapperEngine(wrapper.NodeIQQNTWrapperEngine),
         NodeIQQNTWrapperSession: getNodeIQQNTWrapperSession(wrapper.NodeIQQNTWrapperSession),
+        NodeIKernelMsgService: getNodeIKernelMsgService(wrapper.NodeIKernelMsgService),
         NodeQQNTWrapperUtil: wrapper.NodeQQNTWrapperUtil,
         NodeIQQNTStartupSessionWrapper: getNodeIQQNTStartupSessionWrapper(wrapper.NodeIQQNTStartupSessionWrapper),
     }

@@ -220,7 +220,8 @@ declare namespace NodeIKernelMsgServiceType {
          */
         elementId: `${number}`
         /**
-         * 2
+         * 1 - 缩略图
+         * 2 - 原图
          */
         downloadType: number
         /**

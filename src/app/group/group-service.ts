@@ -3,7 +3,7 @@ import { requireCurrentNTUserModel } from "../../ntqq/core/runtime-store"
 import { NTGetGroupList } from "../../ntqq/group/list"
 import { NTGroupMsgList } from "../../ntqq/group/msg"
 import { CustomError } from "../../common/error/custom-error"
-import { convertNTMsg2BotMsg } from "../../transfer/message/convert"
+import { NTMessageConverter } from "../../transfer/message/convert"
 import { GroupMemberNudgeReq } from "../../onebot/contracts/friend"
 import { GroupDetailInfoResp, GroupMsgReq } from "../../onebot/contracts/group"
 import { getGroupInfo, getGroupMemberInfo } from "./group-query-service"
@@ -35,7 +35,7 @@ export const getGroupList = async (): Promise<GroupDetailInfoResp[]> => {
 export const getGroupMsgList = async (payload: GroupMsgReq) => {
   const ret = await NTGroupMsgList(payload.code, payload.msgId, payload.cnt)
   log.info('group msg list:', JSON.stringify(ret, null, 4))
-  return ret.map(msg => convertNTMsg2BotMsg(msg))
+  return ret.map(msg => new NTMessageConverter(msg).convert())
 }
 
 export const sendNudgeToMember = async (payload: GroupMemberNudgeReq): Promise<boolean> => {
