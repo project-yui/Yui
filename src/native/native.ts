@@ -86,7 +86,8 @@ export const sendCustomPkgV2 = async (cmd: string, data: Uint8Array) => {
     const search = getNTSearchService()
     log.debug('search service:', search)
     const info = requireCurrentNTSelfInfo()
-    log.info('send pb:', cmd, Buffer.from(data).toString('hex'))
+    log.info('send pb:', cmd)
+    // , Buffer.from(data).toString('hex')
     const send = addPkg({
         data: data,
         uin: info.uin,
