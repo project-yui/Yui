@@ -18,12 +18,12 @@ fail() {
 }
 
 cache_dir="$root_dir/cache"
-program_ver="3.2.22_251203"
 
 mkdir -p $cache_dir
 
 if [ ! -f "$cache_dir/qq-${program_ver}.AppImage" ];then
-    wget -c -O "$cache_dir/qq-${program_ver}.AppImage.tmp" https://dldir1.qq.com/qqfile/qq/QQNT/Linux/QQ_${program_ver}_x86_64_01.AppImage
+    url=$(node $root_dir/tools/common/parse-config.cjs --get-qq-url)
+    wget -c -O "$cache_dir/qq-${program_ver}.AppImage.tmp" "$url"
     mv "$cache_dir/qq-${program_ver}.AppImage.tmp" "$cache_dir/qq-${program_ver}.AppImage"
 fi
 

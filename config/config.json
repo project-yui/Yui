@@ -1,0 +1,6 @@
+{
+    "qq": {
+        "version": "3.2.32_260812",
+        "template": "https://qqdl.gtimg.cn/qqfile/QQNTV2/9.9.33/release/3f89efc5/QQ_${version}_x86_64_01.AppImage"
+    }
+}
