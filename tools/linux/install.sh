@@ -21,19 +21,31 @@ cache_dir="$root_dir/cache"
 
 mkdir -p $cache_dir
 
-if [ ! -f "$cache_dir/qq-${program_ver}.AppImage" ];then
+version=$(node $root_dir/tools/common/parse-config.cjs --get-qq-version)
+if [ ! -f "$cache_dir/qq-${version}.AppImage" ];then
     url=$(node $root_dir/tools/common/parse-config.cjs --get-qq-url)
-    wget -c -O "$cache_dir/qq-${program_ver}.AppImage.tmp" "$url"
-    mv "$cache_dir/qq-${program_ver}.AppImage.tmp" "$cache_dir/qq-${program_ver}.AppImage"
+    notice "下载 QQ ${version} 安装包"
+    wget -c -O "$cache_dir/qq-${version}.AppImage.tmp" "$url"
+    mv "$cache_dir/qq-${version}.AppImage.tmp" "$cache_dir/qq-${version}.AppImage"
 fi
 
-chmod +x "$cache_dir/qq-${program_ver}.AppImage"
+chmod +x "$cache_dir/qq-${version}.AppImage"
 
 cd $cache_dir
-"$cache_dir/qq-${program_ver}.AppImage" --appimage-extract
+"$cache_dir/qq-${version}.AppImage" --appimage-extract
 
 rm -rf "$root_dir/program"
 mkdir -p "$root_dir/program"
 mv "$cache_dir/squashfs-root"/resources/app/* "$root_dir/program"
 # sed -i 's#application.asar/##' "$root_dir/program/package.json"
 rm -rf "$cache_dir/squashfs-root"
+
+# preload
+version=$(node $root_dir/tools/common/parse-config.cjs --get-yui-preload-version)
+if [ ! -f "$cache_dir/yui-preload-${version}.node" ];then
+    url=$(node $root_dir/tools/common/parse-config.cjs --get-yui-preload-url)
+    notice "下载 yui-preload ${version} 模块"
+    wget -c -O "$cache_dir/yui-preload-${version}.node.tmp" "$url"
+    mv "$cache_dir/yui-preload-${version}.node.tmp" "$cache_dir/yui-preload-${version}.node"
+fi
+cp "$cache_dir/yui-preload-${version}.node" "$root_dir/program/preload.node"

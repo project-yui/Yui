@@ -17,8 +17,13 @@ export const getNTDesktopDeviceName = () => {
   return getNTDesktopPlatform() === 'win32' ? 'Windows_NT' : 'Linux'
 }
 
+/**
+ * AppId,从major.node中获取,会随版本更新.
+ * TODO: 目前先写死,后续再考虑从major.node中获取
+ * @returns 
+ */
 export const getNTAppId = () => {
   return getNTDesktopPlatform() === 'win32'
     ? '537249321'
-    : '537328659'
+    : '537379447'
 }

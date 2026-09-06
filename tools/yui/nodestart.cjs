@@ -38,8 +38,8 @@ switch (process.platform) {
           ...process.env,
           YUI_LOG: true,
           YUI_ACTION: "dev",
-          YUI_PRELOAD: "/home/msojocs/github/Yui-native/build/preload.node",
-          YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
+          // YUI_PRELOAD: "/home/msojocs/github/Yui-native/build/preload.node",
+          // YUI_NATIVE: "/home/msojocs/github/Yui-native/build/nt_native.node",
         },
         cwd: path.resolve(__dirname, "../../program"),
       });
